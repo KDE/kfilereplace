@@ -143,7 +143,7 @@ void KFileReplacePart::slotFileReplace()
     return;
 
   if(m_info.simulation())
-    emit setStatusBarText(i18n("Replacing files(simulation)..."));
+    emit setStatusBarText(i18n("Replacing files (simulation)..."));
   else
     emit setStatusBarText(i18n("Replacing files..."));
 
@@ -505,6 +505,7 @@ bool KFileReplacePart::openURL(const KURL &url)
     emit canceled("");
     return false;
   }
+  launchNewProjectDialog(url);
   return true;
 }
 
@@ -572,13 +573,13 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
   QFile file(fileName);
   if(!file.open(IO_ReadOnly))
     {
-      KMessageBox::error(m_w, i18n("<qt>Cannot open the file <b>" + fileName + "</b> and load the string list.</qt>"));
+      KMessageBox::error(m_w, i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(fileName));
       return ;
     }
   if(!doc.setContent(&file))
     {
       file.close();
-      KMessageBox::information(m_w, i18n("<qt>File <b>" + fileName + "</b> seems not to be written in new kfr format. Remember that old kfr format will be soon abandoned! You can convert your old rules files by simply saving them with kfilereplace.</qt>"),i18n("Warning"));
+      KMessageBox::information(m_w, i18n("<qt>File <b>%1</b> seems not to be written in new kfr format. Remember that old kfr format will be soon abandoned! You can convert your old rules files by simply saving them with kfilereplace.</qt>").arg(fileName),i18n("Warning"));
       m_lib->convertOldToNewKFRFormat(fileName,m_view->stringView());
       return;
     }
@@ -840,7 +841,7 @@ bool KFileReplacePart::checkBeforeOperation()
 
   if(!dir.exists())
     {
-      KMessageBox::error(m_w, i18n("<qt>The main folder of the project <b>" + directory + "</b> does not exist.</qt>"));
+      KMessageBox::error(m_w, i18n("<qt>The main folder of the project <b>%1</b> does not exist.</qt>").arg(directory));
       return false;
     }
 
@@ -849,7 +850,7 @@ bool KFileReplacePart::checkBeforeOperation()
      or
      not(dirInfo.isWritable()))
     {
-      KMessageBox::error(m_w, i18n("<qt>Access denied in the main folder of the project:<br><b>" + directory + "</b></qt>"));
+      KMessageBox::error(m_w, i18n("<qt>Access denied in the main folder of the project:<br><b>%1</b></qt>").arg(directory));
       return false;
     }
   /*if(::access(directory.local8Bit(), R_OK | X_OK) == -1)
@@ -986,7 +987,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   QFile oldFile(oldPathString);
   if(!oldFile.open(IO_ReadOnly))
     {
-      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>")+ oldFileName + i18n("</b> for writing.</qt>"));
+      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(oldFileName));
       return ;
     }
 
@@ -999,7 +1000,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
       newFile.setName(oldPathString + backupExtension);
       if(!newFile.open(IO_WriteOnly))
         {
-          KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>") + oldFileName+backupExtension + i18n("</b> for writing.</qt>"));
+          KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(oldFileName+backupExtension));
           return ;
         }
     }
@@ -1043,7 +1044,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
        else
          {
            item->setText(3,"-");
-           m_view->resultView()->setColumnText(4,i18n("Replaced strings(simulation)"));
+           m_view->resultView()->setColumnText(4,i18n("Replaced strings (simulation)"));
          }
 
        item->setText(4,QString::number(occurrence,10));
@@ -1065,7 +1066,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
 
   if (!oldFile.open(IO_ReadOnly) or !oldFileInfo.isWritable())
     {
-      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>") + oldFileName + i18n("</b> for reading and/or writing.</qt>"));
+      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for reading and/or writing.</qt>").arg(oldFileName));
       return ;
     }
 
@@ -1092,7 +1093,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
     QFile newFile(oldPathString);
     if(!newFile.open(IO_WriteOnly))
       {
-        KMessageBox::error(m_w,i18n("<qt>Cannot overwrite file <b>") + oldFileName + i18n( "</b>.</qt>"));
+        KMessageBox::error(m_w,i18n("<qt>Cannot overwrite file <b>%1</b>.</qt>").arg(oldFileName));
         return ;
       }
     QTextStream newStream( &newFile );
@@ -1120,7 +1121,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
       else
         {
           item->setText(3,"-");
-          m_view->resultView()->setColumnText(4,i18n("Replaced strings(simulation)"));
+          m_view->resultView()->setColumnText(4,i18n("Replaced strings (simulation)"));
         }
       item->setText(4,QString::number(occurrence,10));
       item->setText(5,QString("%1[%2]").arg(oldFileInfo.owner()).arg(oldFileInfo.ownerId()));
@@ -1235,7 +1236,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 
   if(!file.open(IO_ReadOnly))
     {
-      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>") + fileName + i18n("</b> for writing.</qt>"));
+      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(fileName));
       return ;
     }
   // Creates a stream with the file
