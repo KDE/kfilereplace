@@ -183,7 +183,7 @@ void KOptionsDlg::initPage1()
 
   // Create check boxes
   m_checkCaseSensitive = new QCheckBox(i18n("Case sensitive"), tab1,"m_checkCaseSensitive");
-  m_checkRecursive = new QCheckBox(i18n("Recursivity: Search/replace in all sub folders"),tab1,"m_checkRecursive");
+  m_checkRecursive = new QCheckBox(i18n("Recursiveh (search/replace in all sub folders)"),tab1,"m_checkRecursive");
   m_checkHaltOnFirstOccur = new QCheckBox(i18n("When searching, stop on first string found (faster but no details)"),tab1, "m_checkHaltOnFirstOccur");
   m_checkIgnoreWhitespaces = new QCheckBox(i18n("Ignore whitespaces (\\n,\\r,\\t,multi-spaces) (useful in HTML code)"),tab1, "m_checkIgnoreWhitespaces");
   m_checkFollowSymLinks = new QCheckBox(i18n("Follow symbolic links"),tab1, "m_checkFollowSymLinks");
