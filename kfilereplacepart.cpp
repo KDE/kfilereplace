@@ -560,10 +560,11 @@ void KFileReplacePart::slotFileSearch()
       strMess = i18n("Error while searching/replacing");
    else // Success
    {
-      if (!g_argu.bHaltOnFirstOccur)
-         strMess = i18n("%1 strings successfully found in %2 files").arg( g_nStringsRep).arg(g_nFilesRep);
-      else
-         strMess = i18n("%1 files successfully found").arg(g_nFilesRep);
+      if (!g_argu.bHaltOnFirstOccur) {
+         strMess = i18n("%n string found", "%n strings found", g_nStringsRep);
+         strMess += i18n(" (in %n file)", " (in %n files)", g_nFilesRep);
+      } else
+         strMess = i18n("%n file found", "%n files found", g_nFilesRep);
    }
 
    emit setStatusBarText(strMess); // Show message in status bar
@@ -621,9 +622,10 @@ void KFileReplacePart::slotFileReplace()
       strMess = i18n("Error while searching/replacing");
    else // Success
    {
-      if (!g_argu.bHaltOnFirstOccur)
-         strMess = i18n("One string successfully replaced in one file", "%1 strings successfully replaced in %2 files").arg(g_nStringsRep).arg(g_nFilesRep);
-      else
+      if (!g_argu.bHaltOnFirstOccur) {
+	 strMess = i18n("%n string successfully replaced", "%n strings successfully replaced", g_nStringsRep);
+         strMess += i18n(" (in %n file)", " (in %n files)", g_nFilesRep);
+      } else
          strMess = i18n("%n file successfully replaced", "%n files successfully replaced", g_nFilesRep);
    }
 
@@ -682,9 +684,10 @@ void KFileReplacePart::slotFileSimulate()
       strMess = i18n("Error while searching/replacing");
    else // Success
    {
-      if (!g_argu.bHaltOnFirstOccur)
-         strMess = i18n("One string successfully replaced in one file","%1 strings successfully replaced in %2 files").arg(g_nStringsRep).arg(g_nFilesRep);
-      else
+      if (!g_argu.bHaltOnFirstOccur) {
+         strMess = i18n("%n string successfully replaced", "%n strings successfully replaced", g_nStringsRep);
+         strMess += i18n(" (in %n file)", " (in %n files)", g_nFilesRep);
+      } else
          strMess = i18n("%n file successfully replaced", "%n files successfully replaced", g_nFilesRep);
    }
 
