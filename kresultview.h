@@ -20,7 +20,7 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif 
+#endif
 
 // include files for Qt
 #include <qlistview.h>
@@ -33,43 +33,43 @@ class KFileReplaceApp;
 // ================================================================
 class KResultView : public QListView
 {
-	Q_OBJECT
+        Q_OBJECT
 
 public:
-	KResultView( QWidget *parent = 0, const char *name = 0);
-	~KResultView();
-	QString getCurrentItem();
-	
+        KResultView( QWidget *parent = 0, const char *name = 0);
+        ~KResultView();
+        QString getCurrentItem();
+
 public:
-	int addFullItem(bool bSuccess, const char *szName, const char *szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, char *szErrMsg=0);
-	int updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, char *szErrMsg=0);
-	bool increaseStringCount(QListViewItem *lvi, QString strOld, QString strNew, QString strReplace, const char *szSearch, int nSearchLen, bool bShowDetails);
-	QPixmap getIconString() {return m_pmIconString;}
+        int addFullItem(bool bSuccess, const QString& szName, const QString& szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
+        int updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
+        bool increaseStringCount(QListViewItem *lvi, QString strOld, QString strNew, QString strReplace, const char *szSearch, int nSearchLen, bool bShowDetails);
+        QPixmap getIconString() {return m_pmIconString;}
 
 public slots:
-	void slotResultProperties();
-	void slotResultOpen();
-	void slotResultOpenWith();
-	void slotResultEdit();
-	void slotResultDirOpen();
-	void slotResultDelete();
-	void slotResultTreeExpand();
-	void slotResultTreeReduce();
-	
-	void slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column);
+        void slotResultProperties();
+        void slotResultOpen();
+        void slotResultOpenWith();
+        void slotResultEdit();
+        void slotResultDirOpen();
+        void slotResultDelete();
+        void slotResultTreeExpand();
+        void slotResultTreeReduce();
+
+        void slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column);
 
  private:
-	void expand(QListViewItem *lviCurrent, bool bExpand);
+        void expand(QListViewItem *lviCurrent, bool bExpand);
 
-	
+
 private:
-	KFileReplaceApp *m_app;
-	KPopupMenu *m_kpmResult;
-	QListViewItem *m_lviCurrent;
-	QPixmap m_pmIconSuccess;
-	QPixmap m_pmIconError;
-	QPixmap m_pmIconString;
-	QPixmap m_pmIconSubString;
+        KFileReplaceApp *m_app;
+        KPopupMenu *m_kpmResult;
+        QListViewItem *m_lviCurrent;
+        QPixmap m_pmIconSuccess;
+        QPixmap m_pmIconError;
+        QPixmap m_pmIconString;
+        QPixmap m_pmIconSubString;
 
 };
 

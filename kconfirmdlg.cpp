@@ -102,7 +102,7 @@ void KConfirmDlg::initDialog()
 }
 
 // ===========================================================================================================================
-void KConfirmDlg::setData(QString strFile, QString strDir, QString strSearch, QString strReplace)
+void KConfirmDlg::setData(const QString& strFile, const QString& strDir, const QString& strSearch, const QString& strReplace)
 {
   m_strFile = strFile;
   m_strDir = strDir;

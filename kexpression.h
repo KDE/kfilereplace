@@ -18,7 +18,8 @@
 #ifndef KEXPRESSION_H
 #define KEXPRESSION_H
 
-extern char g_szErrMsg[];
+class QString;
+extern QString g_szErrMsg;
 
 #include <qdatetime.h>
 class QStringList;

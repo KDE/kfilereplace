@@ -19,6 +19,7 @@
 #include "resource.h"
 #include "filelib.h"
 
+#include <kdebug.h>
 #include <klocale.h>
 
 #include <qfileinfo.h>
@@ -265,15 +266,15 @@ QString KExpression::addWildcardsContentToString(const char *szNewString, int nN
           extractWildcardsContentsFromFullString(szNewString+i, nNewStrLen-i, szWildcard, strlen(szWildcard), &strlTemp);
 
           if (!strlTemp.count()) // if empty
-            printf ("error: strlTemp.count() == 0 --- String0=(%s)\n", strlTemp[0].ascii());
+            kdError(23000) << QString("strlTemp.count() == 0 --- String0=(%1)").arg(strlTemp[0]) << endl;
           nWildcardsAsked = strlTemp[0].toLong();
 
           // strList = number of wildcards in the search string
           if (nWildcardsAsked >= (int)strList->count())
             {
-              sprintf(g_szErrMsg, i18n("You want to insert wildcard number %ld with [#%ld#], but there are only %ld wildcards! The fisrt is [#0#] "
-                                       "and not [#1#]. Then the last is [#%ld#]."), nWildcardsAsked, nWildcardsAsked, strList->count(), strList->count()-1);
-              printf ("%s\n", g_szErrMsg);
+              g_szErrMsg = i18n("<qt>You want to insert wildcard number %1 with [#%2#], but there are only %3 wildcards! The fisrt is [#0#] "
+                                       "and not [#1#]. Then the last is [#%4#].</qt>").arg(nWildcardsAsked).arg(nWildcardsAsked).arg(strList->count()).arg( strList->count()-1);
+              kdDebug(23000) << g_szErrMsg << endl;
               return QString::null;
             }
 

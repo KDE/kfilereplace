@@ -34,7 +34,7 @@ extern bool g_bThreadRunning;
 extern bool g_bThreadMustStop;
 extern int g_nFilesRep;
 extern RepDirArg g_argu;
-extern char g_szErrMsg[];
+extern QString g_szErrMsg;
 extern int g_nStringsRep;
 extern int g_nOperation;
 //extern pthread_t g_threadReplace;

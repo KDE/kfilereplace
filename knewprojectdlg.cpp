@@ -450,7 +450,7 @@ unsigned long int KNewProjectDlg::getMaxSize()
 }
 
 // ===========================================================================================================================
-void KNewProjectDlg::setDatas(QString strDir, QString strFilter)
+void KNewProjectDlg::setDatas(const QString& strDir, const QString& strFilter)
 {
   if (!strDir.isEmpty())
     m_comboDirectory->setEditText(strDir);

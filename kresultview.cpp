@@ -109,7 +109,7 @@ KResultView::~KResultView()
 }
 
 // ===========================================================================================================================
-int KResultView::addFullItem(bool bSuccess, const char *szName, const char *szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, char *szErrMsg)
+int KResultView::addFullItem(bool bSuccess, const QString &szName, const QString &szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString &szErrMsg)
 {
   QString strOldSize;
   QString strNewSize;
@@ -125,16 +125,16 @@ int KResultView::addFullItem(bool bSuccess, const char *szName, const char *szDi
     strNbRepl.setNum(nNbRepl);
 
   // Add item to list
-  lvi = new KListViewString(this, szName, szDirectory, strOldSize.ascii());
+  lvi = new KListViewString(this, szName, szDirectory, strOldSize);
   if (lvi == 0)
     return -1;
 
   // set owners infos
-  strTemp.sprintf("%s/%s", szDirectory, szName);
+  strTemp = szDirectory + "/" + szDirectory, szName;
   fi.setFile(strTemp);
-  strTemp.sprintf("%s (%d)", fi.owner().ascii(), fi.ownerId());
+  strTemp = QString("%1 (%2)").arg(fi.owner()).arg(fi.ownerId());
   lvi -> setText(6, strTemp);
-  strTemp.sprintf("%s (%d)", fi.group().ascii(), fi.groupId());
+  strTemp = QString("%1 (%2)").arg(fi.group()).arg(fi.groupId());
   lvi -> setText(7, strTemp);
 
   if (bSuccess) // Success
@@ -156,7 +156,7 @@ int KResultView::addFullItem(bool bSuccess, const char *szName, const char *szDi
 
 // ===========================================================================================================================
 // BUG IN THIS FUNCTION WITH LISTVIEW WHEN USING THREADS
-int KResultView::updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, char *szErrMsg)
+int KResultView::updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, const QString& szErrMsg)
 {
   QString strNewSize;
   QString strNbRepl;
@@ -169,18 +169,18 @@ int KResultView::updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, in
     strNbRepl.setNum(nNbRepl);
 
   // set owners infos
-  strTemp.sprintf("%s/%s", lvi->text(1).ascii(), lvi->text(0).ascii());
+  strTemp = QString("%1/%2").arg(lvi->text(1)).arg(lvi->text(0));
   fi.setFile(strTemp);
-  strTemp.sprintf("%s (%d)", fi.owner().ascii(), fi.ownerId());
+  strTemp = QString("%1 (%2)").arg(fi.owner()).arg(fi.ownerId());
   lvi -> setText(6, strTemp);
-  strTemp.sprintf("%s (%d)", fi.group().ascii(), fi.groupId());
+  strTemp = QString("%1 (%2)").arg(fi.group()).arg(fi.groupId());
   lvi -> setText(7, strTemp);
 
   if (bSuccess) // Success
     {
       lvi -> setPixmap(0, m_pmIconSuccess);
-      lvi -> setText(3, strNewSize.ascii());
-      lvi -> setText(4, strNbRepl.ascii());
+      lvi -> setText(3, strNewSize);
+      lvi -> setText(4, strNbRepl);
       lvi -> setText(5, i18n("Success"));
     }
   else // Error
@@ -239,7 +239,7 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
   // If parent not present, add it
   if (!bPresent)
     {
-      lviParent = new KListViewString(lvi, strTextOld, strTextNew, "", "", (bShowDetails ? "1" : ""));
+      lviParent = new KListViewString(lvi, strTextOld, strTextNew, "", "", (bShowDetails ? QString("1") : QString("")));
       if (!lviParent)
         return false;
       lviParent -> setPixmap(0, m_pmIconString);
@@ -276,7 +276,7 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
 
   if (!bPresent)
     {
-      lviNew = new KListViewString(lviParent, strTextSearch, strTextReplace, "", "", (bShowDetails ? "1" : ""));
+      lviNew = new KListViewString(lviParent, strTextSearch, strTextReplace, "", "", (bShowDetails ? QString("1") : QString("")));
       if (lviNew == 0)
         return false;
       lviNew -> setPixmap(0, m_pmIconSubString);

@@ -43,7 +43,7 @@ class KNewProjectDlg : public KNewProjectDlgS
   void loadComboValues();
   void saveComboValues();
   void addCurrentStringToCombo();
-  void setDatas(QString strDir, QString strFilter);
+  void setDatas(const QString& strDir, const QString& strFilter);
   void setWhatsThis();
   void getMaxFilesSize(bool *bChecked, long unsigned int *nMaxSize);
   void getMinFilesSize(bool *bChecked, long unsigned int *nMinSize);

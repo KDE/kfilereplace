@@ -52,7 +52,7 @@ int g_nFilesRep = 0;
 int g_nStringsRep = 0;
 int g_nOperation;
 RepDirArg g_argu;
-char g_szErrMsg[1024] = "";
+QString g_szErrMsg;
 
 
 // Factory code for KDE 3
@@ -68,7 +68,7 @@ KFileReplacePart::KFileReplacePart(QWidget *parentWidget, const char *, QObject 
   g_bThreadRunning = false;
   g_bThreadMustStop = false;
   g_nFilesRep = 0;
-  *g_szErrMsg = 0;
+  g_szErrMsg = "";
   m_parentWidget = parentWidget;
   m_config = new KConfig(locateLocal("appdata", "kfilereplacerc"));
   m_dlgAbout = 0L;
@@ -540,7 +540,7 @@ void KFileReplacePart::slotFileSearch()
    updateCommands();
 
    // Default error message
-   *g_szErrMsg = 0;
+   g_szErrMsg = "";
 
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
@@ -596,7 +596,7 @@ void KFileReplacePart::slotFileReplace()
    updateCommands();
 
    // Default error message
-   *g_szErrMsg = 0;
+   g_szErrMsg = "";
 
    // cancel impossible options
    g_argu.bHaltOnFirstOccur = false;
@@ -657,7 +657,7 @@ void KFileReplacePart::slotFileSimulate()
    updateCommands();
 
    // Default error message
-   *g_szErrMsg = 0;
+   g_szErrMsg = "";
 
    // cancel impossible options
    g_argu.bHaltOnFirstOccur = false;

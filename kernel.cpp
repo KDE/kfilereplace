@@ -3,6 +3,7 @@
                              -------------------
     begin                : Sat Sep 25 1999
     copyright            : (C) 1999 by François Dupoux
+                           (C) 2003 Andras Mantia <amantia@freemail.hu>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -30,6 +31,7 @@
 
 // KDE includes
 #include <kapplication.h>
+#include <kdebug.h>
 #include <kmessagebox.h>
 
 // Qt includes
@@ -113,7 +115,7 @@ void *SearchThread(void *param)
 }
 
 // ===========================================================================================================================
-int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
+int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
 {
 
   QString strFileReadpath;
@@ -151,7 +153,7 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
   // 0. -*-*-*-*-*-*-*-*-*- Check it's a valid directory -*-*-*-*-*-*-*-*-*-
   if (!dir.isReadable() || !dir.exists())
     {
-      sprintf (g_szErrMsg, i18n("Can't access to directory %s"), szDir);
+      g_szErrMsg = i18n("<qt>Can't access directory <b>%1</b>.").arg(szDir);
       return -1;
     }
 
@@ -188,8 +190,7 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
           nAccess = access(strFileReadpath.ascii(), F_OK | R_OK);
           if (nAccess == -1) // We don't have access to the file
             {
-              sprintf (g_szErrMsg, i18n("Can't access to the file %s in reading mode."), strFileReadpath.ascii());
-              argu -> qlvResult -> addFullItem(false, dir[i].ascii(), szDir, fiOld.size(), 0, 0, g_szErrMsg);
+              argu -> qlvResult -> addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
             }
           if (nAccess == 0) // If access is okay
             {
@@ -201,7 +202,7 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
                     {
                       // Add the item in the list, but without details
                       strTemp = formatSize(fiOld.size());
-                      lvi = new KListViewString(argu -> qlvResult, dir[i], szDir, strTemp.ascii());
+                      lvi = new KListViewString(argu -> qlvResult, dir[i], szDir, strTemp);
                       if (lvi == 0) // Not enought memory
                         return -1;
 
@@ -251,15 +252,15 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
                   nAccess = access(strFileReadpath.ascii(), F_OK | R_OK | W_OK);
                   if (nAccess == -1) // We don't have access to the file
                     {
-                      sprintf (g_szErrMsg, i18n("Can't access to the file %s in writing mode."), strFileReadpath.ascii());
+                      g_szErrMsg = i18n("<qt>Can't access file <b>%1</b> for writing.</qt>").arg(strFileReadpath);
                       argu -> qlvResult -> addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
                     }
 
                   if (nAccess == 0) // If access is okay
                     {
-                      printf("In (SearchFile) to check the file need replace (%s)\n", strFileReadpath.ascii());
+                      kdDebug(23000) << QString("In (SearchFile) to check the file need replace (%1)").arg( strFileReadpath) << endl;
                       nRes = SearchFile(0, strFileReadpath.ascii(), &nNeedReplace, &bAllStringsFound, argu, true);
-                      printf("Out (SearchFile) to check the file need replace (%s)\n", strFileReadpath.ascii());
+                      kdDebug(23000) << QString("Out (SearchFile) to check the file need replace (%1)").arg( strFileReadpath) << endl;
                       if (nRes == -1)
                         return -1;
 
@@ -267,8 +268,7 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
                         {
                           if ((argu -> bConfirmFiles == true) && (argu->bSimulation == false))
                             {
-                              strMess.sprintf(i18n("Directory: %s<br>Path: %s<br>Do you want to replace strings inside <b>%s</b> ?"),
-                                              szDir, dir[i].ascii(), strFileReadpath.ascii());
+                              strMess = i18n("<qt>Directory: %1<br>Path: %2<br>Do you want to replace strings inside <b>%3</b> ?</qt>").arg(szDir).arg(dir[i]).arg(strFileReadpath);
                               nConfirm = KMessageBox::questionYesNo(argu->mainwnd, strMess, i18n("Replace file confirmation"));
                             }
 
@@ -280,21 +280,21 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
                                   nRes = GetDiskFreeSpaceForFile(&nDiskFreeSpace, strFileReadpath.ascii());
                                   if (nRes != -1 && nDiskFreeSpace < fiOld.size())
                                     {
-                                      sprintf (g_szErrMsg, i18n("There is not enought disk free space to replace in the file %s."), strFileReadpath.ascii());
+                                      g_szErrMsg = i18n("<qt>There is not enough disk free space to replace in the file <b>%1</b>.</qt>").arg(strFileReadpath);
                                       return -1;
                                     }
                                 }
 
                               // Add the item in the list, but without details
                               strTemp = formatSize(fiOld.size());
-                              lvi = new KListViewString(argu -> qlvResult, dir[i], szDir, strTemp.ascii());
+                              lvi = new KListViewString(argu -> qlvResult, dir[i], szDir, strTemp);
                               if (lvi == 0) // Not enought memory
                                 return -1;
 
                               // Run the replace operation
-                              printf("In ReplaceFile %s\n", strFileReadpath.ascii());
+                              kdDebug(23000) << "In ReplaceFile " << strFileReadpath << endl;
                               nRes = ReplaceFile(lvi, szDir, strFileReadpath.ascii(), strFileWritepath.ascii(), &nNbReplacements, argu);
-                              printf("Out ReplaceFile %s\n", strFileReadpath.ascii());
+                              kdDebug(23000) << "Out ReplaceFile " << strFileReadpath << endl;
 
                               if (nRes == REPLACE_SUCCESS || nRes == REPLACE_FILESKIPPED || nRes == REPLACE_SKIPDIR) // If success
                                 {
@@ -370,15 +370,14 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
             {
               if (argu -> bConfirmDirs == true && bReplace) // If doing a replace and dir confirm activated (do not confirm when searching)
                 {
-                  strMess.sprintf(i18n("Directory: <b>%s</b><br>Full path: <b>%s/%s</b><br><br>Do you want to replace strings in files of this directory ?"),
-                                  dir[i].ascii(), szDir, dir[i].ascii());
+                  strMess = i18n("<qt>Directory: <b>%1</b><br>Full path: <b>%2/%3</b><br><br>Do you want to replace strings in files of this directory?</qt>").arg(dir[i]).arg(szDir).arg(dir[i]);
                   nConfirm = KMessageBox::questionYesNo(argu->mainwnd, strMess, i18n("Replace directory confirmation"));
                 }
 
               if (bReplace == false || argu -> bConfirmDirs == false || nConfirm == KMessageBox::Yes)
                 {
                   strDirpath = formatFullPath(szDir, dir[i]);
-                  nRes = ReplaceDirectory(strDirpath.ascii(), argu, bReplace); // Use recursivity
+                  nRes = ReplaceDirectory(strDirpath, argu, bReplace); // Use recursivity
                   if (nRes == -1) // If error
                     return -1; // Stop the operation
                   nNbRepFiles += nRes;
@@ -428,7 +427,7 @@ bool IsFileGoodDateProperties(const char *szFileName, int nTypeOfAccess, bool bM
 }
 
 // ==================================================================================
-int ReplaceFile(QListViewItem *lvi, const char *szDir, const char *szOldFile, const char *szNewFile, int *nNbReplacements, RepDirArg* argu)
+int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFile, const QString& szNewFile, int *nNbReplacements, RepDirArg* argu)
 {
 
   int nFdOldFile=0, nFdNewFile=0; // File descriptors
@@ -462,46 +461,48 @@ int ReplaceFile(QListViewItem *lvi, const char *szDir, const char *szOldFile, co
   nOldFileSize = fiOld.size();
 
   // 1. Open files
-  nFdOldFile = open(szOldFile, O_RDONLY);
-  if (nFdOldFile == -1)
-    {
-      sprintf (g_szErrMsg, i18n("Can't open file %s for reading"), szOldFile);
-      return REPLACE_ERROR;
-    }
+  //TODO: Replace all direct file manipulation code with KIO/QT one
+  QFile oldFile(szOldFile);
+  if (!oldFile.open(IO_ReadOnly))
+  {
+    g_szErrMsg = i18n("<qt>Can't open file <b>%1</b> for reading.</qt>").arg(szOldFile);
+    return REPLACE_ERROR;
+  }
+  nFdOldFile = oldFile.handle();
 
+  QFile newFile(szNewFile);
   if (argu->bSimulation == false) // if a real replace operation
     {
-      nFdNewFile = open(szNewFile, O_CREAT | O_TRUNC | O_RDWR, S_IRWXU);
 
-      if (nFdNewFile == -1)
+      if (!newFile.open(IO_ReadWrite | IO_Truncate))
         {
-          sprintf (g_szErrMsg, i18n("Can't open file %s for writing"), szNewFile);
+          g_szErrMsg = i18n("<qt>Can't open file <b>%1</b> for writing.</qt>").arg(szNewFile);
           return REPLACE_ERROR;
         }
-
+      nFdNewFile = newFile.handle();
 
       // 2. Put new file the access rights of the old file
-      nRes = fstat(nFdOldFile, &statFile);
+      nRes = ::fstat(nFdOldFile, &statFile);
       if (nRes == -1)
         {
-          sprintf (g_szErrMsg, i18n("Can't read file %s access rights"), szOldFile);
+          g_szErrMsg = i18n("<qt>Can't read the access rights for file<b>%1</b></qt>").arg(szOldFile);
           return REPLACE_ERROR;
         }
 
-      nRes = fchmod(nFdNewFile, statFile.st_mode);
+      nRes = ::fchmod(nFdNewFile, statFile.st_mode);
       if (nRes == -1)
         {
-          sprintf (g_szErrMsg, i18n("Can't put file %s access rights"), szNewFile);
+          g_szErrMsg = i18n("<qt>Can't set the access rights for file<b>%1</b></qt>").arg(szNewFile);
           //return REPLACE_ERROR; // make bug with files on FAT
         }
     }
 
   // 3. Map files
-  vBeginOldFile = mmap((caddr_t)0, nOldFileSize, PROT_READ, MAP_SHARED, nFdOldFile, 0);
+  vBeginOldFile = ::mmap((caddr_t)0, nOldFileSize, PROT_READ, MAP_SHARED, nFdOldFile, 0);
   if ((caddr_t) vBeginOldFile == MAP_FAILED)
     {
-      sprintf (g_szErrMsg, i18n("Can't map file %s for reading"), szOldFile);
-      close(nFdOldFile);
+      g_szErrMsg = i18n("<qt>Can't map file <b>%1</b> for reading.").arg(szOldFile);
+      oldFile.close();
       return REPLACE_ERROR;
     }
 
@@ -513,7 +514,7 @@ int ReplaceFile(QListViewItem *lvi, const char *szDir, const char *szOldFile, co
   lviCurItem = lviFirst = argu -> qlvStrings -> firstChild();
   if (lviCurItem == NULL)
     {
-      sprintf (g_szErrMsg, i18n("Can't list tree items"));
+      g_szErrMsg = i18n("Can't list tree items.");
       return REPLACE_ERROR;
     }
 
@@ -557,11 +558,11 @@ int ReplaceFile(QListViewItem *lvi, const char *szDir, const char *szOldFile, co
                     printf ("\n");*/
 
                   // Crete the replace string which contains the text the wildcards were coding for in the search expression
-                  printf("INITIAL: ****(%s)****\n", strNew[i].ascii());
+                  kdDebug(23000) << QString("INITIAL: ****(%1)****").arg(strNew[i]) << endl;
                   strReplace = kjeSearch.addWildcardsContentToString(strNew[i].ascii(), strNew[i].length(), &strList);
                   if ((strReplace == QString::null) && (strNew[i].length()))
                     return REPLACE_ERROR;
-                  printf("FINAL: ****(%s)****\n", strReplace.ascii());
+                  kdDebug(23000) << QString("FINAL: ****(%1)****").arg(strReplace) << endl;
                 }
               else
                 {
@@ -591,17 +592,17 @@ int ReplaceFile(QListViewItem *lvi, const char *szDir, const char *szOldFile, co
                     strReplace = dlg.getReplaceString();
                   else if (nConfirm == KConfirmDlg::Cancel)
                     {
-                      sprintf(g_szErrMsg, i18n("Operation cancelled").ascii());
+                      g_szErrMsg = i18n("Operation cancelled.");
                       return REPLACE_CANCEL;
                     }
                   else if (nConfirm == KConfirmDlg::SkipFile)
                     {
-                      sprintf(g_szErrMsg, i18n("File skipped").ascii());
+                      g_szErrMsg = i18n("File skipped.");
                       return REPLACE_FILESKIPPED;
                     }
                   else if (nConfirm == KConfirmDlg::SkipDir)
                     {
-                      sprintf(g_szErrMsg, i18n("Directory skipped").ascii());
+                      g_szErrMsg = i18n("Directory skipped.");
                       return REPLACE_SKIPDIR;
                     }
                 }
@@ -615,10 +616,10 @@ int ReplaceFile(QListViewItem *lvi, const char *szDir, const char *szOldFile, co
                   // Write the new replace string
                   if (argu->bSimulation == false)
                     {
-                      nRes = write(nFdNewFile, strReplace.ascii(), strReplace.length());
+                      nRes = ::write(nFdNewFile, strReplace.ascii(), strReplace.length());
                       if (nRes != (int)strReplace.length())
                         {
-                          strcpy(g_szErrMsg, i18n("Can't write data").ascii());
+                          g_szErrMsg = i18n("Can't write data.");
                           return REPLACE_ERROR;
                         }
                     }
@@ -632,10 +633,10 @@ int ReplaceFile(QListViewItem *lvi, const char *szDir, const char *szOldFile, co
       // Searched Text not present: copy char
       if (argu->bSimulation == false)
         {
-          nRes = write(nFdNewFile, cOldPt, 1);
+          nRes = ::write(nFdNewFile, cOldPt, 1);
           if (nRes != 1)
             {
-              sprintf(g_szErrMsg, i18n("Can't write data in %s"), szNewFile);
+              g_szErrMsg = i18n("<qt>Can't write data in <b>%1<b>.</qt>").arg(szNewFile);
               return REPLACE_ERROR;
             }
         }
@@ -647,13 +648,13 @@ int ReplaceFile(QListViewItem *lvi, const char *szDir, const char *szOldFile, co
   // --------------------------------------------
 
   // Unamp files
-  munmap(vBeginOldFile, nOldFileSize);
+  ::munmap(vBeginOldFile, nOldFileSize);
 
   // Close files
-  close(nFdOldFile);
+  oldFile.close();
 
   if (argu->bSimulation == false)
-    close(nFdNewFile);
+    newFile.close();
 
   return REPLACE_SUCCESS; // Success
 }
@@ -694,7 +695,7 @@ int SearchFile(QListViewItem *lvi, const char *szOldFile, int *nNbReplacements, 
   nFdOldFile = open(szOldFile, O_RDONLY);
   if (nFdOldFile == -1)
     {
-      sprintf (g_szErrMsg, i18n("Can't open file %s for reading"), szOldFile);
+      g_szErrMsg = i18n("<qt>Can't open file <b>%1</b> for reading.</qt>").arg(szOldFile);
       return -1;
     }
 
@@ -702,7 +703,7 @@ int SearchFile(QListViewItem *lvi, const char *szOldFile, int *nNbReplacements, 
   vBeginOldFile = mmap((caddr_t)0, nOldFileSize, PROT_READ, MAP_SHARED, nFdOldFile, 0);
   if ((caddr_t) vBeginOldFile == MAP_FAILED)
     {
-      sprintf (g_szErrMsg, i18n("Can't map file %s for reading"), szOldFile);
+      g_szErrMsg = i18n("<qt>Can't map file <b>%1</b> for reading.</qt>").arg(szOldFile);
       close(nFdOldFile);
       return -1;
     }
@@ -715,7 +716,7 @@ int SearchFile(QListViewItem *lvi, const char *szOldFile, int *nNbReplacements, 
   lviCurItem = lviFirst = argu -> qlvStrings -> firstChild();
   if (lviCurItem == NULL)
     {
-      sprintf (g_szErrMsg, i18n("Can't list tree items"));
+      g_szErrMsg = i18n("Can't list tree items.");
       return -1;
     }
 
@@ -724,7 +725,7 @@ int SearchFile(QListViewItem *lvi, const char *szOldFile, int *nNbReplacements, 
   lviCurItem = lviFirst = argu -> qlvStrings -> firstChild();
   if (lviCurItem == NULL)
     {
-      sprintf (g_szErrMsg, i18n("Can't list tree items"));
+      g_szErrMsg = i18n("Can't list tree items.");
       return -1;
     }
 
@@ -825,13 +826,13 @@ bool HasFileGoodOwners(const char *szFile, RepDirArg *argu)
         {
           if (argu->bOwnerUserMustBe == true) // owner user name must be xxx
             {
-              printf("(%s): owner user name must be %s\n", szFile, argu->strOwnerUserValue.ascii());
+              kdWarning(23000) << QString("(%1): owner user name must be %2").arg(szFile).arg(argu->strOwnerUserValue) << endl;
               if (fi.owner() != argu->strOwnerUserValue)
                 return false;
             }
           else        // owner user name must NOT be xxx
             {
-              printf("(%s): owner user name must not be %s\n", szFile, argu->strOwnerUserValue.ascii());
+              kdWarning(23000) << QString("(%1): owner user name must not be %2").arg(szFile).arg(argu->strOwnerUserValue) << endl;
               if (fi.owner() == argu->strOwnerUserValue)
                 return false;
             }
@@ -841,13 +842,13 @@ bool HasFileGoodOwners(const char *szFile, RepDirArg *argu)
         {
           if (argu->bOwnerUserMustBe == true) // owner user ID must be xxx
             {
-              printf("(%s): owner user ID must be %ld\n", szFile, argu->strOwnerUserValue.toULong());
+              kdWarning(23000) << QString("(%1): owner user ID must be %2").arg(szFile).arg(argu->strOwnerUserValue) << endl;
               if (fi.ownerId() != argu->strOwnerUserValue.toULong())
                 return false;
             }
           else        // owner user ID must NOT be xxx
             {
-              printf("(%s): owner user ID must NOT be %ld\n", szFile, argu->strOwnerUserValue.toULong());
+              kdWarning(23000) << QString("(%1): owner user ID must not be %2").arg(szFile).arg(argu->strOwnerUserValue) << endl;
               if (fi.ownerId() == argu->strOwnerUserValue.toULong())
                 return false;
             }
@@ -861,13 +862,13 @@ bool HasFileGoodOwners(const char *szFile, RepDirArg *argu)
         {
           if (argu->bOwnerGroupMustBe == true) // owner group name must be xxx
             {
-              printf("(%s): owner group name must be %s\n", szFile, argu->strOwnerGroupValue.ascii());
+              kdWarning(23000) << QString("(%1): owner group name must be %2").arg(szFile).arg(argu->strOwnerGroupValue) << endl;
               if (fi.group() != argu->strOwnerGroupValue)
                 return false;
             }
           else        // owner group name must NOT be xxx
             {
-              printf("(%s): owner group name must not be %s\n", szFile, argu->strOwnerGroupValue.ascii());
+              kdWarning(23000) << QString("(%1): owner group name must not be %2").arg(szFile).arg(argu->strOwnerGroupValue) << endl;
               if (fi.group() == argu->strOwnerGroupValue)
                 return false;
             }
@@ -877,13 +878,13 @@ bool HasFileGoodOwners(const char *szFile, RepDirArg *argu)
         {
           if (argu->bOwnerGroupMustBe == true) // owner group ID must be xxx
             {
-              printf("(%s): owner group ID must be %ld\n", szFile, argu->strOwnerGroupValue.toULong());
+              kdWarning(23000) << QString("(%1): owner group ID must be %2").arg(szFile).arg(argu->strOwnerGroupValue) << endl;
               if (fi.groupId() != argu->strOwnerGroupValue.toULong())
                 return false;
             }
           else        // owner user ID must NOT be xxx
             {
-              printf("(%s): owner group ID must NOT be %ld\n", szFile, argu->strOwnerGroupValue.toULong());
+              kdWarning(23000) << QString("(%1): owner group ID must not be %2").arg(szFile).arg(argu->strOwnerGroupValue) << endl;
               if (fi.groupId() == argu->strOwnerGroupValue.toULong())
                 return false;
             }
