@@ -330,9 +330,6 @@
                                 <property name="text">
                                     <string>&amp;Include subfolders</string>
                                 </property>
-                                <property name="accel">
-                                    <string>Alt+I</string>
-                                </property>
                                 <property name="checked">
                                     <bool>true</bool>
                                 </property>
@@ -356,9 +353,6 @@
                                 </property>
                                 <property name="text">
                                     <string>&amp;Case sensitive</string>
-                                </property>
-                                <property name="accel">
-                                    <string>Alt+C</string>
                                 </property>
                             </widget>
                             <widget class="QCheckBox" row="1" column="0">
@@ -386,9 +380,6 @@
                                 </property>
                                 <property name="text">
                                     <string>Do &amp;backup copy instead of overwrite</string>
-                                </property>
-                                <property name="accel">
-                                    <string>Alt+B</string>
                                 </property>
                             </widget>
                             <widget class="QLayoutWidget" row="4" column="0">
