@@ -62,7 +62,9 @@
 	<Action name="strings_add"/>
 	<Action name="strings_del"/>
 	<Action name="strings_edit"/>
-	<Action name="strings_load"/>
+        <Action name="strings_empty"/>
+        <Action name="strings_invert"/>
+        <Action name="strings_load"/>
 	<Separator/>
 	<Action name="options_recursive"/>
 	<Action name="options_backup"/>

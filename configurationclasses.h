@@ -58,91 +58,93 @@ const bool CaseSensitiveOption = false;
 const bool FollowSymbolicLinksOption = false;
 const bool RegularExpressionsOption = false;
 const bool VariablesOption = false;
-const bool ConfirmStringsOption = false;
+/*const bool ConfirmStringsOption = false;
 const bool ConfirmFilesOption = false;
-const bool ConfirmDirectoriesOption = false;
+const bool ConfirmDirectoriesOption = false;*/
 const bool StopWhenFirstOccurenceOption = false;
 const bool IgnoreWhiteSpacesOption = false;
 const bool IgnoreHiddenOption = false;
 const int FileSizeOption = -1;
 const QString AccessDateOption="unknown";
 const QString ValidAccessDateOption="unknown";
-const QString OwnerOption="false,Name,Equals To,???";
+const QString OwnerOption="false,Name,Equals To";
 const bool SearchMode=true;
 const QString BackupExtensionOption="false,~";
 const bool IgnoreFilesOption = true;
 
 // This class store configuration informations
-class ConfigurationInformation
+class RCOptions
 {
   private:
-    QString m_directory,
-            m_filter;
-           
+    QString m_directories,
+            m_filters;
+
     int m_minSize,
         m_maxSize;
-       
+
     QString m_dateAccess,
             m_minDate,
             m_maxDate;
-        
+
     bool m_caseSensitive,
          m_recursive,
          m_followSymLinks,
          m_allStringsMustBeFound,
          m_backup,
          m_regularExpressions;
-       
+
     bool m_variables,
          m_confirmStrings,
-         m_confirmFiles,         
+         m_confirmFiles,
          m_confirmDirs,
          m_haltOnFirstOccur,
          m_ignoreWhitespaces,
          m_ignoreHidden,
          m_simulation,
          m_searchMode;
- 
+
     bool m_ownerUserIsChecked,
-         m_ownerGroupIsChecked;   
- 
+         m_ownerGroupIsChecked;
+
     QString m_ownerUserType,
             m_ownerGroupType,
             m_ownerUserValue,
             m_ownerGroupValue,
             m_ownerUserBool,
             m_ownerGroupBool;
-   
+
     QString m_backupExtension;
-    
+
     bool m_ignoreFiles;
-    
+
     KeyValueMap m_mapStringsView;
-    
+
     QString m_quickSearchString,
             m_quickReplaceString;
-    
+
+    QStringList m_recentStringFileList;
+
   public:
-    ConfigurationInformation& operator=(const ConfigurationInformation& ci);
-    
+    RCOptions& operator=(const RCOptions& ci);
+
   public:
-    void setDirectory(const QString ndir) { m_directory = ndir; }
-    QString directory() const { return m_directory; }
-    void setFilter(const QString nfilter) { m_filter = nfilter; }
-    QString filter() const { return m_filter; }
-    
+    void setDirectories(const QString ndirs) { m_directories = ndirs; }
+    QString directories() const { return m_directories; }
+    void setFilters(const QString nfilters) { m_filters = nfilters; }
+    QString filters() const { return m_filters; }
+
     void setMinSize(int min) { m_minSize = min; }
     int minSize() const { return m_minSize; }
     void setMaxSize(int max) { m_maxSize = max; }
     int maxSize() const { return m_maxSize; }
-    
+
     void setDateAccess(const QString& da) { m_dateAccess = da; }
     QString dateAccess() const { return m_dateAccess; }
     void setMinDate(const QString& min) { m_minDate = min; }
     QString minDate() const { return m_minDate; }
     void setMaxDate(const QString& max) { m_maxDate = max; }
     QString maxDate() const { return m_maxDate; }
-    
+
     void setCaseSensitive(bool cs) { m_caseSensitive = cs; }
     bool caseSensitive() const { return m_caseSensitive; }
     void setRecursive(bool r) { m_recursive = r; }
@@ -171,40 +173,43 @@ class ConfigurationInformation
     bool simulation() const { return m_simulation; }
     void setSearchMode(bool s) { m_searchMode = s; }
     bool searchMode() const { return m_searchMode; }
-    
+
     void setOwnerUserIsChecked(bool chk) { m_ownerUserIsChecked = chk; }
     bool ownerUserIsChecked() const { return m_ownerUserIsChecked; }
     void setOwnerGroupIsChecked(bool chk) { m_ownerGroupIsChecked = chk; }
-    bool ownerGroupIsChecked() const { return m_ownerGroupIsChecked; }   
+    bool ownerGroupIsChecked() const { return m_ownerGroupIsChecked; }
     void setOwnerUserBool(const QString& user) { m_ownerUserBool = user; }
     QString ownerUserBool() const { return m_ownerUserBool; }
     void setOwnerGroupBool(const QString& group) { m_ownerGroupBool = group; }
     QString ownerGroupBool() const { return m_ownerGroupBool; }
-       
+
     void setOwnerUserType(const QString& user) { m_ownerUserType = user; }
     QString ownerUserType() const { return m_ownerUserType; }
     void setOwnerGroupType(const QString& group) { m_ownerGroupType = group; }
     QString ownerGroupType() const { return m_ownerGroupType; }
-    
+
     void setOwnerUserValue(const QString& user) { m_ownerUserValue = user; }
     QString ownerUserValue() const { return m_ownerUserValue; } 
     void setOwnerGroupValue(const QString& group) { m_ownerGroupValue = group; }
     QString ownerGroupValue() const { return m_ownerGroupValue; }
-    
+
     void setBackupExtension(const QString& bkext) { m_backupExtension = bkext; }
     QString backupExtension() const { return m_backupExtension; }
-    
+
     void setIgnoreFiles(bool ifs) { m_ignoreFiles = ifs; }
     bool ignoreFiles() const { return m_ignoreFiles; }
-    
+
     void setMapStringsView(const KeyValueMap& map) { m_mapStringsView = map; }
     KeyValueMap mapStringsView() const { return m_mapStringsView; }
-    
+
     void setQuickSearchString(const QString& quickSearch) { m_quickSearchString = quickSearch; }
     QString quickSearchString() const { return m_quickSearchString; }
     void setQuickReplaceString(const QString& quickReplace) { m_quickReplaceString = quickReplace; }
-    QString quickReplaceString() const { return m_quickReplaceString; } 
-       
+    QString quickReplaceString() const { return m_quickReplaceString; }
+
+    void setRecentStringFileList(const QStringList fl) { m_recentStringFileList = fl; }
+    QStringList recentStringFileList() const { return m_recentStringFileList; }
+
 };
 
 class ResultViewEntry
@@ -217,7 +222,7 @@ class ResultViewEntry
     bool m_caseSensitive;
     int m_pos;
     int m_matchedStringsOccurrence;
-  
+
   public:
     ResultViewEntry(QString nkey, QString ndata, bool regexp, bool caseSensitive);
     int lineNumber(const QString& line) const ;

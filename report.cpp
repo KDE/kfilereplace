@@ -38,7 +38,7 @@ void Report::createReportFile()
   QFile report(xmlFileName);
   if (!report.open( IO_WriteOnly ))
     {
-      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>").arg(xmlFileName));
+      KMessageBox::error(0, i18n("Cannot open the file %1.").arg(xmlFileName));
       return ;
     }
 
@@ -85,8 +85,8 @@ void Report::createReportFile()
 
   do
     { QString rowTag = "<row >\n"
-                       " <searchfor class=\""+rowType+"\">"+lviCurItem->text(0)+"</searchfor>\n"
-                       " <replacewith class=\""+rowType+"\">"+lviCurItem->text(1)+"</replacewith>\n"
+                       " <searchfor class=\""+rowType+"\"><![CDATA["+lviCurItem->text(0)+"]]></searchfor>\n"
+                       " <replacewith class=\""+rowType+"\"><![CDATA["+lviCurItem->text(1)+"]]></replacewith>\n"
                        "</row>\n";
 
       oTStream << rowTag;
@@ -126,13 +126,13 @@ void Report::createReportFile()
 
   do
     { QString rowTag = "   <row >\n"
-                       "    <name class=\""+rowType+"\">"+lviCurItem->text(0)+"</name>\n"
-                       "    <folder class=\""+rowType+"\">"+lviCurItem->text(1)+"</folder>\n"
-                       "    <oldsize class=\""+rowType+"\">"+lviCurItem->text(2)+"</oldsize>\n"
-                       "    <newsize class=\""+rowType+"\">"+lviCurItem->text(3)+"</newsize>\n"
-                       "    <replacedstrings class=\""+rowType+"\">"+lviCurItem->text(4)+"</replacedstrings>\n"
-                       "    <owneruser class=\""+rowType+"\">"+lviCurItem->text(5)+"</owneruser>\n"
-                       "    <ownergroup class=\""+rowType+"\">"+lviCurItem->text(6)+"</ownergroup>\n"
+                       "    <name class=\""+rowType+"\"><![CDATA["+lviCurItem->text(0)+"]]></name>\n"
+                       "    <folder class=\""+rowType+"\"><![CDATA["+lviCurItem->text(1)+"]]></folder>\n"
+                       "    <oldsize class=\""+rowType+"\"><![CDATA["+lviCurItem->text(2)+"]]></oldsize>\n"
+                       "    <newsize class=\""+rowType+"\"><![CDATA["+lviCurItem->text(3)+"]]></newsize>\n"
+                       "    <replacedstrings class=\""+rowType+"\"><![CDATA["+lviCurItem->text(4)+"]]></replacedstrings>\n"
+                       "    <owneruser class=\""+rowType+"\"><![CDATA["+lviCurItem->text(5)+"]]></owneruser>\n"
+                       "    <ownergroup class=\""+rowType+"\"><![CDATA["+lviCurItem->text(6)+"]]></ownergroup>\n"
                        "   </row>\n";
 
       oTStream << rowTag;
@@ -162,7 +162,7 @@ void Report::createStyleSheet()
   QFile styleSheet(cssFileName);
   if (!styleSheet.open( IO_WriteOnly ))
     {
-      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>").arg(cssFileName));
+      KMessageBox::error(0, i18n("Cannot open the file %1.").arg(cssFileName));
       return ;
     }
 

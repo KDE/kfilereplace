@@ -41,16 +41,16 @@ class KFileReplaceLib
 {
   public:
     KFileReplaceLib() {}
-   
+
   public:
-    
+ 
     /**
     Format a path, from a path and a filename, or another sub-path (avoid double '/' risks)
     Parameters::.....* basePath: fist path (can be "/" if root, or "/usr/bin/" or "/usr/bin" for example)
     .................* filename: second path (can be "/doc/html/", or "doc/html/" or "doc/html/index.html" for example)
     Return values:...* Full valid path (without double "/")
     */ 
-    QString formatFullPath(const QString& basePath, const QString& fileName);
+    static QString formatFullPath(const QString& basePath, const QString& fileName);
 
     /**
     Add an extension to a filename, or a filepath
@@ -58,20 +58,20 @@ class KFileReplaceLib
     .................* extension: extension to add without "." (ex: "html", "kfr")
     Return values:...* Filename / Filepath with the extension
     */
-    QString addExtension(const QString& fileName, const QString& extension);
-        
-    QString formatFileSize(double size);
+    static QString addExtension(const QString& fileName, const QString& extension);
+
+    static QString formatFileSize(double size);
 
     /**
     converts the old kfr format file in the new xml-based format.
     */
-    void convertOldToNewKFRFormat(const QString& fileName, QListView* stringView);
+    static void convertOldToNewKFRFormat(const QString& fileName, QListView* stringView);
     /**
     Verifies that files, which we are scanning, respect some
     conditions
     */
-    bool isAnAccessibleFile(const QString& filePath, const QString& fileName, const ConfigurationInformation& info);
+    static bool isAnAccessibleFile(const QString& filePath, const QString& fileName, const RCOptions& info);
 
-    void setIconForFileEntry(QListViewItem* item, QString path);
+    static void setIconForFileEntry(QListViewItem* item, QString path);
 };
 #endif // KFILEREPLACEFILELIB_H

@@ -24,11 +24,11 @@
 
 using namespace whatthisNameSpace;
 
-//ConfigurationInformation Class
-ConfigurationInformation& ConfigurationInformation::operator=(const ConfigurationInformation& ci)
+//RCOptions Class
+RCOptions& RCOptions::operator=(const RCOptions& ci)
 {
-  m_directory = ci.m_directory;
-  m_filter = ci.m_filter;
+  m_directories = ci.m_directories;
+  m_filters = ci.m_filters;
 
   m_minSize = ci.m_minSize;
   m_maxSize = ci.m_maxSize;
@@ -72,6 +72,8 @@ ConfigurationInformation& ConfigurationInformation::operator=(const Configuratio
 
   m_quickSearchString =  ci.m_quickSearchString;
   m_quickReplaceString = ci.m_quickReplaceString;
+
+  m_recentStringFileList = ci.m_recentStringFileList;
 
   return (*this);
 }
@@ -141,6 +143,7 @@ void ResultViewEntry::incPos()
     m_pos += dl;
 
 }
+
 QString ResultViewEntry::capturedText(const QString& line)
 {
   QString cap;
@@ -150,15 +153,12 @@ QString ResultViewEntry::capturedText(const QString& line)
   else
     cap =line.mid(m_pos,m_key.length());
 
-  //cap.replace('\n',"\\n");
-
   return cap;
 }
 
 QString ResultViewEntry::message(const QString& capturedText, int x, int y) const
 {
   QString data = m_data;
-  //data.replace('\n',"\\n");
   return i18n(" captured text \"%1\" replaced with \"%2\" at line: %3, column: %4 ").arg(capturedText).arg(data).arg(QString::number(x,10)).arg(QString::number(y,10));
 }
 
@@ -178,5 +178,5 @@ int ResultViewEntry::dataLength() const
 void ResultViewEntry::updateLine(QString& line)
 {
   line.insert(m_pos, m_data);
-  line.remove(m_pos+dataLength(),keyLength());
+  line.remove(m_pos + dataLength(), keyLength());
 }

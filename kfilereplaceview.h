@@ -27,11 +27,9 @@ class QPixMap;
 class KListView;
 
 //KDE
-class KConfig;
 class KPopupMenu;
 
 //local
-#include "kaddstringdlg.h"
 #include "kfilereplaceviewwdg.h"
 #include "configurationclasses.h"
 
@@ -39,33 +37,30 @@ class KFileReplaceView : public KFileReplaceViewWdg
 {
   Q_OBJECT
   private:
-    QString m_path;
     KPopupMenu* m_menuResult;
-    ConfigurationInformation m_info;
+    RCOptions m_option;
     KListViewItem* m_lviCurrent;
-    KAddStringDlg m_addStringdlg;
-    KConfig* m_config;
 
   public:
     KFileReplaceView(QWidget *parent,const char *name);
     ~KFileReplaceView();
 
   public:
+    void readOptions(const RCOptions& info) { m_option = info; }
+    RCOptions writeOptions() { return m_option; }
     KListView *stringView();
     KListView *resultView();
     QString currentItem();
-    void setConfig(KConfig* c) { m_config = c;}
     void loadMap(KeyValueMap extMap);
-    KeyValueMap stringsViewMap()const { return m_info.mapStringsView();}
-    void currentStringsViewMap(){ setMap();}
-    bool searchOnly()const { return m_info.searchMode();}
+    KeyValueMap stringsViewMap()const { return m_option.mapStringsView();}
+    void setCurrentStringsViewMap(){ setMap();}
 
   public slots:
     void slotStringsAdd();
     void slotQuickStringsAdd(const QString& quickSearch, const QString& quickReplace);
     void slotStringsDeleteItem();
     void slotStringsEmpty();
-    void slotStringsEdit(QListViewItem* lv);
+    void slotStringsEdit();
     void slotResultProperties();
     void slotResultOpen();
     void slotResultOpenWith();
@@ -74,7 +69,7 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void slotResultDelete();
     void slotResultTreeExpand();
     void slotResultTreeReduce();
-    void slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos, int column);
+    void slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos);
 
   private:
     void expand(QListViewItem *lviCurrent, bool b);
@@ -84,6 +79,7 @@ class KFileReplaceView : public KFileReplaceViewWdg
 
   signals:
     void resetActions();
+    void searchMode(bool);
 };
 
 #endif // KFILEREPLACEVIEW_H

@@ -49,9 +49,8 @@
 using namespace whatthisNameSpace;
 
 
-KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *name/*=0*/) : KNewProjectDlgS(parent, name)
+KNewProjectDlg::KNewProjectDlg(QWidget *parent, const char *name) : KNewProjectDlgS(parent, name)
 {
-  m_config = config;
   m_searchNowFlag = "";
 
   QIconSet iconSet = SmallIconSet("fileopen");
@@ -61,14 +60,6 @@ KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *nam
   m_pbLocation->setFixedSize(pixMap.width() + 8, pixMap.height() + 8);
 
   m_pbSearchNow->setEnabled(false);
-
-  loadOptions();
-  loadFileSizeFilter();
-  loadDateAccessFilter();
-  loadOwnerFilter();
-  loadBackupExtensionFilter();
-  loadLocationsList();
-  loadFiltersList();
 
   connect(m_pbLocation, SIGNAL(clicked()), this, SLOT(slotDir()));
   connect(m_pbCancel, SIGNAL(clicked()), this, SLOT(slotReject()));
@@ -91,7 +82,32 @@ KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *nam
 
 KNewProjectDlg::~KNewProjectDlg()
 {
-  m_config = 0L;
+}
+
+void KNewProjectDlg::readOptions(const RCOptions& info)
+{
+  m_option = info;
+  
+  loadOptions();
+  loadFileSizeOptions();
+  loadDateAccessOptions();
+  loadOwnerOptions();
+  loadBackupExtensionOptions();
+  loadLocationsList();
+  loadFiltersList();
+}
+
+RCOptions KNewProjectDlg::writeOptions()
+{
+  saveOptions();
+  saveFileSizeOptions();
+  saveDateAccessOptions();
+  saveOwnerOptions();
+  saveLocationsList();
+  saveFiltersList();
+  saveBackupExtensionOptions();
+
+  return m_option;
 }
 
 void KNewProjectDlg::slotDir()
@@ -104,13 +120,13 @@ void KNewProjectDlg::slotDir()
 void KNewProjectDlg::slotOK()
 {
    // Check that Search text and Filter are not empty
-   m_info.setDirectory(m_cbLocation->currentText());
-   m_info.setFilter(m_cbFilter->currentText());
+   m_option.setDirectories(m_cbLocation->currentText());
+   m_option.setFilters(m_cbFilter->currentText());
 
-   m_info.setQuickSearchString(m_searchNowFlag+m_leSearch->text());
-   m_info.setQuickReplaceString(m_searchNowFlag+m_leReplace->text());
+   m_option.setQuickSearchString(m_searchNowFlag+m_leSearch->text());
+   m_option.setQuickReplaceString(m_searchNowFlag+m_leReplace->text());
 
-   if (m_info.directory().isEmpty() || m_info.filter().isEmpty())
+   if (m_option.directories().isEmpty() || m_option.filters().isEmpty())
      {
        KMessageBox::error(this, i18n("You must fill the combo boxes (location and filter) before continuing."));
        return;
@@ -134,22 +150,13 @@ void KNewProjectDlg::slotOK()
       return ;
    }
 
-   saveOptions();
-   saveFileSizeFilter();
-   saveDateAccessFilter();
-   saveOwnerFilter();
-   saveLocationsList();
-   saveFiltersList();
-   saveBackupExtensionFilter();
-
-   accept();
+  accept();
 }
 
 void KNewProjectDlg::slotReject()
 {
-  // to reject simply we accept nothing... logical, isn't it?
-  m_info.setQuickSearchString(m_searchNowFlag);
-  m_info.setQuickReplaceString(m_searchNowFlag);
+  m_option.setQuickSearchString(m_searchNowFlag);
+  m_option.setQuickReplaceString(m_searchNowFlag);
 
   reject();
 }
@@ -216,19 +223,15 @@ void KNewProjectDlg::slotEnableChbBackup(bool b)
 
 void KNewProjectDlg::loadOptions()
 {
-  m_config->setGroup("Options");
-  m_chbIncludeSubfolders->setChecked(m_config->readBoolEntry(rcRecursive,RecursiveOption));
-  m_chbCaseSensitive->setChecked(m_config->readBoolEntry(rcCaseSensitive, CaseSensitiveOption));
-  m_chbEnableVariables->setChecked(m_config->readBoolEntry(rcVariables, VariablesOption));
-  m_chbRegularExpressions->setChecked(m_config->readBoolEntry(rcRegularExpressions, RegularExpressionsOption));
+  m_chbIncludeSubfolders->setChecked(m_option.recursive());
+  m_chbCaseSensitive->setChecked(m_option.caseSensitive());
+  m_chbEnableVariables->setChecked(m_option.variables());
+  m_chbRegularExpressions->setChecked(m_option.regularExpressions());
 }
 
-void KNewProjectDlg::loadFileSizeFilter()
+void KNewProjectDlg::loadFileSizeOptions()
 {
-  m_config->setGroup("Options");
-  //  FILE SIZE OPTIONS
-  int size = m_config->readNumEntry(rcMinFileSize,FileSizeOption);
-
+  int size = m_option.minSize();
   if(size == FileSizeOption)
     {
       m_chbSizeMin->setChecked(false);
@@ -242,8 +245,7 @@ void KNewProjectDlg::loadFileSizeFilter()
       m_spbSizeMin->setValue(size);
     }
 
-  size = m_config->readNumEntry(rcMaxFileSize,FileSizeOption);
-
+  size = m_option.maxSize();
   if(size == FileSizeOption)
     {
       m_chbSizeMax->setChecked(false);
@@ -258,15 +260,14 @@ void KNewProjectDlg::loadFileSizeFilter()
     }
 }
 
-void KNewProjectDlg::loadDateAccessFilter()
+void KNewProjectDlg::loadDateAccessOptions()
 {
-  m_config->setGroup("Options");
   // ================== DATE OPTIONS ========================
 
-  QString validDate = m_config->readEntry(rcValidAccessDate,ValidAccessDateOption);
+  //QString validDate = m_config->readEntry(rcValidAccessDate,ValidAccessDateOption);
 
-  QString dateMin = m_config->readEntry(rcMinDate,AccessDateOption);
-  if(dateMin == AccessDateOption)
+  QString date = m_option.minDate();
+  if(date == AccessDateOption)
     {
       m_chbDateMin->setChecked(false);
       m_dedDateMin->setDate(m_dedDateMin->minValue());
@@ -275,12 +276,12 @@ void KNewProjectDlg::loadDateAccessFilter()
   else
     {
       m_chbDateMin->setChecked(true);
-      m_dedDateMin->setDate(QDate::fromString(dateMin,Qt::ISODate));
+      m_dedDateMin->setDate(QDate::fromString(date,Qt::ISODate));
       m_dedDateMin->setEnabled(true);
     }
 
-  QString dateMax = m_config->readEntry(rcMaxDate,AccessDateOption);
-  if(dateMax == AccessDateOption)
+  date = m_option.maxDate();
+  if(date == AccessDateOption)
     {
       m_chbDateMax->setChecked(false);
       m_dedDateMax->setDate(m_dedDateMax->maxValue());
@@ -289,179 +290,146 @@ void KNewProjectDlg::loadDateAccessFilter()
   else
     {
       m_chbDateMax->setChecked(true);
-      m_dedDateMax->setDate(QDate::fromString(dateMax,Qt::ISODate));
+      m_dedDateMax->setDate(QDate::fromString(date,Qt::ISODate));
       m_dedDateMax->setEnabled(true);
     }
 
   m_cbDateValid->setEnabled(m_chbDateMax->isChecked() || m_chbDateMin->isChecked());
+
 }
 
-void KNewProjectDlg::loadOwnerFilter()
+void KNewProjectDlg::loadOwnerOptions()
 {
-  m_config->setGroup("Options");
-
-  QStringList ownerList = QStringList::split(",",m_config->readEntry(rcOwnerUser, OwnerOption),true);
-
-  bool enableOwner = ((ownerList[0] == "true") ? true : false);
+  bool enableOwner = m_option.ownerUserIsChecked();
 
   m_chbOwnerUser->setChecked(enableOwner);
   m_cbOwnerUserType->setEnabled(enableOwner);
   m_cbOwnerUserBool->setEnabled(enableOwner);
   m_edOwnerUser->setEnabled(enableOwner);
 
-  m_cbOwnerUserType->setCurrentText(ownerList[1]);
-  m_cbOwnerUserBool->setCurrentText(ownerList[2]);
+  m_cbOwnerUserType->setCurrentText(m_option.ownerUserType());
+  m_cbOwnerUserBool->setCurrentText(m_option.ownerUserBool());
 
-  if(ownerList[3] == "???")
-    m_edOwnerUser->clear();
-  else
-    m_edOwnerUser->setText(ownerList[3]);
+  m_edOwnerUser->setText(m_option.ownerUserValue());
 
-  ownerList = QStringList::split(",",m_config->readEntry(rcOwnerGroup, OwnerOption),true);
-
-  enableOwner = ((ownerList[0] == "true") ? true : false);
+  enableOwner = m_option.ownerGroupIsChecked();
 
   m_chbOwnerGroup->setChecked(enableOwner);
   m_cbOwnerGroupType->setEnabled(enableOwner);
   m_cbOwnerGroupBool->setEnabled(enableOwner);
   m_edOwnerGroup->setEnabled(enableOwner);
 
-  m_cbOwnerGroupType->setCurrentText(ownerList[1]);
-  m_cbOwnerGroupBool->setCurrentText(ownerList[2]);
-
-  if(ownerList[3] == "???")
-    m_edOwnerGroup->clear();
-  else
-    m_edOwnerGroup->setText(ownerList[3]);
+  m_cbOwnerGroupType->setCurrentText(m_option.ownerGroupType());
+  m_cbOwnerGroupBool->setCurrentText(m_option.ownerGroupBool());
+  m_edOwnerGroup->setText(m_option.ownerGroupValue());
 }
 
 void KNewProjectDlg::loadLocationsList()
 {
-  m_config->setGroup("Directories");
-  #if KDE_IS_VERSION(3,1,3)
-  QString locationsEntry = m_config->readPathEntry(rcDirectoriesList);
-  #else
-  QString locationsEntry = m_config->readEntry(rcDirectoriesList);
-  #endif
-  QStringList locationsEntryList = QStringList::split(",",locationsEntry);
-
-  m_cbLocation->insertStringList(locationsEntryList);
-  if(m_cbLocation->count() == 0)
-    m_cbLocation->insertItem(QDir::current().path());
+  m_cbLocation->insertStringList(QStringList::split(",",m_option.directories()));
 }
 
 void KNewProjectDlg::loadFiltersList()
 {
-  m_config->setGroup("Filters");
-  #if KDE_IS_VERSION(3,1,3)
-  QStringList filtersEntryList = m_config->readPathListEntry(rcFiltersList);
-  #else
-  QStringList filtersEntryList = m_config->readListEntry(rcFiltersList);
-  #endif
-
-  m_cbFilter->insertStringList(filtersEntryList);
-  if(m_cbFilter->count() == 0)
-    m_cbFilter->insertItem("*.htm;*.html;*.xml;*.xhtml;*.css;*.js;*.php");
+  m_cbFilter->insertStringList(QStringList::split(",",m_option.filters()));
 }
 
-void KNewProjectDlg::loadBackupExtensionFilter()
+void KNewProjectDlg::loadBackupExtensionOptions()
 {
-  m_config->setGroup("Options");
-
-  QString backupExtension = m_config->readEntry(rcBackupExtension,BackupExtensionOption);
-  QStringList bkList = QStringList::split(",",backupExtension,true);
-
-  bool enableBackup = (bkList[0] == "true" ? true : false);
-
+  bool enableBackup = m_option.backup();
+  
   m_chbBackup->setChecked(enableBackup);
   m_leBackup->setEnabled(enableBackup);
   m_tlBackup->setEnabled(enableBackup);
-  m_leBackup->setText(bkList[1]);
+  m_leBackup->setText(m_option.backupExtension());
 }
 
 void KNewProjectDlg::saveOptions()
 {
-  m_config->setGroup("Options");
-
-  m_config->writeEntry(rcRecursive, m_chbIncludeSubfolders->isChecked());
-  m_config->writeEntry(rcCaseSensitive, m_chbCaseSensitive->isChecked());
-  m_config->writeEntry(rcVariables, m_chbEnableVariables->isChecked());
-  m_config->writeEntry(rcRegularExpressions, m_chbRegularExpressions->isChecked());
-
-  m_config->sync();
+  m_option.setRecursive(m_chbIncludeSubfolders->isChecked());
+  m_option.setCaseSensitive(m_chbCaseSensitive->isChecked());
+  m_option.setVariables(m_chbEnableVariables->isChecked());
+  m_option.setRegularExpressions(m_chbRegularExpressions->isChecked());
 }
 
-void KNewProjectDlg::saveFileSizeFilter()
+void KNewProjectDlg::saveFileSizeOptions()
 {
-  m_config->setGroup("Options");
-  //  FILE SIZE OPTIONS
   if(m_chbSizeMax->isChecked())
-    m_config->writeEntry(rcMaxFileSize, m_spbSizeMax->value());
+    m_option.setMaxSize(m_spbSizeMax->value());
   else
-    m_config->writeEntry(rcMaxFileSize,FileSizeOption );
-
+    m_option.setMaxSize(FileSizeOption);
+    
   if(m_chbSizeMin->isChecked())
-    m_config->writeEntry(rcMinFileSize, m_spbSizeMin->value());
+    m_option.setMinSize(m_spbSizeMin->value());
   else
-    m_config->writeEntry(rcMinFileSize,FileSizeOption );
-
-  m_config->sync();
+    m_option.setMinSize(FileSizeOption);
 }
 
-void KNewProjectDlg::saveDateAccessFilter()
+void KNewProjectDlg::saveDateAccessOptions()
 {
-  m_config->setGroup("Options");
-  //  DATE OPTIONS
   if(m_chbDateMin->isChecked() or m_chbDateMax->isChecked())
-    m_config->writeEntry(rcValidAccessDate, m_cbDateValid->currentText());
+    m_option.setDateAccess(m_cbDateValid->currentText());
   else
-    m_config->writeEntry(rcValidAccessDate,ValidAccessDateOption);
+    m_option.setDateAccess(ValidAccessDateOption);
 
   if(m_chbDateMin->isChecked())
     {
       QString date = m_dedDateMin->date().toString(Qt::ISODate);
-      m_config->writeEntry(rcMinDate, date);
+      m_option.setMinDate(date);
     }
   else
-    m_config->writeEntry(rcMinDate, AccessDateOption);
+    m_option.setMinDate(AccessDateOption);
 
   if(m_chbDateMax->isChecked())
     {
       QString date = m_dedDateMax->date().toString(Qt::ISODate);
-      m_config->writeEntry(rcMaxDate, date);
+      m_option.setMaxDate(date);
     }
   else
-    m_config->writeEntry(rcMaxDate, AccessDateOption);
-
-  m_config->sync();
+    m_option.setMaxDate(AccessDateOption);
 }
 
-void KNewProjectDlg::saveOwnerFilter()
+void KNewProjectDlg::saveOwnerOptions()
 {
-  m_config->setGroup("Options");
-
-  QString list;
-  if(m_chbOwnerUser->isChecked())
-    list = "true,"+ m_cbOwnerUserType->currentText()+","+m_cbOwnerUserBool->currentText()+","+m_edOwnerUser->text();
+  //QStringList l = QStringList::split(",",OwnerOption);
+  bool isChecked = m_chbOwnerUser->isChecked();
+  if(isChecked)
+    {
+      m_option.setOwnerUserIsChecked(true);
+      m_option.setOwnerUserType(m_cbOwnerUserType->currentText());
+      m_option.setOwnerUserBool(m_cbOwnerUserBool->currentText());
+      m_option.setOwnerUserValue(m_edOwnerUser->text());
+    }
   else
-    list = OwnerOption;
+    {
+      m_option.setOwnerUserIsChecked(false);
+      m_option.setOwnerUserType("Name");
+      m_option.setOwnerUserBool("Equals To");
+      m_option.setOwnerUserValue("");
+    }
 
-  m_config->writeEntry(rcOwnerUser,list);
-  if(m_chbOwnerGroup->isChecked())
-    list = "true,"+ m_cbOwnerGroupType->currentText()+","+m_cbOwnerGroupBool->currentText()+","+m_edOwnerGroup->text();
+  isChecked = m_chbOwnerGroup->isChecked();
+  if(isChecked)
+    {
+      m_option.setOwnerGroupIsChecked(true);
+      m_option.setOwnerGroupType(m_cbOwnerGroupType->currentText());
+      m_option.setOwnerGroupBool(m_cbOwnerGroupBool->currentText());
+      m_option.setOwnerGroupValue(m_edOwnerGroup->text());
+    }
   else
-    list = OwnerOption;
-
-  m_config->writeEntry(rcOwnerGroup,list);
-  m_config->sync();
+    {
+      m_option.setOwnerGroupIsChecked(false);
+      m_option.setOwnerGroupType("Name");
+      m_option.setOwnerGroupBool("Equals To");
+      m_option.setOwnerGroupValue("");
+    }  
 }
 
 void KNewProjectDlg::saveLocationsList()
 {
-  m_config->setGroup("Directories");
-
-  QString current = m_cbLocation->currentText();
+  /*QString current = m_cbLocation->currentText();
   QStringList locationsEntryList;
+  locationsEntryList.append(current);
   int count = m_cbLocation->listBox()->count(),
       i;
   for(i = 0; i < count; i++)
@@ -470,17 +438,24 @@ void KNewProjectDlg::saveLocationsList()
       if(text != current)
         locationsEntryList.append(text);
     }
-  locationsEntryList.prepend(current);
-
-  m_config->writeEntry(rcDirectoriesList,locationsEntryList.join(","));
-  m_config->sync();
+  //locationsEntryList.prepend(current);
+  m_option.setDirectories(locationsEntryList.join(","));*/
+  QString current = m_cbLocation->currentText(), list = current;
+  
+  int count = m_cbLocation->listBox()->count(),
+      i;
+  for(i = 0; i < count; i++)
+    {
+      QString text =  m_cbLocation->listBox()->item(i)->text();
+      if(text != current)
+        list += ","+text;
+    }
+  m_option.setDirectories(list);
 }
 
 void KNewProjectDlg::saveFiltersList()
 {
-  m_config->setGroup("Filters");
-
-  QString current = m_cbFilter->currentText();
+  /*QString current = m_cbFilter->currentText();
   QStringList filtersEntryList;
   int count = m_cbFilter->listBox()->count(),
       i;
@@ -491,22 +466,24 @@ void KNewProjectDlg::saveFiltersList()
         filtersEntryList.append(text);
     }
   filtersEntryList.prepend(current);
-
-  m_config->writeEntry(rcFiltersList,filtersEntryList.join(","));
-  m_config->sync();
+  m_option.setFilters(filtersEntryList.join(","));*/
+  QString current = m_cbFilter->currentText(), list = current;
+  
+  int count = m_cbFilter->listBox()->count(),
+      i;
+  for(i = 0; i < count; i++)
+    {
+      QString text =  m_cbFilter->listBox()->item(i)->text();
+      if(text != current)
+        list += ","+text;
+    }
+  m_option.setFilters(list);
 }
 
-void KNewProjectDlg::saveBackupExtensionFilter()
+void KNewProjectDlg::saveBackupExtensionOptions()
 {
-  m_config->setGroup("Options");
-  QString bkOptions;
-  if(m_chbBackup->isChecked())
-    bkOptions = "true,"+m_leBackup->text();
-  else
-    bkOptions = "false,"+m_leBackup->text();
-
-  m_config->writeEntry(rcBackupExtension,bkOptions);
-  m_config->sync();
+  m_option.setBackup(m_chbBackup->isChecked());
+  m_option.setBackupExtension(m_leBackup->text());
 }
 
 void KNewProjectDlg::setDatas(const QString& directoryString, const QString& filterString)
@@ -516,26 +493,6 @@ void KNewProjectDlg::setDatas(const QString& directoryString, const QString& fil
 
   if (not filterString.isEmpty())
     m_cbFilter->setEditText(filterString);
-}
-
-QString KNewProjectDlg::currentDir() const
-{
-  return m_cbLocation->currentText();
-}
-
-QString KNewProjectDlg::currentFilter() const
-{
-  return m_cbFilter->currentText();
-}
-
-QString KNewProjectDlg::quickSearchString() const
-{
-  return m_info.quickSearchString();
-}
-
-QString KNewProjectDlg::quickReplaceString() const
-{
-  return m_info.quickReplaceString();
 }
 
 bool KNewProjectDlg::contains(QListView* lv,const QString& s, int column)

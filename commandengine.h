@@ -24,14 +24,11 @@ class QString;
 
 class CommandEngine
 {
-  private:
-    
-    
   public:
     CommandEngine() {}
-   
+
   public:
-     
+
     /** 
     These functions implement the KFR commands 
     */

@@ -12,8 +12,6 @@
 //
 //
 
-//#undef APP
-
 // QT
 #include <qdir.h>
 #include <qdatastream.h>
@@ -46,6 +44,8 @@
 #include "kfilereplaceview.h"
 #include "koptionsdlg.h"
 #include "knewprojectdlg.h"
+#include "report.h"
+#include "commandengine.h"
 #include "whatthis.h"
 
 using namespace whatthisNameSpace;
@@ -63,31 +63,29 @@ KFileReplacePart::KFileReplacePart(QWidget* parentWidget, const char* , QObject*
   m_parentWidget = parentWidget;
   QString configName = locateLocal("config", "kfilereplacerc");
 
-  m_lib = new KFileReplaceLib();
   m_config = new KConfig(configName);
   m_aboutDlg = 0;
   m_stop = false;
   m_optionMask = QDir::Files;
   m_w = widget();
 
+  loadOptionsFromRC();
   initView();
   initGUI();
+
   whatsThis();
 }
 
 KFileReplacePart::~KFileReplacePart()
 {
-  m_stop = true;
-  m_view = 0L; //it's already deleted, so set it to NULL
+  m_view = 0; //it's already deleted, so set it to NULL
 
-  saveOptions();
+  saveOptionsToRC();
 
   delete m_aboutDlg;
   m_aboutDlg = 0;
   delete m_config;
   m_config = 0;
-  delete m_lib;
-  m_lib = 0;
   delete m_w;
   m_w = 0;
 }
@@ -95,8 +93,6 @@ KFileReplacePart::~KFileReplacePart()
 //PUBLIC SLOTS
 void KFileReplacePart::slotFileNew()
 {
-  m_view->resultView()->clear();
-  m_config->reparseConfiguration();
   launchNewProjectDialog(KURL());
   emit setStatusBarText(i18n("Ready."));
 }
@@ -118,10 +114,13 @@ void KFileReplacePart::slotFileSearch()
 
    m_view->resultView()->setSorting(-1);
 
-   if(m_info.recursive())
-     recursiveFileSearch(m_info.directory(),m_info.filter());
+   QString currentDirectory = QStringList::split(",",m_option.directories())[0],
+           currentFilter = QStringList::split(",",m_option.filters())[0];
+
+   if(m_option.recursive())
+     recursiveFileSearch(currentDirectory, currentFilter);
    else
-     fileSearch(m_info.directory(),m_info.filter());
+     fileSearch(currentDirectory, currentFilter);
 
    //disabling and enabling sorting... don't ask me why, but it works!
    m_view->resultView()->setSorting(0);
@@ -134,7 +133,7 @@ void KFileReplacePart::slotFileSearch()
    QApplication::restoreOverrideCursor();
 
    emit setStatusBarText(i18n("Search completed."));
-   m_info.setSearchMode(true);
+   m_option.setSearchMode(true);
    resetActions();
    m_searchingOperation = true;
 }
@@ -144,7 +143,7 @@ void KFileReplacePart::slotFileReplace()
   if(!checkBeforeOperation())
     return;
 
-  if(m_info.simulation())
+  if(m_option.simulation())
   {
     emit setStatusBarText(i18n("Replacing files (simulation)..."));
     m_view->resultView()->setColumnText(4,i18n("Replaced strings (simulation)"));
@@ -163,8 +162,10 @@ void KFileReplacePart::slotFileReplace()
 
   m_view->resultView()->setSorting(-1);
 
-  if(m_info.recursive())
-    recursiveFileReplace(m_info.directory());
+  QString currentDirectory = QStringList::split(",",m_option.directories())[0];
+
+  if(m_option.recursive())
+    recursiveFileReplace(currentDirectory);
   else
     fileReplace();
 
@@ -183,9 +184,9 @@ void KFileReplacePart::slotFileReplace()
 
 void KFileReplacePart::slotFileSimulate()
 {
-  m_info.setSimulation(true);
+  m_option.setSimulation(true);
   slotFileReplace();
-  m_info.setSimulation(false);
+  m_option.setSimulation(false);
 }
 
 void KFileReplacePart::slotFileStop()
@@ -217,7 +218,7 @@ void KFileReplacePart::slotFileSave()
   QFileInfo fileInfo(docName);
   if(fileInfo.exists())
     {
-      KMessageBox::error(m_w, i18n("<qt>A folder or a file named <b>%1</b> already exists.</qt>").arg(docName));
+      KMessageBox::error(m_w, i18n("A folder or a file named %1 already exists.").arg(docName));
       return ;
     }
 
@@ -225,7 +226,7 @@ void KFileReplacePart::slotFileSave()
 
   if(!dirName.mkdir(docName, true))
     {
-      KMessageBox::error(m_w, i18n("<qt>Cannot create the <b>%1</b> folder.</qt>").arg(docName));
+      KMessageBox::error(m_w, i18n("Cannot create the %1 folder.").arg(docName));
       return ;
     }
 
@@ -233,7 +234,8 @@ void KFileReplacePart::slotFileSave()
 
   QString docPath = docName+"/"+dirName.dirName();
 
-  m_report.createDocument(docPath, m_view->stringView(), m_view->resultView(), m_searchingOperation);
+  Report report;
+  report.createDocument(docPath, m_view->stringView(), m_view->resultView(), m_searchingOperation);
 
   resetActions();
 }
@@ -249,30 +251,26 @@ void KFileReplacePart::slotQuickStringsAdd()
   //this slot handles a pair of strings that come from project dialog,
   //if the control character 'N' is found at the position 0 of the two strings,
   //then we start the search now.
-  QString qs = m_info.quickSearchString();
+  QString qs = m_option.quickSearchString();
   QStringList stringsPair;
 
   stringsPair.append(qs.left(1));
   stringsPair.append(qs.right(qs.length()-1));
-  //in this case there is no string to search for so return
+  //in this case there is no string to search for, so return
   if(stringsPair[1].isEmpty())
     return;
 
-  //in this one instead, we must serach for astring
-  qs = m_info.quickReplaceString();
+  //in this one instead, we must search for a string
+  qs = m_option.quickReplaceString();
   stringsPair.append(qs.left(1));
   stringsPair.append(qs.right(qs.length()-1));
 
   m_view->slotQuickStringsAdd(stringsPair[1],stringsPair[3]);
 
-  m_config->setGroup("General Options");
-  m_info.setSearchMode(m_config->readBoolEntry(rcSearchMode,SearchMode));
-
-  //resetActions();
   //if search-only mode == true and search-now mode == true then
   //search string
   if(stringsPair[0] == "N")
-    if(m_info.searchMode())
+    if(m_option.searchMode())
       slotFileSearch();
     else
       slotFileReplace();
@@ -292,10 +290,7 @@ void KFileReplacePart::slotStringsEmpty()
 
 void KFileReplacePart::slotStringsEdit()
 {
-  m_view->slotStringsEdit(0);
-  m_config->setGroup("General Options");
-  m_info.setSearchMode(m_config->readBoolEntry(rcSearchMode,SearchMode));
-
+  m_view->slotStringsEdit();
   resetActions();
 }
 
@@ -329,7 +324,8 @@ void KFileReplacePart::slotStringsSave()
      return;
 
    // Forces the extension to be "kfr" == KFileReplace extension
-   fileName = m_lib->addExtension(fileName, "kfr");
+   
+   fileName = KFileReplaceLib::addExtension(fileName, "kfr");
 
    QFile file( fileName );
    if(!file.open( IO_WriteOnly ))
@@ -359,11 +355,13 @@ void KFileReplacePart::slotStringsLoad()
 void KFileReplacePart::slotStringsInvertCur()
 {
   stringsInvert(false);
+  resetActions();
 }
 
 void KFileReplacePart::slotStringsInvertAll()
 {
   stringsInvert(true);
+  resetActions();
 }
 
 void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
@@ -389,54 +387,31 @@ void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
 
 void KFileReplacePart::slotOptionsRecursive()
 {
-  m_info.setRecursive(!(m_info.recursive()));
-  m_config->setGroup("Options");
-  m_config->writeEntry(rcRecursive, m_info.recursive());
-  m_config->sync();
+  m_option.setRecursive(!(m_option.recursive()));
   resetActions();
 }
 
 void KFileReplacePart::slotOptionsBackup()
 {
-  m_info.setBackup(!(m_info.backup()));
-  m_config->setGroup("Options");
-
-  QString bkOptions;
-  if(m_info.backup())
-    bkOptions = "true,"+m_info.backupExtension();
-  else
-    bkOptions = "false,"+m_info.backupExtension();
-
-  m_config->writeEntry(rcBackupExtension, bkOptions);
-  m_config->sync();
-
+  m_option.setBackup(!(m_option.backup()));
   resetActions();
 }
 
 void KFileReplacePart::slotOptionsCaseSensitive()
 {
-  m_info.setCaseSensitive(!(m_info.caseSensitive()));
-  m_config->setGroup("Options");
-  m_config->writeEntry(rcCaseSensitive, m_info.caseSensitive());
-  m_config->sync();
+  m_option.setCaseSensitive(!(m_option.caseSensitive()));
   resetActions();
 }
 
 void KFileReplacePart::slotOptionsVariables()
 {
-  m_info.setVariables(!(m_info.variables()));
-  m_config->setGroup("Options");
-  m_config->writeEntry(rcVariables, m_info.variables());
-  m_config->sync();
+  m_option.setVariables(!(m_option.variables()));
   resetActions();
 }
 
 void KFileReplacePart::slotOptionsRegularExpressions()
 {
-  m_info.setRegularExpressions(!(m_info.regularExpressions()));
-  m_config->setGroup("Options");
-  m_config->writeEntry(rcRegularExpressions, m_info.regularExpressions());
-  m_config->sync();
+  m_option.setRegularExpressions(!(m_option.regularExpressions()));
   resetActions();
 }
 
@@ -444,10 +419,15 @@ void KFileReplacePart::slotOptionsPreferences()
 {
   KOptionsDlg dlg(m_w, 0);
 
+  dlg.readOptions(m_option);
+
   if(!dlg.exec())
     return;
-  m_config->reparseConfiguration();
-  readOptions();
+
+  m_option = dlg.writeOptions();
+  //updating m_view
+  m_view->readOptions(m_option);
+  //m_config->reparseConfiguration();
   resetActions();
 }
 
@@ -474,16 +454,67 @@ void KFileReplacePart::showAboutApplication()
     m_aboutDlg->raise();
 }
 
+void KFileReplacePart::resetActions()
+{
+  bool hasItems = (m_view->stringView()->firstChild() != 0),
+       searchOnlyMode = m_option.searchMode();
+
+  // File
+  actionCollection()->action("new_project")->setEnabled(true);
+  actionCollection()->action("search")->setEnabled(hasItems && searchOnlyMode);
+  actionCollection()->action("file_simulate")->setEnabled(hasItems && !searchOnlyMode);
+  actionCollection()->action("replace")->setEnabled(hasItems && !searchOnlyMode);
+  actionCollection()->action("save_results")->setEnabled(hasItems);
+  actionCollection()->action("stop")->setEnabled(false);
+
+  // Strings
+  actionCollection()->action("strings_add")->setEnabled(true);
+  actionCollection()->action("strings_del")->setEnabled(hasItems);
+  actionCollection()->action("strings_empty")->setEnabled(hasItems);
+  actionCollection()->action("strings_edit")->setEnabled(hasItems);
+  actionCollection()->action("strings_save")->setEnabled(hasItems);
+  actionCollection()->action("strings_load")->setEnabled(true);
+  actionCollection()->action("strings_invert")->setEnabled(hasItems && !searchOnlyMode);
+  actionCollection()->action("strings_invert_all")->setEnabled(hasItems && !searchOnlyMode);
+
+  // Options
+  actionCollection()->action("options_recursive")->setEnabled(true);
+  actionCollection()->action("options_backup")->setEnabled(true);
+  actionCollection()->action("options_case")->setEnabled(true);
+  actionCollection()->action("options_var")->setEnabled(!searchOnlyMode);
+  actionCollection()->action("options_regularexpressions")->setEnabled(true);
+  actionCollection()->action("configure_kfilereplace")->setEnabled(true);
+
+  hasItems = (m_view->resultView()->firstChild() != 0);
+
+  // Results
+  actionCollection()->action("results_infos")->setEnabled(hasItems);
+  actionCollection()->action("results_openfile")->setEnabled(hasItems);
+  if (actionCollection()->action("results_editfile"))
+      actionCollection()->action("results_editfile")->setEnabled(hasItems);
+  actionCollection()->action("results_opendir")->setEnabled(hasItems);
+  actionCollection()->action("results_delete")->setEnabled(hasItems);
+  actionCollection()->action("results_treeexpand")->setEnabled(hasItems);
+  actionCollection()->action("results_treereduce")->setEnabled(hasItems);
+
+  // Updates menus and toolbar
+  ((KToggleAction* ) actionCollection()->action("options_recursive"))->setChecked(m_option.recursive());
+  ((KToggleAction* ) actionCollection()->action("options_backup"))->setChecked(m_option.backup() && !searchOnlyMode);
+  ((KToggleAction* ) actionCollection()->action("options_case"))->setChecked(m_option.caseSensitive());
+  ((KToggleAction* ) actionCollection()->action("options_var"))->setChecked(m_option.variables() && !searchOnlyMode);
+  ((KToggleAction* ) actionCollection()->action("options_regularexpressions"))->setChecked(m_option.regularExpressions());
+}
+
 //PUBLIC METHODS
 KAboutData* KFileReplacePart::createAboutData()
 {
-  KAboutData * aboutData = new KAboutData( "kfilereplacepart",
-                                              I18N_NOOP("KFileReplacePart"),
-                                              KFR_VERSION,
-                                              I18N_NOOP( "Batch search and replace tool."),
-                                              KAboutData::License_GPL_V2,
-                                              "(C) 1999-2002 Francois Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini", I18N_NOOP("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
-  aboutData->addAuthor("Francois Dupou",
+  KAboutData * aboutData = new KAboutData("kfilereplacepart",
+                                          I18N_NOOP("KFileReplacePart"),
+                                          KFR_VERSION,
+                                          I18N_NOOP( "Batch search and replace tool."),
+                                          KAboutData::License_GPL_V2,
+                                          "(C) 1999-2002 Francois Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini", I18N_NOOP("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
+  aboutData->addAuthor("Francois Dupoux",
                           I18N_NOOP("Original author of the KFileReplace tool"),
                           "dupoux@dupoux.com");
   aboutData->addAuthor("Emiliano Gulmini", I18N_NOOP("Current maintainer, code cleaner and rewriter"),"emi_barbarossa@yahoo.it");
@@ -502,21 +533,22 @@ KConfig* KFileReplacePart::config()
 //PROTECTED METHODS
 bool KFileReplacePart::openURL(const KURL &url)
 {
-  if (!url.isEmpty() && url.protocol() != "file")
-  {
-    KMessageBox::sorry(m_w, i18n("Sorry, currently the KFileReplace part works only for local files."), i18n("Non Local File"));
-    emit canceled("");
-    return false;
-  }
-  if (!url.isEmpty())
-      return launchNewProjectDialog(url);
+  if(!url.isEmpty() && url.protocol() != "file")
+    {
+      KMessageBox::sorry(m_w, i18n("Sorry, currently the KFileReplace part works only for local files."), i18n("Non Local File"));
+      emit canceled("");
+      return false;
+    }
+  if(!url.isEmpty())
+    return launchNewProjectDialog(url);
   else
-  {
+    {
       resetActions();
       return true;
-  }
+    }
 }
 
+//PRIVATE METHODS
 void KFileReplacePart::initGUI()
 {
   setXMLFile("kfilereplacepartui.rc");
@@ -556,18 +588,18 @@ void KFileReplacePart::initGUI()
   DCOPClient *client = kapp->dcopClient();
   QCStringList appList = client->registeredApplications();
   bool quantaFound = false;
-  for (QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
-  {
-      if ((*it).left(6) == "quanta")
-      {
+  for(QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
+    {
+      if((*it).left(6) == "quanta")
+        {
           quantaFound = true;
           break;
-      }
-  }
-  if (quantaFound)
-  {
+        }
+    }
+  if(quantaFound)
+    {
       (void)new KAction(i18n("&Edit in Quanta"), "quanta", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
-  }
+    }
   (void)new KAction(i18n("Open Parent &Folder"), "fileopen", 0, m_view, SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
   (void)new KAction(i18n("&Delete"), "eraser", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");
   (void)new KAction(i18n("E&xpand Tree"), 0, m_view, SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
@@ -581,237 +613,17 @@ void KFileReplacePart::initView()
 {
   m_view = new KFileReplaceView(m_parentWidget, "view");
   connect(m_view, SIGNAL(resetActions()), this, SLOT(resetActions()));
-
+  connect(m_view, SIGNAL(searchMode(bool)), this, SLOT(searchMode(bool)));
   setWidget(m_view);
 
   m_view->setAcceptDrops(false);
 
-  m_view->setConfig(m_config);
-}
-
-void KFileReplacePart::loadRulesFile(const QString& fileName)
-{
-  //loads kfr file
-  QDomDocument doc("mydocument");
-  QFile file(fileName);
-  if(!file.open(IO_ReadOnly))
-    {
-      KMessageBox::error(m_w, i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(fileName));
-      return ;
-    }
-  if(!doc.setContent(&file))
-    {
-      file.close();
-      KMessageBox::information(m_w, i18n("<qt>File <b>%1</b> seems not to be written in new kfr format. Remember that old kfr format will be soon abandoned! You can convert your old rules files by simply saving them with kfilereplace.</qt>").arg(fileName),i18n("Warning"));
-      m_lib->convertOldToNewKFRFormat(fileName,m_view->stringView());
-      return;
-    }
-
-  file.close();
-
-  //clears view
-  m_view->stringView()->clear();
-
-  QDomElement docElem = doc.documentElement();
-  QDomNode n = docElem.firstChild();
-  KeyValueMap docMap;
-  while(!n.isNull())
-    {
-      QDomElement e = n.toElement(); // tries to convert the node to an element.
-      if(!e.isNull())
-        {
-          QString oldString = e.firstChild().toElement().text(),
-                  newString = e.lastChild().toElement().text();
-                  docMap[oldString] = newString;
-        }
-      n = n.nextSibling();
-    }
-
-
-     // Adds file to "load strings form file" menu
-  if(!m_recentStringFileList.contains(fileName))
-    {
-      m_recentStringFileList.append(fileName);
-      ((KRecentFilesAction* ) actionCollection()->action("strings_load_recent"))->setItems(m_recentStringFileList);
-    }
-  m_view->loadMap(docMap);
-  m_config->setGroup("General Options");
-  m_info.setSearchMode(m_config->readBoolEntry(rcSearchMode,SearchMode));
-
-  resetActions();
-}
-
-void KFileReplacePart::readOptions()
-{
-  m_config->setGroup("General Options");
-
-  // Recent files
-  m_recentStringFileList = m_config->readListEntry(rcRecentFiles);
-  ((KRecentFilesAction* ) actionCollection()->action("strings_load_recent"))->setItems(m_recentStringFileList);
-
-  m_info.setSearchMode(m_config->readBoolEntry(rcSearchMode,SearchMode));
-
-  // options seetings (recursivity, backup, case sensitive)
-  m_config->setGroup("Options");
-
-  m_info.setRecursive(m_config->readBoolEntry(rcRecursive, RecursiveOption));
-  QStringList bkList = QStringList::split(",",
-                                          m_config->readEntry(rcBackupExtension, BackupExtensionOption),
-                                          true);
-  if(bkList[0] == "true")
-    m_info.setBackup(true);
-  else
-    m_info.setBackup(false);
-
-  m_info.setBackupExtension(bkList[1]);
-
-  m_info.setCaseSensitive(m_config->readBoolEntry(rcCaseSensitive, CaseSensitiveOption));
-  m_info.setVariables(m_config->readBoolEntry(rcVariables, VariablesOption));
-  m_info.setRegularExpressions(m_config->readBoolEntry(rcRegularExpressions, RegularExpressionsOption));
-  m_info.setFollowSymLinks(m_config->readBoolEntry(rcFollowSymLinks, FollowSymbolicLinksOption));
-
-  m_info.setConfirmFiles(m_config->readBoolEntry(rcConfirmFiles, ConfirmFilesOption));
-  m_info.setConfirmStrings(m_config->readBoolEntry(rcConfirmStrings, ConfirmStringsOption));
-  m_info.setConfirmDirs(m_config->readBoolEntry(rcConfirmDirs, ConfirmDirectoriesOption));
-  m_info.setHaltOnFirstOccur(m_config->readBoolEntry(rcHaltOnFirstOccur, StopWhenFirstOccurenceOption));
-  m_info.setIgnoreWhitespaces(m_config->readBoolEntry(rcIgnoreWhitespaces, IgnoreWhiteSpacesOption));
-  m_info.setIgnoreHidden(m_config->readBoolEntry(rcIgnoreHidden, IgnoreHiddenOption));
-  m_info.setIgnoreFiles(m_config->readBoolEntry(rcIgnoreFiles, IgnoreFilesOption));
-  m_info.setMinSize(m_config->readNumEntry(rcMinFileSize, FileSizeOption));
-  m_info.setMaxSize(m_config->readNumEntry(rcMaxFileSize, FileSizeOption));
-
-  m_info.setDateAccess(m_config->readEntry(rcValidAccessDate, ValidAccessDateOption));
-  m_info.setMinDate(m_config->readEntry(rcMinDate, AccessDateOption));
-  m_info.setMaxDate(m_config->readEntry(rcMaxDate, AccessDateOption));
-
-  QStringList ownerList = QStringList::split(",",m_config->readEntry(rcOwnerUser, OwnerOption),true);
-  if(ownerList[0] == "true")
-    m_info.setOwnerUserIsChecked(true);
-  else
-    m_info.setOwnerUserIsChecked(false);
-
-  m_info.setOwnerUserType(ownerList[1]);
-  m_info.setOwnerUserBool(ownerList[2]);
-  if(ownerList[3] == "???")
-    m_info.setOwnerUserValue("");
-  else
-    m_info.setOwnerUserValue(ownerList[3]);
-
-  ownerList = QStringList::split(",",m_config->readEntry(rcOwnerGroup, OwnerOption),true);
-
-  if(ownerList[0] == "true")
-    m_info.setOwnerGroupIsChecked(true);
-  else
-    m_info.setOwnerGroupIsChecked(false);
-
-  m_info.setOwnerGroupType(ownerList[1]);
-  m_info.setOwnerGroupBool(ownerList[2]);
-  if(ownerList[3] == "???")
-    m_info.setOwnerGroupValue("");
-  else
-    m_info.setOwnerGroupValue(ownerList[3]);
-
-}
-
-void KFileReplacePart::saveOptions()
-{
-  m_config->setGroup("General Options");
-
-  m_config->writeEntry(rcRecentFiles, m_recentStringFileList);
-  m_config->writeEntry(rcSearchMode,m_info.searchMode());
-
-  m_config->setGroup("Options");
-
-  m_config->writeEntry(rcRecursive, m_info.recursive());
-
-  QString bkOptions;
-  if(m_info.backup())
-    bkOptions = "true,"+m_info.backupExtension();
-  else
-    bkOptions = "false,"+m_info.backupExtension();
-
-  m_config->writeEntry(rcBackupExtension, bkOptions);
-
-  m_config->writeEntry(rcCaseSensitive, m_info.caseSensitive());
-  m_config->writeEntry(rcVariables, m_info.variables());
-  m_config->writeEntry(rcRegularExpressions, m_info.regularExpressions());
-
-  m_config->writeEntry(rcFollowSymLinks, m_info.followSymLinks());
-
-  m_config->writeEntry(rcConfirmFiles, m_info.confirmFiles());
-  m_config->writeEntry(rcConfirmStrings, m_info.confirmStrings());
-  m_config->writeEntry(rcConfirmDirs, m_info.confirmDirs());
-  m_config->writeEntry(rcHaltOnFirstOccur, m_info.haltOnFirstOccur());
-  m_config->writeEntry(rcIgnoreWhitespaces, m_info.ignoreWhitespaces());
-  m_config->writeEntry(rcIgnoreHidden, m_info.ignoreHidden());
-  m_config->writeEntry(rcIgnoreFiles, m_info.ignoreFiles());
-
-  m_config->sync();
-}
-
-void KFileReplacePart::resetActions()
-{
- m_config->setGroup("General Options");
- m_info.setSearchMode(m_config->readBoolEntry(rcSearchMode,SearchMode));
- bool hasItems = false,
-       searchOnly = m_info.searchMode();
-
-  if(m_view->stringView()->firstChild() != 0)
-    hasItems = true;
-
-  // File
-  actionCollection()->action("new_project")->setEnabled(true);
-  actionCollection()->action("search")->setEnabled(hasItems);
-
-  actionCollection()->action("file_simulate")->setEnabled(hasItems && !searchOnly);
-  actionCollection()->action("replace")->setEnabled(hasItems && !searchOnly);
-  actionCollection()->action("save_results")->setEnabled(hasItems);
-  actionCollection()->action("stop")->setEnabled(false);
-
-  // Strings
-  actionCollection()->action("strings_add")->setEnabled(true);
-  actionCollection()->action("strings_del")->setEnabled(hasItems );
-  actionCollection()->action("strings_empty")->setEnabled(hasItems);
-  actionCollection()->action("strings_edit")->setEnabled(hasItems);
-  actionCollection()->action("strings_save")->setEnabled(hasItems);
-  actionCollection()->action("strings_load")->setEnabled(true);
-  actionCollection()->action("strings_invert")->setEnabled(hasItems);
-  actionCollection()->action("strings_invert_all")->setEnabled(hasItems);
-
-  // Options
-  actionCollection()->action("options_recursive")->setEnabled(true);
-  actionCollection()->action("options_backup")->setEnabled(true);
-  actionCollection()->action("options_case")->setEnabled(true);
-  actionCollection()->action("options_var")->setEnabled(true);
-  actionCollection()->action("options_regularexpressions")->setEnabled(true);
-  actionCollection()->action("configure_kfilereplace")->setEnabled(true);
-
-  if(m_view->resultView()->firstChild() != 0)
-    hasItems = true;
-  else
-    hasItems = false;
-
-  // Results
-  actionCollection()->action("results_infos")->setEnabled(hasItems);
-  actionCollection()->action("results_openfile")->setEnabled(hasItems);
-  if (actionCollection()->action("results_editfile"))
-      actionCollection()->action("results_editfile")->setEnabled(hasItems);
-  actionCollection()->action("results_opendir")->setEnabled(hasItems);
-  actionCollection()->action("results_delete")->setEnabled(hasItems);
-  actionCollection()->action("results_treeexpand")->setEnabled(hasItems);
-  actionCollection()->action("results_treereduce")->setEnabled(hasItems);
-
-  // Updates menus and toolbar
-  ((KToggleAction* ) actionCollection()->action("options_recursive"))->setChecked(m_info.recursive());
-  ((KToggleAction* ) actionCollection()->action("options_backup"))->setChecked(m_info.backup());
-  ((KToggleAction* ) actionCollection()->action("options_case"))->setChecked(m_info.caseSensitive());
-  ((KToggleAction* ) actionCollection()->action("options_var"))->setChecked(m_info.variables());
-  ((KToggleAction* ) actionCollection()->action("options_regularexpressions"))->setChecked(m_info.regularExpressions());
+  m_view->readOptions(m_option);
 }
 
 void KFileReplacePart::freezeActions()
 {
-  //Disables action during search/replace operation
+  //Disables actions during search/replace operation
   actionCollection()->action("new_project")->setEnabled(false);
   actionCollection()->action("stop")->setEnabled(true);
 
@@ -847,80 +659,262 @@ void KFileReplacePart::freezeActions()
   ((KToggleAction* ) actionCollection()->action("options_regularexpressions"))->setChecked(false);
 }
 
-bool KFileReplacePart::checkBeforeOperation()
+void KFileReplacePart::loadOptionsFromRC()
 {
-  readOptions();
-  loadViewContent();
-
-  // Checks if there are strings to replace (not need in search operation)
-  if (m_view->stringView()->childCount() == 0)
-    {
-      KMessageBox::error(m_w, i18n("There are no strings to search and replace."));
-      return false;
-    }
-
-  // Checks if the main directory can be accessed
-  QString directory = m_info.directory();
-  QDir dir;
-
-  dir.setPath(directory);
-  directory = dir.absPath();
-
-  if(!dir.exists())
-    {
-      KMessageBox::error(m_w, i18n("<qt>The main folder of the project <b>%1</b> does not exist.</qt>").arg(directory));
-      return false;
-    }
-
-  QFileInfo dirInfo(directory);
-  if(!(dirInfo.isReadable() && dirInfo.isExecutable())
-     ||
-     !(dirInfo.isWritable()))
-    {
-      KMessageBox::error(m_w, i18n("<qt>Access denied in the main folder of the project:<br><b>%1</b></qt>").arg(directory));
-      return false;
-    }
-  /*if(::access(directory.local8Bit(), R_OK | X_OK) == -1)
-    {
-      KMessageBox::error(w, i18n("<qt>Access denied in the main folder of the project:<br><b>" + directory + "</b></qt>"));
-      return false;
-    } */
-
-  // Clears the list view
-  m_view->resultView()->clear();
-
-  return true;
+  loadOptions();
+  loadFileSizeOptions();
+  loadDateAccessOptions();
+  loadOwnerOptions();
+  loadLocationsList();
+  loadFiltersList();
+  loadBackupExtensionOptions();
 }
 
-void KFileReplacePart::whatsThis()
+void KFileReplacePart::loadOptions()
 {
-  actionCollection()->action("options_backup")->setWhatsThis(i18n(optionsBackupWhatthis));
-  actionCollection()->action("options_case")->setWhatsThis(i18n(optionsCaseWhatthis));
-  actionCollection()->action("options_var")->setWhatsThis(i18n(optionsVarWhatthis));
-  actionCollection()->action("options_recursive")->setWhatsThis(i18n(optionsRecursiveWhatthis));
-  actionCollection()->action("options_regularexpressions")->setWhatsThis(i18n(optionsRegularExpressionsWhatthis));
+  m_config->setGroup("General Options");
+
+  // Recent files
+  m_option.setRecentStringFileList(m_config->readListEntry(rcRecentFiles));
+  /*((KRecentFilesAction* ) actionCollection()->action("strings_load_recent"))->setItems(m_recentStringFileList);*/
+
+  m_option.setSearchMode(m_config->readBoolEntry(rcSearchMode,SearchMode));
+
+  // options seetings (recursivity, backup, case sensitive)
+  m_config->setGroup("Options");
+
+  m_option.setRecursive(m_config->readBoolEntry(rcRecursive, RecursiveOption));
+
+  m_option.setCaseSensitive(m_config->readBoolEntry(rcCaseSensitive, CaseSensitiveOption));
+  m_option.setVariables(m_config->readBoolEntry(rcVariables, VariablesOption));
+  m_option.setRegularExpressions(m_config->readBoolEntry(rcRegularExpressions, RegularExpressionsOption));
+  m_option.setFollowSymLinks(m_config->readBoolEntry(rcFollowSymLinks, FollowSymbolicLinksOption));
+
+  m_option.setHaltOnFirstOccur(m_config->readBoolEntry(rcHaltOnFirstOccur, StopWhenFirstOccurenceOption));
+  m_option.setIgnoreWhitespaces(m_config->readBoolEntry(rcIgnoreWhitespaces, IgnoreWhiteSpacesOption));
+  m_option.setIgnoreHidden(m_config->readBoolEntry(rcIgnoreHidden, IgnoreHiddenOption));
+  m_option.setIgnoreFiles(m_config->readBoolEntry(rcIgnoreFiles, IgnoreFilesOption));
 }
 
-//PRIVATE METHODS
+void KFileReplacePart::loadFileSizeOptions()
+{
+  m_config->setGroup("Size options");
+  m_option.setMinSize(m_config->readNumEntry(rcMinFileSize, FileSizeOption));
+  m_option.setMaxSize(m_config->readNumEntry(rcMaxFileSize, FileSizeOption));
+}
+
+void KFileReplacePart::loadDateAccessOptions()
+{
+  m_config->setGroup("Access options");
+  m_option.setDateAccess(m_config->readEntry(rcValidAccessDate, ValidAccessDateOption));
+  m_option.setMinDate(m_config->readEntry(rcMinDate, AccessDateOption));
+  m_option.setMaxDate(m_config->readEntry(rcMaxDate, AccessDateOption));
+}
+
+void KFileReplacePart::loadOwnerOptions()
+{
+  m_config->setGroup("Owner options");
+  QStringList ownerList = QStringList::split(",",m_config->readEntry(rcOwnerUser, OwnerOption),true);
+  if(ownerList[0] == "true")
+    m_option.setOwnerUserIsChecked(true);
+  else
+    m_option.setOwnerUserIsChecked(false);
+
+  m_option.setOwnerUserType(ownerList[1]);
+  m_option.setOwnerUserBool(ownerList[2]);
+  m_option.setOwnerUserValue(ownerList[3]);
+
+  ownerList = QStringList::split(",",m_config->readEntry(rcOwnerGroup, OwnerOption),true);
+
+  if(ownerList[0] == "true")
+    m_option.setOwnerGroupIsChecked(true);
+  else
+    m_option.setOwnerGroupIsChecked(false);
+
+  m_option.setOwnerGroupType(ownerList[1]);
+  m_option.setOwnerGroupBool(ownerList[2]);
+  m_option.setOwnerGroupValue(ownerList[3]);
+}
+
+void KFileReplacePart::loadLocationsList()
+{
+  m_config->setGroup("Directories");
+  #if KDE_IS_VERSION(3,1,3)
+  QString locationsEntryList = m_config->readPathEntry(rcDirectoriesList);
+  #else
+  QString locationsEntryList = m_config->readEntry(rcDirectoriesList);
+  #endif
+
+  if(locationsEntryList.isEmpty())
+    m_option.setDirectories(QDir::current().path());
+  else
+    m_option.setDirectories(locationsEntryList);
+}
+
+void KFileReplacePart::loadFiltersList()
+{
+   m_config->setGroup("Filters");
+  #if KDE_IS_VERSION(3,1,3)
+  QString filtersEntryList = m_config->readPathEntry(rcFiltersList);
+  #else
+  QString filtersEntryList = m_config->readEntry(rcFiltersList);
+  #endif
+
+  if(filtersEntryList.isEmpty())
+    m_option.setFilters("*.htm;*.html;*.xml;*.xhtml;*.css;*.js;*.php");
+  else
+    m_option.setFilters(filtersEntryList);
+}
+
+void KFileReplacePart::loadBackupExtensionOptions()
+{
+  m_config->setGroup("Options");
+  QStringList bkList = QStringList::split(",",
+                                          m_config->readEntry(rcBackupExtension, BackupExtensionOption),
+                                          true);
+  if(bkList[0] == "true")
+    m_option.setBackup(true);
+  else
+    m_option.setBackup(false);
+
+  m_option.setBackupExtension(bkList[1]);
+}
+
+void KFileReplacePart::saveOptionsToRC()
+{
+  saveOptions();
+  saveFileSizeOptions();
+  saveDateAccessOptions();
+  saveOwnerOptions();
+  saveLocationsList();
+  saveFiltersList();
+  saveBackupExtensionOptions();
+}
+
+void KFileReplacePart::saveOptions()
+{
+  m_config->setGroup("General Options");
+
+  m_config->writeEntry(rcRecentFiles, m_option.recentStringFileList());
+  m_config->writeEntry(rcSearchMode,m_option.searchMode());
+
+  m_config->setGroup("Options");
+
+  m_config->writeEntry(rcRecursive, m_option.recursive());
+  m_config->writeEntry(rcCaseSensitive, m_option.caseSensitive());
+  m_config->writeEntry(rcVariables, m_option.variables());
+  m_config->writeEntry(rcRegularExpressions, m_option.regularExpressions());
+
+  m_config->writeEntry(rcFollowSymLinks, m_option.followSymLinks());
+  m_config->writeEntry(rcHaltOnFirstOccur, m_option.haltOnFirstOccur());
+  m_config->writeEntry(rcIgnoreWhitespaces, m_option.ignoreWhitespaces());
+  m_config->writeEntry(rcIgnoreHidden, m_option.ignoreHidden());
+  m_config->writeEntry(rcIgnoreFiles, m_option.ignoreFiles());
+
+  m_config->sync();
+}
+
+void KFileReplacePart::saveFileSizeOptions()
+{
+  m_config->setGroup("Size options");
+
+  m_config->writeEntry(rcMaxFileSize, m_option.maxSize());
+  m_config->writeEntry(rcMinFileSize, m_option.minSize());
+
+  m_config->sync();
+}
+
+void KFileReplacePart::saveDateAccessOptions()
+{
+  m_config->setGroup("Access options");
+
+  m_config->writeEntry(rcValidAccessDate, m_option.dateAccess());
+  m_config->writeEntry(rcMinDate, m_option.minDate());
+  m_config->writeEntry(rcMaxDate, m_option.maxDate());
+
+  m_config->sync();
+}
+
+void KFileReplacePart::saveOwnerOptions()
+{
+  m_config->setGroup("Owner options");
+
+  QString list;
+  if(m_option.ownerUserIsChecked())
+    list = "true,";
+  else
+    list = "false,";
+
+  list += m_option.ownerUserType() +
+          "," +
+          m_option.ownerUserBool();
+  if(!m_option.ownerUserValue().isEmpty())
+    list += "," + m_option.ownerUserValue();
+
+  m_config->writeEntry(rcOwnerUser,list);
+
+  if(m_option.ownerGroupIsChecked())
+    list = "true,";
+  else
+    list = "false,";
+
+  list += m_option.ownerGroupType() +
+          "," +
+          m_option.ownerGroupBool();
+  if(!m_option.ownerGroupValue().isEmpty())
+    list += "," + m_option.ownerGroupValue();
+
+  m_config->writeEntry(rcOwnerGroup,list);
+  m_config->sync();
+}
+
+void KFileReplacePart::saveLocationsList()
+{
+  m_config->setGroup("Directories");
+  m_config->writeEntry(rcDirectoriesList, m_option.directories());
+  m_config->sync();
+}
+
+void KFileReplacePart::saveFiltersList()
+{
+  m_config->setGroup("Filters");
+  m_config->writeEntry(rcFiltersList, m_option.filters());
+  m_config->sync();
+}
+
+void KFileReplacePart::saveBackupExtensionOptions()
+{
+  m_config->setGroup("Options");
+  QString bkOptions;
+  if(m_option.backup())
+    bkOptions = "true," + m_option.backupExtension();
+  else
+    bkOptions = "false," + m_option.backupExtension();
+
+  m_config->writeEntry(rcBackupExtension, bkOptions);
+  m_config->sync();
+}
+
 bool KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
 {
-  KNewProjectDlg dlg(0, m_config);
+  KNewProjectDlg dlg(0);
 
-  if (!startURL.isEmpty())
-    dlg.m_cbLocation->setCurrentText(startURL.path());
+  if(!startURL.isEmpty())
+    m_option.setDirectories(startURL.path()+","+m_option.directories());
+
+  dlg.readOptions(m_option);
+
   if(!dlg.exec())
     return false;
 
-  m_info.setDirectory(dlg.currentDir());
-  m_info.setFilter(dlg.currentFilter());
-  m_info.setQuickSearchString(dlg.quickSearchString());
-  m_info.setQuickReplaceString(dlg.quickReplaceString());
-
-  readOptions();
+  m_option = dlg.writeOptions();
+  //updating m_view
+  m_view->readOptions(m_option);
 
   slotQuickStringsAdd();
 
   resetActions();
+
   return true;
 }
 
@@ -928,21 +922,22 @@ void KFileReplacePart::setOptionMask()
 {
   m_optionMask |= QDir::Dirs;
 
-  if(!m_info.ignoreHidden())
+  if(!m_option.ignoreHidden())
     m_optionMask |= QDir::Hidden;
 
-  if(!m_info.followSymLinks())
+  if(!m_option.followSymLinks())
     m_optionMask |= QDir::NoSymLinks;
 }
 
 void KFileReplacePart::fileReplace()
 {
-  QString dirName = m_info.directory();
+  QString dirName = QStringList::split(",",m_option.directories())[0];
   QDir d(dirName);
   d.setMatchAllDirs(true);
   d.setFilter(m_optionMask);
 
-  QStringList filesList = d.entryList(m_info.filter());
+  QString currentFilter = QStringList::split(",",m_option.filters())[0];
+  QStringList filesList = d.entryList(currentFilter);
   QStringList::iterator filesIt;
 
   for (filesIt = filesList.begin(); filesIt != filesList.end() ; ++filesIt)
@@ -954,13 +949,13 @@ void KFileReplacePart::fileReplace()
         return;
 
       // Avoids files that not match requirements
-      if(!m_lib->isAnAccessibleFile(d.canonicalPath(), fileName, m_info))
+      if(!KFileReplaceLib::isAnAccessibleFile(d.canonicalPath(), fileName, m_option))
         continue;
 
-      if(m_info.backup())
-        replaceAndBackup(d.canonicalPath(),fileName, m_info.regularExpressions(), m_info.simulation());
+      if(m_option.backup())
+        replaceAndBackup(d.canonicalPath(), fileName);
       else
-        replaceAndOverwrite(d.canonicalPath(), fileName, m_info.regularExpressions(), m_info.simulation());
+        replaceAndOverwrite(d.canonicalPath(), fileName);
     }
 }
 
@@ -976,7 +971,8 @@ void KFileReplacePart::recursiveFileReplace(const QString& dirName)
       d.setMatchAllDirs(true);
       d.setFilter(m_optionMask);
 
-      QStringList filesList = d.entryList(m_info.filter());
+      QString currentFilter = QStringList::split(",",m_option.filters())[0];
+      QStringList filesList = d.entryList(currentFilter);
       QStringList::iterator filesIt;
 
       for (filesIt = filesList.begin(); filesIt != filesList.end(); ++filesIt)
@@ -984,7 +980,7 @@ void KFileReplacePart::recursiveFileReplace(const QString& dirName)
           QString fileName = (*filesIt);
 
          // Avoids files that not match requirements
-          if(!m_lib->isAnAccessibleFile(d.canonicalPath(),fileName,m_info))
+          if(!KFileReplaceLib::isAnAccessibleFile(d.canonicalPath(),fileName, m_option))
             continue;
 
           QString filePath = d.canonicalPath()+"/"+fileName;
@@ -995,10 +991,10 @@ void KFileReplacePart::recursiveFileReplace(const QString& dirName)
             recursiveFileReplace(filePath);
           else
             {
-              if(m_info.backup())
-                replaceAndBackup(d.canonicalPath(), fileName, m_info.regularExpressions(), m_info.simulation());
+              if(m_option.backup())
+                replaceAndBackup(d.canonicalPath(), fileName);
               else
-                replaceAndOverwrite(d.canonicalPath(), fileName, m_info.regularExpressions(), m_info.simulation());
+                replaceAndOverwrite(d.canonicalPath(), fileName);
             }
           //if m_stop == true then end for-loop
           if(m_stop)
@@ -1007,37 +1003,46 @@ void KFileReplacePart::recursiveFileReplace(const QString& dirName)
     }
 }
 
-void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString& oldFileName, bool regex, bool simulation)
+void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString& oldFileName)
 {
+  bool simulation = m_option.simulation(),
+       regex = m_option.regularExpressions();
   //Creates a path string
   QString oldPathString = currentDir+"/"+oldFileName;
 
   QFile oldFile(oldPathString);
-  if(!oldFile.open(IO_ReadOnly))
+  if(!oldFile.open(IO_ReadOnly | IO_WriteOnly))
     {
-      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(oldFileName));
+      KMessageBox::error(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName));
       return ;
     }
 
-  QString backupExtension = m_info.backupExtension();
-  QFile newFile;
+  QString backupExtension = m_option.backupExtension();
 
   //If we are not performing a simulation creates a backup file
   if(!simulation)
     {
-      newFile.setName(oldPathString + backupExtension);
-      if(!newFile.open(IO_WriteOnly))
+      QFile backupFile(oldPathString + backupExtension);
+      if(!backupFile.open(IO_WriteOnly))
         {
-          KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(oldFileName+backupExtension));
+          KMessageBox::error(m_w,i18n("Cannot open file %1 for writing.").arg(oldFileName + backupExtension));
           return ;
         }
+      QFile currentFile(oldPathString);
+      if(!currentFile.open(IO_ReadOnly))
+        {
+          KMessageBox::error(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName));
+          return ;
+        }
+      QTextStream backupStream(&backupFile);
+      QTextStream currentStream(&currentFile);
+      backupStream << currentStream.read();
+      currentFile.close();
+      backupFile.close();
     }
 
-  QTextStream oldStream(&oldFile),
-              newStream(&newFile);//if simulation == true this stream is empty
-
-  QFileInfo oldFileInfo(oldPathString);
-  QString fileSizeBeforeReplacing =  m_lib->formatFileSize(oldFileInfo.size());
+  QTextStream oldStream(&oldFile);
+  QString backupSize = KFileReplaceLib::formatFileSize(oldFile.size());
 
   kapp->processEvents();
 
@@ -1049,28 +1054,32 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   replacingLoop(line, &item, atLeastOneStringFound, occurrence, regex);
 
   if(!simulation)
-    newStream << line;
+   {
+     oldStream << line;
+     oldFile.close();
+   }
 
-   newFile.close();
-   oldFile.close();
-
-   if(!m_info.ignoreFiles())
+   if(!m_option.ignoreFiles())
      atLeastOneStringFound = true;
+
+  QFileInfo oldFileInfo(oldPathString);
 
    if(atLeastOneStringFound && item/* && atLeastOneStringConfirmed*/)
      {
-       m_lib->setIconForFileEntry(item,currentDir+"/"+oldFileName);
+
+       KFileReplaceLib::setIconForFileEntry(item,currentDir+"/"+oldFileName);
        item->setText(0,oldFileName);
        item->setText(1,currentDir);
-       item->setText(2,fileSizeBeforeReplacing);
-       QFileInfo nf(oldPathString+backupExtension);
+       QString newSize = KFileReplaceLib::formatFileSize(oldFileInfo.size());
        if(!simulation)
          {
-           item->setText(3,m_lib->formatFileSize(nf.size()));
+           item->setText(2, backupSize);
+           item->setText(3, newSize);
          }
        else
          {
-           item->setText(3,"-");
+           item->setText(2, backupSize);
+           item->setText(3, "-");
          }
 
        item->setText(4,QString::number(occurrence,10));
@@ -1079,21 +1088,24 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
      }
 }
 
-void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QString& oldFileName, bool regex, bool simulation)
+void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QString& oldFileName)
 {
+  bool simulation = m_option.simulation(),
+       regex = m_option.regularExpressions();
+
   QString oldPathString = currentDir+"/"+oldFileName;
   QFile oldFile(oldPathString);
   QFileInfo oldFileInfo(oldPathString);
 
   if (!oldFile.open(IO_ReadOnly) || !oldFileInfo.isWritable())
     {
-      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for reading and/or writing.</qt>").arg(oldFileName));
+      KMessageBox::error(m_w,i18n("Cannot open file %1 for reading and/or writing.").arg(oldFileName));
       return ;
     }
 
   kapp->processEvents();
 
-  QString fileSizeBeforeReplacing =  m_lib->formatFileSize(oldFileInfo.size());
+  QString fileSizeBeforeReplacing =  KFileReplaceLib::formatFileSize(oldFileInfo.size());
   KListViewItem *item = 0L;
 
   QTextStream oldStream( &oldFile );
@@ -1114,7 +1126,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
     QFile newFile(oldPathString);
     if(!newFile.open(IO_WriteOnly))
       {
-        KMessageBox::error(m_w,i18n("<qt>Cannot overwrite file <b>%1</b>.</qt>").arg(oldFileName));
+        KMessageBox::error(m_w,i18n("Cannot overwrite file %1.").arg(oldFileName));
         return ;
       }
     QTextStream newStream( &newFile );
@@ -1122,15 +1134,15 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
     newFile.close();
   }
   QFileInfo nf(oldPathString);
-  QString fileSizeAfterReplacing = m_lib->formatFileSize(nf.size());
+  QString fileSizeAfterReplacing = KFileReplaceLib::formatFileSize(nf.size());
 
   //if ignoreFiles == false then every files must be show
-  if(!m_info.ignoreFiles())
+  if(!m_option.ignoreFiles())
     atLeastOneStringFound = true;
 
   if(atLeastOneStringFound  && item/*&& atLeastOneStringConfirmed*/)
     {
-      m_lib->setIconForFileEntry(item,currentDir+"/"+oldFileName);
+      KFileReplaceLib::setIconForFileEntry(item,currentDir+"/"+oldFileName);
       item->setText(0,oldFileName);
       item->setText(1,currentDir);
       item->setText(2,fileSizeBeforeReplacing);
@@ -1152,7 +1164,7 @@ void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& 
 {
   KeyValueMap tempMap = m_replacementMap;
   KeyValueMap::Iterator it;
-  bool caseSensitive = m_info.caseSensitive();
+  bool caseSensitive = m_option.caseSensitive();
 
   for(it = tempMap.begin(); it != tempMap.end(); ++it)
     {
@@ -1161,8 +1173,8 @@ void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& 
         {
           atLeastOneStringFound = true;
           QString msg = entry.message(entry.capturedText(line),
-                              entry.lineNumber(line),
-                              entry.columnNumber(line));
+                        entry.lineNumber(line),
+                        entry.columnNumber(line));
           if (!*item)
             *item =  new KListViewItem(m_view->resultView());
           KListViewItem* tempItem = new KListViewItem(*item);
@@ -1171,10 +1183,8 @@ void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& 
           occur ++;
           entry.updateLine(line);
           entry.incPos();
-
         }
     }
-
 }
 
 void KFileReplacePart::fileSearch(const QString& dirName, const QString& filters)
@@ -1196,13 +1206,13 @@ void KFileReplacePart::fileSearch(const QString& dirName, const QString& filters
       if(m_stop)
         return;
       // Avoids files that not match
-      if(!m_lib->isAnAccessibleFile(filePath,fileName,m_info))
+      if(!KFileReplaceLib::isAnAccessibleFile(filePath, fileName, m_option))
         continue;
       QFileInfo fileInfo(filePath+"/"+fileName);
       if(fileInfo.isDir())
         continue;
 
-      search(filePath, fileName, m_info.regularExpressions());
+      search(filePath, fileName);
     }
 }
 
@@ -1226,7 +1236,7 @@ void KFileReplacePart::recursiveFileSearch(const QString& dirName, const QString
         {
           QString fileName = (*filesIt);
           // Avoids files that not match
-          if(!m_lib->isAnAccessibleFile(filePath,fileName,m_info))
+          if(!KFileReplaceLib::isAnAccessibleFile(filePath, fileName, m_option))
             continue;
 
           // Composes file path string
@@ -1234,9 +1244,9 @@ void KFileReplacePart::recursiveFileSearch(const QString& dirName, const QString
 
           // Searchs recursively if "filePath" is a directory
           if(fileInfo.isDir())
-            recursiveFileSearch(filePath+"/"+fileName,filters);
+            recursiveFileSearch(filePath+"/"+fileName, filters);
           else
-            search(filePath, fileName, m_info.regularExpressions());
+            search(filePath, fileName);
 
           // avoids unnecessary for-loop if we want to stop
           if(m_stop)
@@ -1245,13 +1255,15 @@ void KFileReplacePart::recursiveFileSearch(const QString& dirName, const QString
     }
 }
 
-void KFileReplacePart::search(const QString& currentDir, const QString& fileName, bool regex)
+void KFileReplacePart::search(const QString& currentDir, const QString& fileName)
 {
+  bool regex = m_option.regularExpressions();
+
   QFile file(currentDir+"/"+fileName);
 
   if(!file.open(IO_ReadOnly))
     {
-      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(fileName));
+      KMessageBox::error(m_w,i18n("Cannot open file %1 for reading.").arg(fileName));
       return ;
     }
   // Creates a stream with the file
@@ -1262,8 +1274,8 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
   kapp->processEvents();
 
   KListViewItem *item = 0L;
-  bool caseSensitive = m_info.caseSensitive(),
-       haltOnFirstOccur = m_info.haltOnFirstOccur();
+  bool caseSensitive = m_option.caseSensitive(),
+       haltOnFirstOccur = m_option.haltOnFirstOccur();
 
   //Count occurrences
   int occurrence = 0;
@@ -1317,7 +1329,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               else
                 {
                   capturedText = line.mid(pos,strKey.length()).replace('\n',"\\n");
-                  msg = i18n(" first occurrence of string \"%1\" found at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
+                  msg = i18n(" first occurence of string \"%1\" found at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
                 }
               tempItem->setText(0,msg);
               occurrence = 1;
@@ -1361,24 +1373,30 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
                 }
               tempItem->setText(0,msg);
               occurrence++;
+              //we push stop button
+              if(m_stop)
+                break;
             }
         }
       //Advances of one position in the map of the strings
       ++it;
+
+      //we push stop button
+      if(m_stop)
+        break;
     }
 
    file.close();
    //if ignoreFiles == false then every files must be show
-   if(!m_info.ignoreFiles())
+   if(!m_option.ignoreFiles())
      atLeastOneStringFound = true;
 
    if (atLeastOneStringFound && item)
      {
-
-       m_lib->setIconForFileEntry(item,currentDir+"/"+fileName);
+       KFileReplaceLib::setIconForFileEntry(item,currentDir+"/"+fileName);
        item->setText(0,fileName);
        item->setText(1,currentDir);
-       item->setText(2,m_lib->formatFileSize(fileInfo.size()));
+       item->setText(2,KFileReplaceLib::formatFileSize(fileInfo.size()));
        item->setText(4,QString::number(occurrence,10));
        item->setText(5,QString("%1[%2]").arg(fileInfo.owner()).arg(fileInfo.ownerId()));
        item->setText(6,QString("%1[%2]").arg(fileInfo.group()).arg(fileInfo.groupId()));
@@ -1388,17 +1406,71 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 void KFileReplacePart::loadViewContent()
 {
   KeyValueMap tempMap;
+  CommandEngine command;
   QListViewItemIterator itlv(m_view->stringView());
   while(itlv.current())
     {
       QListViewItem *item = itlv.current();
-      if(m_info.variables())
-        tempMap[item->text(0)] = m_command.variableValue(item->text(1));
+      if(m_option.variables())
+        tempMap[item->text(0)] = command.variableValue(item->text(1));
       else
         tempMap[item->text(0)] = item->text(1);
       ++itlv;
     }
   m_replacementMap = tempMap;
+}
+
+void KFileReplacePart::loadRulesFile(const QString& fileName)
+{
+  //loads kfr file
+  QDomDocument doc("mydocument");
+  QFile file(fileName);
+  if(!file.open(IO_ReadOnly))
+    {
+      KMessageBox::error(m_w, i18n("Cannot open the file %1 and load the string list.").arg(fileName));
+      return ;
+    }
+  if(!doc.setContent(&file))
+    {
+      file.close();
+      KMessageBox::information(m_w, i18n("File %1 seems not to be written in new kfr format. Remember that old kfr format will be soon abandoned! You can convert your old rules files by simply saving them with kfilereplace.").arg(fileName),i18n("Warning"));
+      KFileReplaceLib::convertOldToNewKFRFormat(fileName, m_view->stringView());
+      return;
+    }
+
+  file.close();
+
+  //clears view
+  m_view->stringView()->clear();
+
+  QDomElement docElem = doc.documentElement();
+  QDomNode n = docElem.firstChild();
+  KeyValueMap docMap;
+  while(!n.isNull())
+    {
+      QDomElement e = n.toElement(); // tries to convert the node to an element.
+      if(!e.isNull())
+        {
+          QString oldString = e.firstChild().toElement().text(),
+                  newString = e.lastChild().toElement().text();
+                  docMap[oldString] = newString;
+        }
+      n = n.nextSibling();
+    }
+
+
+     // Adds file to "load strings form file" menu
+  QStringList fileList = m_option.recentStringFileList();
+  if(!fileList.contains(fileName))
+    {
+      fileList.append(fileName);
+      ((KRecentFilesAction* ) actionCollection()->action("strings_load_recent"))->setItems(fileList);
+      m_option.setRecentStringFileList(fileList);
+    }
+  m_view->loadMap(docMap);
+  m_option = m_view->writeOptions();
+
+  resetActions();
 }
 
 void KFileReplacePart::stringsInvert(bool invertAll)
@@ -1421,7 +1493,7 @@ void KFileReplacePart::stringsInvert(bool invertAll)
       // Cannot invert the string if search string will be empty
       if (replaceText.isEmpty())
         {
-          KMessageBox::error(m_w, i18n("<qt>Cannot invert string <b>%1</b>, because the search string would be empty.</qt>").arg(searchText));
+          KMessageBox::error(m_w, i18n("Cannot invert string %1, because the search string would be empty.").arg(searchText));
           return;
         }
 
@@ -1432,7 +1504,60 @@ void KFileReplacePart::stringsInvert(bool invertAll)
       if(!invertAll)
         break;
     } while(lviCurItem && lviCurItem != lviFirst);
-  m_view->currentStringsViewMap();
+  m_view->setCurrentStringsViewMap();
+}
+
+bool KFileReplacePart::checkBeforeOperation()
+{
+  loadViewContent();
+
+  // Checks if there are strings to replace (not need in search operation)
+  if (m_view->stringView()->childCount() == 0)
+    {
+      KMessageBox::error(m_w, i18n("There are no strings to search and replace."));
+      return false;
+    }
+
+  // Checks if the main directory can be accessed
+  QString currentDirectory = QStringList::split(",",m_option.directories())[0];
+  QDir dir;
+
+  dir.setPath(currentDirectory);
+  QString directory = dir.absPath();
+
+  if(!dir.exists())
+    {
+      KMessageBox::error(m_w, i18n("The main folder of the project %1 does not exist.").arg(directory));
+      return false;
+    }
+
+  QFileInfo dirInfo(directory);
+  if(!(dirInfo.isReadable() && dirInfo.isExecutable())
+     ||
+     !(dirInfo.isWritable()))
+    {
+      KMessageBox::error(m_w, i18n("Access denied in the main folder of the project:%1").arg(directory));
+      return false;
+    }
+  /*if(::access(directory.local8Bit(), R_OK | X_OK) == -1)
+    {
+      KMessageBox::error(w, i18n("<qt>Access denied in the main folder of the project:<br><b>" + directory + "</b></qt>"));
+      return false;
+    } */
+
+  // Clears the list view
+  m_view->resultView()->clear();
+
+  return true;
+}
+
+void KFileReplacePart::whatsThis()
+{
+  actionCollection()->action("options_backup")->setWhatsThis(i18n(optionsBackupWhatthis));
+  actionCollection()->action("options_case")->setWhatsThis(i18n(optionsCaseWhatthis));
+  actionCollection()->action("options_var")->setWhatsThis(i18n(optionsVarWhatthis));
+  actionCollection()->action("options_recursive")->setWhatsThis(i18n(optionsRecursiveWhatthis));
+  actionCollection()->action("options_regularexpressions")->setWhatsThis(i18n(optionsRegularExpressionsWhatthis));
 }
 
 #include "kfilereplacepart.moc"

@@ -29,40 +29,19 @@ class KConfig;
 class KNewProjectDlg : public KNewProjectDlgS
 {
   Q_OBJECT
-  
-  public:
-    ConfigurationInformation m_info;
-    
+
   private:
-    KConfig *m_config;
     QString m_searchNowFlag;
+    RCOptions m_option;
       
   public:
-    KNewProjectDlg(QWidget *parent, KConfig *config, const char *name=0);
+    KNewProjectDlg(QWidget *parent, const char *name=0);
     ~KNewProjectDlg();
     
   public:
-    void loadOptions();
-    void loadFileSizeFilter();
-    void loadDateAccessFilter();
-    void loadOwnerFilter();
-    void loadLocationsList();
-    void loadFiltersList();
-    void loadBackupExtensionFilter();
-    QString currentDir() const; 
-    QString currentFilter() const;
-    QString quickSearchString() const;
-    QString quickReplaceString() const;
-    void saveOptions();
-    void saveFileSizeFilter();
-    void saveDateAccessFilter();
-    void saveOwnerFilter();
-    void saveLocationsList();
-    void saveFiltersList();
-    void saveBackupExtensionFilter();
-    void setDatas(const QString& directoryString, const QString& filterString);
-    void whatsThis();
-     
+    void readOptions(const RCOptions& info);
+    RCOptions writeOptions();
+
   protected slots:
     void slotDir();
     void slotOK();
@@ -80,6 +59,25 @@ class KNewProjectDlg : public KNewProjectDlgS
     
   private:
     bool contains(QListView* lv,const QString& s, int column);
+
+    void loadOptions();
+    void loadFileSizeOptions();
+    void loadDateAccessOptions();
+    void loadOwnerOptions();
+    void loadLocationsList();
+    void loadFiltersList();
+    void loadBackupExtensionOptions();
+
+    void saveOptions();
+    void saveFileSizeOptions();
+    void saveDateAccessOptions();
+    void saveOwnerOptions();
+    void saveLocationsList();
+    void saveFiltersList();
+    void saveBackupExtensionOptions();
+
+    void setDatas(const QString& directoryString, const QString& filterString);
+    void whatsThis();
 };
 
 #endif  // KNewProjectDlg

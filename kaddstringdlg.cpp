@@ -46,16 +46,16 @@ KAddStringDlg::KAddStringDlg(QWidget *parent, const char *name) : KAddStringDlgS
   connect(m_rbSearchReplace, SIGNAL(toggled(bool)), this, SLOT(slotSearchReplace(bool)));
   connect(m_pbAdd, SIGNAL(clicked()), this, SLOT(slotAdd()));
   connect(m_pbDel, SIGNAL(clicked()), this, SLOT(slotDel()));
+  connect( m_pbHelp, SIGNAL(clicked()), this ,SLOT(slotHelp()));
+
+  clearStringsView();
 
   whatsThis();
-
-  connect( m_pbHelp, SIGNAL(clicked()), this ,SLOT(slotHelp()));
 
 }
 
 KAddStringDlg::~KAddStringDlg()
 {
-  m_config = 0L;
 }
 
 bool KAddStringDlg::contains(QListView* lv,const QString& s, int column)
@@ -70,7 +70,7 @@ bool KAddStringDlg::contains(QListView* lv,const QString& s, int column)
   return false;
 }
 
-void KAddStringDlg::setMap()
+void KAddStringDlg::updateStringsMapContent()
 {
   KeyValueMap map;
   QListViewItem* i = m_stringView->firstChild();
@@ -79,21 +79,25 @@ void KAddStringDlg::setMap()
       map[i->text(0)] = i->text(1);
       i = i->nextSibling();
     }
-  m_info.setMapStringsView(map);
+  m_option.setMapStringsView(map);
 }
 
-void KAddStringDlg::setMap(KeyValueMap map)
+void KAddStringDlg::updateStringsViewContent()
 {
-  m_info.setMapStringsView(map);
+  KeyValueMap::Iterator itMap;
+
+  KeyValueMap map =  m_option.mapStringsView();
+  for (itMap = map.begin(); itMap != map.end(); ++itMap)
+    {
+      QListViewItem* temp = new QListViewItem(m_stringView);
+      temp->setText(0,itMap.key());
+      temp->setText(1,itMap.data());
+    }
 }
 
 void KAddStringDlg::slotOK()
 {
-  m_config->setGroup("General Options");
-
-  m_config->writeEntry(rcSearchMode,m_info.searchMode());
-  m_config->sync();
-
+  qWarning("KAddStringDlg::slotOK--->search=%d",m_option.searchMode());
   accept();
 }
 
@@ -105,7 +109,8 @@ void KAddStringDlg::slotSearchOnly(bool b)
   m_tlSearch->setEnabled(b);
   m_tlReplace->setEnabled(false);
 
-  m_stringView->clear();
+  clearStringsView();
+  updateStringsMapContent();
 }
 
 void KAddStringDlg::slotSearchReplace(bool b)
@@ -115,7 +120,8 @@ void KAddStringDlg::slotSearchReplace(bool b)
   m_tlSearch->setEnabled(b);
   m_tlReplace->setEnabled(b);
 
-  m_stringView->clear();
+  clearStringsView();
+  updateStringsMapContent();
 }
 
 void KAddStringDlg::slotAdd()
@@ -124,7 +130,7 @@ void KAddStringDlg::slotAdd()
   if(searchOnly)
     {
       QString text = m_edSearch->text();
-      if(!text.isEmpty() && !contains(m_stringView,text,0))
+      if(!text.isEmpty() && !contains(m_stringView, text, 0))
         {
           QListViewItem* lvi = new QListViewItem(m_stringView);
           lvi->setMultiLinesEnabled(true);
@@ -150,8 +156,9 @@ void KAddStringDlg::slotAdd()
           m_edReplace->clear();
         }
     }
-  m_info.setSearchMode(searchOnly);
-  setMap();
+  m_option.setSearchMode(searchOnly);
+  qWarning("KAddStringDlg::slotAdd--->search=%d",m_option.searchMode());
+  updateStringsMapContent();
 }
 
 void KAddStringDlg::slotDel()
@@ -176,21 +183,14 @@ void KAddStringDlg::slotDel()
     }
   delete currentItem;
   currentItem = 0;
-  m_info.setSearchMode(searchOnly);
-  setMap();
+  m_option.setSearchMode(searchOnly);
+  qWarning("KAddStringDlg::slotDel--->search=%d",m_option.searchMode());
+  updateStringsMapContent();
 }
 
 void KAddStringDlg::slotHelp()
 {
   kapp->invokeHelp(QString::null, "kfilereplace");
-}
-
-KeyValueMap KAddStringDlg::stringsMap()
-{
-  KeyValueMap m = m_info.mapStringsView(),
-              emptyMap;
-  m_info.setMapStringsView(emptyMap);
-  return m;
 }
 
 void KAddStringDlg::loadViewContent(KeyValueMap map)
@@ -217,9 +217,23 @@ void KAddStringDlg::loadViewContent(KeyValueMap map)
   m_tlSearch->setEnabled(true);
   m_tlReplace->setEnabled(!searchOnly);
 
-  m_info.setSearchMode(searchOnly);
+  m_option.setSearchMode(searchOnly);
+  qWarning("KAddStringDlg::loadViewContent--->search=%d",m_option.searchMode());
 
-  setMap();
+  updateStringsMapContent();
+}
+
+void KAddStringDlg::clearStringsView()
+{
+  QListViewItem* item = m_stringView->firstChild();
+  if(item == 0)
+    return;
+  else
+    {
+      QListViewItem* tempItem = item;
+      item = item->nextSibling();
+      delete tempItem;
+    }
 }
 
 void KAddStringDlg::whatsThis()

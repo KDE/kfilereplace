@@ -36,9 +36,11 @@ class KOptionsDlg : public KOptionsDlgS
   public:
     KOptionsDlg(QWidget *parent, const char *name);
     ~KOptionsDlg();
+    void readOptions(const RCOptions& info);
+    RCOptions writeOptions();
       
   private: 
-    KConfig* m_config;   
+    RCOptions m_option;
       
   protected slots:
     void slotOK();
@@ -47,8 +49,6 @@ class KOptionsDlg : public KOptionsDlgS
     void slotHelp();
            
   private:
-    void loadOptions();
-    void saveOptions();
     void whatsThis();
 };
 

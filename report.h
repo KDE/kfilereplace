@@ -26,6 +26,10 @@ class QString;
 #include <klocale.h>
 class KListView;
 
+/** Report class is used to create a pair of files (a xml and a css file) which are
+  * a short statistical report of the operations.
+  */
+
 class Report
 {
   private:
@@ -33,14 +37,14 @@ class Report
              * m_resultView;
     QString m_docPath;
     bool m_isSearchFlag;
-    
+
   public:
     Report() {}
-   
+
   private:
     void createReportFile();
     void createStyleSheet();
-    
+
   public:
     void createDocument(const QString& docPath, KListView* stringView, KListView* resultView, bool isSearchFlag);
 };

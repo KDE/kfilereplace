@@ -26,14 +26,14 @@
 namespace whatthisNameSpace
 {
   //KFileReplaceView messages
-  const QString lvResultWhatthis = i18n("Show the statistics of your operations. Note that the columns content change depending on what operation you are performing.");
+  const QString lvResultWhatthis = i18n("Shows the statistics of your operations. Note that the columns content changes depending on what kind of operation you are performing.");
 
-  const QString lvStringsWhatthis = i18n("Show a list of searching strings (and replacing strings if there are). Use the \"add strings\" dialog to edit your string list.");
+  const QString lvStringsWhatthis = i18n("Shows a list of strings to search for (and if you specified it, a list of strings to replace with). Use the \"add strings\" dialog to edit your string list or double click on a string.");
 
   //KNewProjectDlg messages
   const QString cbLocationWhatthis = i18n("Base folder for operations of search/replace. Insert path string here by hand or use the search button.");
 
-  const QString cbFilterWhatthis = i18n("Shell-like file searching filters. Example: \"*.html;*.txt;*.xml\".");
+  const QString cbFilterWhatthis = i18n("Shell-like wildcards. Example: \"*.html;*.txt;*.xml\".");
 
   const QString edSizeMinWhatthis = i18n("Insert the minimum file size you want to search, or leave it unchecked if you don't want minimum size limit.");
 
@@ -51,7 +51,7 @@ namespace whatthisNameSpace
 
   const QString leSearchWhatthis = i18n("Insert here the string to search for.");
 
-  const QString leReplaceWhatthis = i18n("Insert here the string that will replace the string above.");
+  const QString leReplaceWhatthis = i18n("Insert here the string to replace with.");
 
   //KOptionsDlg messages
   const QString chbCaseSensitiveWhatthis = i18n("Enable this option if your search is case sensitive.");
@@ -68,11 +68,11 @@ namespace whatthisNameSpace
 
   const QString chbIgnoreFilesWhatthis = i18n("If this option is enabled, KFR will show even the names of the files in which no string has been found or replaced.");
 
-  const QString chbRegularExpressionsWhatthis = i18n("Allows you to apply QT-like regular expressions on the search string.");
+  const QString chbRegularExpressionsWhatthis = i18n("Allows you to apply QT-like regular expressions on the search string. Note that a complex regular expression could affect speed performance");
 
   const QString chbVariablesWhatthis = i18n("Enable \"variables commands\". For example: if search string is \"user\" and replace string is the command \"[$user:uid$]\", KFR will substitute \"user\" with the uid of the user.");
 
-  const QString chbBackupWhatthis = i18n("Enable this option if you want mantain original files.");
+  const QString chbBackupWhatthis = i18n("Enable this option if you want leave original files untouched.");
 
   const QString chbConfirmStringsWhatthis = i18n("Enable this option if you want to be asked for single string replacement confirmation.");
 
@@ -94,7 +94,7 @@ namespace whatthisNameSpace
 
   const QString rbSearchReplaceWhatthis = i18n("Select search-and-replace mode.");
 
-  const QString edSearchWhatthis = i18n("Insert here a string you want search.");
+  const QString edSearchWhatthis = i18n("Insert here a string you want search for.");
 
   const QString edReplaceWhatthis = i18n("Insert here the string that KFR will use to replace the search string.");
 }

@@ -137,7 +137,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
 
  if(!f || (err != 1) || (pgm != "KFileReplace"))
  {
-   KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b> and load the string list. This file seems not to be a valid old kfr file or it is broken.</qt>").arg(fileName));
+   KMessageBox::error(0, i18n("Cannot open the file %1 and load the string list. This file seems not to be a valid old kfr file or it is broken.").arg(fileName));
    return ;
  }
 
@@ -155,7 +155,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
       errors += (fread(&oldTextSize, sizeof(int), 1, f)) != 1;
       errors += (fread(&newTextSize, sizeof(int), 1, f)) != 1;
       if(errors > 0)
-        KMessageBox::error(0, i18n("<qt>Cannot read data.</qt>"));
+        KMessageBox::error(0, i18n("Cannot read data."));
       else
         {
           stringSize = ((oldTextSize > newTextSize) ? oldTextSize : newTextSize) + 2;
@@ -164,17 +164,17 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
           memset(oldString, 0, stringSize);
           memset(newString,0, stringSize);
           if (oldString == 0 || newString == 0)
-            KMessageBox::error(0, i18n("<qt>Out of memory.</qt>"));
+            KMessageBox::error(0, i18n("Out of memory."));
           else
             {
               if (fread(oldString, oldTextSize, 1, f) != 1)
-                KMessageBox::error(0, i18n("<qt>Cannot read data.</qt>"));
+                KMessageBox::error(0, i18n("Cannot read data."));
               else
                 {
                   if (newTextSize > 0) // If there is a Replace text
                     {
                       if (fread(newString, newTextSize, 1, f) != 1)
-                        KMessageBox::error(0, i18n("<qt>Cannot read data.</qt>"));
+                        KMessageBox::error(0, i18n("Cannot read data."));
                       else
                         {
                           QListViewItem* lvi = new QListViewItem(stringView);
@@ -195,7 +195,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
     return ;
  }
 
-bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString& fileName, const ConfigurationInformation& info)
+bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString& fileName, const RCOptions& info)
 {
   QString bkExt = info.backupExtension();
   if(fileName == ".." || fileName == "." || fileName.right(bkExt.length()) == bkExt)
@@ -301,60 +301,54 @@ void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
   QFileInfo fi(path);
   QString extension = fi.extension(),
           baseName = fi.baseName();
+  KeyValueMap extensionMap;
 
-  if(extension == "cpp")
-    item->setPixmap(0,SmallIcon("source_cpp"));
-  else
-  if(extension == "h")
-    item->setPixmap(0,SmallIcon("source_h"));
-  else
-  if(extension == "o")
-    item->setPixmap(0,SmallIcon("source_o"));
-  else
-  if((extension == "png") || (extension == "jpg") || (extension == "xpm"))
-    item->setPixmap(0,SmallIcon("image"));
-  else
-  if((extension.contains("htm",false) != 0) || (extension.contains("xml",false) != 0))
-    item->setPixmap(0,SmallIcon("html"));
-  else
-  if(extension.contains("pdf",false) != 0)
-    item->setPixmap(0,SmallIcon("pdf"));
-  else
-  if((extension.contains("wav",false) != 0) || (extension.contains("mp3",false) != 0))
-    item->setPixmap(0,SmallIcon("sound"));
-  else
-  if((extension.contains("txt",false) != 0))
-    item->setPixmap(0,SmallIcon("txt"));
-  else
-  if((extension.contains("sh",false) != 0))
-    item->setPixmap(0,SmallIcon("shellscript"));
-  else
-  if((extension.contains("eml",false) != 0))
-    item->setPixmap(0,SmallIcon("message"));
-  else
-  if((extension.contains("php",false) != 0))
-    item->setPixmap(0,SmallIcon("source_php"));
-  else
-  if((extension.contains("pl",false) != 0))
-    item->setPixmap(0,SmallIcon("source_pl"));
-  else
-  if((extension.contains("tex",false) != 0))
-    item->setPixmap(0,SmallIcon("tex"));
-  else
-  if((extension.contains("moc",false) != 0))
-    item->setPixmap(0,SmallIcon("source_moc"));
-  else
-  if((extension.contains("log",false) != 0))
-    item->setPixmap(0,SmallIcon("log"));
-  else
+  extensionMap["cpp"] = "source_cpp";
+  extensionMap["h"] = "source_h";
+  extensionMap["o"] = "source_o";
+  extensionMap["png"] = "image";
+  extensionMap["jpg"] = "image";
+  extensionMap["xpm"] = "image";
+  extensionMap["htm"] = "html";
+  extensionMap["html"] = "html";
+  extensionMap["xml"] = "html";
+  extensionMap["pdf"] = "pdf";
+  extensionMap["wav"] = "sound";
+  extensionMap["mp3"] = "sound";
+  extensionMap["txt"] = "txt";
+  extensionMap["eml"] = "message";
+  extensionMap["sh"] = "shellscript";
+  extensionMap["php"] = "source_php";
+  extensionMap["pl"] = "source_pl";
+  extensionMap["tex"] = "tex";
+  extensionMap["moc"] = "source_moc";
+  extensionMap["log"] = "log";
+
+  KeyValueMap::Iterator itExtensionMap;
+
+  for(itExtensionMap = extensionMap.begin(); itExtensionMap != extensionMap.end(); ++itExtensionMap)
     {
-      if(baseName.contains("makefile",false) != 0)
-        item->setPixmap(0,SmallIcon("make"));
-      else
-      if(baseName.contains("configure",false) != 0)
-        item->setPixmap(0,SmallIcon("shellscript"));
-      else
-      if(baseName.contains("readme",false) != 0)
-        item->setPixmap(0,SmallIcon("txt"));
+      if(extension == itExtensionMap.key())
+        {
+          item->setPixmap(0,SmallIcon(itExtensionMap.data()));
+          return;
+        }
+    }
+
+  KeyValueMap baseNameMap;
+
+  baseNameMap["makefile"] = "make";
+  baseNameMap["configure"] = "shellscript";
+  baseNameMap["readme"] = "txt";
+
+  KeyValueMap::Iterator itBaseNameMap;
+
+  for(itBaseNameMap = baseNameMap.begin(); itBaseNameMap != baseNameMap.end(); ++itBaseNameMap)
+    {
+      if(baseName == itBaseNameMap.key())
+        {
+          item->setPixmap(0,SmallIcon(itBaseNameMap.data()));
+          return;
+        }
     }
 }

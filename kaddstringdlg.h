@@ -19,9 +19,6 @@
 #ifndef KADDSTRINGDLG_H
 #define KADDSTRINGDLG_H
 
-// KDE
-class KConfig;
-
 // local
 #include "kaddstringdlgs.h"
 #include "configurationclasses.h"
@@ -30,44 +27,40 @@ class KAddStringDlg : public KAddStringDlgS
 {
   Q_OBJECT
   private:
-    ConfigurationInformation m_info;
-    KConfig* m_config;
-    
-  public: 
+    RCOptions m_option;
+
+  public:
     KAddStringDlg(QWidget *parent=0, const char *name=0);
     ~KAddStringDlg();
-  
+
   public:
+    void readOptions(const RCOptions& info) { m_option = info;
+                                              updateStringsViewContent(); }
+    RCOptions writeOptions() { return m_option; }
     /**
-    Returns a QMap with the list of strings
-    */
-    KeyValueMap stringsMap();
-    /**
-    Loads the content of 'map' in a qlistview
-    */
+     *Loads the content of 'map' in a qlistview
+     */
     void loadViewContent(KeyValueMap map);
     /**
-    Cleans the 'stringView' up
-    */
-    void clearView(){ m_stringView->clear(); }
-    void setConfig(KConfig* c) { m_config = c; }
-    bool searchOnly()const { return m_info.searchMode();}
-     
-  protected slots:
+     *Cleans the 'stringView' up
+     */
+    void clearStringsView();
+
+  private slots:
     void slotOK();
     void slotSearchOnly(bool b);
     void slotSearchReplace(bool b);
     void slotAdd();
     void slotDel();
     void slotHelp();
-  
+
   private:
     /**
-    Verifies whether 'lv' contains 's'
-    */
+     *Verifies whether 'lv' contains 's'
+     */
     bool contains(QListView* lv,const QString& s, int column);
-    void setMap();
-    void setMap(KeyValueMap map);
+    void updateStringsMapContent();
+    void updateStringsViewContent();
     void whatsThis();
 };
 

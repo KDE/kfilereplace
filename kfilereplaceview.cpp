@@ -18,14 +18,11 @@
 // Qt
 #include <qwhatsthis.h>
 #include <qmap.h>
-#include <qregexp.h>
 #include <qfileinfo.h>
 
 // KDE
 #include <klistview.h>
 #include <kmessagebox.h>
-#include <kstandarddirs.h>
-#include <kconfig.h>
 #include <klocale.h>
 #include <kpopupmenu.h>
 #include <krun.h>
@@ -33,20 +30,18 @@
 #include <kapplication.h>
 #include <dcopclient.h>
 #include <dcopref.h>
-#include <kdebug.h>
+//#include <kdebug.h>
 #include <kiconloader.h>
 
 // local
 #include "kfilereplaceview.h"
-#include "kfilereplacelib.h"
+#include "kaddstringdlg.h"
 #include "whatthis.h"
 
 using namespace whatthisNameSpace;
 
 KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplaceViewWdg(parent,name)
 {
-  //m_path = KGlobal::instance()->dirs()->saveLocation("data", "kfilereplace/");
-
   // Create popup menus
   m_menuResult = new KPopupMenu(this, "ResultPopup");
 
@@ -61,20 +56,20 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
   QCStringList appList = client->registeredApplications();
   bool quantaFound = false;
   for (QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
-  {
+    {
       if ((*it).left(6) == "quanta")
-      {
+        {
           quantaFound = true;
           break;
-      }
-  }
+        }
+    }
   if (quantaFound)
-  {
+    {
       m_menuResult->insertItem(SmallIconSet("quanta"),
-                              i18n("&Edit in Quanta"),
-                              this,
-                              SLOT(slotResultEdit()));
-  }
+                               i18n("&Edit in Quanta"),
+                               this,
+                               SLOT(slotResultEdit()));
+    }
   m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("up")),
                            i18n("Open Parent &Folder"),
                            this,
@@ -93,17 +88,16 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
   connect(m_lvResults,
           SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)),
           this,
-          SLOT(slotMouseButtonClicked(int, QListViewItem *, const QPoint &, int)));
+          SLOT(slotMouseButtonClicked(int, QListViewItem *, const QPoint &)));
   connect(m_lvStrings,
           SIGNAL(doubleClicked(QListViewItem *)),
           this,
-          SLOT(slotStringsEdit(QListViewItem *)));
+          SLOT(slotStringsEdit()));
   whatsThis();
 }
 
 KFileReplaceView::~KFileReplaceView()
 {
-  m_config = 0;
 }
 
 KListView* KFileReplaceView::stringView()
@@ -131,10 +125,8 @@ QString KFileReplaceView::currentItem()
   return QString(lvi->text(1)+"/"+lvi->text(0));
 }
 
-void KFileReplaceView::slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos, int column)
+void KFileReplaceView::slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos)
 {
-  Q_UNUSED(column);
-
   if (lvi == 0) // No item selected
     return;
 
@@ -199,8 +191,27 @@ void KFileReplaceView::slotResultEdit()
       column = 1;
 //FIXME: Don't get the line and column number from the text as it's translated and it will
 //fail for non-English languages!
-  line = lvi->text(0).section(":",1,1).remove(", column").toInt();
-  column = lvi->text(0).section(":",2,2).toInt();
+
+//EMILIANO: This is not a good fixing but for now it should reduce the problems
+  QString s = lvi->text(0),
+          temp;
+  int i = 0,
+      j = s.length();
+  while(i < 2)
+    {
+      if(s[j-1] >= '0' && s[j-1] <= '9')
+        temp = s[j-1] + temp;
+      if(s[j-1] == ':')
+         {
+          if(i == 0)
+            column = temp.toInt();
+          else
+            line = temp.toInt();
+          temp = QString::null;
+          i++;
+        }
+      j--;
+    }
 
   if(line != 0) line--;
   if(column != 0) column--;
@@ -214,7 +225,7 @@ void KFileReplaceView::slotResultEdit()
 
   if(!success)
     {
-      QString message = i18n("<qt>File <b>%1</b> cannot be opened. Might be a DCOP problem.</qt>").arg(filePath);
+      QString message = i18n("File %1 cannot be opened. Might be a DCOP problem.").arg(filePath);
       KMessageBox::error(parentWidget(), message);
     }
   m_lviCurrent = 0;
@@ -226,7 +237,7 @@ void KFileReplaceView::slotResultDelete()
   if (!currItem.isEmpty())
     {
       QFile fi;
-      int answer = KMessageBox::questionYesNo(this, i18n("<qt>Do you really want to delete <b>%1</b>?</qt>").arg(currItem));
+      int answer = KMessageBox::questionYesNo(this, i18n("Do you really want to delete %1?").arg(currItem));
 
       if(answer == KMessageBox::Yes)
         {
@@ -279,7 +290,7 @@ void KFileReplaceView::setMap()
       map[i->text(0)] = i->text(1);
       i = i->nextSibling();
     }
-  m_info.setMapStringsView(map);
+  m_option.setMapStringsView(map);
 }
 
 void KFileReplaceView::loadMap(KeyValueMap extMap)
@@ -291,40 +302,41 @@ void KFileReplaceView::loadMapIntoView(KeyValueMap map)
 {
   m_lvStrings->clear();
   KeyValueMap::Iterator itMap;
-  bool searchOnly = true;
+  bool searchOnlyMode = true;
   for(itMap = map.begin(); itMap != map.end(); ++itMap)
     {
       QListViewItem* lvi = new QListViewItem(m_lvStrings);
       lvi->setMultiLinesEnabled(true);
       lvi->setText(0,itMap.key());
       lvi->setText(1,itMap.data());
-      if(!itMap.data().isEmpty())
-        searchOnly = false;
+      searchOnlyMode = itMap.data().isEmpty();
     }
-  m_info.setMapStringsView(map);
-  m_info.setSearchMode(searchOnly);
-  m_config->setGroup("General Options");
-  m_config->writeEntry(rcSearchMode,searchOnly);
-  m_config->sync();
+  m_option.setSearchMode(searchOnlyMode);
+  m_option.setMapStringsView(map);
 }
 
 void KFileReplaceView::slotStringsAdd()
 {
-  KeyValueMap oldMap(m_info.mapStringsView());
-  m_addStringdlg.setConfig(m_config);
-  m_addStringdlg.clearView();
+  KeyValueMap oldMap(m_option.mapStringsView());
 
-  if(!m_addStringdlg.exec())
+  KAddStringDlg addStringDlg;
+
+  addStringDlg.readOptions(m_option);
+
+  if(!addStringDlg.exec())
      return;
 
-  KeyValueMap addedStringsMap(m_addStringdlg.stringsMap());
+  m_option = addStringDlg.writeOptions();
+
+  KeyValueMap addedStringsMap(m_option.mapStringsView());
   KeyValueMap::Iterator itMap;
 
   for(itMap = oldMap.begin(); itMap != oldMap.end(); ++itMap)
     addedStringsMap.insert(itMap.key(),itMap.data());
 
-  m_info.setMapStringsView(addedStringsMap);
+  m_option.setMapStringsView(addedStringsMap);
   loadMapIntoView(addedStringsMap);
+  emit searchMode(m_option.searchMode());
 }
 
 void KFileReplaceView::slotQuickStringsAdd(const QString& quickSearch, const QString& quickReplace)
@@ -333,24 +345,23 @@ void KFileReplaceView::slotQuickStringsAdd(const QString& quickSearch, const QSt
     {
       KeyValueMap pair;
       pair[quickSearch] = quickReplace;
-      m_info.setMapStringsView(pair);
+      m_option.setMapStringsView(pair);
       loadMapIntoView(pair);
     }
+  emit searchMode(m_option.searchMode());
 }
 
-void KFileReplaceView::slotStringsEdit(QListViewItem* lvi)
+void KFileReplaceView::slotStringsEdit()
 {
-  Q_UNUSED(lvi);
+  KAddStringDlg addStringDlg;
 
-  m_addStringdlg.setConfig(m_config);
-  m_addStringdlg.loadViewContent(m_info.mapStringsView());
+  addStringDlg.readOptions(m_option);
 
-  if(!m_addStringdlg.exec())
+  if(!addStringDlg.exec())
     return;
-  KeyValueMap map = m_addStringdlg.stringsMap();
-  m_info.setMapStringsView(map);
+  m_option = addStringDlg.writeOptions();
 
-  loadMapIntoView(map);
+  loadMapIntoView(m_option.mapStringsView());
   emit resetActions();
 }
 
@@ -359,9 +370,9 @@ void KFileReplaceView::slotStringsDeleteItem()
   QListViewItem* item = m_lvStrings->currentItem();
   if(item != 0)
     {
-      KeyValueMap m = m_info.mapStringsView();
+      KeyValueMap m = m_option.mapStringsView();
       m.remove(item->text(0));
-      m_info.setMapStringsView(m);
+      m_option.setMapStringsView(m);
       delete item;
     }
 }
@@ -376,7 +387,7 @@ void KFileReplaceView::slotStringsEmpty()
       delete temp;
     }
   KeyValueMap m;
-  m_info.setMapStringsView(m);
+  m_option.setMapStringsView(m);
 }
 
 void KFileReplaceView::whatsThis()

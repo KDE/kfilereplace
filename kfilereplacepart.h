@@ -16,9 +16,6 @@
 #define KFILEREPLACEPART_H
 
 // QT
-class QStringList;
-class QFile;
-//class QTextStream;
 
 // KDE
 #include <kparts/part.h>
@@ -28,8 +25,6 @@ class KConfig;
 
 // local
 #include "configurationclasses.h"
-#include "report.h"
-#include "commandengine.h"
 class KFileReplaceView;
 
 #define KFR_VERSION "0.8.0"
@@ -40,16 +35,12 @@ class KFileReplacePart: public KParts::ReadOnlyPart
 
   private: //MEMBERS
     KFileReplaceView* m_view;
-    KFileReplaceLib* m_lib;
     QWidget* m_parentWidget,
            * m_w;
     KConfig* m_config;
-    QStringList m_recentStringFileList;
     KAboutApplication* m_aboutDlg;
     KeyValueMap m_replacementMap;
-    ConfigurationInformation m_info;
-    Report m_report;
-    CommandEngine m_command;
+    RCOptions m_option;
     bool m_stop,
          m_searchingOperation;
     int m_optionMask;
@@ -64,7 +55,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     ~KFileReplacePart();
 
   //SLOTS
-  public slots:
+  protected slots:
     void slotFileNew();
     void slotFileSearch();
     void slotFileReplace();
@@ -92,6 +83,12 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void reportBug();
     void resetActions();
 
+  private slots:
+    /**
+     *this method is used to retrieve searchMode option from m_view
+     */
+    void searchMode(bool b){ m_option.setSearchMode(b); }
+
   //METHODS
   public:
     static KAboutData* createAboutData();
@@ -107,23 +104,39 @@ class KFileReplacePart: public KParts::ReadOnlyPart
 
     void freezeActions();
 
-    void readOptions();
-    void saveOptions();
+    void loadOptionsFromRC();
+    void saveOptionsToRC();
 
-    void loadRulesFile(const QString& fileName);
+    void loadOptions();
+    void loadFileSizeOptions();
+    void loadDateAccessOptions();
+    void loadOwnerOptions();
+    void loadLocationsList();
+    void loadFiltersList();
+    void loadBackupExtensionOptions();
+
+    void saveOptions();
+    void saveFileSizeOptions();
+    void saveDateAccessOptions();
+    void saveOwnerOptions();
+    void saveLocationsList();
+    void saveFiltersList();
+    void saveBackupExtensionOptions();
 
     void fileReplace();
     void recursiveFileReplace(const QString& dirName);
-    void replaceAndBackup(const QString& currentDir, const QString& oldFileName, bool regex, bool simulation);
-    void replaceAndOverwrite(const QString& currentDir, const QString& oldFileName, bool regex, bool simulation);
+    void replaceAndBackup(const QString& currentDir, const QString& oldFileName);
+    void replaceAndOverwrite(const QString& currentDir, const QString& oldFileName);
     void replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regex);
 
 
     void fileSearch(const QString& dirName, const QString& filters);
     void recursiveFileSearch(const QString& dirName, const QString& filters);
-    void search(const QString& currentDir, const QString& fileName, bool regex);
+    void search(const QString& currentDir, const QString& fileName);
 
     void loadViewContent();
+
+    void loadRulesFile(const QString& fileName);
 
     /**
     Launches new project dialog
