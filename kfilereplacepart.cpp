@@ -1167,7 +1167,7 @@ void KFileReplacePart::setWhatsThis()
   actionCollection()->action("options_case")->setWhatsThis(i18n("The lowers and uppers are different. For example, if you search for <b>Linux</b> and "
                                                                 "there is <b>linux</b>, then the string won't be found/replaced."));
   actionCollection()->action("options_var")->setWhatsThis(i18n("Enable use of the variables, as the date & time or the name of the current file. "
-                                                               "The variable must be in the replace string, with the format [$Name:  $]. When doing the replace, "
+                                                               "The variable must be in the replace string, with the format [$Name$]. When doing the replace, "
                                                                "the value of the variable "
                                                                "is written instead of the variable. If disabled, the replace string will be copied without "
                                                                "substitution. Please, read help for "
