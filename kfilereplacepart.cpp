@@ -1104,7 +1104,8 @@ void KFileReplacePart::setWhatsThis()
 
 void KFileReplacePart::reportBug()
 {
-  KBugReport dlg(widget(), true, createAboutData());
+  KAboutData aboutData("kfilereplace", I18N_NOOP("KFileReplace"), "1.0");
+  KBugReport dlg(widget(), true, &aboutData);
   dlg.exec();
 }
 
