@@ -92,8 +92,7 @@ KFileReplacePart::~KFileReplacePart()
   saveOptions();
   slotFileStop();
   delete m_doc;
-  if(m_dlgAbout != 0)
-    delete m_dlgAbout;
+  delete m_dlgAbout;
   delete m_config;
 }
 
