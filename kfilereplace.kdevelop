@@ -15,6 +15,7 @@
     <description></description>
     <ignoreparts/>
     <secondaryLanguages/>
+    <versioncontrol>kdevcvsservice</versioncontrol>
   </general>
   <kdevfileview>
     <groups>
@@ -73,7 +74,7 @@
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
-      <programargs>/home/andris</programargs>
+      <programargs></programargs>
       <gdbpath></gdbpath>
       <configGdbScript></configGdbScript>
       <runShellScript></runShellScript>
@@ -112,13 +113,14 @@
       <directoryradio>build</directoryradio>
       <customdirectory>/</customdirectory>
       <mainprogram>kfilereplace/kfilereplace</mainprogram>
-      <programargs>.</programargs>
+      <programargs/>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars/>
     </run>
     <general>
       <useconfiguration>default</useconfiguration>
+      <activetarget>kfilereplace</activetarget>
     </general>
     <configurations>
       <default>

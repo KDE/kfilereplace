@@ -17,7 +17,6 @@
 #include <qdatastream.h>
 #include <qregexp.h>
 #include <qimage.h>
-#include <qlcdnumber.h>
 
 // KDE
 #include <dcopclient.h>
@@ -1034,17 +1033,8 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
     {
       if(atLeastOneStringFound)
         {
-          QFile backupFile(oldPathString + backupExtension);
-          if(!backupFile.open(IO_WriteOnly))
-            {
-              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(backupFile.name()),QString::null, rcNotifyOnErrors);
-              return ;
-            }
-          QTextStream backupStream(&backupFile);
-	  backupStream.setEncoding(QTextStream::UnicodeUTF8);
-          backupStream << backupLine;
-          backupFile.close();
-	}
+          KIO::NetAccess::file_copy(KURL::fromPathOrURL(oldPathString), KURL::fromPathOrURL(oldPathString + backupExtension), -1, true);
+      	}
     }
 
   if(!m_option->m_simulation)
@@ -1058,7 +1048,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
               return ;
             }
           QTextStream newStream(&newFile);
-	  newStream.setEncoding(QTextStream::UnicodeUTF8);
+	        newStream.setEncoding(QTextStream::UnicodeUTF8);
           newStream << line;
           newFile.close();
         }
