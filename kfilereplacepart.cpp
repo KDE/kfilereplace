@@ -101,57 +101,57 @@ void KFileReplacePart::slotFileNew()
 
 void KFileReplacePart::slotFileSearch()
 {
-   if(!checkBeforeOperation())
-     return;
+  if(!checkBeforeOperation())
+    return;
 
-   m_view->resultView()->clear();
+  m_view->resultView()->clear();
 
-   emit setStatusBarText(i18n("Searching files..."));
-   m_view->resultView()->setColumnText(4,i18n("Total number occurrences"));
+  emit setStatusBarText(i18n("Searching files..."));
+  m_view->resultView()->setColumnText(4,i18n("Total number occurrences"));
 
-   m_view->resultView()->setSorting(-1);
+  m_view->resultView()->setSorting(-1);
 
-   // show wait cursor
-   QApplication::setOverrideCursor( Qt::waitCursor );
+  // show wait cursor
+  QApplication::setOverrideCursor( Qt::waitCursor );
 
-   freezeActions();
+  freezeActions();
 
-   setOptionMask();
+  setOptionMask();
 
-   QString currentDirectory = QStringList::split(",",m_option.directories())[0],
-           currentFilter = QStringList::split(",",m_option.filters())[0];
+  QString currentDirectory = QStringList::split(",",m_option.directories())[0],
+          currentFilter = QStringList::split(",",m_option.filters())[0];
 
-   m_view->m_ledGo->setState(KLed::Off);
-   m_view->m_ledStop->setState(KLed::On);
+  m_view->m_ledGo->setState(KLed::Off);
+  m_view->m_ledStop->setState(KLed::On);
 
-   uint filesNumber = 0;
+  uint filesNumber = 0;
 
-   if(m_option.recursive())
-     recursiveFileSearch(currentDirectory, currentFilter, filesNumber);
-   else
-     fileSearch(currentDirectory, currentFilter);
+  if(m_option.recursive())
+    recursiveFileSearch(currentDirectory, currentFilter, filesNumber);
+  else
+    fileSearch(currentDirectory, currentFilter);
 
-   m_view->m_ledWait->setState(KLed::On);
+  m_view->m_ledWait->setState(KLed::On);
 
-   kapp->processEvents();
+  kapp->processEvents();
 
-   //disabling and enabling sorting... don't ask me why, but it works!
-   m_view->resultView()->setSorting(0);
-   m_view->resultView()->sort();
-   m_view->resultView()->setSorting(-1);
+  //disabling and enabling sorting... don't ask me why, but it works!
+  m_view->resultView()->setSorting(0);
+  m_view->resultView()->sort();
+  m_view->resultView()->setSorting(-1);
 
-   // restore false status for stop button
-   m_stop = false;
+  // restore false status for stop button
+  m_stop = false;
 
-   QApplication::restoreOverrideCursor();
+  QApplication::restoreOverrideCursor();
 
-   emit setStatusBarText(i18n("Search completed."));
-   m_option.setSearchMode(true);
-   resetActions();
-   m_searchingOperation = true;
-   m_view->m_ledGo->setState(KLed::On);
-   m_view->m_ledWait->setState(KLed::Off);
-   m_view->m_ledStop->setState(KLed::Off);
+  emit setStatusBarText(i18n("Search completed."));
+  m_option.setSearchMode(true);
+  resetActions();
+  m_searchingOperation = true;
+  m_view->m_ledGo->setState(KLed::On);
+  m_view->m_ledWait->setState(KLed::Off);
+  m_view->m_ledStop->setState(KLed::Off);
 }
 
 void KFileReplacePart::slotFileReplace()
@@ -542,7 +542,7 @@ KAboutData* KFileReplacePart::createAboutData()
                                           I18N_NOOP( "Batch search and replace tool."),
                                           KAboutData::License_GPL_V2,
                                           "(C) 1999-2002 Francois Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini", I18N_NOOP("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
-  aboutData->addAuthor("Francois Dupoux",
+  aboutData->addAuthor("François Dupoux",
                        I18N_NOOP("Original author of the KFileReplace tool"),
                        "dupoux@dupoux.com");
   aboutData->addAuthor("Emiliano Gulmini",
@@ -565,7 +565,7 @@ KConfig* KFileReplacePart::config()
 //PROTECTED METHODS
 bool KFileReplacePart::openURL(const KURL &url)
 {
-  if(!url.isEmpty() && url.protocol() != "file")
+  if(!url.isEmpty() && (url.protocol() != "file"))
     {
       KMessageBox::sorry(m_w, i18n("Sorry, currently the KFileReplace part works only for local files."), i18n("Non Local File"));
       emit canceled("");
@@ -1039,7 +1039,6 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
       KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Don't ask me again"));
       m_config->setGroup("Notification messages");
       m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
-      
       return ;
     }
 
@@ -1243,10 +1242,9 @@ void KFileReplacePart::fileSearch(const QString& dirName, const QString& filters
 
   m_view->m_lcdFilesNumber->display(QString::number(filesNumber,10));
 
-  kapp->processEvents();
-
   for (filesIt = filesList.begin(); filesIt != filesList.end() ; ++filesIt)
     {
+      kapp->processEvents();
       // We pushed stop button
       if(m_stop)
         break;
@@ -1269,8 +1267,6 @@ void KFileReplacePart::fileSearch(const QString& dirName, const QString& filters
 
 void KFileReplacePart::recursiveFileSearch(const QString& dirName, const QString& filters, uint& filesNumber)
 {
-  kapp->processEvents();
-
   // if m_stop == true then interrupt recursion
   if(m_stop)
     return;
@@ -1306,6 +1302,7 @@ void KFileReplacePart::recursiveFileSearch(const QString& dirName, const QString
             recursiveFileSearch(filePath+"/"+fileName, filters, filesNumber);
           else
             {
+              kapp->processEvents();
               search(filePath, fileName);
               filesNumber++;
               m_view->m_lcdFilesNumber->display(QString::number(filesNumber,10));
@@ -1327,6 +1324,8 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
     }
   // Creates a stream with the file
   QTextStream stream( &file );
+  QString line = stream.read();
+  file.close();
 
   QFileInfo fileInfo(currentDir+"/"+fileName);
 
@@ -1343,10 +1342,6 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
   bool atLeastOneStringFound = false;
 
   KeyValueMap::Iterator it = tempMap.begin();
-
-  QString line = stream.read();
-
-  //kapp->processEvents();
 
   while(it != tempMap.end())
     {
@@ -1393,8 +1388,6 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               msg = i18n(" first captured text \"%1\" at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
               tempItem->setText(0,msg);
               occurrence = 1;
-              //++it;
-              qWarning("MODALITA=HALT; TESTO=%s; NOME=%s",capturedText.latin1(),fileName.latin1());
             }
           //continue;
         }// ends haltOnFirstOccur if-block
@@ -1439,7 +1432,6 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               KListViewItem* tempItem = new KListViewItem(item);
               tempItem->setText(0,msg);
               occurrence++;
-              //qWarning("MODALITA=NON HALT; TESTO=%s; NOME=%s; RIGA=%s",capturedText.latin1(),fileName.latin1(),QString::number(lineNumber,10).latin1());
               //we push stop button
               if(m_stop)
                 break;
@@ -1453,7 +1445,6 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
         break;
     }
 
-   file.close();
    //if ignoreFiles == false then every files must be show
    if(!m_option.ignoreFiles())
      atLeastOneStringFound = true;
@@ -1493,13 +1484,13 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
   //loads kfr file
   QDomDocument doc("mydocument");
   QFile file(fileName);
-  
+
   if(!file.open(IO_ReadOnly))
     {
       KMessageBox::error(m_w, i18n("Cannot open the file %1 and load the string list.").arg(fileName));
       return ;
     }
-    
+
   if(!doc.setContent(&file))
     {
       file.close();
