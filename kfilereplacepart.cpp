@@ -333,7 +333,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
       // check expression wildcard and character wildcards are not the same
       if (m_settings.cWildcardsWords == m_settings.cWildcardsLetters)
         {
-          KMessageBox::error(w, i18n("<qt>You can't use the same character for <b>expression wildcard</b> and for <b>character wildcard</b></qt>."));
+          KMessageBox::error(w, i18n("<qt>You cannot use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>.</qt>"));
           return -1;
         }
 
