@@ -106,9 +106,6 @@
                     <property name="text">
                         <string>&amp;Help</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+H</string>
-                    </property>
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
@@ -117,9 +114,6 @@
                     <property name="text">
                         <string>&amp;Yes</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+Y</string>
-                    </property>
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
@@ -127,9 +121,6 @@
                     </property>
                     <property name="text">
                         <string>&amp;No</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+N</string>
                     </property>
                 </widget>
                 <widget class="QPushButton">

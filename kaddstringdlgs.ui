@@ -34,9 +34,6 @@
                     <property name="text">
                         <string>&amp;Help</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+H</string>
-                    </property>
                 </widget>
                 <spacer>
                     <property name="name">
@@ -70,9 +67,6 @@
                             <property name="text">
                                 <string>&amp;OK</string>
                             </property>
-                            <property name="accel">
-                                <string>Alt+O</string>
-                            </property>
                         </widget>
                         <widget class="QPushButton">
                             <property name="name">
@@ -80,9 +74,6 @@
                             </property>
                             <property name="text">
                                 <string>&amp;Cancel</string>
-                            </property>
-                            <property name="accel">
-                                <string>Alt+C</string>
                             </property>
                         </widget>
                     </hbox>

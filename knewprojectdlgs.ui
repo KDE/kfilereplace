@@ -49,9 +49,6 @@
                                 <property name="text">
                                     <string>Enable &amp;variables in the replace string</string>
                                 </property>
-                                <property name="accel">
-                                    <string>Alt+V</string>
-                                </property>
                             </widget>
                             <widget class="QCheckBox" row="2" column="0">
                                 <property name="name">
@@ -59,9 +56,6 @@
                                 </property>
                                 <property name="text">
                                     <string>Enable &amp;wildcards</string>
-                                </property>
-                                <property name="accel">
-                                    <string>Alt+W</string>
                                 </property>
                             </widget>
                             <widget class="QCheckBox" row="1" column="0">
@@ -71,9 +65,6 @@
                                 <property name="text">
                                     <string>&amp;Case sensitive</string>
                                 </property>
-                                <property name="accel">
-                                    <string>Alt+C</string>
-                                </property>
                             </widget>
                             <widget class="QCheckBox" row="0" column="0">
                                 <property name="name">
@@ -81,9 +72,6 @@
                                 </property>
                                 <property name="text">
                                     <string>&amp;Include subfolders</string>
-                                </property>
-                                <property name="accel">
-                                    <string>Alt+I</string>
                                 </property>
                                 <property name="checked">
                                     <bool>true</bool>
@@ -631,9 +619,6 @@
                     <property name="text">
                         <string>&amp;Help</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+H</string>
-                    </property>
                 </widget>
                 <spacer>
                     <property name="name">
@@ -673,9 +658,6 @@
                     <property name="text">
                         <string>&amp;Search Now</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+S</string>
-                    </property>
                     <property name="default">
                         <bool>true</bool>
                     </property>
@@ -710,9 +692,6 @@
                     </property>
                     <property name="text">
                         <string>&amp;Cancel</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+C</string>
                     </property>
                 </widget>
             </hbox>
