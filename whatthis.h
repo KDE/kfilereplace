@@ -45,18 +45,18 @@ namespace whatthisNameSpace
   const QString cbFilterWhatthis = i18n( "Fix the filter of the files you want to search. For example, write \"*.htm\" to search or replace "
                                    "all web pages. You can put more than an only filter, when using ';'. For example \"*.html;*.txt;*.xml\"" );
 
-  const QString edSizeMinWhatthis = i18n( "Minimal size of files. For example, if you put 1024 KB, all files which size is less than 1 MB will not be taken" );
+  const QString edSizeMinWhatthis = i18n( "Minimal size of files. For example, if you put 1024 KB, all files whose size is less than 1 MB will not be included." );
 
-  const QString edSizeMaxWhatthis = i18n( "Maximal size of files. For example, if you put 2048 KB, all files which size is more than 2 MB will not be taken" );
+  const QString edSizeMaxWhatthis = i18n( "Maximal size of files. For example, if you put 2048 KB, all files whose size is more than 2 MB will not be included." );
 
   const QString edDateMinWhatthis = i18n( "Minimal date of files in YYYY/MM/DD format. For example, if you put 2000/01/31, all files which were "
-                                   "(modified/read) before the 31 January 2000 will not be taken" );
+                                   "(modified/read) before the 31 January 2000 will not be included." );
 
   const QString edDateMaxWhatthis = i18n( "Maximal date of files in YYYY/MM/DD format. For example, if you put 1999/12/31, all files which were "
-                                   "(modified/read) after the 31 December 1999 will not be taken" );
+                                   "(modified/read) after the 31 December 1999 will not be included." );
 
   const QString cbDateValidWhatthis = i18n( "Select \"Writing\" if you want to use the date of the last modification, or \"reading\" to use the last "
-                                     "read access to the file" );
+                                     "read access to the file." );
 
   //KOptionsDlg messages
   const QString chbCaseSensitiveWhatthis = i18n( "If enabled, lowers and uppers are different. If you are "
@@ -65,15 +65,15 @@ namespace whatthisNameSpace
   const QString chbRecursiveWhatthis = i18n( "Work in all subfolders of the main folder of the project" );
 
   const QString chbHaltOnFirstOccurrenceWhatthis = i18n( "When searching, KFileReplace reads all the data of each "
-                                                 "file to know how many times each strings appears in the files. If you need not"
-                                                 "to have this details, you can enable this options to make the search faster. "
-                                                 "Then the search will be finished in a file when the first occurrence of a string will be found." );
+                                                 "file to know how many times each strings appears in the files. If you do not need "
+                                                 "to have this information, you can enable this option to make the search faster; "
+                                                 "then, the search will be finished in a file when the first occurrence of a string is found." );
 
   const QString chbIgnoreWhitespacesWhatthis = i18n( "Ignore some characters when searching a string: \\r (carriage return), \\n (line feed) \\t (tab), "
-                                             "and multi-spaces. It's very "
+                                             "and multi-spaces.  This is very "
                                              "useful in HTML code, and with the end of the lines. For example, if you are searching for "
                                              "\"Linux is fast\" in a file, and there is a line feed between "
-                                             "\"Linux\" and \"is\", then the string will not be found. This options can solve the problem." );
+                                             "\"Linux\" and \"is\", then the string will not be found; this option can solve the problem." );
 
   const QString chbFollowSymLinksWhatthis = i18n( "If a folder symbolic link is found, it will be opened." );
 
@@ -83,7 +83,7 @@ namespace whatthisNameSpace
                                         "point as .kde) will not be found / replaced." );
 
   const QString edLengthWhatthis = i18n( "This is the maximal length of the search made to find wildcards in a text. For example, if the length is 200, then "
-                                   "the '*' symbol cannot code for an expression which length is more than 200 letters (bytes)" );
+                                   "the '*' symbol cannot be used to match more than 200 letters (bytes)." );
 
   const QString chbWildcardsInReplaceStrWhatthis = i18n( "If enabled, the contents of the wildcards found in the search string will be copied into the "
                                                    "replace string. For example, if you search for \"The * is under my bed\" and the text is \"The "
@@ -94,7 +94,7 @@ namespace whatthisNameSpace
   const QString chbVariablesWhatthis = i18n( "If enabled, KFileReplace will replace variables with their values in the replace string. For example "
                                        "if the replace string is \"The current time is [$datetime:mm/dd/yyyy$]\", then the date will be written." );
 
-  const QString chbBackupWhatthis = i18n( "If enabled, create backup of replaced files before any modifications. Then you can restore the old data "
+  const QString chbBackupWhatthis = i18n( "If enabled, backups of replaced files are created before any modifications; then, you can restore the old data "
                                     "if there is an error during the replace operation. A copy of the original files will be created, with the .OLD extension." );
 
 
@@ -105,9 +105,9 @@ namespace whatthisNameSpace
 
   const QString optionsWildcardsWhatthis = i18n( "Enable use of the wildcards (* for expressions, and ? for single character if not modified "
                                            "in the wildcards options). For example, you can search for <b>KMsgBox::message(*)</b> "
-                                           "and replace with <b>KMessageBox::error(*)</b>" );
+                                           "and replace with <b>KMessageBox::error(*)</b>." );
 
-  const QString optionsBackupWhatthis = i18n( "Create a copy of the original replaced files with the BAK extension before replacing" );
+  const QString optionsBackupWhatthis = i18n( "Create a copy of the original replaced files with the BAK extension before replacing." );
 
   const QString optionsCaseWhatthis = i18n( "The lowers and uppers are different. For example, if you search for <b>Linux</b> and "
                                       "there is <b>linux</b>, then the string will not be found/replaced." );
