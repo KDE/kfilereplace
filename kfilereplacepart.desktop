@@ -1,5 +1,6 @@
 [Desktop Entry]
 Type=Service
+Encoding=UTF-8
 MimeType=inode/directory
 Icon=kfilereplace.png
 ServiceTypes=KParts/ReadOnlyPart
@@ -37,4 +38,6 @@ Name[xx]=xxKFileReplacexx
 GenericName=File Replace View
 GenericName[da]=Filerstatningsvisning
 GenericName[es]=Vista de reemplazo de archivo
+GenericName[et]=Failide asendamise vaade
 GenericName[sv]=Filersättningsvy
+GenericName[ta]=கோப்பு இடமாற்று காட்சி
