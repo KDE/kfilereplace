@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string></string>
+        <string>KAddStringDlgS</string>
     </property>
     <grid>
         <property name="name">
@@ -117,6 +117,9 @@
                             <property name="name">
                                 <cstring>m_editSearch</cstring>
                             </property>
+                            <property name="textFormat">
+                                <enum>PlainText</enum>
+                            </property>
                         </widget>
                     </vbox>
                 </widget>
@@ -139,6 +142,9 @@
                         <widget class="QTextEdit">
                             <property name="name">
                                 <cstring>m_editReplace</cstring>
+                            </property>
+                            <property name="textFormat">
+                                <enum>PlainText</enum>
                             </property>
                         </widget>
                     </vbox>

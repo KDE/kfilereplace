@@ -24,22 +24,23 @@
 class KAddStringDlg : public KAddStringDlgS
 {
    Q_OBJECT
-  public: 
-    KAddStringDlg(QWidget *parent=0, const char *name=0);
-    ~KAddStringDlg();
+public: 
+       KAddStringDlg(QWidget *parent=0, const char *name=0);
+        ~KAddStringDlg();
         
-  private:
-    QString m_strSearch;
-    QString m_strReplace;
+private:
+        QString m_strSearch;
+        QString m_strReplace;
 
-  protected slots:
-    void slotOK();
-
-  public:
-    void setSearchText(const QString &strText);
-    QString searchText() const;
-    void setReplaceText(const QString &strText);
-    QString replaceText() const;
+protected slots:
+        void slotOK();
+        void changeSearchText();
+        void changeReplaceText();
+public:
+        void setSearchText(const QString &strText);
+        QString searchText() const;
+        void setReplaceText(const QString &strText);
+        QString replaceText() const;
 
 };
 

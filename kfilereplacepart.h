@@ -79,7 +79,7 @@ public slots:
   void showAboutApplication(void);
   void appHelpActivated();
   void reportBug();
-  
+
 
 protected:
   virtual bool openFile() {return false;}
@@ -94,10 +94,6 @@ protected:
   void updateCommands();
   int  checkBeforeOperation(int nTypeOfOperation);
   void setWhatsThis();
-/*
-  void dropEvent(QDropEvent *event);
-  void dragEnterEvent(QDragEnterEvent *event);
-*/
 private:
 
   KFileReplaceView *m_view;
@@ -109,6 +105,8 @@ private:
   QStringList m_recentStringFileList; // a list of recently accessed files
   KAboutKFileReplace *m_dlgAbout;
 
+private:
+  void convertOldToNewKFRFormat(const QString& strFilename,KFileReplaceView* view);
 };
 
 #endif

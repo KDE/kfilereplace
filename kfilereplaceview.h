@@ -28,7 +28,7 @@
 
 // includes for the app
 #include "kresultview.h"
-
+class KAddStringDlg;
 class QPixMap;
 class QListView;
 class KFileReplaceDoc;
@@ -54,7 +54,8 @@ private:
   QListView *m_stringView;
   QPixmap m_pmIconString;
   QString m_path;
-    
+  KAddStringDlg* dlg;
+
 public:
   QListView *stringView();
   KResultView *resultView();
@@ -62,6 +63,7 @@ public:
   /** Initialize lists */
   void init();
   bool addString(const QString &strSearch, const QString &strReplace, QListViewItem *lviCurrent);
+  bool editString(QListViewItem *lviCurrent);
   /** returns a pointer to the document connected to the view instance. Mind that this method requires a KFileReplaceApp instance as a parent
     * widget to get to the window document pointer by calling the KFileReplaceApp::getDocument() method.
     *

@@ -1,3 +1,10 @@
+26-02-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- I added a method 'editStrings' that fixes tha behaviour when a user 
+  chooses edit string option instead of add string option.
+- I modified the property textFormat of the QTextEdit widgets of
+  KAddstringDlg, from the value 'AutoText' to the value 'PlainText',
+  so the QTextEdit widgets will not try to render a string containing
+  html code.
 24-02-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
 - kfilereplacepref.(h,cpp) were removed.
 - kernel.(h,cpp) now are a singleton class.

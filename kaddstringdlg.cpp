@@ -28,10 +28,14 @@
 KAddStringDlg::KAddStringDlg(QWidget *parent, const char *name) : KAddStringDlgS(parent,name,true)
 {
   connect(pbOK,SIGNAL(clicked()),this,SLOT(slotOK()));
+  connect(m_editSearch,SIGNAL(textChanged()), this, SLOT(changeSearchText()));
+  connect(m_editReplace,SIGNAL(textChanged()), this, SLOT(changeReplaceText()));
+
 }
 
 KAddStringDlg::~KAddStringDlg()
 {
+
 }
 
 void KAddStringDlg::slotOK()
@@ -50,19 +54,28 @@ void KAddStringDlg::slotOK()
   accept();
 }
 
-void KAddStringDlg::setSearchText(const QString &strText) 
+void KAddStringDlg::changeSearchText()
+{
+ m_strSearch = m_editSearch->text();
+}
+void KAddStringDlg::changeReplaceText()
+{
+ m_strReplace = m_editReplace->text();
+}
+
+void KAddStringDlg::setSearchText(const QString &strText)
 {
  m_editSearch->setText(strText);
 }
-void KAddStringDlg::setReplaceText(const QString &strText) 
+void KAddStringDlg::setReplaceText(const QString &strText)
 {
  m_editReplace->setText(strText);
- }
- QString KAddStringDlg::searchText() const
+}
+QString KAddStringDlg::searchText() const
  {
   return m_strSearch;
  }
- QString KAddStringDlg::replaceText() const
+QString KAddStringDlg::replaceText() const
  {
   return m_strReplace;
  }
