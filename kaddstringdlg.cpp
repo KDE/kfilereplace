@@ -32,14 +32,14 @@
 #include "kaddstringdlg.h"
 
 KAddStringDlg::KAddStringDlg(QWidget *parent, const char *name) : KAddStringDlgS(parent,name,true)
-{ 
+{
   connect(pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
   connect(rbSearchOnly, SIGNAL(toggled(bool)), this, SLOT(slotSearchOnly(bool)));
   connect(rbSearchReplace, SIGNAL(toggled(bool)), this, SLOT(slotSearchReplace(bool)));
-  connect(pbAdd, SIGNAL(clicked()), this, SLOT(slotAdd())); 
-  connect(pbDel, SIGNAL(clicked()), this, SLOT(slotDel())); 
-  pbAdd->setIconSet(QIconSet(SmallIconSet(QString::fromLatin1("next")))); 
-  pbDel->setIconSet(QIconSet(SmallIconSet(QString::fromLatin1("back")))); 
+  connect(pbAdd, SIGNAL(clicked()), this, SLOT(slotAdd()));
+  connect(pbDel, SIGNAL(clicked()), this, SLOT(slotDel()));
+  pbAdd->setIconSet(QIconSet(SmallIconSet(QString::fromLatin1("next"))));
+  pbDel->setIconSet(QIconSet(SmallIconSet(QString::fromLatin1("back"))));
 }
 
 KAddStringDlg::~KAddStringDlg()
@@ -52,7 +52,7 @@ bool KAddStringDlg::contains(QListView* lv,const QString& s, int column)
   QListViewItem* i = lv->firstChild();
   while (i != 0)
     {
-      if(i->text(column) == s) 
+      if(i->text(column) == s)
         return true;
       i = i->nextSibling();
     }
@@ -78,7 +78,7 @@ void KAddStringDlg::slotOK()
   else
     m_config->writeEntry(rcSearchMode,false);
   m_config->sync();
-  
+
   accept();
 }
 
@@ -88,17 +88,17 @@ void KAddStringDlg::slotSearchOnly(bool b)
   m_editReplace->setEnabled(false);
   m_labelSearch->setEnabled(b);
   m_labelReplace->setEnabled(false);
-  
-  stringView->clear();  
+
+  stringView->clear();
 }
-	
+
 void KAddStringDlg::slotSearchReplace(bool b)
 {
   m_editSearch->setEnabled(b);
   m_editReplace->setEnabled(b);
   m_labelSearch->setEnabled(b);
   m_labelReplace->setEnabled(b);
-  
+
   stringView->clear();
 }
 
@@ -112,16 +112,16 @@ void KAddStringDlg::slotAdd()
 	  QListViewItem* lvi = new QListViewItem(stringView);
 	  lvi->setText(0,text);
           m_editSearch->clear();
-	}     
+	}
     }
   else
-    { 
+    {
       QString searchText = m_editSearch->text(),
               replaceText = m_editReplace->text();
-      
-      if(!searchText.isEmpty() and 
+
+      if(!searchText.isEmpty() and
          !replaceText.isEmpty() and
-         !contains(stringView,searchText,0) and 
+         !contains(stringView,searchText,0) and
 	 !contains(stringView,replaceText,1))
         {
 	  QListViewItem* lvi = new QListViewItem(stringView);
@@ -129,20 +129,20 @@ void KAddStringDlg::slotAdd()
 	  m_editSearch->clear();
 	  lvi->setText(1,replaceText);
 	  m_editReplace->clear();
-	}    
+	}
     }
-  setMap(); 
+  setMap();
 }
 
 void KAddStringDlg::slotDel()
 {
   // Choose current item or selected item
   QListViewItem* currItem = stringView->currentItem();
-  
+
   // Do nothing if list is empty
   if(currItem == 0)
     return;
-      
+
   if(rbSearchOnly->isChecked())
     {
       m_editSearch->setText(currItem->text(0));
@@ -163,22 +163,22 @@ QMap<QString,QString> KAddStringDlg::stringList()
 }
 
 void KAddStringDlg::loadDataFromStringsView(QMap<QString,QString> map)
-{ 
+{
   stringView->clear();
- 
+
   QMap<QString,QString>::Iterator itMap;
- 
+
   for (itMap = map.begin(); itMap != map.end(); ++itMap)
-    {  
+    {
       QListViewItem* i = new QListViewItem(stringView);
       i->setText(0,itMap.key());
-      i->setText(1,itMap.data());    
+      i->setText(1,itMap.data());
     }
-   
-   QListViewItem* p=stringView->firstChild(); 
-   
-  if(p->text(1).isEmpty())
-    {  
+
+   QListViewItem* p=stringView->firstChild();
+
+  if(p && p->text(1).isEmpty())
+    {
       m_editSearch->setEnabled(true);
       m_editReplace->setEnabled(false);
       m_labelSearch->setEnabled(true);
@@ -191,7 +191,7 @@ void KAddStringDlg::loadDataFromStringsView(QMap<QString,QString> map)
       m_labelSearch->setEnabled(true);
       m_labelReplace->setEnabled(true);
     }
-   
+
   setMap();
 }
 

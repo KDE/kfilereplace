@@ -890,9 +890,9 @@ void KFileReplacePart::resetActions()
 
   // File
   actionCollection()->action("new_project")->setEnabled(true);
-  actionCollection()->action("search")->setEnabled(hasChildren and searchOnly);
-  actionCollection()->action("file_simulate")->setEnabled(hasChildren and !searchOnly);
-  actionCollection()->action("replace")->setEnabled(hasChildren and !searchOnly);
+  actionCollection()->action("search")->setEnabled(searchOnly);
+  actionCollection()->action("file_simulate")->setEnabled(hasChildren && !searchOnly);
+  actionCollection()->action("replace")->setEnabled(hasChildren && !searchOnly);
   actionCollection()->action("save_results")->setEnabled(hasChildren);
   actionCollection()->action("stop")->setEnabled(false);
 
