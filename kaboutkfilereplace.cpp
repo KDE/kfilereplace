@@ -2,7 +2,7 @@
                           kaboutkfilereplace.cpp  -  description
                              -------------------
     begin                : Sat Jul 22 2000
-    copyright            : (C) 2000 by Franï¿½is Dupoux
+    copyright            : (C) 2000 by François Dupoux
                                   (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
@@ -29,7 +29,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
   setTitle("KFileReplace for KDE 3");
   setImage(locate("data", "kfilereplace/pics/about.png"));
   setImageFrame(false);
-  setProduct(QString(PACKAGE), QString(VERSION), QString("Franï¿½is Dupoux"), QString("2002"));
+  setProduct(QString(PACKAGE), QString(VERSION), QString("François Dupoux"), QString("2002"));
 
   // 2. Add text to the dialog
   const QString strUseful = i18n(""
@@ -40,13 +40,13 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
                                  "Then it is very useful when updating a link which has changed in all web pages "
                                  "of a website. But it can make win a lot of time in other situations. "
                                  "For example, when porting an application from KDE 1.x to KDE 2.x, you have a "
-                                 "lot of function names or file names to change, as \"kmsgbox.h\" with "
+                                 "lot of functions names or files names to change, as \"kmsgbox.h\" with "
                                  "\"kmessagebox.h\".</p>"
                                  "<p>There are very powerful options in the new version: the wildcards and the variables "
                                  "support.</p>"
                                  "<p>The wildcards (* for an expression, and ? for a single character) can be used in the "
                                  "search and in the replace strings.</p>"
-                                 "<p>The variables can be the date, or the current file name, in the format you want.</p>");
+                                 "<p>The variables can be the date, or the current filename, in the format you want.</p>");
 
   const QString strContribute = i18n("<p><b>Everyone is welcome to contribute</b> to this project. "
                                      "You do not have to be a developer to do it. You can do many things:<br>"
@@ -83,7 +83,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
   KAboutContainer *cAuthors = addScrolledContainerPage(i18n("Aut&hors"), KAboutDialog::AlignCenter, KAboutDialog::AlignLeft);
   if (cAuthors)
     {
-      cAuthors->addPerson(QString("Franï¿½is Dupoux"), QString("dupoux@dupoux.com"), QString::null, i18n("Main author and French translator"), true);
+      cAuthors->addPerson(QString("François Dupoux"), QString("dupoux@dupoux.com"), QString::null, i18n("Main author and French translator"), true);
       cAuthors->addPerson(QString("Andras Mantia"), QString("amantia@kde.org"), QString::null, i18n("KPartification, integration with Quanta Plus"), true);
       cAuthors->addPerson(QString("Heiko Goller"), QString("heiko.goller@tuebingen.mpg.de"), QString::null, QString("German translator"), true);
     }
