@@ -19,7 +19,6 @@
 #include <qlayout.h>
 #include <qlabel.h>
 #include <qtextedit.h>
-#include <qpushbutton.h>
 #include "kconfirmdlg.h"
 #include <kapplication.h>
 #include <klocale.h>
@@ -30,7 +29,7 @@
 KConfirmDlg::KConfirmDlg(QWidget *parent, const char *name) : KConfirmDlgS(parent,name,true)
 {
   initDialog();
-  
+
   connect(pbYes,SIGNAL(clicked()),this,SLOT(slotYes()));
   connect(pbNo,SIGNAL(clicked()),this,SLOT(slotNo()));
   connect(pbSkipFile,SIGNAL(clicked()),this,SLOT(slotSkipFile()));
