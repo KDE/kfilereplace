@@ -530,7 +530,6 @@ void KFileReplacePart::replaceAndOverwriteLiteral(const QString& currentDir, con
 void KFileReplacePart::normalFileSearch(const QString& dirName, const QString& filters)
 {
   QDir d(dirName);
-
   d.setMatchAllDirs(true);
   d.setFilter(m_optionMask);
 
@@ -583,7 +582,6 @@ void KFileReplacePart::recursiveFileSearch(const QString& dirName, const QString
 
 	  // Compose file path string
           QFileInfo fi(filePath+"/"+fileName);
-
           // Recursive search if "filePath" is a directory
           if(fi.isDir())
             recursiveFileSearch(filePath+"/"+fileName,filters);
@@ -603,7 +601,7 @@ void KFileReplacePart::recursiveFileSearch(const QString& dirName, const QString
 
 void KFileReplacePart::searchExpression(const QString& currentDir, const QString& fileName)
 {
-  kdDebug(23000)<<"SEARCH_1\n\n\n\n\n";
+ // kdDebug(23000)<<"searchExpression" << end;;
   QWidget* w = new QWidget();
 
   QFile file(currentDir+"/"+fileName);
@@ -619,7 +617,7 @@ void KFileReplacePart::searchExpression(const QString& currentDir, const QString
 
   kapp->processEvents();
 
-  QListViewItem *item = new QListViewItem(m_view->resultView());
+  QListViewItem *item = 0L;
   bool caseSensitive = m_info.caseSensitive(),
        haltOnFirstOccur = m_info.haltOnFirstOccur();
   //Count the line number
@@ -648,6 +646,8 @@ void KFileReplacePart::searchExpression(const QString& currentDir, const QString
               if(pos != -1)
                 {
                   QString msg = i18n(" first captured text \"%1\" at line:%2, column:%3").arg(rxKey.cap(1)).arg(lineNumber).arg(pos+1);
+                  if (!item)
+                    item = new QListViewItem(m_view->resultView());
                   QListViewItem* tempItem = new QListViewItem(item);
 		  tempItem->setText(0,msg);
 		  tempMap.remove(it);
@@ -667,6 +667,8 @@ void KFileReplacePart::searchExpression(const QString& currentDir, const QString
           while(pos != -1)
 	    {
               QString msg = i18n(" captured text \"%1\" at line:%2, column:%3").arg(rxKey.cap(1)).arg(lineNumber).arg(pos+1);
+              if (!item)
+                 item = new QListViewItem(m_view->resultView());
 	      QListViewItem* tempItem = new QListViewItem(item);
               tempItem->setText(0,msg);
 	      occur++;
@@ -681,15 +683,15 @@ void KFileReplacePart::searchExpression(const QString& currentDir, const QString
 
    file.close();
 
-   item->setText(0,fileName);
-   item->setText(1,currentDir);
-   item->setText(2,KFileReplaceLib::formatFileSize(fi.size()));
-
-   m_view->resultView()->setColumnText(4,"Total number occurrences");
-
-   item->setText(4,QString::number(occur,10));
-   item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(fi.ownerId()));
-   item->setText(6,i18n("%1[%2]").arg(fi.group()).arg(fi.groupId()));
+   if (item)
+   {
+      item->setText(0,fileName);
+      item->setText(1,currentDir);
+      item->setText(2,KFileReplaceLib::formatFileSize(fi.size()));
+      item->setText(4,QString::number(occur,10));
+      item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(fi.ownerId()));
+      item->setText(6,i18n("%1[%2]").arg(fi.group()).arg(fi.groupId()));
+   }
 
 }
 
@@ -791,7 +793,6 @@ void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& f
       item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(fi.ownerId()));
       item->setText(6,i18n("%1[%2]").arg(fi.group()).arg(fi.groupId()));
   }
-  m_view->resultView()->setColumnText(4,"Total number occurrences");
 }
 
 KAboutData* KFileReplacePart::createAboutData()
@@ -1245,6 +1246,7 @@ void KFileReplacePart::slotFileSearch()
       return;
 
    emit setStatusBarText(i18n("Searching files..."));
+   m_view->resultView()->setColumnText(4, i18n("Total number occurrences"));
 
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
