@@ -33,6 +33,8 @@
 #include <kmessagebox.h>
 #include <kparts/genericfactory.h>
 #include <kstandarddirs.h>
+#include <dcopclient.h> 
+#include <dcopref.h> 
 
 //own includes
 #include "apistruct.h"
@@ -125,46 +127,72 @@ void KFileReplacePart::initGUI()
 
    // File
    (void)new KAction(i18n("New Search Project..."), "newproject", 0, this, SLOT(slotFileNew()), actionCollection(), "new_project");
+   
    (void)new KAction(i18n("&Search"), "find", 0, this, SLOT(slotFileSearch()), actionCollection(), "search");
+   
    (void)new KAction(i18n("&Simulate"), "filesimulate", 0, this, SLOT(slotFileSimulate()), actionCollection(), "file_simulate");
+   
    (void)new KAction(i18n("&Replace"), "filereplace", 0, this, SLOT(slotFileReplace()), actionCollection(), "replace");
+   
    (void)new KAction(i18n("Sto&p"), "filestop", 0, this, SLOT(slotFileStop()), actionCollection(), "stop");
+   
    (void)new KAction(i18n("Save &Results As..."), "filesave", 0, this, SLOT(slotFileSave()), actionCollection(), "save_results");
 
    // Strings
    (void)new KAction(i18n("&Add String..."), "edit_add", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
+   
    (void)new KAction(i18n("&Delete String"), "edit_remove", 0, this, SLOT(slotStringsDel()), actionCollection(), "strings_del");
+   
    (void)new KAction(i18n("&Empty Strings List"), "strempty", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
+   
    (void)new KAction(i18n("Edi&t Selected String..."), "lineedit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
+   
    (void)new KAction(i18n("&Save Strings List to File..."), "filesave", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
+   
    (void)new KAction(i18n("&Load Strings List From File..."), "unsortedList", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
-   (void)new KRecentFilesAction(i18n("&Load Recent Strings Files..."), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),
-                                "strings_load_recent");
+   
+   (void)new KRecentFilesAction(i18n("&Load Recent Strings Files..."), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),"strings_load_recent");
+                                
    (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
+   
    (void)new KAction(i18n("&Invert All Strings (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertAll()), actionCollection(), "strings_invert_all");
 
    // Options
    (void)new KToggleAction(i18n("&Include Sub-Folders"), "recursive", 0, this, SLOT(slotOptionsRecursive()), actionCollection(), "options_recursive");
+   
    (void)new KToggleAction(i18n("Create &Backup"), "backup", 0, this, SLOT(slotOptionsBackup()), actionCollection(), "options_backup");
+   
    (void)new KToggleAction(i18n("Case &Sensitive"), "casesensitive", 0, this, SLOT(slotOptionsCaseSensitive()), actionCollection(), "options_case");
+   
    (void)new KToggleAction(i18n("Enable &Wildcards"), "optwildcards", 0, this, SLOT(slotOptionsWildcards()), actionCollection(), "options_wildcards");
+   
    (void)new KToggleAction(i18n("Enable &Variables in Replace String: [$name:format$]"), "optvar", 0, this, SLOT(slotOptionsVariables()), actionCollection(), "options_var");
 
    (void) new KAction(i18n("Configure &KFileReplace..."), "configure", 0, this, SLOT(slotOptionsPreferences()), actionCollection(), "configure_kfilereplace");
 
    // Results
    (void)new KAction(i18n("&Properties"), "resfileinfo", 0, m_view, SLOT(slotResultProperties()), actionCollection(), "results_infos");
+   
    (void)new KAction(i18n("&Open"), "resfileopen", 0, m_view, SLOT(slotResultOpen()), actionCollection(), "results_openfile");
+   
+   //if(QString(kapp->startupId()).contains("quanta")==0)
    (void)new KAction(i18n("&Open in Quanta"), "resfileedit", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
+   
+   
    (void)new KAction(i18n("Open Parent &Folder"), "resdiropen", 0, m_view, SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
+   
    (void)new KAction(i18n("&Delete"), "resfiledel", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");
+   
    (void)new KAction(i18n("E&xpand Tree"), 0, m_view, SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
+   
    (void)new KAction(i18n("&Reduce Tree"), 0, m_view, SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
 
    // Help menu
 //   setHelpMenuEnabled(false);
    (void)new KAction(i18n("&About KFileReplace"), "kfilereplace", 0, this, SLOT(showAboutApplication()), actionCollection(), "about_kfilereplace");
+   
    (void)new KAction(i18n("KFileReplace &Handbook"), "help", 0, this, SLOT(appHelpActivated()), actionCollection(), "help_kfilereplace");
+   
    (void)new KAction(i18n("&Report Bug..."), 0, 0, this, SLOT(reportBug()), actionCollection(), "report_bug");
 }
 
