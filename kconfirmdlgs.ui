@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string>Replace First String With Second?</string>
+        <string>Replace First String with Second?</string>
     </property>
     <grid>
         <property name="name">
