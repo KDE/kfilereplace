@@ -24,9 +24,6 @@ libkfilereplacepart_la_SOURCES = kfilereplacepart.cpp kfilereplaceview.cpp \
 libkfilereplacepart_la_LDFLAGS = -module $(KDE_PLUGIN) $(all_libraries)
 libkfilereplacepart_la_LIBADD = $(LIB_KFILE) $(LIB_KPARTS) $(LIB_KHTML)
 
-kde_services_DATA = kfilereplacepart.desktop
-
-
 messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/kfilereplace.pot
 
