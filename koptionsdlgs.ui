@@ -68,7 +68,7 @@
                                 <cstring>pbDefault</cstring>
                             </property>
                             <property name="text">
-                                <string>&amp;Default values</string>
+                                <string>&amp;Default Values</string>
                             </property>
                             <property name="accel">
                                 <string>Alt+D</string>
@@ -351,7 +351,7 @@
                             <cstring>gbxConfirm</cstring>
                         </property>
                         <property name="title">
-                            <string>Confirm before replacing</string>
+                            <string>Confirm Before Replacing</string>
                         </property>
                         <vbox>
                             <property name="name">
@@ -378,7 +378,7 @@
                                     <cstring>chbConfirmStrings</cstring>
                                 </property>
                                 <property name="text">
-                                    <string>Confirm when replace each string</string>
+                                    <string>Confirm replacement of each string</string>
                                 </property>
                             </widget>
                         </vbox>
