@@ -7,7 +7,7 @@
                            (C) 2003 Andras Mantia <amantia@kde.org>
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
-                               
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -55,9 +55,9 @@ QString KFileReplaceLib::formatFullPath(const QString& basePath, const QString &
 
   if (fullPath.endsWith("/"))
     fullPath.append(fname);
-  else 
+  else
     fullPath.append("/"+fname);
-  
+
   return fullPath;
 }
 
@@ -89,30 +89,30 @@ QString KFileReplaceLib::addExtension(const QString& fileName, const QString& ex
 QString KFileReplaceLib::formatFileSize(double size)
 {
   QString stringSize;
-    
+
   if(size < kilo)
-    stringSize = QString::number(size,'f',0) + " bytes";
+    stringSize = i18n("%1 bytes").arg(QString::number(size,'f',0));
   else
-  if(size >= kilo and size < mega)
+  if(size >= kilo && size < mega)
     {
       double d = size / kilo;
-      stringSize = QString::number(d,'f',2) + " KB";
+      stringSize = i18n("%1 KB").arg(QString::number(d,'f',2));
     }
   else
-  if(size >= mega and size < giga)
+  if(size >= mega && size < giga)
     {
       double d = size / mega;
-      stringSize = QString::number(d,'f',2) + " MB";
-    } 
+      stringSize = i18n("%1 MB").arg(QString::number(d,'f',2));
+    }
   else
   if(size >= giga)
     {
       double d = size / giga;
-      stringSize = QString::number(d,'f',2) + " GB";
-    }  
-  return stringSize; 
+      stringSize =  i18n("%1 GB").arg(QString::number(d,'f',2));
+    }
+  return stringSize;
 }
- 
+
 void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListView* stringView)
 {
  //this method convert old format in new XML-based format
@@ -128,10 +128,10 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
  FILE* f = fopen(fileName.ascii(),"rb");
  int err = fread(&head, sizeof(KFRHeader), 1, f);
  QString pgm(head.pgm);
- 
- if(not f or (err != 1) or (pgm != "KFileReplace"))
+
+ if(!f || (err != 1) || (pgm != "KFileReplace"))
  {
-   KMessageBox::error(0, i18n("<qt>Cannot open the file <b>")+fileName+i18n("</b> and load the string list. This file seems not to be a valid old kfr file or it is broken.</qt>"));
+   KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b> and load the string list. This file seems not to be a valid old kfr file or it is broken.</qt>").arg(fileName));
    return ;
  }
 
@@ -157,7 +157,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
               * newString = (char*) malloc(stringSize+10);
           memset(oldString, 0, stringSize);
           memset(newString,0, stringSize);
-          if (oldString == 0 or newString == 0)
+          if (oldString == 0 || newString == 0)
             KMessageBox::error(0, i18n("<qt>Out of memory.</qt>"));
           else
             {
@@ -174,7 +174,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
                           QListViewItem* lvi = new QListViewItem(stringView);
                           lvi->setText(0,oldString);
                           lvi->setText(1,newString);
-                         
+
                           if(newString)
                             free(newString);
                           if(oldString)
@@ -188,40 +188,40 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
     fclose(f);
     return ;
  }
- 
+
 bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString& fileName, const ConfigurationInformation& info)
 {
   QString bkExt = info.backupExtension();
-  if(fileName == ".." or fileName == "." or fileName.right(bkExt.length()) == bkExt) 
+  if(fileName == ".." || fileName == "." || fileName.right(bkExt.length()) == bkExt)
     return false;
-    
+
   QFileInfo fi;
   if(filePath.isEmpty())
     fi.setFile(fileName);
   else
     fi.setFile(filePath+"/"+fileName);
-  
+
   if(fi.isDir())
     return true;
-       
+
    int minSize = info.minSize(),
        maxSize = info.maxSize();
    QString minDate = info.minDate(),
            maxDate = info.maxDate(),
            dateAccess = info.dateAccess();
-  
+
   // Avoid files that not match access date requirements
   QString last = "unknown";
   if(dateAccess == "Last Writing Access")
     last = fi.lastModified().toString(Qt::ISODate);
   if(dateAccess == "Last Reading Access")
     last = fi.lastRead().toString(Qt::ISODate);
-  
+
   if(last != "unknown")
     {
-      if(minDate != "unknown" and maxDate != "unknown")
+      if(minDate != "unknown" && maxDate != "unknown")
         { //If out of range then exit
-          if((minDate > last) or (maxDate < last))
+          if((minDate > last) || (maxDate < last))
             return false;
         }
       else
@@ -232,20 +232,20 @@ bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString&
                 return false;
             }
           else
-            { 
+            {
               if(maxDate != "unknown")
               //If out of range then exit
               if(maxDate < last)
                 return false;
-            }  
+            }
         }
-    }   
-  // Avoid files that not match size requirements    
+    }
+  // Avoid files that not match size requirements
   int size = fi.size();
-  if(maxSize != FileSizeOption and minSize != FileSizeOption)
-    if(size > (maxSize*1024) or size < (minSize*1024)) 
+  if(maxSize != FileSizeOption && minSize != FileSizeOption)
+    if(size > (maxSize*1024) || size < (minSize*1024))
       return false;
-  
+
   // Avoid files that not match ownership requirements
   if(info.ownerUserIsChecked())
     {
@@ -264,9 +264,9 @@ bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString&
         {
           if(info.ownerUserValue() == fileOwnerUser)
             return false;
-        }  
+        }
     }
-  
+
   if(info.ownerGroupIsChecked())
     {
       QString fileOwnerGroup;
@@ -283,9 +283,9 @@ bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString&
         {
           if(info.ownerGroupValue() == fileOwnerGroup)
             return false;
-        }  
+        }
     }
-  
+
   //If we are here then all requirements have been verified
   return true;
 }
@@ -295,26 +295,26 @@ void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
   QFileInfo fi(path);
   QString extension = fi.extension(),
           baseName = fi.baseName();
-  
+
   if(extension == "cpp")
     item->setPixmap(0,SmallIcon("source_cpp"));
   else
   if(extension == "h")
     item->setPixmap(0,SmallIcon("source_h"));
-  else 
+  else
   if(extension == "o")
     item->setPixmap(0,SmallIcon("source_o"));
   else
-  if((extension == "png") or (extension == "jpg") or (extension == "xpm"))
+  if((extension == "png") || (extension == "jpg") || (extension == "xpm"))
     item->setPixmap(0,SmallIcon("image"));
   else
-  if((extension.contains("htm",false) != 0) or (extension.contains("xml",false) != 0))
+  if((extension.contains("htm",false) != 0) || (extension.contains("xml",false) != 0))
     item->setPixmap(0,SmallIcon("html"));
   else
   if(extension.contains("pdf",false) != 0)
     item->setPixmap(0,SmallIcon("pdf"));
   else
-  if((extension.contains("wav",false) != 0) or (extension.contains("mp3",false) != 0))
+  if((extension.contains("wav",false) != 0) || (extension.contains("mp3",false) != 0))
     item->setPixmap(0,SmallIcon("sound"));
   else
   if((extension.contains("txt",false) != 0))
@@ -350,5 +350,5 @@ void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
       else
       if(baseName.contains("readme",false) != 0)
         item->setPixmap(0,SmallIcon("txt"));
-    }  
+    }
 }

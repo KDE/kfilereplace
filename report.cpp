@@ -19,7 +19,7 @@
 #include <qstring.h>
 #include <qfile.h>
 
-// KDE 
+// KDE
 #include <klistview.h>
 #include <kmessagebox.h>
 #include <kuser.h>
@@ -29,40 +29,38 @@
 #include "configurationclasses.h"
 
 void Report::createReportFile()
-{  
+{
   QString xmlFileName = m_docPath + ".xml",
           cssFileName = m_docPath + ".css";
-  
+
   // Generate a report file
   // a) Open the file
   QFile report(xmlFileName);
-  if (not report.open( IO_WriteOnly ))
+  if (!report.open( IO_WriteOnly ))
     {
-      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>") + 
-                            xmlFileName + 
-                            i18n("</b>.</qt>"));
+      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>").arg(xmlFileName));
       return ;
     }
-    
+
   // b) Write the header of the XML file
-  
+
   QDateTime datetime = QDateTime::currentDateTime(Qt::LocalTime);
   QString dateString = datetime.toString(Qt::LocalDate);
   KUser user;
   QString columnTextFour = i18n("Replaced Strings"),
           columnReplaceWith = i18n("Replace with");
-  
-  if(m_isSearchFlag) 
+
+  if(m_isSearchFlag)
     {
       columnTextFour = i18n("Total number occurrences");
       columnReplaceWith = i18n("-");
     }
-  QString css =  cssFileName.mid(cssFileName.findRev("/")+1,cssFileName.length()-(cssFileName.findRev("/")+1)); 
+  QString css =  cssFileName.mid(cssFileName.findRev("/")+1,cssFileName.length()-(cssFileName.findRev("/")+1));
   QTextStream oTStream( &report );
   oTStream << "<?xml version=\"1.0\"?>\n"
               "<?xml-stylesheet href=\""+css+"\" type=\"text/css\"?>"
               "<report>\n"
-              " <title> KFileReplace Report </title>\n"
+              " <title> "+i18n("KFileReplace Report")+" </title>\n"
               " <createdby>"+user.fullName()+"("+user.loginName()+")"+"</createdby>\n"
               " <date>"+dateString+"</date>\n"
               "<hr/>\n"
@@ -75,31 +73,31 @@ void Report::createReportFile()
               "  </row>\n"
               " </header>\n";
   // c) Write the strings list
-  QListViewItem *lviCurItem, 
+  QListViewItem *lviCurItem,
                 *lviFirst;
-  
+
   lviCurItem = lviFirst = m_stringView->firstChild();
 
   if(lviCurItem == 0)
     return ;
 
   QString rowType="a1";
-  
+
   do
     { QString rowTag = "<row >\n"
                        " <searchfor class=\""+rowType+"\">"+lviCurItem->text(0)+"</searchfor>\n"
                        " <replacewith class=\""+rowType+"\">"+lviCurItem->text(1)+"</replacewith>\n"
                        "</row>\n";
-       
+
       oTStream << rowTag;
 
-      rowType = ((rowType == "a1") ? "a2" : "a1"); 
-      
+      rowType = ((rowType == "a1") ? "a2" : "a1");
+
       lviCurItem = lviCurItem->nextSibling();
-    } while(lviCurItem and lviCurItem != lviFirst);
-  
+    } while(lviCurItem && lviCurItem != lviFirst);
+
   oTStream<< "</table>\n";
-  
+
   oTStream<< "<whiteline/>\n"
              " <table>\n"
              "  <tablecaption> "+i18n("Results Table")+ " </tablecaption>"
@@ -116,35 +114,35 @@ void Report::createReportFile()
              "  </header>\n";
 
   // d) Write the result list
-    
+
   lviCurItem = lviFirst = m_resultView->firstChild();
 
   if(lviCurItem == 0)
     return ;
 
   unsigned int totalOccurrences = 0;
-  
+
   rowType="a1";
-  
+
   do
     { QString rowTag = "   <row >\n"
                        "    <name class=\""+rowType+"\">"+lviCurItem->text(0)+"</name>\n"
                        "    <folder class=\""+rowType+"\">"+lviCurItem->text(1)+"</folder>\n"
-                       "    <oldsize class=\""+rowType+"\">"+lviCurItem->text(2)+"</oldsize>\n" 
-                       "    <newsize class=\""+rowType+"\">"+lviCurItem->text(3)+"</newsize>\n" 
+                       "    <oldsize class=\""+rowType+"\">"+lviCurItem->text(2)+"</oldsize>\n"
+                       "    <newsize class=\""+rowType+"\">"+lviCurItem->text(3)+"</newsize>\n"
                        "    <replacedstrings class=\""+rowType+"\">"+lviCurItem->text(4)+"</replacedstrings>\n"
                        "    <owneruser class=\""+rowType+"\">"+lviCurItem->text(5)+"</owneruser>\n"
                        "    <ownergroup class=\""+rowType+"\">"+lviCurItem->text(6)+"</ownergroup>\n"
                        "   </row>\n";
-       
+
       oTStream << rowTag;
 
-      rowType = ((rowType == "a1") ? "a2" : "a1"); 
-      
+      rowType = ((rowType == "a1") ? "a2" : "a1");
+
       totalOccurrences += lviCurItem->text(4).toInt();
 
       lviCurItem = lviCurItem->nextSibling();
-    } while(lviCurItem and lviCurItem != lviFirst);
+    } while(lviCurItem && lviCurItem != lviFirst);
 
 
   // e) Write the end of the file
@@ -154,7 +152,7 @@ void Report::createReportFile()
            << totalOccurrences
            << "</totaloccurrences>\n"
               "</report>\n";
-   
+
    report.close();
 }
 
@@ -162,14 +160,14 @@ void Report::createStyleSheet()
 {
   QString cssFileName = m_docPath +".css";
   QFile styleSheet(cssFileName);
-  if (not styleSheet.open( IO_WriteOnly ))
+  if (!styleSheet.open( IO_WriteOnly ))
     {
-      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>") + cssFileName + i18n("</b>.</qt>"));
+      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>").arg(cssFileName));
       return ;
     }
-  
+
   QTextStream oTStream( &styleSheet );
-   
+
   QString css = "title { display:block;font:40px bold Arial; }\n\n"
                 "createdby:before { content :\""+i18n("Created by")+": \"; }\n"
                 "createdby { display:inline; }\n\n"
@@ -234,10 +232,10 @@ void Report::createStyleSheet()
                 "              background-color:khaki;\n"
                 "              font-weight : bold;\n"
                 "              font-size:15px; }\n\n";
-  
+
   oTStream << css;
-  
-  styleSheet.close(); 
+
+  styleSheet.close();
 }
 
 void Report::createDocument(const QString& docPath, KListView* stringView, KListView* resultView, bool isSearchFlag)
@@ -246,7 +244,7 @@ void Report::createDocument(const QString& docPath, KListView* stringView, KList
   m_stringView = stringView;
   m_resultView = resultView;
   m_isSearchFlag = isSearchFlag;
-  
+
   createStyleSheet();
   createReportFile();
 }

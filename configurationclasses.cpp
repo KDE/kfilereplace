@@ -2,7 +2,7 @@
                           configurationclasses.cpp  -  description
                              -------------------
     begin                : Sat Sep 11 2004
-    copyright            : (C) 2004 Emiliano Gulmini 
+    copyright            : (C) 2004 Emiliano Gulmini
     email                : emi_barbarossa@yahoo.it
  ***************************************************************************/
 
@@ -25,18 +25,18 @@
 using namespace whatthisNameSpace;
 
 //ConfigurationInformation Class
-ConfigurationInformation& ConfigurationInformation::operator=(const ConfigurationInformation& ci) 
+ConfigurationInformation& ConfigurationInformation::operator=(const ConfigurationInformation& ci)
 {
   m_directory = ci.m_directory;
   m_filter = ci.m_filter;
-           
+
   m_minSize = ci.m_minSize;
   m_maxSize = ci.m_maxSize;
-        
+
   m_dateAccess = ci.m_dateAccess;
   m_minDate = ci.m_minDate;
   m_maxDate = ci.m_maxDate;
-        
+
   m_caseSensitive = ci.m_caseSensitive;
   m_recursive = ci.m_recursive;
   m_followSymLinks = ci.m_followSymLinks;
@@ -45,7 +45,7 @@ ConfigurationInformation& ConfigurationInformation::operator=(const Configuratio
   m_backupExtension = ci.m_backupExtension;
   m_ignoreFiles = ci.m_ignoreFiles;
   m_regularExpressions = ci.m_regularExpressions;
-       
+
   m_variables = ci.m_variables;
   m_confirmFiles = ci.m_confirmFiles;
   m_confirmStrings = ci.m_confirmStrings;
@@ -55,24 +55,24 @@ ConfigurationInformation& ConfigurationInformation::operator=(const Configuratio
   m_ignoreHidden = ci.m_ignoreHidden;
   m_simulation = ci.m_simulation;
   m_searchMode = ci.m_searchMode;
-      
+
   m_ownerUserIsChecked = ci.m_ownerUserIsChecked;
   m_ownerGroupIsChecked = ci.m_ownerGroupIsChecked;
-    
+
   m_ownerUserBool = ci.m_ownerUserBool;
   m_ownerGroupBool = ci.m_ownerGroupBool;
-            
+
   m_ownerUserType = ci.m_ownerUserType;
   m_ownerGroupType = ci.m_ownerGroupType;
-     
+
   m_ownerUserValue = ci.m_ownerUserValue;
   m_ownerGroupValue = ci.m_ownerGroupValue;
-     
+
   m_mapStringsView = ci.m_mapStringsView;
-      
+
   m_quickSearchString =  ci.m_quickSearchString;
   m_quickReplaceString = ci.m_quickReplaceString;
-      
+
   return (*this);
 }
 
@@ -104,23 +104,23 @@ int ResultViewEntry::columnNumber(const QString& line) const
 {
   return(m_pos - line.findRev('\n',m_pos));
 }
-    
+
 void ResultViewEntry::incOccurrences()
 {
   m_matchedStringsOccurrence++;
 }
-    
+
 int ResultViewEntry::occurrences() const
 {
   return m_matchedStringsOccurrence;
 }
-    
+
 bool ResultViewEntry::regexp()const
 {
   return m_regexp;
 }
-    
-int ResultViewEntry::pos(const QString& line) 
+
+int ResultViewEntry::pos(const QString& line)
 {
   if(m_regexp)
     m_pos = m_rxKey.search(line,m_pos);
@@ -134,24 +134,24 @@ void ResultViewEntry::incPos()
 {
   int kl = keyLength(),
       dl = dataLength();
-      
+
   if(kl < dl)
     m_pos += kl;
   else
     m_pos += dl;
-  
-}    
-QString ResultViewEntry::capturedText(const QString& line) 
+
+}
+QString ResultViewEntry::capturedText(const QString& line)
 {
   QString cap;
-  
+
   if(m_regexp)
     cap = m_rxKey.cap(1);
   else
     cap =line.mid(m_pos,m_key.length());
-      
+
   //cap.replace('\n',"\\n");
-   
+
   return cap;
 }
 
@@ -159,17 +159,7 @@ QString ResultViewEntry::message(const QString& capturedText, int x, int y) cons
 {
   QString data = m_data;
   //data.replace('\n',"\\n");
-  return(
-          " " +
-          i18n("captured text") +
-          " \""+capturedText+"\" " +
-          i18n("replaced with") +
-          " \""+data+"\" " +
-          i18n("at line:") +
-          QString::number(x,10) +
-          i18n(", column:") +
-          QString::number(y,10)
-        );
+  return i18n(" captured text \"%1\" replaced with \"%2\" at line %3, column %4 ").arg(capturedText).arg(data).arg(QString::number(x,10)).arg(QString::number(y,10));
 }
 
 int ResultViewEntry::keyLength() const

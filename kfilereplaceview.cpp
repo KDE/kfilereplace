@@ -29,7 +29,7 @@
 #include <klocale.h>
 #include <kpopupmenu.h>
 #include <krun.h>
-#include <kpropertiesdialog.h>   
+#include <kpropertiesdialog.h>
 #include <kapplication.h>
 #include <dcopclient.h>
 #include <dcopref.h>
@@ -77,7 +77,7 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
 
   // connect events
   connect(m_lvResults,
-          SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)), 
+          SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)),
           this,
           SLOT(slotMouseButtonClicked(int, QListViewItem *, const QPoint &, int)));
   connect(m_lvStrings,
@@ -110,17 +110,17 @@ QString KFileReplaceView::currentItem()
     lvi = m_lvResults->currentItem();
   }
   else lvi = (QListViewItem*) m_lviCurrent;
- 
+
   while (lvi->parent())
     lvi = lvi->parent();
-  
-  return QString(lvi->text(1)+"/"+lvi->text(0)); 
+
+  return QString(lvi->text(1)+"/"+lvi->text(0));
 }
 
 void KFileReplaceView::slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos, int column)
 {
   Q_UNUSED(column);
-  
+
   if (lvi == 0) // No item selected
     return;
 
@@ -146,7 +146,7 @@ void KFileReplaceView::slotResultProperties()
 void KFileReplaceView::slotResultOpen()
 {
   QString currItem = currentItem();
-  if(not currItem.isEmpty())
+  if(!currItem.isEmpty())
     {
       (void) new KRun(KURL(currItem), 0, true, true);
       m_lviCurrent = 0;
@@ -156,7 +156,7 @@ void KFileReplaceView::slotResultOpen()
 void KFileReplaceView::slotResultOpenWith()
 {
   QString currItem = currentItem();
-  if(not currItem.isEmpty())
+  if(!currItem.isEmpty())
     {
       KURL::List kurls;
       kurls.append(KURL(currItem));
@@ -168,7 +168,7 @@ void KFileReplaceView::slotResultOpenWith()
 void KFileReplaceView::slotResultDirOpen()
 {
   QString currItem = currentItem();
-  if(not currItem.isEmpty())
+  if(!currItem.isEmpty())
     {
       QFileInfo fi;
       fi.setFile(currItem);
@@ -180,16 +180,16 @@ void KFileReplaceView::slotResultDirOpen()
 void KFileReplaceView::slotResultEdit()
 {
   QListViewItem* lvi = m_lvResults->currentItem();
-  
+
   int line = 1,
       column = 1;
-  
+
   line = lvi->text(0).section(":",1,1).remove(", column").toInt();
-  column = lvi->text(0).section(":",2,2).toInt();                      
-  
+  column = lvi->text(0).section(":",2,2).toInt();
+
   if(line != 0) line--;
   if(column != 0) column--;
-     
+
   QString filePath = currentItem();
   DCOPClient *client = kapp->dcopClient();
 
@@ -197,9 +197,9 @@ void KFileReplaceView::slotResultEdit()
 
   bool success = quanta.send("openFile", filePath, line, column);
 
-  if(not success)
+  if(!success)
     {
-      QString message = i18n("<qt>File <b>" + filePath + "</b> cannot be opened. Might be a DCOP problem.</qt>");
+      QString message = i18n("<qt>File <b>%1</b> cannot be opened. Might be a DCOP problem.</qt>").arg(filePath);
       KMessageBox::error(parentWidget(), message);
     }
   m_lviCurrent = 0;
@@ -208,16 +208,16 @@ void KFileReplaceView::slotResultEdit()
 void KFileReplaceView::slotResultDelete()
 {
   QString currItem = currentItem();
-  if (not currItem.isEmpty())
+  if (!currItem.isEmpty())
     {
       QFile fi;
-      int answer = KMessageBox::questionYesNo(this, i18n("<qt>Do you really want to delete <b>" + currItem + "</b>?</qt>"));
+      int answer = KMessageBox::questionYesNo(this, i18n("<qt>Do you really want to delete <b>%1</b>?</qt>").arg(currItem));
 
       if(answer == KMessageBox::Yes)
         {
           fi.setName(currItem);
           fi.remove();
-      
+
           delete m_lviCurrent;
           m_lviCurrent = 0;
         }
@@ -274,7 +274,7 @@ void KFileReplaceView::loadMap(KeyValueMap extMap)
 
 void KFileReplaceView::loadMapIntoView(KeyValueMap map)
 {
-  m_lvStrings->clear(); 
+  m_lvStrings->clear();
   KeyValueMap::Iterator itMap;
   bool searchOnly = true;
   for(itMap = map.begin(); itMap != map.end(); ++itMap)
@@ -283,7 +283,7 @@ void KFileReplaceView::loadMapIntoView(KeyValueMap map)
       lvi->setMultiLinesEnabled(true);
       lvi->setText(0,itMap.key());
       lvi->setText(1,itMap.data());
-      if(not itMap.data().isEmpty())
+      if(!itMap.data().isEmpty())
         searchOnly = false;
     }
   m_info.setMapStringsView(map);
@@ -298,23 +298,23 @@ void KFileReplaceView::slotStringsAdd()
   KeyValueMap oldMap(m_info.mapStringsView());
   m_addStringdlg.setConfig(m_config);
   m_addStringdlg.clearView();
-  
-  if(not m_addStringdlg.exec())
+
+  if(!m_addStringdlg.exec())
      return;
-  
+
   KeyValueMap addedStringsMap(m_addStringdlg.stringsMap());
   KeyValueMap::Iterator itMap;
-  
+
   for(itMap = oldMap.begin(); itMap != oldMap.end(); ++itMap)
     addedStringsMap.insert(itMap.key(),itMap.data());
-    
+
   m_info.setMapStringsView(addedStringsMap);
-  loadMapIntoView(addedStringsMap);    
+  loadMapIntoView(addedStringsMap);
 }
 
 void KFileReplaceView::slotQuickStringsAdd(const QString& quickSearch, const QString& quickReplace)
-{  
-  if(not quickSearch.isEmpty())
+{
+  if(!quickSearch.isEmpty())
     {
       KeyValueMap pair;
       pair[quickSearch] = quickReplace;
@@ -326,20 +326,20 @@ void KFileReplaceView::slotQuickStringsAdd(const QString& quickSearch, const QSt
 void KFileReplaceView::slotStringsEdit(QListViewItem* lvi)
 {
   Q_UNUSED(lvi);
-  
+
   m_addStringdlg.setConfig(m_config);
   m_addStringdlg.loadViewContent(m_info.mapStringsView());
-  
-  if(not m_addStringdlg.exec())
+
+  if(!m_addStringdlg.exec())
     return;
   KeyValueMap map = m_addStringdlg.stringsMap();
   m_info.setMapStringsView(map);
-  
+
   loadMapIntoView(map);
 }
 
-void KFileReplaceView::slotStringsDeleteItem() 
-{ 
+void KFileReplaceView::slotStringsDeleteItem()
+{
   QListViewItem* item = m_lvStrings->currentItem();
   if(item != 0)
     {
@@ -353,14 +353,14 @@ void KFileReplaceView::slotStringsDeleteItem()
 void KFileReplaceView::slotStringsEmpty()
 {
   QListViewItem * myChild = m_lvStrings->firstChild();
-  while( myChild ) 
+  while( myChild )
     {
       QListViewItem* temp = myChild;
       myChild = myChild->nextSibling();
       delete temp;
     }
   KeyValueMap m;
-  m_info.setMapStringsView(m); 
+  m_info.setMapStringsView(m);
 }
 
 void KFileReplaceView::whatsThis()
