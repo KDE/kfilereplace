@@ -238,7 +238,7 @@
                                     <cstring>m_chbIgnoreHidden</cstring>
                                 </property>
                                 <property name="text">
-                                  <string>Ignore hidden files and folders</string>
+                                    <string>Ignore hidden files and folders</string>
                                 </property>
                             </widget>
                             <widget class="QCheckBox" row="4" column="0">
@@ -270,51 +270,51 @@
                             </widget>
                             <widget class="QLayoutWidget" row="1" column="0">
                                 <property name="name">
-                                   <cstring>layout9</cstring>
+                                    <cstring>layout9</cstring>
                                 </property>
                                 <hbox>
-                                  <property name="name">
-                                      <cstring>unnamed</cstring>
-                                  </property>
-                                  <spacer>
                                     <property name="name">
-                                       <cstring>spacer2</cstring>
+                                        <cstring>unnamed</cstring>
                                     </property>
-                                    <property name="orientation">
-                                       <enum>Horizontal</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                      <enum>Fixed</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                      <size>
-                                        <width>16</width>
-                                        <height>20</height>
-                                      </size>
-                                    </property>
-                                  </spacer>
-                                  <widget class="QCheckBox">
-                                    <property name="name">
-                                      <cstring>m_chbShowConfirmDialog</cstring>
-                                    </property>
-                                    <property name="enabled">
-                                      <bool>false</bool>
-                                    </property>
-                                    <property name="text">
-                                      <string>Show confirmation dialog</string>
-                                    </property>
-                                  </widget>
+                                    <spacer>
+                                        <property name="name">
+                                            <cstring>spacer2</cstring>
+                                        </property>
+                                        <property name="orientation">
+                                            <enum>Horizontal</enum>
+                                        </property>
+                                        <property name="sizeType">
+                                            <enum>Fixed</enum>
+                                        </property>
+                                        <property name="sizeHint">
+                                            <size>
+                                                <width>16</width>
+                                                <height>20</height>
+                                            </size>
+                                        </property>
+                                    </spacer>
+                                    <widget class="QCheckBox">
+                                        <property name="name">
+                                            <cstring>m_chbShowConfirmDialog</cstring>
+                                        </property>
+                                        <property name="enabled">
+                                            <bool>false</bool>
+                                        </property>
+                                        <property name="text">
+                                            <string>Show confirmation dialog</string>
+                                        </property>
+                                    </widget>
                                 </hbox>
-                              </widget>
-                              <widget class="QCheckBox" row="0" column="0">
+                            </widget>
+                            <widget class="QCheckBox" row="0" column="0">
                                 <property name="name">
-                                  <cstring>m_chbConfirmStrings</cstring>
+                                    <cstring>m_chbConfirmStrings</cstring>
                                 </property>
                                 <property name="enabled">
-                                    <bool>true</bool>
+                                    <bool>false</bool>
                                 </property>
                                 <property name="text">
-                                  <string>Confirm before replace each string</string>
+                                    <string>Confirm before replace each string</string>
                                 </property>
                             </widget>
                         </grid>

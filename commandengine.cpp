@@ -213,6 +213,4 @@ void CommandEngine::slotProcessExited(KProcess* proc)
   Q_UNUSED(proc);
 }
 
-
-
 #include "commandengine.moc"

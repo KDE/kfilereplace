@@ -44,6 +44,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     bool m_stop,
          m_searchingOperation;
     int m_optionMask;
+    QString m_currentDir;
 
   public://Constructors
     KFileReplacePart(QWidget *parentWidget,
@@ -155,11 +156,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
 
     void setOptionMask();
 
-    void stringsInvert(bool invertAll);
-
     bool checkBeforeOperation();
-
-    void showSemaphore(QString s);
 
     bool dontAskAgain();
 

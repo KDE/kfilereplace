@@ -164,7 +164,8 @@ QString ResultViewEntry::capturedText(const QString& line)
 QString ResultViewEntry::message(const QString& capturedText, int x, int y) const
 {
   QString data = m_data;
-  return i18n(" captured text \"%1\" replaced with \"%2\" at line: %3, column: %4 ").arg(capturedText).arg(data).arg(QString::number(x,10)).arg(QString::number(y,10));
+  //return i18n(" captured text \"%1\" replaced with \"%2\" at line: %3, column: %4 ").arg(capturedText).arg(data).arg(QString::number(x,10)).arg(QString::number(y,10));
+  return i18n(" Line:%3,Col:%4 - \"%1\" -> \"%2\"").arg(capturedText).arg(data).arg(QString::number(x,10)).arg(QString::number(y,10));
 }
 
 int ResultViewEntry::keyLength() const
@@ -182,8 +183,6 @@ int ResultViewEntry::dataLength() const
 
 void ResultViewEntry::updateLine(QString& line)
 {
-  //qWarning("PRIMA=%s",line.mid(m_pos,m_data.length()).latin1());
   line.insert(m_pos, m_data);
   line.remove(m_pos + dataLength(), keyLength());
-  //qWarning("DOPO =%s",line.mid(m_pos,m_data.length()).latin1());
 }

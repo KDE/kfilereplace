@@ -72,12 +72,14 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void changeView(bool searchingOnlyMode);
     KListView* getResultsView();
     KListView* getStringsView();
-    QString currentItem();
+    QString currentPath();
     void loadMap(KeyValueMap extMap){ loadMapIntoView(extMap); }
     KeyValueMap getStringsViewMap()const { return m_option->m_mapStringsView;}
     void setCurrentStringsViewMap(){ setMap();}
     void displayScannedFiles(int filesNumber) { m_lcdFilesNumber->display(QString::number(filesNumber,10)); }
     void emitSearchingOnlyMode(bool b) { emit searchingOnlyMode(b); }
+    void showSemaphore(QString s);
+    void stringsInvert(bool invertAll);
 
   public slots:
     void slotStringsAdd();
@@ -85,6 +87,7 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void slotStringsDeleteItem();
     void slotStringsEmpty();
     void slotStringsEdit();
+    void slotStringsSave();
     void slotResultProperties();
     void slotResultOpen();
     void slotResultOpenWith();

@@ -32,9 +32,12 @@
 #include <dcopref.h>
 //#include <kdebug.h>
 #include <kiconloader.h>
+#include <kled.h>
+#include <kfiledialog.h>
 
 // local
 #include "kfilereplaceview.h"
+#include "kfilereplacelib.h"
 #include "kaddstringdlg.h"
 #include "whatthis.h"
 
@@ -55,7 +58,7 @@ KFileReplaceView::KFileReplaceView(RCOptions* info, QWidget *parent,const char *
   whatsThis();
 }
 
-QString KFileReplaceView::currentItem()
+QString KFileReplaceView::currentPath()
 {
   QListViewItem *lvi;
 
@@ -66,6 +69,66 @@ QString KFileReplaceView::currentItem()
     lvi = lvi->parent();
 
   return QString(lvi->text(1)+"/"+lvi->text(0));
+}
+
+void KFileReplaceView::showSemaphore(QString s)
+{
+  if(s == "green")
+  {
+    m_ledGo->setState(KLed::On);
+    m_ledWait->setState(KLed::Off);
+    m_ledStop->setState(KLed::Off);
+  }
+  else
+    if(s == "yellow")
+  {
+    m_ledGo->setState(KLed::Off);
+    m_ledWait->setState(KLed::On);
+    m_ledStop->setState(KLed::Off);
+  }
+  else
+    if(s == "red")
+  {
+    m_ledGo->setState(KLed::Off);
+    m_ledWait->setState(KLed::Off);
+    m_ledStop->setState(KLed::On);
+  }
+}
+
+void KFileReplaceView::stringsInvert(bool invertAll)
+{
+  QListViewItem* lviCurItem,
+  * lviFirst;
+  KListView* sv = getStringsView();
+
+  if(invertAll)
+    lviCurItem = lviFirst = sv->firstChild();
+  else
+    lviCurItem = lviFirst = sv->currentItem();
+
+  if(lviCurItem == 0)
+    return ;
+
+  do
+  {
+    QString searchText = lviCurItem->text(0),
+    replaceText = lviCurItem->text(1);
+
+      // Cannot invert the string when search string is empty
+    if (replaceText.isEmpty())
+    {
+      KMessageBox::error(0, i18n("<qt>Cannot invert string <b>%1</b>, because the search string would be empty.</qt>").arg(searchText));
+      return;
+    }
+
+    lviCurItem->setText(0, replaceText);
+    lviCurItem->setText(1, searchText);
+
+    lviCurItem = lviCurItem->nextSibling();
+    if(!invertAll)
+      break;
+  } while(lviCurItem && lviCurItem != lviFirst);
+  setCurrentStringsViewMap();
 }
 
 void KFileReplaceView::changeView(bool searchingOnlyMode)
@@ -120,7 +183,7 @@ void KFileReplaceView::slotMouseButtonClicked (int button, QListViewItem *lvi, c
 
 void KFileReplaceView::slotResultProperties()
 {
-  QString currItem = currentItem();
+  QString currItem = currentPath();
   if(! currItem.isEmpty())
     {
       KURL url(currItem);
@@ -131,7 +194,7 @@ void KFileReplaceView::slotResultProperties()
 
 void KFileReplaceView::slotResultOpen()
 {
-  QString currItem = currentItem();
+  QString currItem = currentPath();
   if(!currItem.isEmpty())
     {
       (void) new KRun(KURL(currItem), 0, true, true);
@@ -141,7 +204,7 @@ void KFileReplaceView::slotResultOpen()
 
 void KFileReplaceView::slotResultOpenWith()
 {
-  QString currItem = currentItem();
+  QString currItem = currentPath();
   if(!currItem.isEmpty())
     {
       KURL::List kurls;
@@ -153,7 +216,7 @@ void KFileReplaceView::slotResultOpenWith()
 
 void KFileReplaceView::slotResultDirOpen()
 {
-  QString currItem = currentItem();
+  QString currItem = currentPath();
   if(!currItem.isEmpty())
     {
       QFileInfo fi;
@@ -162,15 +225,15 @@ void KFileReplaceView::slotResultDirOpen()
       m_lviCurrent = 0;
     }
 }
-
+#include <kdebug.h>
 void KFileReplaceView::slotResultsEdit()
 {
+  DCOPClient *client = kapp->dcopClient();
+  DCOPRef quanta(client->appId(),"WindowManagerIf");
   QListViewItem *lvi = m_rv->firstChild();
 
   while (lvi)
     {
-      DCOPClient *client = kapp->dcopClient();
-      DCOPRef quanta(client->appId(),"WindowManagerIf");
 
       QListViewItem *lviChild = lvi;
 
@@ -178,7 +241,7 @@ void KFileReplaceView::slotResultsEdit()
         {
           if(lviChild->isSelected())
             {
-              QString path = QString(lvi->text(1)+"/"+lvi->text(0));
+              QString path = lvi->text(1)+"/"+lvi->text(0);
               coord c;
               if (lviChild == lvi) 
               {
@@ -196,7 +259,10 @@ void KFileReplaceView::slotResultsEdit()
                   KMessageBox::error(parentWidget(), message);
                 }
             }
-          lviChild = lviChild->nextSibling();
+            if (lviChild == lvi)
+              lviChild = lviChild->firstChild();
+            else
+              lviChild = lviChild->nextSibling();
         }
 
       lvi = lvi->nextSibling();
@@ -207,7 +273,7 @@ void KFileReplaceView::slotResultsEdit()
 
 void KFileReplaceView::slotResultDelete()
 {
-  QString currItem = currentItem();
+  QString currItem = currentPath();
   if (!currItem.isEmpty())
     {
       QFile fi;
@@ -327,37 +393,62 @@ coord KFileReplaceView::extractWordCoordinates(QListViewItem* lvi)
 {
   //get coordinates of the first string of the current selected file
   coord c;
+  c.line = 0;
+  c.column = 0;
+  QString s;
+  
+  if(lvi->parent()) s = lvi->text(0);
+  else return c;
 
-  QString s = lvi->text(0),
-          temp;
-  int i = 0,
-      j = s.length();
+  QString temp;
+  int i = 0;
 
   //extracts line and column from lvi->text(0)
   //FIXME: Don't get the line and column number from the text as it's translated and it will
   //fail for non-English languages!
 
   //EMILIANO: This is not a good fixing but for now it should reduce the problems
-  while(i < 2)
+  while(true)
     {
-      if(s[j-1] >= '0' && s[j-1] <= '9')
-        temp = s[j-1] + temp;
-
-      if(s[j-1] == ':')
-        {
-          if(i == 0)
-            c.column = temp.toInt();
-          else
-            c.line = temp.toInt();
-
-          temp = QString::null;
-          i++;
-        }
-      j--;
+      if(s[i] < '0' || s[i] > '9')
+	i++;
+      else
+	break;
     }
+  while(true)
+    {
+      if(s[i] >= '0' && s[i] <= '9')
+        {
+	  temp += s[i];
+	  i++;
+	}
+      else
+	break;
+    }
+  c.line = temp.toInt();
+  temp = QString::null;
 
-  if(c.line != 0) c.line--;
-  if(c.column != 0) c.column--;
+  while(true)
+    {
+      if(s[i] < '0' || s[i] > '9')
+	i++;
+      else
+	break;
+    }
+  while(true)
+    {
+      if(s[i] >= '0' && s[i] <= '9')
+      {
+	temp += s[i];
+	i++;
+      }
+      else
+	break;
+    }
+  c.column = temp.toInt();
+   
+  if(c.line > 0) c.line--;
+  if(c.column > 0) c.column--;
 
   return c;
 }
@@ -459,6 +550,7 @@ void KFileReplaceView::slotQuickStringsAdd(const QString& quickSearch, const QSt
 void KFileReplaceView::slotStringsEdit()
 {
   KeyValueMap oldMap(m_option->m_mapStringsView);
+  if(oldMap.isEmpty()) return;
   bool oldSearchFlagValue = m_option->m_searchingOnlyMode;
 
   oldMap.remove(m_sv->currentItem()->text(0));
@@ -488,6 +580,60 @@ void KFileReplaceView::slotStringsEdit()
   raiseStringsView();
 
   loadMapIntoView(newMap);
+}
+
+void KFileReplaceView::slotStringsSave()
+{
+  // Check there are strings in the list
+  KListView* sv = getStringsView();
+
+  if (sv->firstChild() == 0)
+  {
+    KMessageBox::error(0, i18n("No strings to save as the list is empty."));
+    return ;
+  }
+
+  QString header("<?xml version=\"1.0\" ?>\n<kfr>"),
+  footer("\n</kfr>"),
+  body;
+  if(m_option->m_searchingOnlyMode)
+    header += "\n\t<mode search=\"true\"/>";
+  else
+    header += "\n\t<mode search=\"false\"/>";
+
+  QListViewItem*  lvi = sv->firstChild();
+
+  while( lvi )
+  {
+    body += QString("\n\t<replacement>"
+	"\n\t\t<oldstring><![CDATA[%1]]></oldstring>"
+	"\n\t\t<newstring><![CDATA[%2]]></newstring>"
+	"\n\t</replacement>").arg(lvi->text(0)).arg(lvi->text(1));
+    lvi = lvi->nextSibling();
+  }
+
+   // Selects the file where strings will be saved
+  QString menu = "*.kfr|" + i18n("KFileReplace Strings") + " (*.kfr)\n*|" + i18n("All Files") + " (*)";
+  QString fileName = KFileDialog::getSaveFileName(QString::null, menu, 0, i18n("Save Strings to File"));
+  if (fileName.isEmpty())
+    return;
+
+   // Forces the extension to be "kfr" == KFileReplace extension
+
+  fileName = KFileReplaceLib::addExtension(fileName, "kfr");
+
+  QFile file( fileName );
+  if(!file.open( IO_WriteOnly ))
+  {
+    KMessageBox::error(0, i18n("File %1 cannot be saved.").arg(fileName));
+    return ;
+  }
+  QTextStream oTStream( &file );
+  oTStream.setEncoding(QTextStream::UnicodeUTF8);
+  oTStream << header
+      << body
+      << footer;
+  file.close();
 }
 
 void KFileReplaceView::slotStringsDeleteItem()
