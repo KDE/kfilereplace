@@ -59,14 +59,14 @@ private:
         QLabel *m_labelFile;
         QLabel *m_labelDir;
         QLabel *m_labelSearch;
-  QMultiLineEdit *m_editSearch;
-  QLabel *m_labelReplace;
-  QMultiLineEdit *m_editReplace;
+        QMultiLineEdit *m_editSearch;
+        QLabel *m_labelReplace;
+        QMultiLineEdit *m_editReplace;
         QButton *m_btnYes;
-         QButton *m_btnNo;
+        QButton *m_btnNo;
         QButton *m_btnSkipFile;
-         QButton *m_btnSkipDir;
-  QButton *m_btnCancel;
+        QButton *m_btnSkipDir;
+        QButton *m_btnCancel;
 
 };
 

@@ -47,11 +47,11 @@ class KExpression
                 QString addWildcardsContentToString(const char *szNewString, int nNewStrLen, QStringList *strList);
 
                 // In these functions, "const char *szFilepath" is passed because it can be need by the functions (as the date, we can calculate)
-                QString substVariablesWithValues(QString strOriginal, const char *szFilepath);
+                QString substVariablesWithValues(const QString &strOriginal, const char *szFilepath);
 
 private: // Functions
-                QString getVariableValue(QString strVarName, QString strVarFormat, const char *szFilepath);
-                QString formatDateTime(QDateTime dt, QString strVarFormat);
+                QString getVariableValue(const QString &strVarName, const QString &strVarFormat, const char *szFilepath);
+                QString formatDateTime(const QDateTime& dt, const QString &strVarFormat);
 
 
 

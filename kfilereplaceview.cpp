@@ -119,7 +119,7 @@ void KFileReplaceView::init()
 }
 
 // ===========================================================================================================================
-int KFileReplaceView::addString(QString strSearch, QString strReplace, QListViewItem *lviCurrent)
+int KFileReplaceView::addString(const QString &strSearch, const QString &strReplace, QListViewItem *lviCurrent)
 {
   KListViewString *lvi;
   QListViewItem *lviCurItem;

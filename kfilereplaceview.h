@@ -42,34 +42,34 @@ public:
   /** Destructor for the main view */
   ~KFileReplaceView();
 
-        /** returns a pointer to the document connected to the view instance. Mind that this method requires a KFileReplaceApp instance as a parent
-                * widget to get to the window document pointer by calling the KFileReplaceApp::getDocument() method.
-                *
-                * @see KFileReplaceApp#getDocument
-                */
-        KFileReplaceDoc* getDocument() const;
+  /** returns a pointer to the document connected to the view instance. Mind that this method requires a KFileReplaceApp instance as a parent
+          * widget to get to the window document pointer by calling the KFileReplaceApp::getDocument() method.
+          *
+          * @see KFileReplaceApp#getDocument
+          */
+  KFileReplaceDoc* getDocument() const;
 
   /** contains the implementation for printing functionality */
-        void print(QPrinter* m_pPrinter);
+  void print(QPrinter* m_pPrinter);
   /** Initialize lists
  */
   void init();
 
-        QPixmap getIconString() {return m_pmIconString;}
-        int addString(QString strSearch, QString strReplace, QListViewItem *lviCurrent);
+  QPixmap getIconString() {return m_pmIconString;}
+  int addString(const QString &strSearch, const QString &strReplace, QListViewItem *lviCurrent);
 
 public slots:
-        void slotStringsAdd();
-        void slotStringsEdit(QListViewItem*);
+  void slotStringsAdd();
+  void slotStringsEdit(QListViewItem*);
 
 private:
-         KResultView *m_ResultView;
-        QListView *m_StringView;
-        QPixmap m_pmIconString;
+  KResultView *m_ResultView;
+  QListView *m_StringView;
+  QPixmap m_pmIconString;
 
 public:
-        QListView *getStringView() {return m_StringView;}
-        KResultView *getResultView() {return m_ResultView;}
+  QListView *getStringView() {return m_StringView;}
+  KResultView *getResultView() {return m_ResultView;}
 
 };
 

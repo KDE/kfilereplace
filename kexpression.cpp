@@ -291,7 +291,7 @@ QString KExpression::addWildcardsContentToString(const char *szNewString, int nN
 }
 
 // =================================================================================================================
-QString KExpression::substVariablesWithValues(QString strOriginal, const char *szFilepath)
+QString KExpression::substVariablesWithValues(const QString &strOriginal, const char *szFilepath)
 {
   // Save the "m_bWildcards" and "m_bIgnoreWhitespaces" values because current function need m_bWildcards to be true
   int nWildcards;
@@ -357,7 +357,7 @@ QString KExpression::substVariablesWithValues(QString strOriginal, const char *s
 }
 
 // =================================================================================================================
-QString KExpression::getVariableValue(QString strVarName, QString strVarFormat, const char *szFilepath)
+QString KExpression::getVariableValue(const QString &strVarName, const QString &strVarFormat, const char *szFilepath)
 {
   QFileInfo fi;
   fi.setFile(szFilepath);
@@ -457,7 +457,7 @@ QString KExpression::getVariableValue(QString strVarName, QString strVarFormat, 
 }
 
 // =================================================================================================================
-QString KExpression::formatDateTime(QDateTime dt, QString strVarFormat)
+QString KExpression::formatDateTime(const QDateTime& dt, const QString &strVarFormat)
 {
   QString strTemp;
 

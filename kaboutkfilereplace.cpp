@@ -83,6 +83,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
   if (cAuthors)
     {
       cAuthors -> addPerson(QString("François Dupoux"), QString("dupoux@dupoux.com"), QString::null, i18n("Main author and French translator"), true);
+      cAuthors -> addPerson(QString("Andras Mantia"), QString("amantia@kde.org"), QString::null, i18n("KPartification, integration with Quanta Plus"), true);
       cAuthors -> addPerson(QString("Heiko Goller"), QString("heiko.goller@tuebingen.mpg.de"), QString::null, QString("German translator"), true);
     }
 

@@ -35,9 +35,9 @@ public: KAddStringDlg(QWidget *parent=0, const char *name=0);
 	QString m_strSearch;
 	QString m_strReplace;
 
-protected: 
+protected:
 	void initDialog();
-	
+
 	QPushButton *m_btnOk;
 	QPushButton *m_btnCancel;
 	QLabel *m_labelSearch;
@@ -49,8 +49,8 @@ protected slots:
 	void slotOk();
 
 public:
-	void setSearchText(QString strText) {m_editSearch -> setText(strText);}
-	void setReplaceText(QString strText) {m_editReplace -> setText(strText);}
+	void setSearchText(const QString &strText) {m_editSearch -> setText(strText);}
+	void setReplaceText(const QString &strText) {m_editReplace -> setText(strText);}
 
 };
 

@@ -96,7 +96,7 @@ class KFileReplaceDoc : public QObject
         static QPtrList<KFileReplaceView>* viewList;
  private:
          /** the modified flag of the current document */
-         bool b_modified;
+        bool b_modified;
         QString m_title;
         QString m_path;
 #ifdef APP
