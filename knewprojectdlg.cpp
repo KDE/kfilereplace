@@ -284,12 +284,12 @@ void KNewProjectDlg::setWhatsThis()
    QWhatsThis::add(m_comboFilter, i18n("Fix the filter of the files you want to search. For example, write \"*.htm\" to search or replace "
                                        "all web pages. You can put more than an only filter, when using ';'. For example \"*.html;*.txt;*.xml\""));
 
-   QWhatsThis::add(m_editSizeMin, i18n("Minimal size of files. For example, if you put 1024 KB, all files which size is less than 1 MB won't be taken"));
-   QWhatsThis::add(m_editSizeMax, i18n("Maximal size of files. For example, if you put 2048 KB, all files which size is more than 2 MB won't be taken"));
+   QWhatsThis::add(m_editSizeMin, i18n("Minimal size of files. For example, if you put 1024 KB, all files which size is less than 1 MB will not be taken"));
+   QWhatsThis::add(m_editSizeMax, i18n("Maximal size of files. For example, if you put 2048 KB, all files which size is more than 2 MB will not be taken"));
    QWhatsThis::add(m_editDateMin, i18n("Minimal date of files in YYYY/MM/DD format. For example, if you put 2000/01/31, all files which were "
-                                       "(modified/read) before the 31 January 2000 won't be taken"));
+                                       "(modified/read) before the 31 January 2000 will not be taken"));
    QWhatsThis::add(m_editDateMax, i18n("Maximal date of files in YYYY/MM/DD format. For example, if you put 1999/12/31, all files which were "
-                                       "(modified/read) after the 31 December 1999 won't be taken"));
+                                       "(modified/read) after the 31 December 1999 will not be taken"));
    QWhatsThis::add(m_comboDateRW, i18n("Select \"Writing\" if you want to use the date of the last modification, or \"reading\" to use the last "
                                        "read access to the file"));
 }

@@ -88,7 +88,7 @@ void KOptionsDlg::slotOk()
   // check expression wildcard and character wildcards are not the same
   if (strWildcardsLetters == strWildcardsWords)
     {
-      KMessageBox::error(this, i18n("You can't use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>."));
+      KMessageBox::error(this, i18n("You cannot use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>."));
       return ;
     }
 
@@ -192,21 +192,21 @@ void KOptionsDlg::initPage1()
 
   // Create help QWhatsThis
   QWhatsThis::add(m_checkCaseSensitive, i18n("If enabled, lowers and uppers are different. If you are "
-                                             "searching for \"Linux\" and this option is on, \"LINUX\" won't be found."));
+                                             "searching for \"Linux\" and this option is on, \"LINUX\" will not be found."));
   QWhatsThis::add(m_checkRecursive, i18n("Work in all subfolders of the main folder of the project"));
   QWhatsThis::add(m_checkHaltOnFirstOccur, i18n("When searching, KFileReplace reads all the data of each "
-                                                "file to know how many times each strings appears in the files. If you needn't "
+                                                "file to know how many times each strings appears in the files. If you need not "
                                                 "to have this details, you can enable this options to make the search faster. "
                                                 "Then the search will be finished in a file when the first occurrence of a string will be found."));
   QWhatsThis::add(m_checkIgnoreWhitespaces, i18n("Ignore some characters when searching a string: \\r (carriage return), \\n (line feed) \\t (tab), "
                                                  "and multi-spaces. It's very "
                                                  "useful in HTML code, and with the end of the lines. For example, if you are searching for "
                                                  "\"Linux is fast\" in a file, and there is a line feed between "
-                                                 "\"Linux\" and \"is\", then the string won't be found. This options can solve the problem."));
+                                                 "\"Linux\" and \"is\", then the string will not be found. This options can solve the problem."));
   QWhatsThis::add(m_checkFollowSymLinks, i18n("If a folder symbolic link is found, it will be opened."));
   QWhatsThis::add(m_checkAllStringsMustBeFound, i18n("The file will be found/replaced only if all strings from the list are found in the file."));
   QWhatsThis::add(m_checkIgnoreHidden, i18n("If this option is enabled, hidden files and folders (files whose names begin with a "
-                                            "point as .kde) won't be found / replaced."));
+                                            "point as .kde) will not be found / replaced."));
 
   addTab(tab1, i18n("General"));
 }
@@ -242,7 +242,7 @@ void KOptionsDlg::initPage2()
 
   // Add QWhatsThis messages
   QWhatsThis::add(m_editExpLength, i18n("This is the maximal length of the search made to find wildcards in a text. For example, if the length is 200, then "
-                                        "the '*' symbol can't code for an expression which length is more than 200 letters (bytes)"));
+                                        "the '*' symbol cannot code for an expression which length is more than 200 letters (bytes)"));
   QWhatsThis::add(m_checkWildcardsInReplaceStr, i18n("If enabled, the contents of the wildcards found in the search string will be copied into the "
                                                      "replace string. For example, if you search for \"The * is under my bed\" and the text is \"The "
                                                      "cat is under my bed\", and the replace string "

@@ -107,7 +107,7 @@ bool KFileReplacePart::openURL(const KURL &url)
 {
   if (url.protocol() != "file")
   {
-    KMessageBox::sorry(0, i18n("Sorry, currently the KFileReplace part works only for local files!"), i18n("Non Local File"));
+    KMessageBox::sorry(0, i18n("Sorry, currently the KFileReplace part works only for local files."), i18n("Non Local File"));
     emit canceled("");
     return false;
   }
@@ -282,7 +282,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
 
   if (dir.exists() == false)
     {
-      strMess = i18n("<qt>The main folder of the project <b>%1</b> doesn't exist.</qt>").arg(m_doc->m_strProjectDirectory);
+      strMess = i18n("<qt>The main folder of the project <b>%1</b> does not exist.</qt>").arg(m_doc->m_strProjectDirectory);
       KMessageBox::error(w, strMess);
       return -1;
     }
@@ -750,7 +750,7 @@ void KFileReplacePart::slotFileSave()
 
   if (fResults == NULL) // Can't open file
         {
-          KMessageBox::error(w, i18n("<qt>Can't open the file <b>%1</b> for writing the save results.</qt>").arg(strFilename));
+          KMessageBox::error(w, i18n("<qt>Cannot open the file <b>%1</b> for writing the save results.</qt>").arg(strFilename));
           return ;
         }
 
@@ -850,7 +850,7 @@ void KFileReplacePart::slotStringsSave()
 
   if (fStrings == NULL) // Can't open file
     {
-      KMessageBox::error(w, i18n("<qt>Can't open the file <b>%1</b> for writing to save the string list.</qt>").arg(strFilename));
+      KMessageBox::error(w, i18n("<qt>Cannot open the file <b>%1</b> for writing to save the string list.</qt>").arg(strFilename));
       return ;
     }
 
@@ -863,7 +863,7 @@ void KFileReplacePart::slotStringsSave()
 
   if (fwrite(&head, sizeof(KFRHeader), 1, fStrings) != 1)
     {
-      KMessageBox::error(w, i18n("<qt>Can't write data in file <b>%1</b>.</qt>").arg(strFilename));
+      KMessageBox::error(w, i18n("<qt>Cannot write data in file <b>%1</b>.</qt>").arg(strFilename));
       fclose(fStrings);
       return ;
     }
@@ -888,7 +888,7 @@ void KFileReplacePart::slotStringsSave()
         nErrors += (fwrite(lviCurItem -> text(1), nNewTextSize, 1, fStrings)) != 1;
       if (nErrors > 0)
         {
-          KMessageBox::error(w, i18n("<qt>Can't write data in file <b>%1</b>.</qt>").arg(strFilename));
+          KMessageBox::error(w, i18n("<qt>Cannot write data in file <b>%1</b>.</qt>").arg(strFilename));
           fclose(fStrings);
           return ;
         }
@@ -916,7 +916,7 @@ void KFileReplacePart::loadStringFile(const QString& strFilename)
 
   if (fStrings == NULL) // Can't open file
     {
-      KMessageBox::error(w, i18n("<qt>Can't open the file <b>%1</b> and load the string list.</qt>").arg(strFilename));
+      KMessageBox::error(w, i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(strFilename));
       return ;
     }
 
@@ -925,7 +925,7 @@ void KFileReplacePart::loadStringFile(const QString& strFilename)
 
   if (fread(&head, sizeof(KFRHeader), 1, fStrings) != 1)
     {
-      KMessageBox::error(w, i18n("<qt>Can't read data from file <b>%1</b>.</qt>").arg(strFilename));
+      KMessageBox::error(w, i18n("<qt>Cannot read data from file <b>%1</b>.</qt>").arg(strFilename));
       fclose(fStrings);
       return ;
     }
@@ -933,7 +933,7 @@ void KFileReplacePart::loadStringFile(const QString& strFilename)
   // Check the file is a KFileReplace file
   if (strcmp(head.szPgm, "KFileReplace") != 0)
     {
-      KMessageBox::error(w, i18n("<qt><b>%1</b> is not a KFileReplace file. Can't continue.</qt>").arg(strFilename));
+      KMessageBox::error(w, i18n("<qt><b>%1</b> is not a KFileReplace file. Cannot continue.</qt>").arg(strFilename));
       fclose(fStrings);
       return ;
     }
@@ -960,7 +960,7 @@ void KFileReplacePart::loadStringFile(const QString& strFilename)
       nErrors += (fread(&nNewTextSize, sizeof(int), 1, fStrings)) != 1;
       if (nErrors > 0)
         {
-          KMessageBox::error(w, i18n("<qt>Can't read data from file <b>%1</b></qt>").arg(strFilename));
+          KMessageBox::error(w, i18n("<qt>Cannot read data from file <b>%1</b></qt>").arg(strFilename));
           fclose(fStrings);
           return ;
         }
@@ -979,7 +979,7 @@ void KFileReplacePart::loadStringFile(const QString& strFilename)
       // Read "Search" text
       if (fread(szString, nOldTextSize, 1, fStrings) != 1)
         {
-          KMessageBox::error(w, i18n("<qt>Can't read data from file <b>%1</b></qt>").arg(strFilename));
+          KMessageBox::error(w, i18n("<qt>Cannot read data from file <b>%1</b></qt>").arg(strFilename));
           fclose(fStrings);
           return ;
         }
@@ -995,7 +995,7 @@ void KFileReplacePart::loadStringFile(const QString& strFilename)
         {
           if (fread(szString, nNewTextSize, 1, fStrings) != 1)
             {
-              KMessageBox::error(w, i18n("<qt>Can't read data from file <b>%1</b></qt>").arg(strFilename));
+              KMessageBox::error(w, i18n("<qt>Cannot read data from file <b>%1</b></qt>").arg(strFilename));
               fclose(fStrings);
               return ;
             }
@@ -1096,7 +1096,7 @@ void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
   fi.setFile(strFilename);
   if (fi.isDir())
     {
-      KMessageBox::error(widget(), i18n("Can't open folders."));
+      KMessageBox::error(widget(), i18n("Cannot open folders."));
       return;
     }
 
@@ -1165,7 +1165,7 @@ void KFileReplacePart::setWhatsThis()
                                                                      "and replace with <b>KMessageBox::error(*)</b>"));
   actionCollection()->action("options_backup")->setWhatsThis(i18n("Create a copy of the original replaced files with the BAK extension before replacing"));
   actionCollection()->action("options_case")->setWhatsThis(i18n("The lowers and uppers are different. For example, if you search for <b>Linux</b> and "
-                                                                "there is <b>linux</b>, then the string won't be found/replaced."));
+                                                                "there is <b>linux</b>, then the string will not be found/replaced."));
   actionCollection()->action("options_var")->setWhatsThis(i18n("Enable use of the variables, as the date & time or the name of the current file. "
                                                                "The variable must be in the replace string, with the format [$Name:  $]. When doing the replace, "
                                                                "the value of the variable "

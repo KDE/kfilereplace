@@ -164,7 +164,7 @@ int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
   // 0. -*-*-*-*-*-*-*-*-*- Check it's a valid directory -*-*-*-*-*-*-*-*-*-
   if (!dir.isReadable() || !dir.exists())
     {
-      g_szErrMsg = i18n("<qt>Can't access directory <b>%1</b>.").arg(szDir);
+      g_szErrMsg = i18n("<qt>Cannot access directory <b>%1</b>.").arg(szDir);
       return -1;
     }
 
@@ -262,7 +262,7 @@ int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
                   QFileInfo fInfo(strFileReadpath);
                   if (!fInfo.exists() || !fInfo.isReadable() || !fInfo.isWritable()) // We don't have access to the file
                   {
-                    g_szErrMsg = i18n("<qt>Can't access file <b>%1</b> for writing.</qt>").arg(strFileReadpath);
+                    g_szErrMsg = i18n("<qt>Cannot access file <b>%1</b> for writing.</qt>").arg(strFileReadpath);
                     argu -> qlvResult -> addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
                   } else
                   {
@@ -473,7 +473,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
   QFile oldFile(szOldFile);
   if (!oldFile.open(IO_ReadOnly))
   {
-    g_szErrMsg = i18n("<qt>Can't open file <b>%1</b> for reading.</qt>").arg(szOldFile);
+    g_szErrMsg = i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(szOldFile);
     return REPLACE_ERROR;
   }
   nFdOldFile = oldFile.handle();
@@ -484,7 +484,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
 
       if (!newFile.open(IO_ReadWrite | IO_Truncate))
         {
-          g_szErrMsg = i18n("<qt>Can't open file <b>%1</b> for writing.</qt>").arg(szNewFile);
+          g_szErrMsg = i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(szNewFile);
           return REPLACE_ERROR;
         }
       nFdNewFile = newFile.handle();
@@ -493,14 +493,14 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
       nRes = ::fstat(nFdOldFile, &statFile);
       if (nRes == -1)
         {
-          g_szErrMsg = i18n("<qt>Can't read the access rights for file<b>%1</b></qt>").arg(szOldFile);
+          g_szErrMsg = i18n("<qt>Cannot read the access rights for file<b>%1</b></qt>").arg(szOldFile);
           return REPLACE_ERROR;
         }
 
       nRes = ::fchmod(nFdNewFile, statFile.st_mode);
       if (nRes == -1)
         {
-          g_szErrMsg = i18n("<qt>Can't set the access rights for file<b>%1</b></qt>").arg(szNewFile);
+          g_szErrMsg = i18n("<qt>Cannot set the access rights for file<b>%1</b></qt>").arg(szNewFile);
           //return REPLACE_ERROR; // make bug with files on FAT
         }
     }
@@ -509,7 +509,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
   vBeginOldFile = ::mmap((caddr_t)0, nOldFileSize, PROT_READ, MAP_SHARED, nFdOldFile, 0);
   if ((caddr_t) vBeginOldFile == MAP_FAILED)
     {
-      g_szErrMsg = i18n("<qt>Can't map file <b>%1</b> for reading.").arg(szOldFile);
+      g_szErrMsg = i18n("<qt>Cannot map file <b>%1</b> for reading.").arg(szOldFile);
       oldFile.close();
       return REPLACE_ERROR;
     }
@@ -522,7 +522,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
   lviCurItem = lviFirst = argu -> qlvStrings -> firstChild();
   if (lviCurItem == NULL)
     {
-      g_szErrMsg = i18n("Can't list tree items.");
+      g_szErrMsg = i18n("Cannot list tree items.");
       return REPLACE_ERROR;
     }
 
@@ -627,7 +627,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
                       nRes = ::write(nFdNewFile, strReplace.local8Bit(), strReplace.length());
                       if (nRes != (int)strReplace.length())
                         {
-                          g_szErrMsg = i18n("Can't write data.");
+                          g_szErrMsg = i18n("Cannot write data.");
                           return REPLACE_ERROR;
                         }
                     }
@@ -644,7 +644,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
           nRes = ::write(nFdNewFile, cOldPt, 1);
           if (nRes != 1)
             {
-              g_szErrMsg = i18n("<qt>Can't write data in <b>%1<b>.</qt>").arg(szNewFile);
+              g_szErrMsg = i18n("<qt>Cannot write data in <b>%1<b>.</qt>").arg(szNewFile);
               return REPLACE_ERROR;
             }
         }
@@ -660,7 +660,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
   ::munmap(cBeginOldFile, nOldFileSize);
 #else
   ::munmap(vBeginOldFile, nOldFileSize);
-#endif  
+#endif
 
   // Close files
   oldFile.close();
@@ -707,7 +707,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
   QFile oldFile(szOldFile);
   if (!oldFile.open(IO_ReadOnly))
   {
-    g_szErrMsg = i18n("<qt>Can't open file <b>%1</b> for reading.</qt>").arg(szOldFile);
+    g_szErrMsg = i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(szOldFile);
     return -1;
   }
   nFdOldFile = oldFile.handle();
@@ -716,7 +716,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
   vBeginOldFile = ::mmap((caddr_t)0, nOldFileSize, PROT_READ, MAP_SHARED, nFdOldFile, 0);
   if ((caddr_t) vBeginOldFile == MAP_FAILED)
     {
-      g_szErrMsg = i18n("<qt>Can't map file <b>%1</b> for reading.</qt>").arg(szOldFile);
+      g_szErrMsg = i18n("<qt>Cannot map file <b>%1</b> for reading.</qt>").arg(szOldFile);
       oldFile.close();
       return -1;
     }
@@ -729,7 +729,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
   lviCurItem = lviFirst = argu -> qlvStrings -> firstChild();
   if (lviCurItem == NULL)
     {
-      g_szErrMsg = i18n("Can't list tree items.");
+      g_szErrMsg = i18n("Cannot list tree items.");
       return -1;
     }
 
@@ -738,7 +738,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
   lviCurItem = lviFirst = argu -> qlvStrings -> firstChild();
   if (lviCurItem == NULL)
     {
-      g_szErrMsg = i18n("Can't list tree items.");
+      g_szErrMsg = i18n("Cannot list tree items.");
       return -1;
     }
 
@@ -780,7 +780,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
                   ::munmap(cBeginOldFile, nOldFileSize);
 #else
                   ::munmap(vBeginOldFile, nOldFileSize);
-#endif  
+#endif
                   oldFile.close();
                   return 0; // Success
                 }
@@ -808,7 +808,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
   ::munmap(cBeginOldFile, nOldFileSize);
 #else
   ::munmap(vBeginOldFile, nOldFileSize);
-#endif  
+#endif
 
   // Close files
   oldFile.close();

@@ -48,7 +48,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
                                  "<p>The variables, can be the date, or the currently filename, in the format you want.</p>");
 
   const QString strContribute = i18n("<p><b>Everyone is welcome to contribute</b> to this project. "
-                                     "You don't have to be a developer to do it. You can do many things:<br>"
+                                     "You do not have to be a developer to do it. You can do many things:<br>"
                                      "- Write the SGML documentation in english<br>"
                                      "- Translate the SGML documentation, or the program strings (in PO files)<br>"
                                      "- Write some C++ code to add new features<br>"
@@ -58,7 +58,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
                                      " "
                                      "<p><b>Please, contact the author if you want to work to help this project</b>, then we will "
                                      "check the work is not already done, or being done. You also need to download "
-                                     "the last version before writing anything: don't translate an old documentation version!  "
+                                     "the last version before writing anything: do not translate an old documentation version!  "
                                      "You can look at the TODO file to have more details about things to do in the project</p>");
 
   // About page
