@@ -564,6 +564,7 @@ void KFileReplacePart::slotFileSearch()
    g_nFilesRep = 0;
    g_nStringsRep = 0;
    g_nOperation = OPERATION_SEARCH;
+   g_argu.view->setSearchMode(true);
 
    updateCommands();
 
@@ -612,7 +613,7 @@ void KFileReplacePart::slotFileReplace()
    g_nFilesRep = 0;
    g_nStringsRep = 0;
    g_nOperation = OPERATION_REPLACE;
-
+   g_argu.view->setSearchMode(false);
    updateCommands();
 
    // Default error message
@@ -665,7 +666,7 @@ void KFileReplacePart::slotFileSimulate()
    g_nFilesRep = 0;
    g_nStringsRep = 0;
    g_nOperation = OPERATION_REPLACE;
-
+   g_argu.view->setSearchMode(false);
    updateCommands();
 
    // Default error message

@@ -59,6 +59,8 @@ public:
   int updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
   bool increaseStringCount(QListViewItem *lvi, QString strOld, QString strNew, QString strReplace, const char *szSearch, int nSearchLen, bool bShowDetails);
   void execShellCommand(const QString& cmd);
+  /** Sets the search mode to "Search" if search==true. */
+  void setSearchMode(bool search);
 
 public slots:
   void slotStringsAdd();

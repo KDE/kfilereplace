@@ -600,4 +600,28 @@ void KFileReplaceView::slotStringsEdit(QListViewItem  *lvi)
   }
 }
 
+void KFileReplaceView::setSearchMode(bool search)
+{
+  if (search)
+  {
+    lwResult->setColumnWidthMode(2, QListView::Manual);
+    lwResult->setColumnWidthMode(3, QListView::Manual);
+    lwResult->setColumnWidthMode(4, QListView::Manual);
+    lwResult->hideColumn(2);
+    lwResult->hideColumn(3);
+    lwResult->hideColumn(4);
+    kdDebug(23000) << "Columns hidden" << endl;
+  } else
+  {
+    lwResult->setColumnWidthMode(2, QListView::Maximum);
+    lwResult->setColumnWidthMode(3, QListView::Maximum);
+    lwResult->setColumnWidthMode(4, QListView::Maximum);
+    lwResult->adjustColumn(2);
+    lwResult->adjustColumn(3);
+    lwResult->adjustColumn(4);
+    kdDebug(23000) << "Columns shown" << endl;
+  }
+}
+
+
 #include "kfilereplaceview.moc"
