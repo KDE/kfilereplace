@@ -114,7 +114,7 @@ void KNewProjectDlg::slotOk()
 
    if ((bOwnerUser && m_editOwnerUser->text().isEmpty()) || (bOwnerGroup && m_editOwnerGroup->text().isEmpty()))
    {
-      KMessageBox::error(this, i18n("Some edit boxes are empty in the <b>Owner</b> page."));
+      KMessageBox::error(this, "<qt>" + i18n("Some edit boxes are empty in the <b>Owner</b> page.") + "</qt>" );
       return ;
    }
 
