@@ -55,6 +55,7 @@ using namespace whatthisNameSpace;
 //PUBLIC CONSTRUCTORS
 // Factory code for KDE 3
 typedef KParts::GenericFactory<KFileReplacePart> FileReplaceFactory;
+
 K_EXPORT_COMPONENT_FACTORY( libkfilereplacepart, FileReplaceFactory )
 
 KFileReplacePart::KFileReplacePart(QWidget* parentWidget, const char* , QObject* parent, const char* name, const QStringList & )
