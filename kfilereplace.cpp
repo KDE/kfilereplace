@@ -96,6 +96,9 @@ void KFileReplace::removeDuplicatedActions()
     KAction* part_report_action = part_action_collection->action("report_bug");
     KAction* part_help_action= part_action_collection->action("help_kfilereplace");
 
+    if (!part_about_action || !part_report_action || !part_help_action || !part_action_collection) 
+      return;
+
     QWidget* container = part_about_action->container(0);
     part_about_action->unplug(container);
     part_report_action->unplug(container);
