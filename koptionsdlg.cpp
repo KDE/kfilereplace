@@ -40,8 +40,7 @@ using namespace whatthisNameSpace;
 
 KOptionsDlg::KOptionsDlg(RCOptions* info, QWidget *parent, const char *name) : KOptionsDlgS(parent,name,true)
 {
-  QString configName = locateLocal("config", "kfilereplacerc");
-  m_config = new KConfig(configName);
+  m_config = new KConfig("kfilereplacerc");
   m_option = info;
 
   initGUI();

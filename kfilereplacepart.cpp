@@ -63,9 +63,7 @@ KFileReplacePart::KFileReplacePart(QWidget* parentWidget, const char* , QObject*
   setInstance(FileReplaceFactory::instance());
 
   m_parentWidget = parentWidget;
-  QString configName = locateLocal("config", "kfilereplacerc");
-
-  m_config = new KConfig(configName);
+  m_config = new KConfig("kfilereplacerc");
   m_aboutDlg = 0;
   m_stop = false;
   m_optionMask = QDir::Files;
