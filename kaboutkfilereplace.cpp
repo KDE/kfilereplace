@@ -29,7 +29,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
   setTitle("KFileReplace for KDE 3");
   setImage(locate("data", "kfilereplace/pics/about.png"));
   setImageFrame(false);
-  setProduct(QString(PACKAGE), QString(VERSION), QString("François Dupoux"), QString("2002"));
+  setProduct(QString(PACKAGE), "0.8", QString("François Dupoux"), QString("2002"));
 
   // 2. Add text to the dialog
   const QString strUseful = i18n(""
