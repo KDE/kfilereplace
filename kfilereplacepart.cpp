@@ -106,6 +106,7 @@ void KFileReplacePart::slotFileSearch()
      return;
 
    emit setStatusBarText(i18n("Searching files..."));
+   m_view->resultView()->setColumnText(4,i18n("Total number occurrences"));
 
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
@@ -143,10 +144,15 @@ void KFileReplacePart::slotFileReplace()
     return;
 
   if(m_info.simulation())
+  {
     emit setStatusBarText(i18n("Replacing files (simulation)..."));
+    m_view->resultView()->setColumnText(4,i18n("Replaced strings (simulation)"));
+  }
   else
+  {
     emit setStatusBarText(i18n("Replacing files..."));
-
+    m_view->resultView()->setColumnText(4,i18n("Replaced strings"));
+  }
   // show wait cursor
   QApplication::setOverrideCursor( Qt::waitCursor );
 
@@ -987,7 +993,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   QFile oldFile(oldPathString);
   if(!oldFile.open(IO_ReadOnly))
     {
-      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(oldFileName));
+      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(oldFileName));
       return ;
     }
 
@@ -1014,11 +1020,11 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   kapp->processEvents();
 
   bool atLeastOneStringFound = false;
-  KListViewItem *item = new KListViewItem(m_view->resultView());
+  KListViewItem *item = 0L;
   QString line = oldStream.read();
   int occurrence = 0;
 
-  replacingLoop(line, item, atLeastOneStringFound, occurrence, regex);
+  replacingLoop(line, &item, atLeastOneStringFound, occurrence, regex);
 
   if(!simulation)
     newStream << line;
@@ -1029,7 +1035,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
    if(!m_info.ignoreFiles())
      atLeastOneStringFound = true;
 
-   if(atLeastOneStringFound/* && atLeastOneStringConfirmed*/)
+   if(atLeastOneStringFound && item/* && atLeastOneStringConfirmed*/)
      {
        m_lib->setIconForFileEntry(item,currentDir+"/"+oldFileName);
        item->setText(0,oldFileName);
@@ -1039,22 +1045,15 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
        if(!simulation)
          {
            item->setText(3,m_lib->formatFileSize(nf.size()));
-           m_view->resultView()->setColumnText(4,i18n("Replaced strings"));
          }
        else
          {
            item->setText(3,"-");
-           m_view->resultView()->setColumnText(4,i18n("Replaced strings (simulation)"));
          }
 
        item->setText(4,QString::number(occurrence,10));
        item->setText(5,QString("%1[%2]").arg(oldFileInfo.owner()).arg(oldFileInfo.ownerId()));
        item->setText(6,QString("%1[%2]").arg(oldFileInfo.group()).arg(oldFileInfo.groupId()));
-     }
-   else
-     {
-       delete item;
-       item = 0;
      }
 }
 
@@ -1064,7 +1063,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   QFile oldFile(oldPathString);
   QFileInfo oldFileInfo(oldPathString);
 
-  if (!oldFile.open(IO_ReadOnly) or !oldFileInfo.isWritable())
+  if (!oldFile.open(IO_ReadOnly) || !oldFileInfo.isWritable())
     {
       KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for reading and/or writing.</qt>").arg(oldFileName));
       return ;
@@ -1073,7 +1072,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   kapp->processEvents();
 
   QString fileSizeBeforeReplacing =  m_lib->formatFileSize(oldFileInfo.size());
-  KListViewItem *item = new KListViewItem(m_view->resultView());
+  KListViewItem *item = 0L;
 
   QTextStream oldStream( &oldFile );
   QString newFileBuffer,
@@ -1082,7 +1081,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   bool atLeastOneStringFound = false;
   int occurrence = 0;
 
-  replacingLoop(line, item, atLeastOneStringFound, occurrence, regex);
+  replacingLoop(line, &item, atLeastOneStringFound, occurrence, regex);
 
   if(!simulation)
     newFileBuffer += line;
@@ -1107,7 +1106,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   if(!m_info.ignoreFiles())
     atLeastOneStringFound = true;
 
-  if(atLeastOneStringFound /*and atLeastOneStringConfirmed*/)
+  if(atLeastOneStringFound  && item/*&& atLeastOneStringConfirmed*/)
     {
       m_lib->setIconForFileEntry(item,currentDir+"/"+oldFileName);
       item->setText(0,oldFileName);
@@ -1116,25 +1115,18 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
       if(!simulation)
         {
           item->setText(3,fileSizeAfterReplacing);
-          m_view->resultView()->setColumnText(4,i18n("Replaced strings"));
         }
       else
         {
           item->setText(3,"-");
-          m_view->resultView()->setColumnText(4,i18n("Replaced strings (simulation)"));
         }
       item->setText(4,QString::number(occurrence,10));
       item->setText(5,QString("%1[%2]").arg(oldFileInfo.owner()).arg(oldFileInfo.ownerId()));
       item->setText(6,QString("%1[%2]").arg(oldFileInfo.group()).arg(oldFileInfo.groupId()));
     }
-  else
-    {
-      delete item;
-      item = 0;
-    }
 }
 
-void KFileReplacePart::replacingLoop(QString& line, KListViewItem* item, bool& atLeastOneStringFound, int& occur, bool regex)
+void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regex)
 {
   KeyValueMap tempMap = m_replacementMap;
   KeyValueMap::Iterator it;
@@ -1149,8 +1141,9 @@ void KFileReplacePart::replacingLoop(QString& line, KListViewItem* item, bool& a
           QString msg = entry.message(entry.capturedText(line),
                               entry.lineNumber(line),
                               entry.columnNumber(line));
-
-          KListViewItem* tempItem = new KListViewItem(item);
+          if (!*item)
+            *item =  new KListViewItem(m_view->resultView());
+          KListViewItem* tempItem = new KListViewItem(*item);
           tempItem->setMultiLinesEnabled(true);
           tempItem->setText(0,msg);
           occur ++;
@@ -1236,7 +1229,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 
   if(!file.open(IO_ReadOnly))
     {
-      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(fileName));
+      KMessageBox::error(m_w,i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(fileName));
       return ;
     }
   // Creates a stream with the file
@@ -1246,7 +1239,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 
   kapp->processEvents();
 
-  KListViewItem *item = new KListViewItem(m_view->resultView());
+  KListViewItem *item = 0L;
   bool caseSensitive = m_info.caseSensitive(),
        haltOnFirstOccur = m_info.haltOnFirstOccur();
 
@@ -1288,6 +1281,8 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               atLeastOneStringFound = true;
               int lineNumber = line.mid(0,pos).contains('\n')+1;
               int columnNumber = pos - line.findRev('\n',pos);
+              if (!item)
+                item = new KListViewItem(m_view->resultView());
               KListViewItem* tempItem= new KListViewItem(item);
               QString msg,
                       capturedText;
@@ -1336,6 +1331,8 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
                       capturedText;
               int lineNumber = line.mid(0,pos).contains('\n')+1;
               int columnNumber = pos - line.findRev('\n',pos);
+              if (!item)
+                item = new KListViewItem(m_view->resultView());
               KListViewItem* tempItem = new KListViewItem(item);
 
               if(regex)
@@ -1373,26 +1370,17 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
    if(!m_info.ignoreFiles())
      atLeastOneStringFound = true;
 
-   if(atLeastOneStringFound)
+   if (atLeastOneStringFound && item)
      {
 
        m_lib->setIconForFileEntry(item,currentDir+"/"+fileName);
        item->setText(0,fileName);
        item->setText(1,currentDir);
        item->setText(2,m_lib->formatFileSize(fileInfo.size()));
-
-       m_view->resultView()->setColumnText(4,i18n("Total number occurrences"));
-
        item->setText(4,QString::number(occurrence,10));
        item->setText(5,QString("%1[%2]").arg(fileInfo.owner()).arg(fileInfo.ownerId()));
        item->setText(6,QString("%1[%2]").arg(fileInfo.group()).arg(fileInfo.groupId()));
      }
-   else
-     {
-       delete item;
-       item = 0;
-     }
-
 }
 
 void KFileReplacePart::loadViewContent()

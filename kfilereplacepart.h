@@ -116,7 +116,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void recursiveFileReplace(const QString& dirName);
     void replaceAndBackup(const QString& currentDir, const QString& oldFileName, bool regex, bool simulation);
     void replaceAndOverwrite(const QString& currentDir, const QString& oldFileName, bool regex, bool simulation);
-    void replacingLoop(QString& line, KListViewItem* item, bool& atLeastOneStringFound, int& occur, bool regex);
+    void replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regex);
 
 
     void fileSearch(const QString& dirName, const QString& filters);
