@@ -39,6 +39,7 @@ KFileReplace::KFileReplace()
             KStdAction::quit(this, SLOT(close()), actionCollection());
             KStdAction::keyBindings(this, SLOT(slotConfigureKeys()), actionCollection());
             KStdAction::configureToolbars(this, SLOT(slotConfigureToolbars()), actionCollection());
+            setStandardToolBarMenuEnabled(true);
             createGUI(m_part);
             removeDuplicatedActions();
         }
