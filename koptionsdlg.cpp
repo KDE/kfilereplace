@@ -88,7 +88,7 @@ void KOptionsDlg::slotOk()
   // check expression wildcard and character wildcards are not the same
   if (strWildcardsLetters == strWildcardsWords)
     {
-      KMessageBox::error(this, i18n("You can't use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>."));
+      KMessageBox::error(this, "<qt>" + i18n("You can't use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>.")+"</qt>");
       return ;
     }
 
