@@ -5,43 +5,9 @@
   <!ENTITY package "kdewebdev"><!-- kdebase, kdeadmin, etc -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % English "INCLUDE"><!-- change language only here -->
-
-
-  <!-- Do not define any other entities; instead, use the entities
-       from kde-genent.entities and $LANG/user.entities. -->
 ]>
-<!-- kdoctemplate v0.8 October 1 1999
-     Minor update to "Credits and Licenses" section on August 24, 2000
-     Removed "Revision history" section on 22 January 2001
-     Changed to Installation/Help menu entities 18 October 2001
-     Other minor cleanup and changes 18 October 2001 -->
-
-
-<!--
-This template was designed by: David Rugge davidrugge@mindspring.com
-with lots of help from: Eric Bischoff ebisch@cybercable.tm.fr
-and Frederik Fouvry fouvry@sfs.nphil.uni-tuebingen.de
-of the KDE DocBook team.
-
-You may freely use this template for writing any sort of KDE documentation.
-If you have any changes or improvements, please let us know.
-
-Remember:
-- in XML, the case of the <tags> and attributes is relevant ;
-- also, quote all attributes.
-
-Please don't forget to remove all these comments in your final documentation,
-thanks ;-).
--->
-
-<!-- ................................................................ -->
-
-<!-- The language must NOT be changed here. -->
 
 <book lang="&language;">
-
-<!-- This header contains all of the meta-information for the document such
-as Authors, publish date, the abstract, and Keywords -->
 
 <bookinfo>
 <title>The &kfilereplace; Handbook</title>
@@ -61,20 +27,10 @@ as Authors, publish date, the abstract, and Keywords -->
 
 <copyright>
 <year>2004</year>
-<!--<year>2004</year>-->
 <holder>Gulmini Emiliano</holder>
 </copyright>
-<!-- Translators: put here the copyright notice of the translation -->
-<!-- Put here the FDL notice.  Read the explanation in fdl-notice.docbook
-     and in the FDL itself on how to use it. -->
-<legalnotice>&FDLNotice;</legalnotice>
 
-<!-- Date and version information of the documentation
-Don't forget to include this last date and this last revision number, we
-need them for translation coordination !
-Please respect the format of the date (YYYY-MM-DD) and of the version
-(V.MM.LL), it could be used by automation scripts.
-Do NOT change these in the translation. -->
+<legalnotice>&FDLNotice;</legalnotice>
 
 <date>2004-08-09</date>
 <releaseinfo>1&#46;0&#46;0</releaseinfo>
@@ -87,10 +43,6 @@ Do NOT change these in the translation. -->
 </para>
 </abstract>
 
-<!-- This is a set of Keywords for indexing by search engines.
-Please at least include KDE, the KDE package it is in, the name
- of your application, and a few relevant keywords. -->
-
 <keywordset>
 <keyword>KDE</keyword>
 <keyword>KFileReplace</keyword>
@@ -101,15 +53,6 @@ Please at least include KDE, the KDE package it is in, the name
 
 </bookinfo>
 
-<!-- The contents of the documentation begin here.  Label
-each chapter so with the id attribute. This is necessary for two reasons: it
-allows you to easily reference the chapter from other chapters of your
-document, and if there is no ID, the name of the generated HTML files will vary
-from time to time making it hard to manage for maintainers and for the CVS
-system. Any chapter labelled (OPTIONAL) may be left out at the author's
-discretion. Other chapters should not be left out in order to maintain a
-consistent documentation style across all KDE apps. -->
-
 <chapter id="introduction">
  <title>Introduction</title>
   <para>&kfilereplace; is an application that performs search and replace of one or more strings in one or more files. The strings you want search for, may be literals or QT-like regular expressions. There are even other options that you may use to tune your search.
@@ -119,9 +62,6 @@ consistent documentation style across all KDE apps. -->
 <chapter id="using-kfilereplace">
 <title>Using &kfilereplace;</title>
 
-<!-- This chapter should tell the user how to use your app. You should use as
-many sections (Chapter, Sect1, Sect3, etc...) as is necessary to fully document
-your application. -->
 <para>
  <screenshot>
   <screeninfo>Here's a screenshot of &kfilereplace; in its standalone incarnation</screeninfo>
@@ -143,7 +83,7 @@ your application. -->
 <sect1 id="kfilereplace-the-toolbar">
 <title>The Toolbar</title>
 
-<para>The KFilereplace toolbar should looks like this:
+<para>The KFileReplace toolbar should looks like this:
  <screenshot>
   <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
    <mediaobject>
@@ -178,7 +118,7 @@ your application. -->
         </imageobject>
        </mediaobject>
       </screenshot>
-      This button shows a session dialog window in wich you can set several basic options, if KFilereplace run as standalone application you should click this button as first step.
+      This button shows a session dialog window in wich you can set several basic options, if KFileReplace run as standalone application you should click this button as first step.
      </para>
     </listitem>
    </varlistentry>
@@ -273,7 +213,7 @@ your application. -->
              </imageobject>
            </mediaobject>
          </screenshot>
-         This button opens a window dialog in which you can edit your strings list..
+         This button opens the <link linkend="kfilereplace-the-add-dialog">Add strings</link>  dialog in which you can edit your strings list..
        </para>
      </listitem>
    </varlistentry>
@@ -324,10 +264,10 @@ your application. -->
            <screeninfo>No image</screeninfo>
            <mediaobject>
              <imageobject>
-               <imagedata fileref="" format="PNG"/>
+               <imagedata fileref="eraser.png" format="PNG"/>
              </imageobject>
              <imageobject>
-               <imagedata fileref="" format="EPS"/>
+               <imagedata fileref="eraser.eps" format="EPS"/>
              </imageobject>
            </mediaobject>
          </screenshot>
@@ -369,7 +309,7 @@ your application. -->
              </imageobject>
            </mediaobject>
          </screenshot>
-         This button loads a strings list. If you want to repeat a search/replace operation over different base directories, or in different periods, you can <!--link linkend="using-project-dialog">save</link--> your list of strings in a xml file with "kfr" extension and reload it by clicking this button.
+	 This button loads a <link linkend="kfilereplace-the-kfr-file">strings list</link>.
        </para>
      </listitem>
    </varlistentry>
@@ -445,7 +385,7 @@ your application. -->
              </imageobject>
            </mediaobject>
          </screenshot>
-         This button enables commands capability. Commands are special replace strings. Say for example that you want substitute the word "date" with the actual date string in ISO format, then you should insert in your list "date" as search string and " [$datetime:local$]" as replace string. See Commands section.
+	 This button enables commands capability. Commands are special replace strings. Say for example that you want substitute the word "date" with the actual date string in ISO format, then you should insert in your list "date" as search string and " [$datetime:local$]" as replace string. See <link linkend="kfilereplace-commands">Commands</link> section.
        </para>
      </listitem>
    </varlistentry>
@@ -519,7 +459,7 @@ your application. -->
     </screenshot>
   </para>
 
-  <para>The strings view visualizes the list of words you want search/replace. In the picture above you can see that there is only one column named "Search for:", in fact when we put KFilereplace in search mode the results view and the strings view have a different layout.
+  <para>The strings view visualizes the list of words you want search/replace. Please not that  in search mode the results view and the strings view have a different layout. 
   </para>
 
 </sect1>
@@ -562,7 +502,7 @@ your application. -->
          </textobject>
        </mediaobject>
      </screenshot>
-     Then you could set some usefull options, like searching in all the sub folders, doing a case sensitive search, enabling commands and/or regular expressions(please note that regular expressions and commands could slow down the speed performances!), doing a backup copy of each file that KFilereplace should modify.
+     Then you could set some usefull options, like searching in all the sub folders, doing a case sensitive search, enabling commands and/or regular expressions(please note that regular expressions and commands could slow down the speed performances!), doing a backup copy of each file that KFileReplace should modify.
      <screenshot>
        <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
        <mediaobject>
@@ -613,15 +553,132 @@ your application. -->
        </mediaobject>
      </screenshot>
    </para>
+   <para>
+     The Advanced Page allows you to set up some usefull options to restrict search to subset of your target tree. If you want execute KFileReplace only over files that have dimensions in the range of 10KB - 100KB then you could use the size options.
+     <screenshot>
+       <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata fileref="size_options.png" format="PNG"/>
+	 </imageobject>
+	 <imageobject>
+	   <imagedata fileref="size_options.eps" format="EPS"/>
+	 </imageobject>
+	 <textobject>
+	   <phrase>Screenshot</phrase>
+	 </textobject>
+       </mediaobject>
+     </screenshot>
+     Date option, restrict the search in a temporal range.
+     <screenshot>
+       <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata fileref="date_options.png" format="PNG"/>
+	 </imageobject>
+	 <imageobject>
+	   <imagedata fileref="date_options.eps" format="EPS"/>
+	 </imageobject>
+	 <textobject>
+	   <phrase>Screenshot</phrase>
+	 </textobject>
+       </mediaobject>
+     </screenshot>
+     This last option, allows you to only search for files owned (or not owned) by a particular user. Actually this could be more usefull to the system administrators. 
+     <screenshot>
+       <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata fileref="ownership_options.png" format="PNG"/>
+	 </imageobject>
+	 <imageobject>
+	   <imagedata fileref="ownership_options.eps" format="EPS"/>
+	 </imageobject>
+	 <textobject>
+	   <phrase>Screenshot</phrase>
+	 </textobject>
+       </mediaobject>
+     </screenshot>
+   </para>
  </sect2>
 </sect1>
 
+<sect1 id="kfilereplace-the-options-dialog">
+ <title>The Options Dialog</title>
+ <para>This dialog contains options that are in the toolbar and extra options, that may come in handy in some situation. You can invoke it selecting "Settings | Configure KFileReplace" in the menu.
+ </para>
+ <sect2 id="kfilereplace-the-options-dialog-general-page">
+  <title>General options</title>
+  <para>
+    These options have been presented in the <link linkend="kfilereplace-the-toolbar">Toolbar</link> section, so go to the advanced options.
+   <screenshot>
+       <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
+       <mediaobject>
+         <imageobject>
+           <imagedata fileref="optionsdialog_main_window_1.png" format="PNG"/>
+         </imageobject>
+         <imageobject>
+           <imagedata fileref="optionsdialog_main_window_1.eps" format="EPS"/>
+         </imageobject>
+         <textobject>
+           <phrase>Screenshot</phrase>
+         </textobject>
+       </mediaobject>
+     </screenshot>
+  </para>
+ </sect2>
+ <sect2 id="kfilereplace-the-options-dialog-advanced-page">
+  <title>Advanced options</title>
+  <para>
+    <screenshot>
+      <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="optionsdialog_main_window_2.png" format="PNG"/>
+	</imageobject>
+	<imageobject>
+	  <imagedata fileref="optionsdialog_main_window_2.eps" format="EPS"/>
+	</imageobject>
+	<textobject>
+	  <phrase>Screenshot</phrase>
+	</textobject>
+      </mediaobject>
+     </screenshot>
+     <itemizedlist>
+       <listitem><para>Do not show files if no strings are found or replaced - lets you to visualize only the files that match with some of your strings. This will speed up the search. </para></listitem>
+       <listitem><para>When searching, stop on firts string found - KFileReplace will stop when match a string, and will continue to search for other strings or, if you only search for one string, it will continue with the next file.</para></listitem>
+       <listitem><para>Follow symbolic links - if a file is a link to another one, then search in the real file.</para></listitem>
+       <listitem><para>Ignore hidden files and directories - well need to be explained?.</para></listitem>
+   </itemizedlist>
+  </para>
+ </sect2>
+</sect1>
+<sect1 id="kfilereplace-the-add-dialog">
+ <title>The Add Strings Dialog</title>
+  <para>
+    <screenshot>
+      <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="addstringsdialog_window.png" format="PNG"/>
+	</imageobject>
+	<imageobject>
+	  <imagedata fileref="addstringsdialog_window.eps" format="EPS"/>
+	</imageobject>
+	<textobject>
+	  <phrase>Screenshot</phrase>
+	</textobject>
+      </mediaobject>
+     </screenshot>
+   This dialog is used to insert and edit a list of strings. It is simple to use, you only must choose wheter to insert a search-only list or a search-and-replace list, then with the two mini editors you will introduce your texts. The arrow buttons, allow you to add a pair of strings or delete it if you think you made a mystake.
+  </para>
+</sect1>
 </chapter>
 
 <chapter id="kfilereplace-features">
  <title>KFilreplace features</title>
  <para>
-  This chapter provides informations about the main capabilities of KFilereplace.
+  This chapter provides informations about the main capabilities of KFileReplace.
  </para>
  <sect1 id="kfilereplace-the-kfr-file">
   <title>How to save your string list</title>
@@ -646,59 +703,33 @@ your application. -->
    if you are using a previous format you can update your file simply by according it to the above scheme.
   </para>
 </sect1>
-
+<sect1 id="kfilereplace-the-report-file">
+  <title>How to create a simple report</title>
+  <para>
+   You can create a report by choosing "Search/Replace | Results | Create Report File" from the menu. A report is a directory containing an xml file and a css file. Look the picture
+    <screenshot>
+      <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="report_example.png" format="PNG"/>
+	</imageobject>
+	<imageobject>
+	  <imagedata fileref="report_example.eps" format="EPS"/>
+	</imageobject>
+	<textobject>
+	  <phrase>Screenshot</phrase>
+	</textobject>
+      </mediaobject>
+    </screenshot>
+  </para>
+</sect1>
 <sect1 id="kfilereplace-commands">
  <title>Commands</title>
   <para>
-    Suppose you want subtitute the phrase "Alice's adventures in wonderland" with the entire file that contains Carroll's novel. Probably you don't want to do this by hand, what you need is a "command" that do it for you. So click the <link linkend="kfilereplace-the-toolbar">add</link> button, select "search and replace mode" and insert the following strings: "Alice's adventure in wonderland" in the search mini editor and the string "[$loadfile:/the-path-to-my-directory/my-directory/my-file$]" in the replace mini editor. Click Ok button, and when you come back to KFilereplace main window toggle the <link linkend="kfilereplace-the-toolbar">command action</link> button that enables the commands, and start the replace. Other commands are presents, please see <link linkend="available-commands">Appendix B</link> for a list of available commands.
+    Suppose you want subtitute the phrase "Alice's adventures in wonderland" with the entire file that contains Carroll's novel. Probably you don't want to do this by hand, what you need is a "command" that do it for you. So click the <link linkend="kfilereplace-the-toolbar">add</link> button, select "search and replace mode" and insert the following strings: "Alice's adventure in wonderland" in the search mini editor and the string <quote>[$loadfile:/the-path-to-my-directory/my-directory/my-file$]</quote> in the replace mini editor. Click Ok button, and when you come back to KFileReplace main window, toggle the <link linkend="kfilereplace-the-toolbar">command action</link> button that enables the commands, and start the replace. Other commands are presents, please see <link linkend="available-commands">Appendix B</link> for a list of available commands.
   </para>
 </sect1>
 </chapter>
-
-
-<!--
-<chapter id="faq">
-<title>Questions and Answers</title>
--->
-<!-- (OPTIONAL but recommended) This chapter should include all of the silly
-(and not-so-silly) newbie questions that fill up your mailbox. This chapter
-should be reserved for BRIEF questions and answers! If one question uses more
-than a page or so then it should probably be part of the
-"Using this Application" chapter instead. You should use links to
-cross-reference questions to the parts of your documentation that answer them.
-This is also a great place to provide pointers to other FAQ's if your users
-must do some complicated configuration on other programs in order for your
-application work. -->
-<!--
-&reporting.bugs;
-&updating.documentation;
-
-
-<qandaset id="faqlist">
-<qandaentry>
--
-<question>
-<para>My Mouse doesn't work. How do I quit &kfilereplace;?</para>
-</question>
-<answer>
-<para>You silly goose! Check out the <link linkend="commands">Commands
-Section</link> for the answer.</para>
-</answer>
-</qandaentry>
-<qandaentry>
-<question>
-<para>Why can't I twiddle my documents?</para>
-</question>
-<answer>
-<para>You can only twiddle your documents if you have the foobar.lib
-installed.</para>
-</answer>
-
-</qandaentry>
-</qandaset>
-
-</chapter>
--->
 
 <chapter id="credits">
 <title>Credits and License</title>
@@ -723,18 +754,6 @@ installed.</para>
   </varlistentry>
 </variablelist>
 
-
-<!--
-<para>
-Contributors:
-<itemizedlist>
-<listitem><para>Konqui the KDE Dragon <email>konqui@kde.org</email></para>
-</listitem>
-<listitem><para>Tux the Linux Penguin <email>tux@linux.org</email></para>
-</listitem>
-</itemizedlist>
-</para>
--->
 <para>
 Documentation copyright 2004 Gulmini Emiliano <email>emi_barbarossa&#64;yahoo&#46;it</email>
 </para>
@@ -742,12 +761,6 @@ Documentation copyright 2004 Gulmini Emiliano <email>emi_barbarossa&#64;yahoo&#4
 <!-- TRANS:CREDIT_FOR_TRANSLATORS -->
 
 &underFDL;               <!-- FDL: do not remove -->
-
-<!-- Determine which license your application is licensed under,
-     and delete all the remaining licenses below:
-
-     (NOTE:  All documentation are licensed under the FDL,
-     regardless of what license the application uses) -->
 
 &underGPL;               <!-- GPL License -->
 
@@ -757,9 +770,9 @@ Documentation copyright 2004 Gulmini Emiliano <email>emi_barbarossa&#64;yahoo&#4
 <title>Installation</title>
 
 <sect1 id="getting-kfilereplace">
-<title>How to install KFilereplace</title>
+<title>How to install KFileReplace</title>
 <para>
-KFilereplace is actually part of Kdewebdev tool, so to in order to install it, you must obtain a copy of Kdewebdev. Note that if you are using a KDE installation provided by your OS vendor, probably you already have Kdewebdev installed, in this case you can use KFilereplace either by opening Quanta plus web editor or by calling it directly. If not you can download Kdewebdev package from the internet, please refer to <ulink url="http://kdewebdev.org">Kdewebdev home site</ulink> for more informations.
+KFileReplace is actually part of Kdewebdev tool, so to in order to install it, you must obtain a copy of Kdewebdev. Note that if you are using a KDE installation provided by your OS vendor, probably you already have Kdewebdev installed, in this case you can use KFileReplace either by opening Quanta plus web editor or by calling it directly. If not you can download Kdewebdev package from the internet, please refer to <ulink url="http://kdewebdev.org">Kdewebdev home site</ulink> for more informations.
 <!--&install.intro.documentation;-->
 </para>
 <para>http://kde-apps.org
@@ -778,60 +791,41 @@ KFilereplace is actually part of Kdewebdev tool, so to in order to install it, y
 </appendix>
 
 <appendix id="available-commands">
- <title>KFilereplace commands</title>
+ <title>KFileReplace commands</title>
  <para>
-   [$datetime:iso$] this command return the actual date and time in QT ISO format.
- </para>
- <para>
-   [$datetime:local$] like above but in local format.
- </para>
- <para>
-   [$user:uid$] return the UID of the actual user.
- </para>
- <para>
-   [$user:gid$] return the GID of the actual user.
- </para>
- <para>
-   [$user:loginname$] return the login name of the actual user.
- </para>
- <para>
-   [$user:fullname$] return the full name of the actual user.
- </para>
- <para>
-   [$user:homedir$] return the home directory of the actual user.
- </para>
- <para>
-   [$user:shell$] return  the shell of the actual user.
- </para>
- <para>
-   [$loadfile:<emphasis>/my-path/my-directory/my-file</emphasis>$] return the content of the <emphasis>my-file</emphasis> file.
- </para>
- <para>
-   [$empty:$] return the empty string.
- </para>
- <para>
-   [$random:<emphasis>AN_INTEGER_NUMBER</emphasis>$] return a random number string using <emphasis>AN_INTEGER_NUMBER</emphasis> like initial seed.
- </para>
- <para>
-   [$random:$] like above, but without initial seed.
- </para>
- <para>
-   [$mathexp:<emphasis>bc-expression</emphasis>$] return the result of a bc v1.06 mathematical expression.
+   <segmentedlist>
+     <segtitle>[$datetime:iso$]</segtitle>
+     <segtitle>[$datetime:local$]</segtitle>
+     <segtitle>[$user:uid$]</segtitle>
+     <segtitle>[$user:gid$]</segtitle>
+     <segtitle>[$user:loginname$]</segtitle>
+     <segtitle>[$user:fullname$]</segtitle>
+     <segtitle>[$user:homedir$]</segtitle>
+     <segtitle>[$user:shell$]</segtitle>
+     <segtitle>[$loadfile:<emphasis>/my-path/my-directory/my-file</emphasis>$]</segtitle>
+     <segtitle>[$empty:$]</segtitle>
+     <segtitle>[$random:<emphasis>AN_INTEGER_NUMBER</emphasis>$]</segtitle>
+     <segtitle>[$random:$]</segtitle>
+     <segtitle>[$mathexp:<emphasis>bc-expression</emphasis>$]</segtitle>
+     <seglistitem>
+       <seg>this command return the actual date and time in QT ISO format.</seg>
+       <seg>like above but in local format.</seg>
+       <seg>return the UID of the actual user.</seg>
+       <seg>return the GID of the actual user.</seg>
+       <seg>return the login name of the actual user.</seg>
+       <seg>return the full name of the actual user.</seg>
+       <seg>return the home directory of the actual user.</seg>
+       <seg>return  the shell of the actual user.</seg>
+       <seg>return the content of the <emphasis>my-file</emphasis> file.</seg>
+       <seg>return the empty string.</seg>
+       <seg>return a random number string using <emphasis>AN_INTEGER_NUMBER</emphasis> like initial seed.</seg>
+       <seg>like above, but without initial seed.</seg>
+       <seg>return the result of a bc v1.06 mathematical expression.</seg>
+     </seglistitem>
+   </segmentedlist>
  </para>
 </appendix>
 
 &documentation.index;
 </book>
-
-<!--
-Local Variables:
-mode: sgml
-sgml-minimize-attributes:nil
-sgml-general-insert-case:lower
-sgml-indent-step:0
-sgml-indent-data:nil
-End:
-
-vim:tabstop=2:shiftwidth=2:expandtab
--->
 
