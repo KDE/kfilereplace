@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="kfilereplace" version="3">
+<kpartgui name="kfilereplace" version="4">
 <MenuBar>
     <Menu name="kfilerepace"><text>Search/&amp;Replace</text>
         <Action name="new_project"/>
@@ -48,7 +48,7 @@
 	<Separator/>
 	<Action name="help_kfilereplace" />
 	<Action name="report_bug" />
-	<Action name="about_kfilereplace" />
+	<Action name="help_about_kfilereplace" />
     </Menu>
 </MenuBar>
 <ToolBar noMerge="1" name="mainToolBar">

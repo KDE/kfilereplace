@@ -15,24 +15,26 @@
 #ifndef KFILEREPLACEPART_H
 #define KFILEREPLACEPART_H
 //qt includes
-class QStringList;
 
 //kde includes
 #include <kparts/part.h>
 #include <kuser.h>
 
+#include "configurationclasses.h"
 
+#define KFR_VERSION "0.8"
+
+class QStringList;
 class KAboutData;
 class KConfig;
 
-#include "configurationclasses.h"
-class KAboutKFileReplace;
+class KAboutApplication;
 class KFileReplaceView;
 
 class KFileReplacePart: public KParts::ReadOnlyPart
 {
   Q_OBJECT
-  
+
   private:
     KFileReplaceView* m_view;
 
@@ -40,23 +42,23 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     /** the configuration object of the application */
     KConfig* m_config;
     /** a list of recently accessed files */
-    QStringList m_recentStringFileList; 
-    
-    KAboutKFileReplace* m_dlgAbout;
-    
+    QStringList m_recentStringFileList;
+
+    KAboutApplication* m_dlgAbout;
+
     QMap<QString,QString> m_replacementMap;
     ConfigurationInformation m_info;
     bool m_stop;
     int m_optionMask;
 
   public:
-    KFileReplacePart(QWidget *parentWidget, 
+    KFileReplacePart(QWidget *parentWidget,
                      const char *widgetName,
-                     QObject *parent, 
-                     const char *name, 
+                     QObject *parent,
+                     const char *name,
                      const QStringList &args);
     virtual ~KFileReplacePart();
-  
+
   public slots:
     void slotFileNew();
     void slotFileSearch();
@@ -76,18 +78,18 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void slotOpenRecentStringFile(const KURL& urlFile);
     void slotOptionsRecursive();
     void slotOptionsBackup();
-    void slotOptionsCaseSensitive();   
+    void slotOptionsCaseSensitive();
     void slotOptionsVariables();
     void slotOptionsWildcards();
     void slotOptionsPreferences();
-    void showAboutApplication(void);
+    void slotAboutApplication();
     void appHelpActivated();
     void reportBug();
-  
+
   public:
     static KAboutData* createAboutData();
     KConfig *config();
-    
+
   protected:
     virtual bool openFile() { return false; }
     virtual bool openURL (const KURL &url);
@@ -102,27 +104,27 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     bool checkBeforeOperation();
     bool verifyFileRequirements(const QString& filePath,const QString& fileName);
     void setWhatsThis();
-    
+
   private:
     void convertOldToNewKFRFormat(const QString& strFilename);
-    
+
     void normalFileReplace();
-    void recursiveFileReplace(const QString& dirName); 
+    void recursiveFileReplace(const QString& dirName);
     void replaceAndBackupExpression(const QString& currentDir, const QString& oldFileName);
     void replaceAndOverwriteExpression(const QString& currentDir, const QString& oldFileName,bool simulation=false);
     void replaceAndBackupLiteral(const QString& currentDir, const QString& oldFileName);
     void replaceAndOverwriteLiteral(const QString& currentDir, const QString& oldFileName,bool simulation=false);
 
     void normalFileSearch(const QString& dirName, const QString& filters);
-    void recursiveFileSearch(const QString& dirName, const QString& filters); 
+    void recursiveFileSearch(const QString& dirName, const QString& filters);
     void searchExpression(const QString& currentDir, const QString& oldFileName);
     void searchLiteral(const QString& currentDir, const QString& oldFileName);
-    void loadInformationFromView(); 
+    void loadInformationFromView();
     void launchNewProjectDialog();
     void setOptionMask();
-    
+
     QString variableValue(const QString& variable);
-    
+
 };
 
 #endif

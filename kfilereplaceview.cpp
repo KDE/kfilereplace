@@ -91,7 +91,7 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
 
   // connect events
   connect(lwResult,
-          SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)), 
+          SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)),
 	  this,
           SLOT(slotMouseButtonClicked(int, QListViewItem *, const QPoint &, int)));
   connect(lwStrings,
@@ -101,11 +101,12 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
 
   QWhatsThis::add(lwResult, i18n(lwResultWhatthis));
   QWhatsThis::add(lwStrings, i18n(lwStringsWhatthis));
-  
+
 }
 
 KFileReplaceView::~KFileReplaceView()
 {
+  kdDebug(23000) << "KFileReplaceView::~KFileReplaceView()" << endl;
   delete m_kpmResult;
   m_config = 0L;
 }
@@ -143,7 +144,7 @@ QString KFileReplaceView::currentItem()
 void KFileReplaceView::slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column)
 {
   Q_UNUSED(column);
-  
+
   if (lvi == 0) // No item selected
     return;
 
@@ -280,55 +281,16 @@ void KFileReplaceView::setMap()
 void KFileReplaceView::slotStringsAdd()
 {
   dlg.setConfig(m_config);
-  
+
   dlg.empty();
-  
+
   if(!dlg.exec())
      return;
-  
-  m_map = dlg.stringList();
- 
-  QMap<QString,QString>::Iterator itMap;
-  
-  for(itMap = m_map.begin(); itMap != m_map.end(); ++itMap)
-    {
-      QListViewItem* lvi = new QListViewItem(lwStrings);
-      lvi->setText(0,itMap.key());
-      lvi->setText(1,itMap.data());
-    }    
-}
 
-void KFileReplaceView::slotStringsAddFromProjectDlg(const QMap<QString,QString>& replacementMap)
-{
-  m_map = replacementMap;
- 
-  QMap<QString,QString>::Iterator itMap;
-  
-  for(itMap = m_map.begin(); itMap != m_map.end(); ++itMap)
-    {
-      QListViewItem* lvi = new QListViewItem(lwStrings);
-      lvi->setText(0,itMap.key());
-      lvi->setText(1,itMap.data());
-    }    
-}
-
-void KFileReplaceView::slotStringsEdit(QListViewItem* lvi)
-{
-  Q_UNUSED(lvi);
-  
-  dlg.setConfig(m_config);
-  
-  dlg.loadDataFromStringsView(m_map);
-  
-  if(!dlg.exec())
-    return;
- 
   m_map = dlg.stringList();
- 
-  lwStrings->clear(); 
- 
+
   QMap<QString,QString>::Iterator itMap;
- 
+
   for(itMap = m_map.begin(); itMap != m_map.end(); ++itMap)
     {
       QListViewItem* lvi = new QListViewItem(lwStrings);
@@ -337,14 +299,53 @@ void KFileReplaceView::slotStringsEdit(QListViewItem* lvi)
     }
 }
 
-void KFileReplaceView::slotStringsDel() 
-{ 
-  delete lwStrings->currentItem(); 
+void KFileReplaceView::slotStringsAddFromProjectDlg(const QMap<QString,QString>& replacementMap)
+{
+  m_map = replacementMap;
+
+  QMap<QString,QString>::Iterator itMap;
+
+  for(itMap = m_map.begin(); itMap != m_map.end(); ++itMap)
+    {
+      QListViewItem* lvi = new QListViewItem(lwStrings);
+      lvi->setText(0,itMap.key());
+      lvi->setText(1,itMap.data());
+    }
+}
+
+void KFileReplaceView::slotStringsEdit(QListViewItem* lvi)
+{
+  Q_UNUSED(lvi);
+
+  dlg.setConfig(m_config);
+
+  dlg.loadDataFromStringsView(m_map);
+
+  if(!dlg.exec())
+    return;
+
+  m_map = dlg.stringList();
+
+  lwStrings->clear();
+
+  QMap<QString,QString>::Iterator itMap;
+
+  for(itMap = m_map.begin(); itMap != m_map.end(); ++itMap)
+    {
+      QListViewItem* lvi = new QListViewItem(lwStrings);
+      lvi->setText(0,itMap.key());
+      lvi->setText(1,itMap.data());
+    }
+}
+
+void KFileReplaceView::slotStringsDel()
+{
+  delete lwStrings->currentItem();
 }
 
 void KFileReplaceView::slotStringsClear()
 {
-  lwStrings->clear();  
+  lwStrings->clear();
 }
 
 #include "kfilereplaceview.moc"
