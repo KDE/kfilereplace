@@ -45,8 +45,11 @@
                     <property name="editable">
                         <bool>true</bool>
                     </property>
+                    <property name="sizeLimit">
+                        <number>20</number>
+                    </property>
                     <property name="maxCount">
-                        <number>9</number>
+                        <number>10</number>
                     </property>
                     <property name="insertionPolicy">
                         <enum>AtTop</enum>
@@ -67,31 +70,6 @@
                     </property>
                 </widget>
             </grid>
-        </widget>
-        <widget class="KComboBox" row="1" column="1">
-            <item>
-                <property name="text">
-                    <string>*</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>cbFilter</cstring>
-            </property>
-            <property name="editable">
-                <bool>true</bool>
-            </property>
-            <property name="sizeLimit">
-                <number>10</number>
-            </property>
-            <property name="maxCount">
-                <number>9</number>
-            </property>
-            <property name="insertionPolicy">
-                <enum>AtTop</enum>
-            </property>
-            <property name="duplicatesEnabled">
-                <bool>false</bool>
-            </property>
         </widget>
         <widget class="QLabel" row="0" column="0">
             <property name="name">
@@ -262,7 +240,7 @@
                                 <number>2</number>
                             </property>
                             <property name="maxCount">
-                                <number>1</number>
+                                <number>2</number>
                             </property>
                             <property name="duplicatesEnabled">
                                 <bool>false</bool>
@@ -335,7 +313,7 @@
                                 <number>2</number>
                             </property>
                             <property name="maxCount">
-                                <number>1</number>
+                                <number>2</number>
                             </property>
                             <property name="duplicatesEnabled">
                                 <bool>true</bool>
@@ -362,7 +340,7 @@
                                 <number>2</number>
                             </property>
                             <property name="maxCount">
-                                <number>1</number>
+                                <number>2</number>
                             </property>
                             <property name="duplicatesEnabled">
                                 <bool>false</bool>
@@ -389,7 +367,7 @@
                                 <number>2</number>
                             </property>
                             <property name="maxCount">
-                                <number>1</number>
+                                <number>2</number>
                             </property>
                             <property name="duplicatesEnabled">
                                 <bool>false</bool>
@@ -416,7 +394,7 @@
                                 <number>2</number>
                             </property>
                             <property name="maxCount">
-                                <number>1</number>
+                                <number>2</number>
                             </property>
                             <property name="duplicatesEnabled">
                                 <bool>false</bool>
@@ -533,6 +511,37 @@
                 </widget>
             </vbox>
         </widget>
+        <widget class="KComboBox" row="1" column="1">
+            <property name="name">
+                <cstring>cbFilter</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>3</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="editable">
+                <bool>true</bool>
+            </property>
+            <property name="sizeLimit">
+                <number>20</number>
+            </property>
+            <property name="maxCount">
+                <number>10</number>
+            </property>
+            <property name="insertionPolicy">
+                <enum>AtTop</enum>
+            </property>
+            <property name="duplicatesEnabled">
+                <bool>false</bool>
+            </property>
+            <property name="whatsThis" stdset="0">
+                <string></string>
+            </property>
+        </widget>
     </grid>
 </widget>
 <connections>
@@ -600,7 +609,6 @@
 <tabstops>
     <tabstop>cbLocation</tabstop>
     <tabstop>pbLocation</tabstop>
-    <tabstop>cbFilter</tabstop>
     <tabstop>chbSizeMin</tabstop>
     <tabstop>edSizeMin</tabstop>
     <tabstop>chbSizeMax</tabstop>

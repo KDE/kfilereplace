@@ -39,7 +39,6 @@ KOptionsDlg::KOptionsDlg(QWidget *parent, const char *name, Settings settings) :
 
   // Get current settings
   m_settings = settings;
- // setValues(); // Fill widgets with current values
 
   connect(pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
   connect(pbDefault, SIGNAL(clicked()),this,SLOT(slotDefaults()));
@@ -51,7 +50,8 @@ KOptionsDlg::~KOptionsDlg()
 
 void KOptionsDlg::slotOK()
 {
-  QString strWildcardsLetters, strWildcardsWords;
+  QString strWildcardsLetters,
+          strWildcardsWords;
   int nMaxExpressionLength;
 
   // ************************ PAGE 1 ****************************
@@ -111,115 +111,83 @@ void KOptionsDlg::slotOK()
 void KOptionsDlg::slotDefaults() // Set defaults values for all options of the dialog
 {
   // -------------------- PAGE 1 ---------------------
-  chbCaseSensitive->setChecked(OPTIONS_DEFAULT_CASESENSITIVE);
-  chbRecursive->setChecked(OPTIONS_DEFAULT_RECURSIVE);
-  chbHaltOnFirstOccurrence->setChecked(OPTIONS_DEFAULT_HALTONFIRSTOCCUR);
-  chbIgnoreWhitespaces->setChecked(OPTIONS_DEFAULT_IGNOREWHITESPACES);
-  chbFollowSymLinks->setChecked(OPTIONS_DEFAULT_FOLLOWSYMLINKS);
-  chbAllStringsMustBeFound->setChecked(OPTIONS_DEFAULT_ALLSTRINGSMUSTBEFOUND);
-  chbIgnoreHidden->setChecked(OPTIONS_DEFAULT_IGNOREHIDDEN);
+  chbCaseSensitive->setChecked(CaseSensitiveOption);
+  chbRecursive->setChecked(RecursiveOption);
+  chbHaltOnFirstOccurrence->setChecked(StopWhenFirstOccurenceOption);
+  chbIgnoreWhitespaces->setChecked(IgnoreWhiteSpacesOption);
+  chbFollowSymLinks->setChecked(FollowSymbolicLinksOption);
+  chbAllStringsMustBeFound->setChecked(AllStringsMustBeFoundOption);
+  chbIgnoreHidden->setChecked(IgnoreHiddenOption);
 
   // -------------------- PAGE 2 ---------------------
-  chbWildcards->setChecked(OPTIONS_DEFAULT_WILDCARDS);
+  chbWildcards->setChecked(WildcardsOption);
   edLetter->setText("?");
   edWord->setText("*");
   chbWildcardsInReplaceStr->setChecked(false);
   edLength->setText("100");
 
   // -------------------- PAGE 3 ---------------------
-  chbBackup->setChecked(OPTIONS_DEFAULT_BACKUP);
-  chbVariables->setChecked(OPTIONS_DEFAULT_VARIABLES);
-  chbConfirmDirs->setChecked(OPTIONS_DEFAULT_CONFIRMDIRS);
-  chbConfirmFiles->setChecked(OPTIONS_DEFAULT_CONFIRMFILES);
-  chbConfirmStrings->setChecked(OPTIONS_DEFAULT_CONFIRMSTRINGS);
+  chbBackup->setChecked(BackupOption);
+  chbVariables->setChecked(VariablesOption);
+  chbConfirmDirs->setChecked(ConfirmDirectoriesOption);
+  chbConfirmFiles->setChecked(ConfirmFilesOption);
+  chbConfirmStrings->setChecked(ConfirmStringsOption);
 }
 
-/*void KOptionsDlg::setValues() // Copy current values to widgets
-{
-  QString strTemp;
-
-  // -------------------- PAGE 1 ---------------------
-  chbCaseSensitive->setChecked( m_settings.bCaseSensitive );
-  chbRecursive->setChecked( m_settings.bRecursive );
-  chbHaltOnFirstOccurrence->setChecked( m_settings.bHaltOnFirstOccur );
-  chbIgnoreWhitespaces->setChecked( m_settings.bIgnoreWhitespaces );
-  chbFollowSymLinks->setChecked( m_settings.bFollowSymLinks );
-  chbAllStringsMustBeFound->setChecked( m_settings.bAllStringsMustBeFound );
-  chbIgnoreHidden->setChecked( m_settings.bIgnoreHidden );
-
-  // -------------------- PAGE 2 ---------------------
-  chbWildcards->setChecked( m_settings.bWildcards );
-  //strTemp.sprintf("%c", m_settings.cWildcardsLetters);
-  strTemp = QString("%1").arg(m_settings.cWildcardsLetters);
-  edLetter->setText(strTemp);
-  //strTemp.sprintf("%c", m_settings.cWildcardsWords);
-  strTemp = QString("%1").arg(m_settings.cWildcardsWords);
-  edWord->setText(strTemp);
-  chbWildcardsInReplaceStr->setChecked(m_settings.bWildcardsInReplaceStrings);
-  strTemp.setNum(m_settings.nMaxExpressionLength);
-  edLength->setText(strTemp);
-
-  // -------------------- PAGE 3 ---------------------
-  chbBackup->setChecked( m_settings.bBackup );
-  chbVariables->setChecked( m_settings.bVariables );
-  chbConfirmFiles->setChecked( m_settings.bConfirmFiles );
-  chbConfirmStrings->setChecked( m_settings.bConfirmStrings );
-  chbConfirmDirs->setChecked( m_settings.bConfirmDirs );
-
-}*/
-
-Settings KOptionsDlg::settings() 
+Settings KOptionsDlg::settings()
 {
  return m_settings;
 }
 void KOptionsDlg::whatsThisPage1()
 {
   // Create help QWhatsThis
-  QWhatsThis::add(chbCaseSensitive, 
-                                i18n("If enabled, lowers and uppers are different. If you are "
-                                        "searching for \"Linux\" and this option is on, \"LINUX\" will not be found."));
-  QWhatsThis::add(chbRecursive, i18n("Work in all subfolders of the main folder of the project"));
-  QWhatsThis::add(chbHaltOnFirstOccurrence, 
-                                i18n("When searching, KFileReplace reads all the data of each "
-                                        "file to know how many times each strings appears in the files. If you need not"
-                                        "to have this details, you can enable this options to make the search faster. "
-                                        "Then the search will be finished in a file when the first occurrence of a string will be found."));
-  QWhatsThis::add(chbIgnoreWhitespaces, 
-                                i18n("Ignore some characters when searching a string: \\r (carriage return), \\n (line feed) \\t (tab), "
-                                        "and multi-spaces. It's very "
-                                        "useful in HTML code, and with the end of the lines. For example, if you are searching for "
-                                        "\"Linux is fast\" in a file, and there is a line feed between "
-                                        "\"Linux\" and \"is\", then the string will not be found. This options can solve the problem."));
-  QWhatsThis::add(chbFollowSymLinks, i18n("If a folder symbolic link is found, it will be opened."));
-  QWhatsThis::add(chbAllStringsMustBeFound, 
-                                i18n("The file will be found/replaced only if all strings from the list are found in the file."));
-  QWhatsThis::add(chbIgnoreHidden, 
-                                i18n("If this option is enabled, hidden files and folders (files whose names begin with a "
-                                        "point as .kde) will not be found / replaced."));
+  QWhatsThis::add(chbCaseSensitive,
+                  i18n("If enabled, lowers and uppers are different. If you are "
+                       "searching for \"Linux\" and this option is on, \"LINUX\" will not be found."));
+  QWhatsThis::add(chbRecursive,
+                  i18n("Work in all subfolders of the main folder of the project"));
+  QWhatsThis::add(chbHaltOnFirstOccurrence,
+                  i18n("When searching, KFileReplace reads all the data of each "
+                       "file to know how many times each strings appears in the files. If you need not"
+                       "to have this details, you can enable this options to make the search faster. "
+                       "Then the search will be finished in a file when the first occurrence of a string will be found."));
+  QWhatsThis::add(chbIgnoreWhitespaces,
+                  i18n("Ignore some characters when searching a string: \\r (carriage return), \\n (line feed) \\t (tab), "
+                       "and multi-spaces. It's very "
+                       "useful in HTML code, and with the end of the lines. For example, if you are searching for "
+                       "\"Linux is fast\" in a file, and there is a line feed between "
+                       "\"Linux\" and \"is\", then the string will not be found. This options can solve the problem."));
+  QWhatsThis::add(chbFollowSymLinks,
+                  i18n("If a folder symbolic link is found, it will be opened."));
+  QWhatsThis::add(chbAllStringsMustBeFound,
+                  i18n("The file will be found/replaced only if all strings from the list are found in the file."));
+  QWhatsThis::add(chbIgnoreHidden,
+                  i18n("If this option is enabled, hidden files and folders (files whose names begin with a "
+                       "point as .kde) will not be found / replaced."));
 }
 
 void KOptionsDlg::whatsThisPage2()
 {
   // Add QWhatsThis messages
-  QWhatsThis::add(edLength, 
-                                 i18n("This is the maximal length of the search made to find wildcards in a text. For example, if the length is 200, then "
-                                        "the '*' symbol cannot code for an expression which length is more than 200 letters (bytes)"));
-  QWhatsThis::add(chbWildcardsInReplaceStr, 
-                                 i18n("If enabled, the contents of the wildcards found in the search string will be copied into the "
-                                         "replace string. For example, if you search for \"The * is under my bed\" and the text is \"The "
-                                         "cat is under my bed\", and the replace string "
-                                         "is \"I have a *\", then the text will be replaced with \"I have a cat\". If this options is "
-                                         "disabled, you will have \"I have a *\"."));
+  QWhatsThis::add(edLength,
+                  i18n("This is the maximal length of the search made to find wildcards in a text. For example, if the length is 200, then "
+                       "the '*' symbol cannot code for an expression which length is more than 200 letters (bytes)"));
+  QWhatsThis::add(chbWildcardsInReplaceStr,
+                  i18n("If enabled, the contents of the wildcards found in the search string will be copied into the "
+                       "replace string. For example, if you search for \"The * is under my bed\" and the text is \"The "
+                       "cat is under my bed\", and the replace string "
+                       "is \"I have a *\", then the text will be replaced with \"I have a cat\". If this options is "
+                       "disabled, you will have \"I have a *\"."));
 }
 
 void KOptionsDlg::whatsThisPage3()
 {
   // Add QWhatsThis messages
-  QWhatsThis::add(chbVariables, 
-                                 i18n("If enabled, KFileReplace will replace variables with their values in the replace string. For example "
-                                         "if the replace string is \"The current time is [$datetime:mm/dd/yyyy$]\", then the date will be written."));
-  QWhatsThis::add(chbBackup, 
-                                 i18n("If enabled, create backup of replaced files before any modifications. Then you can restore the old data "
-                                         "if there is an error during the replace operation. A copy of the original files will be created, with the .OLD extension."));
+  QWhatsThis::add(chbVariables,
+                  i18n("If enabled, KFileReplace will replace variables with their values in the replace string. For example "
+                  "if the replace string is \"The current time is [$datetime:mm/dd/yyyy$]\", then the date will be written."));
+  QWhatsThis::add(chbBackup,
+                  i18n("If enabled, create backup of replaced files before any modifications. Then you can restore the old data "
+                  "if there is an error during the replace operation. A copy of the original files will be created, with the .OLD extension."));
 }
 #include "koptionsdlg.moc"

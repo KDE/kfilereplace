@@ -25,10 +25,6 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////
-// resource.h  -- contains macros used for commands
-
-
-///////////////////////////////////////////////////////////////////
 // General application values
 #define ID_STATUS_MSG 1001
 
@@ -42,26 +38,25 @@
 
 #define MAX_MESSAGE 128
 #define MAX_TEXTLEN 256
-//#define MAX_STRINGSINCOMBO          10		// Number of items in the combo boxes
-#define MAX_STRINGSTOSEARCHREP 256
 
-#define OPTIONS_DEFAULT_RECURSIVE true
-#define OPTIONS_DEFAULT_BACKUP true
-#define OPTIONS_DEFAULT_CASESENSITIVE false
-#define OPTIONS_DEFAULT_FOLLOWSYMLINKS false
-#define OPTIONS_DEFAULT_WILDCARDS false
-#define OPTIONS_DEFAULT_VARIABLES false
-#define OPTIONS_DEFAULT_ALLSTRINGSMUSTBEFOUND false
-#define OPTIONS_DEFAULT_CONFIRMFILES false
-#define OPTIONS_DEFAULT_CONFIRMSTRINGS false
-#define OPTIONS_DEFAULT_CONFIRMDIRS false
-#define OPTIONS_DEFAULT_WILDCARDSINREPLACESTR false
-#define OPTIONS_DEFAULT_SYMBOLFORWILDCARDSLETTERS '?'
-#define OPTIONS_DEFAULT_SYMBOLFORWILDCARDSWORDS '*'
-#define OPTIONS_DEFAULT_MAXIMUMWILDCARDEXPLENGTH 100
-#define OPTIONS_DEFAULT_HALTONFIRSTOCCUR false
-#define OPTIONS_DEFAULT_IGNOREWHITESPACES false
-#define OPTIONS_DEFAULT_IGNOREHIDDEN false
+const int MaxStringToSearch = 256;
+const bool RecursiveOption = true;
+const bool BackupOption = true;
+const bool CaseSensitiveOption = false;
+const bool FollowSymbolicLinksOption = false;
+const bool WildcardsOption = false;
+const bool VariablesOption = false;
+const bool AllStringsMustBeFoundOption = false;
+const bool ConfirmFilesOption = false;
+const bool ConfirmStringsOption = false;
+const bool ConfirmDirectoriesOption = false;
+const bool WildcardsInReplaceStringOption = false;
+const char WildcardsLetterOption = '?';
+const char WildcardsWordOption = '*';
+const unsigned int WildcardsExpressionLengthOption = 100;
+const bool StopWhenFirstOccurenceOption = false;
+const bool IgnoreWhiteSpacesOption = false;
+const bool IgnoreHiddenOption = false;
 
 ///////////////////////////////////////////////////////////////////
 // Create cases for entries and connect them with their functions
@@ -69,12 +64,12 @@
 #define ON_STATUS_MSG(id, message) case id:slotStatusHelpMsg(message);break;
 
 ///////////////////////////////////////////////////////////////////
-// 
-#if !defined(MIN) 
-#define MIN(X,Y) (X) < (Y) ? (X) : (Y) 
+//
+#if !defined(MIN)
+#define MIN(X,Y) (X) < (Y) ? (X) : (Y)
 #endif
 #if !defined(MAX)
-#define MAX(X,Y) (X) > (Y) ? (X) : (Y) 
+#define MAX(X,Y) (X) > (Y) ? (X) : (Y)
 #endif
 
 #endif // RESOURCE_H

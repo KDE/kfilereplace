@@ -196,8 +196,8 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
   // Add item to list
   QString strNum;
   QListViewItem *lviCurItem,
-                *lviFirst;
-  QListViewItem *lviNew,
+                *lviFirst,
+                *lviNew,
                 *lviParent = 0L;
   bool bPresent = false;
   QString strTextSearch;
@@ -228,7 +228,7 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
                 }
             }
 
-          lviCurItem        = lviCurItem->nextSibling();
+          lviCurItem = lviCurItem->nextSibling();
         } while(lviCurItem && lviCurItem != lviFirst);
     }
 
@@ -265,7 +265,7 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
               return true;
             }
 
-          lviCurItem        = lviCurItem->nextSibling();
+          lviCurItem = lviCurItem->nextSibling();
         } while(lviCurItem && lviCurItem != lviFirst);
     }
 

@@ -22,8 +22,6 @@
 
 #include <qdatetime.h>
 
-//#include <sys/param.h>
-
 class QWidget;
 class QListView;
 class KFileReplaceView;
@@ -76,28 +74,28 @@ struct RepDirArg
 };
 
 struct Settings
-{        // General
-        bool bCaseSensitive;
-        bool bRecursive;
-        bool bIgnoreWhitespaces;
-        bool bFollowSymLinks;
-        bool bAllStringsMustBeFound;
-        bool bIgnoreHidden;
+{ // General
+  bool bCaseSensitive,
+       bRecursive,
+       bIgnoreWhitespaces,
+       bFollowSymLinks,
+       bAllStringsMustBeFound,
+       bIgnoreHidden;
 
-        // Wildcards
-        bool bWildcards;
-        char cWildcardsLetters;
-        char cWildcardsWords;
-        bool bWildcardsInReplaceStrings;
-        int nMaxExpressionLength;
+  // Wildcards
+  bool bWildcards;      
+  char cWildcardsLetters,
+       cWildcardsWords;
+  bool bWildcardsInReplaceStrings;
+  int nMaxExpressionLength;
 
-        // Replace
-        bool bBackup;
-        bool bVariables;
-        bool bConfirmDirs;
-        bool bConfirmFiles;
-        bool bConfirmStrings;
-        bool bHaltOnFirstOccur; // Stop on first occur when searching
+  // Replace
+  bool bBackup,
+       bVariables,
+       bConfirmDirs,
+       bConfirmFiles,
+       bConfirmStrings,
+       bHaltOnFirstOccur; // Stop on first occur when searching
 };
 
 #endif // APISTRUCT_H

@@ -22,6 +22,7 @@
 #include "apistruct.h"
 
 class QStringList;
+class QDateTime;
 class KAboutData;
 class KConfig;
 
@@ -38,7 +39,6 @@ extern RepDirArg g_argu;
 extern QString g_szErrMsg;
 extern int g_nStringsRep;
 extern int g_nOperation;
-//extern pthread_t g_threadReplace;
 
 class KFileReplacePart: public KParts::ReadOnlyPart
 {
@@ -96,14 +96,14 @@ protected:
   void setWhatsThis();
 private:
 
-  KFileReplaceView *m_view;
-  KFileReplaceDoc *m_doc;
-  QWidget *m_parentWidget;
+  KFileReplaceView* m_view;
+  KFileReplaceDoc* m_doc;
+  QWidget* m_parentWidget;
   /** the configuration object of the application */
-  KConfig *m_config;
+  KConfig* m_config;
   Settings m_settings;
   QStringList m_recentStringFileList; // a list of recently accessed files
-  KAboutKFileReplace *m_dlgAbout;
+  KAboutKFileReplace* m_dlgAbout;
 
 private:
   void convertOldToNewKFRFormat(const QString& strFilename,KFileReplaceView* view);

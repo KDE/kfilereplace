@@ -62,7 +62,7 @@ public:
   QPixmap iconString();
   /** Initialize lists */
   void init();
-  bool addString(const QString &strSearch, const QString &strReplace, QListViewItem *lviCurrent);
+  bool addString(QListViewItem *lviCurrent);
   bool editString(QListViewItem *lviCurrent);
   /** returns a pointer to the document connected to the view instance. Mind that this method requires a KFileReplaceApp instance as a parent
     * widget to get to the window document pointer by calling the KFileReplaceApp::getDocument() method.

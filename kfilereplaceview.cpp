@@ -3,7 +3,7 @@
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
     copyright            : (C) 1999 by François Dupoux
-                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+                           (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -122,37 +122,23 @@ void KFileReplaceView::init()
                                      "very useful when you makes the same search/replace operation all the time, and you need to reuse the same "
                                      "strings. You can use wildcards and variables options in the strings. Please, read help for more details."));
 
-//restore the rules
-/* QFile qfile(path+"tmp");
- if ( qfile.open( IO_ReadOnly ) )
- {
-  QTextStream iTStream(&qfile);
-  while ( !iTStream.atEnd() )
-  {
-   QListViewItem* item = new QListViewItem(m_stringView);
-   item->setText(0,iTStream.readLine());
-   item->setText(1,iTStream.readLine());
-  }
-  qfile.close();
- }*/
 }
 
-bool KFileReplaceView::addString(const QString &strSearch, const QString &strReplace, QListViewItem *lviCurrent)
+bool KFileReplaceView::addString( QListViewItem *lviCurrent)
 {
-  QListViewItem *lvi,
-                *lviCurItem,
+  QListViewItem *lviCurItem,
                 *lviFirst;
-  QString strMess;
-
+  QString searchText = dlg->searchText(),
+          replaceText = dlg->replaceText();
   // Check item is not already in the TextList
   lviCurItem = lviFirst = m_stringView-> firstChild();
   if (lviCurItem != 0)
     {
       do // For all strings there are in the TextList
         {
-          if ((lviCurrent != lviCurItem) && (strSearch == lviCurItem->text(0))) // Item is already in the TextList
+          if ((lviCurrent != lviCurItem) && (searchText == lviCurItem->text(0))) // Item is already in the TextList
             {
-              strMess = QString(i18n("The <b>%1</b> item is already present in the list.")).arg(strSearch);
+              QString strMess = QString(i18n("The <b>%1</b> item is already present in the list.")).arg(searchText);
               KMessageBox::error(parentWidget(), strMess);
               return false;
             }
@@ -162,22 +148,22 @@ bool KFileReplaceView::addString(const QString &strSearch, const QString &strRep
     }
 
   // Check there is not too items to replace
-  if (m_stringView-> childCount() >= MAX_STRINGSTOSEARCHREP)
+  if (m_stringView-> childCount() >= MaxStringToSearch)
     {
-      strMess = QString(i18n("Unable to have more than %1 items to search or replace.")).arg(MAX_STRINGSTOSEARCHREP);
+      QString strMess = QString(i18n("Unable to have more than %1 items to search or replace.")).arg(MaxStringToSearch);
       KMessageBox::error(parentWidget(), strMess);
       return false;
     }
 
   // Add string to string list
-  lvi = new QListViewItem(m_stringView);
+  QListViewItem* lvi = new QListViewItem(m_stringView);
   Q_CHECK_PTR( lvi );
   lvi->setPixmap(0, m_pmIconString);
-  lvi->setText(0, strSearch);
-  lvi->setText(1, strReplace);
+  lvi->setText(0, searchText);
+  lvi->setText(1, replaceText);
 
   lvi->setup();
-
+  
   return true;
 }
 bool KFileReplaceView::editString(QListViewItem *lviCurrent)
@@ -206,9 +192,9 @@ bool KFileReplaceView::editString(QListViewItem *lviCurrent)
     }
 
   // Check there is not too items to replace
-  if (m_stringView-> childCount() >= MAX_STRINGSTOSEARCHREP)
+  if (m_stringView-> childCount() >= MaxStringToSearch)
     {
-      strMess = QString(i18n("Unable to have more than %1 items to search or replace.")).arg(MAX_STRINGSTOSEARCHREP);
+      strMess = QString(i18n("Unable to have more than %1 items to search or replace.")).arg(MaxStringToSearch);
       KMessageBox::error(parentWidget(), strMess);
       return false;
     }
@@ -230,7 +216,7 @@ void KFileReplaceView::slotStringsAdd()
     if (!dlg->exec()) // If Cancel
      return ;
    }
-   while(!addString(dlg->searchText(), dlg->replaceText(), 0L));
+   while(!addString(0L));
 
 }
 

@@ -17,6 +17,7 @@
 //qt includes
 #include <qdir.h>
 #include <qdatastream.h>
+#include <qdatetime.h>
 
 //kde includes
 #include <kaboutkfilereplace.h>
@@ -55,7 +56,7 @@ QString g_szErrMsg;
 typedef KParts::GenericFactory<KFileReplacePart> KFileReplaceFactory;
 K_EXPORT_COMPONENT_FACTORY( libkfilereplacepart, KFileReplaceFactory )
 
-KFileReplacePart::KFileReplacePart(QWidget *parentWidget, const char *, QObject *parent, const char *name, const QStringList & )
+KFileReplacePart::KFileReplacePart(QWidget* parentWidget, const char* , QObject* parent, const char* name, const QStringList & )
   : KParts::ReadOnlyPart(parent,name)
 {
   setInstance(KFileReplaceFactory::instance());
@@ -67,7 +68,7 @@ KFileReplacePart::KFileReplacePart(QWidget *parentWidget, const char *, QObject 
   g_szErrMsg = "";
   m_parentWidget = parentWidget;
   QString configName = locateLocal("config", "kfilereplacerc");
-  kdDebug(23000) << "config file: " << configName << endl;
+  //kdDebug(23000) << "config file: " << configName << endl;
   m_config = new KConfig(configName);
   m_dlgAbout = 0L;
 
@@ -84,20 +85,22 @@ KFileReplacePart::~KFileReplacePart()
 {
   saveOptions();
   slotFileStop();
+  delete m_doc;
+  if(m_dlgAbout != 0)
+    delete m_dlgAbout;
   delete m_config;
 }
 
 KAboutData* KFileReplacePart::createAboutData()
 {
-  KAboutData* aboutData =
-              new KAboutData( "kfilereplacepart", I18N_NOOP("KFileReplacePart"),
-              "1.0", I18N_NOOP( "Batch search and replace tool" ),
-              KAboutData::License_GPL_V2,
-              "(C) 1999-2002 Francois Dupoux\n(C) 2003 Andras Mantia");
-   aboutData->addAuthor("Francois Dupou",I18N_NOOP("Original author of the KFileReplace tool"), "dupoux@dupoux.com");
-   aboutData->addAuthor("Andras Mantia",I18N_NOOP("Current maintainer, KPart creator"), "amantia@kde.org");
+  KAboutData* aboutData = new KAboutData( "kfilereplacepart", I18N_NOOP("KFileReplacePart"),
+                                          "1.0", I18N_NOOP( "Batch search and replace tool" ),
+                                          KAboutData::License_GPL_V2,
+                                          "(C) 1999-2002 Francois Dupoux\n(C) 2003 Andras Mantia");
+                                          aboutData->addAuthor("Francois Dupou",I18N_NOOP("Original author of the KFileReplace tool"), "dupoux@dupoux.com");
+                                          aboutData->addAuthor("Andras Mantia",I18N_NOOP("Current maintainer, KPart creator"), "amantia@kde.org");
 
-    return aboutData;
+  return aboutData;
 }
 
 bool KFileReplacePart::openURL(const KURL &url)
@@ -181,8 +184,6 @@ void KFileReplacePart::initView()
   m_view->init();
   m_view->setAcceptDrops(false);
 
-  //QString caption=kapp->caption();
-  //setCaption(caption+": "+m_doc->getTitle());
 }
 
 KFileReplaceDoc* KFileReplacePart::document() const
@@ -190,12 +191,12 @@ KFileReplaceDoc* KFileReplacePart::document() const
   return m_doc;
 }
 
-KConfig *KFileReplacePart::config()
+KConfig* KFileReplacePart::config()
 {
- return m_config;
+  return m_config;
 }
 
-KResultView *KFileReplacePart::resultView()
+KResultView* KFileReplacePart::resultView()
 {
   return m_view->resultView();
 }
@@ -238,23 +239,23 @@ void KFileReplacePart::updateCommands() // Gray or ungray commands
   actionCollection()->action("results_treereduce")->setEnabled(!g_bThreadRunning && m_view->resultView()->childCount() > 0);
 
   // Update menus and toolbar
-  ((KToggleAction *) actionCollection()->action("options_recursive"))->setChecked(m_settings.bRecursive);
-  ((KToggleAction *) actionCollection()->action("options_backup"))->setChecked(m_settings.bBackup);
-  ((KToggleAction *) actionCollection()->action("options_case"))->setChecked(m_settings.bCaseSensitive);
-  ((KToggleAction *) actionCollection()->action("options_wildcards"))->setChecked(m_settings.bWildcards);
-  ((KToggleAction *) actionCollection()->action("options_var"))->setChecked(m_settings.bVariables);
+  ((KToggleAction* ) actionCollection()->action("options_recursive"))->setChecked(m_settings.bRecursive);
+  ((KToggleAction* ) actionCollection()->action("options_backup"))->setChecked(m_settings.bBackup);
+  ((KToggleAction* ) actionCollection()->action("options_case"))->setChecked(m_settings.bCaseSensitive);
+  ((KToggleAction* ) actionCollection()->action("options_wildcards"))->setChecked(m_settings.bWildcards);
+  ((KToggleAction* ) actionCollection()->action("options_var"))->setChecked(m_settings.bVariables);
 }
 
 int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
 {
   QString strMess;
-  QListViewItem *lviCurItem;
-  QListViewItem *lviFirst;
+  QListViewItem* lviCurItem;
+  QListViewItem* lviFirst;
   QString strString;
   /*char cFirst, cLast;
   char szString[256];*/
   bool bWildcardsArePresent=false;
-  QWidget *w = widget();
+  QWidget* w = widget();
 
   // ================= Check Thread is not running ========================
   if (g_bThreadRunning)
@@ -292,7 +293,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
     {
       // -- Check first and last char of Searched string is not a wildcard
 
-      lviCurItem = lviFirst = m_view->stringView()->firstChild();
+      //lviCurItem = lviFirst = m_view->stringView()->firstChild();
     /*  if (lviCurItem)
         {
           do
@@ -319,15 +320,15 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
       // -- Check Maximum expression length is valid
       if ((m_settings.nMaxExpressionLength < 2) || (m_settings.nMaxExpressionLength > 10000))
         {
-         KMessageBox::error(w, i18n("The maximum expression wildcard length is not valid (should be between 2 and 10000)"));
-         return -1;
+           KMessageBox::error(w, i18n("The maximum expression wildcard length is not valid (should be between 2 and 10000)"));
+           return -1;
          }
 
       // check expression wildcard and character wildcards are not the same
       if (m_settings.cWildcardsWords == m_settings.cWildcardsLetters)
         {
-          KMessageBox::error(w, i18n("<qt>You cannot use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>.</qt>"));
-          return -1;
+           KMessageBox::error(w, i18n("<qt>You cannot use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>.</qt>"));
+           return -1;
         }
 
       // -- If wildcards are enabled, check there are wildcards in the strings, else, desactivate them to optimize
@@ -335,9 +336,9 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
 
       lviCurItem = lviFirst = m_view->stringView()->firstChild();
       if (lviCurItem)
-            {
-          do
-            {
+        {
+         do
+           {
               QString szString = lviCurItem->text(0);
 
               if ( szString.contains(m_settings.cWildcardsLetters) || szString.contains(m_settings.cWildcardsWords))
@@ -400,7 +401,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
   g_argu.bIgnoreWhitespaces = m_settings.bIgnoreWhitespaces;
   g_argu.bIgnoreHidden = m_settings.bIgnoreHidden;
 
-  g_argu.mainwnd = (QWidget *) this;
+  g_argu.mainwnd = (QWidget* ) this;
   g_argu.view = m_view;
 
   // Clear the list view
@@ -413,50 +414,33 @@ void KFileReplacePart::readOptions()
 {
   m_config->setGroup("General Options");
 
-  // bar status settings
-  /*
-    bool bViewToolbar = m_config->readBoolEntry("Show Toolbar", true);
-    m_view_menu->setItemChecked(ID_VIEW_TOOLBAR, bViewToolbar);
-    if(!bViewToolbar)
-    enableToolBar(KToolBar::Hide);
-
-    bool bViewStatusbar = m_config->readBoolEntry("Show Statusbar", true);
-    m_view_menu->setItemChecked(ID_VIEW_STATUSBAR, bViewStatusbar);
-    if(!bViewStatusbar)
-    enableStatusBar(KStatusBar::Hide);
-
-    KToolBar::BarPosition tool_bar_pos;
-    tool_bar_pos=(KToolBar::BarPosition)m_config->readNumEntry("ToolBarPos", KToolBar::Top);
-    toolBar()->setBarPos(tool_bar_pos);
-  */
-
   // Recent files
   m_recentStringFileList = m_config->readListEntry("Recent files");
-  ((KRecentFilesAction *) actionCollection()->action("strings_load_recent"))->setItems(m_recentStringFileList);
+  ((KRecentFilesAction* ) actionCollection()->action("strings_load_recent"))->setItems(m_recentStringFileList);
 
   // options seetings (recursivity, backup, case sensitive)
   m_config->setGroup("Options");
 
-  m_settings.bRecursive = m_config->readBoolEntry("Recursivity", OPTIONS_DEFAULT_RECURSIVE);
-  m_settings.bBackup = m_config->readBoolEntry("Backup", OPTIONS_DEFAULT_BACKUP);
-  m_settings.bCaseSensitive = m_config->readBoolEntry("Case sensitive", OPTIONS_DEFAULT_CASESENSITIVE);
-  m_settings.bWildcards = m_config->readBoolEntry("Wildcards", OPTIONS_DEFAULT_WILDCARDS);
-  m_settings.bVariables = m_config->readBoolEntry("Variables", OPTIONS_DEFAULT_VARIABLES);
-  m_settings.bFollowSymLinks = m_config->readBoolEntry("FollowSymLinks", OPTIONS_DEFAULT_FOLLOWSYMLINKS);
-  m_settings.bAllStringsMustBeFound = m_config->readBoolEntry("AllStringsMustBeFound", OPTIONS_DEFAULT_ALLSTRINGSMUSTBEFOUND);
-  m_settings.bConfirmFiles = m_config->readBoolEntry("ConfirmFiles", OPTIONS_DEFAULT_CONFIRMFILES);
-  m_settings.bConfirmStrings = m_config->readBoolEntry("ConfirmStrings", OPTIONS_DEFAULT_CONFIRMSTRINGS);
-  m_settings.bConfirmDirs = m_config->readBoolEntry("ConfirmDirs", OPTIONS_DEFAULT_CONFIRMDIRS);
-  m_settings.bHaltOnFirstOccur = m_config->readBoolEntry("HaltOnFirstOccur", OPTIONS_DEFAULT_HALTONFIRSTOCCUR);
-  m_settings.bIgnoreWhitespaces = m_config->readBoolEntry("IgnoreWhitespaces", OPTIONS_DEFAULT_IGNOREWHITESPACES);
-  m_settings.bIgnoreHidden = m_config->readBoolEntry("IgnoreHidden", OPTIONS_DEFAULT_IGNOREHIDDEN);
+  m_settings.bRecursive = m_config->readBoolEntry("Recursivity", RecursiveOption);
+  m_settings.bBackup = m_config->readBoolEntry("Backup", BackupOption);
+  m_settings.bCaseSensitive = m_config->readBoolEntry("Case sensitive", CaseSensitiveOption);
+  m_settings.bWildcards = m_config->readBoolEntry("Wildcards", WildcardsOption);
+  m_settings.bVariables = m_config->readBoolEntry("Variables", VariablesOption);
+  m_settings.bFollowSymLinks = m_config->readBoolEntry("FollowSymLinks", FollowSymbolicLinksOption);
+  m_settings.bAllStringsMustBeFound = m_config->readBoolEntry("AllStringsMustBeFound", AllStringsMustBeFoundOption);
+  m_settings.bConfirmFiles = m_config->readBoolEntry("ConfirmFiles", ConfirmFilesOption);
+  m_settings.bConfirmStrings = m_config->readBoolEntry("ConfirmStrings", ConfirmStringsOption);
+  m_settings.bConfirmDirs = m_config->readBoolEntry("ConfirmDirs", ConfirmDirectoriesOption);
+  m_settings.bHaltOnFirstOccur = m_config->readBoolEntry("HaltOnFirstOccur", StopWhenFirstOccurenceOption);
+  m_settings.bIgnoreWhitespaces = m_config->readBoolEntry("IgnoreWhitespaces", IgnoreWhiteSpacesOption);
+  m_settings.bIgnoreHidden = m_config->readBoolEntry("IgnoreHidden", IgnoreHiddenOption);
 
   // Wildcards properties
   m_config->setGroup("Wildcards");
-  m_settings.bWildcardsInReplaceStrings = m_config->readBoolEntry("WildcardsInReplaceStrings", OPTIONS_DEFAULT_WILDCARDSINREPLACESTR);
-  m_settings.cWildcardsLetters = m_config->readNumEntry("WildcardSymbolForLetters", (int) OPTIONS_DEFAULT_SYMBOLFORWILDCARDSLETTERS); // '?'
-  m_settings.cWildcardsWords = m_config->readNumEntry("WildcardSymbolForWords", (int) OPTIONS_DEFAULT_SYMBOLFORWILDCARDSWORDS); // '*'
-  m_settings.nMaxExpressionLength = m_config->readNumEntry("MaximumExpressionLength", OPTIONS_DEFAULT_MAXIMUMWILDCARDEXPLENGTH);
+  m_settings.bWildcardsInReplaceStrings = m_config->readBoolEntry("WildcardsInReplaceStrings", WildcardsInReplaceStringOption);
+  m_settings.cWildcardsLetters = m_config->readNumEntry("WildcardSymbolForLetters", (int) WildcardsLetterOption); // '?'
+  m_settings.cWildcardsWords = m_config->readNumEntry("WildcardSymbolForWords", (int) WildcardsWordOption); // '*'
+  m_settings.nMaxExpressionLength = m_config->readNumEntry("MaximumExpressionLength", WildcardsExpressionLengthOption);
 }
 
 void KFileReplacePart::saveOptions()
@@ -534,7 +518,7 @@ void KFileReplacePart::slotFileSearch()
 
    //nRes = pthread_create(&g_threadReplace, NULL, searchThread, (void *) &g_argu);
    //startTimer(100);
-   Kernel::instance()->searchThread( (void *) &g_argu );
+   Kernel::instance()->searchThread( (void* ) &g_argu );
 
    // restore cursor
    QApplication::restoreOverrideCursor();
@@ -553,14 +537,6 @@ void KFileReplacePart::slotFileSearch()
 
    emit setStatusBarText(strMess); // Show message in status bar
    updateCommands(); // Gray or ungray commands
-
-   /*if (nRes != 0) // Can't create Thread
-     {        slotStatusMsg(i18n("Can't create thread to run the replace operation."));
-     return ;
-     }
-     else // if success
-     {        startTimer(100);
-     }*/
 
 }
 
@@ -593,36 +569,28 @@ void KFileReplacePart::slotFileReplace()
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
 
-   //nRes = pthread_create(&g_threadReplace, NULL, replaceThread, (void *) &g_argu);
-   //startTimer(100);
-   Kernel::instance()->replaceThread((void *) &g_argu);
+   Kernel::instance()->replaceThread((void* ) &g_argu);
 
    // restore cursor
    QApplication::restoreOverrideCursor();
 
    // Show results after operation
    if (g_nFilesRep == -1) // Error
-      strMess = i18n("Error while searching/replacing");
+     strMess = i18n("Error while searching/replacing");
    else // Success
-   {
-      if (!g_argu.bHaltOnFirstOccur) {
-	 strMess = i18n("%n string successfully replaced", "%n strings successfully replaced", g_nStringsRep);
-         strMess += i18n(" (in %n file)", " (in %n files)", g_nFilesRep);
-      } else
-         strMess = i18n("%n file successfully replaced", "%n files successfully replaced", g_nFilesRep);
-   }
+    {
+      if (!g_argu.bHaltOnFirstOccur)
+        {
+          strMess = i18n("%n string successfully replaced", "%n strings successfully replaced", g_nStringsRep);
+          strMess += i18n(" (in %n file)", " (in %n files)", g_nFilesRep);
+        }
+      else
+        strMess = i18n("%n file successfully replaced", "%n files successfully replaced", g_nFilesRep);
+    }
 
    emit setStatusBarText(strMess); // Show message in status bar
    updateCommands(); // Gray or ungray commands
 
-
-   /*if (nRes != 0) // Can't create Thread
-     {        slotStatusMsg(i18n("Can't create thread to run the replace operation."));
-     return ;
-     }
-     else // if success
-     {        startTimer(100);
-     } */
 }
 
 void KFileReplacePart::slotFileSimulate()
@@ -654,40 +622,32 @@ void KFileReplacePart::slotFileSimulate()
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
 
-   //nRes = pthread_create(&g_threadReplace, NULL, replaceThread, (void *) &g_argu);
-   //startTimer(100);
-   Kernel::instance()->replaceThread((void *) &g_argu);
+   Kernel::instance()->replaceThread((void* ) &g_argu);
 
    // restore cursor
    QApplication::restoreOverrideCursor();
 
    // Show results after operation
    if (g_nFilesRep == -1) // Error
-      strMess = i18n("Error while searching/replacing");
+     strMess = i18n("Error while searching/replacing");
    else // Success
-   {
-      if (!g_argu.bHaltOnFirstOccur) {
-         strMess = i18n("%n string successfully replaced", "%n strings successfully replaced", g_nStringsRep);
-         strMess += i18n(" (in %n file)", " (in %n files)", g_nFilesRep);
-      } else
+     {
+       if (!g_argu.bHaltOnFirstOccur)
+         {
+           strMess = i18n("%n string successfully replaced", "%n strings successfully replaced", g_nStringsRep);
+           strMess += i18n(" (in %n file)", " (in %n files)", g_nFilesRep);
+         }
+       else
          strMess = i18n("%n file successfully replaced", "%n files successfully replaced", g_nFilesRep);
-   }
+     }
 
    emit setStatusBarText(strMess); // Show message in status bar
    updateCommands(); // Gray or ungray commands
-
-   /*if (nRes != 0) // Can't create Thread
-     {        slotStatusMsg(i18n("Can't create thread to run the replace operation."));
-     return ;
-     }
-     else // if success
-     {        startTimer(100);
-     } */
 }
 
 void KFileReplacePart::slotFileStop()
 {
-   if (g_bThreadRunning == false) // If no thread running
+   if (!g_bThreadRunning) // If no thread running
       return ;
 
    // Stop the current thread
@@ -700,9 +660,9 @@ void KFileReplacePart::slotFileStop()
 
 void KFileReplacePart::slotFileSave()
 {
-  QString strFilename;
-  QListView *lvResult;
-  QWidget *w = widget();
+  QString fileName;
+  QListView* lvResult;
+  QWidget* w = widget();
 
   lvResult = m_view->resultView();
 
@@ -714,52 +674,100 @@ void KFileReplacePart::slotFileSave()
     }
 
   // Select the file where results will be saved
-  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.html|HTML Files (*.html)\n*|All Files (*)"), w, i18n("Save Results"));
-  if (strFilename.isEmpty())
+  fileName = KFileDialog::getSaveFileName(QString::null, i18n("*.xhtml|XHTML Files (*.xhtml)\n*|All Files (*)"), w, i18n("Save Results"));
+  if (fileName.isEmpty())
     return ;
 
   // Force the extension to be "html"
-  strFilename = KFileReplaceLib::instance()->addFilenameExtension(strFilename, "html");
+  fileName = KFileReplaceLib::instance()->addFilenameExtension(fileName, "xhtml");
 
   // Save results to file
  // a) Open the file
-  QFile fResults(strFilename);
-    if ( !fResults.open( IO_WriteOnly ) )
+  QFile fResults(fileName);
+  if ( !fResults.open( IO_WriteOnly ) )
     {
-      KMessageBox::error(w, i18n("<qt>Cannot open the file <b>%1</b> for writing the save results.</qt>").arg(strFilename));
+      KMessageBox::error(w, i18n("<qt>Cannot open the file <b>%1</b> for writing the save results.</qt>").arg(fileName));
       return ;
-     }
-    // b) Write header of the HTML file
+    }
+
+    // b) Write header of the XHTML file
+   QDateTime datetime = QDateTime::currentDateTime(Qt::LocalTime);
+   QString dateString = datetime.toString(Qt::LocalDate);
+   QString XHTML = "<?xml version=\"1.0\" ?>\n"
+                   "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
+                   "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
+                   "  <head>\n"
+                   "    <title>";
+           XHTML += i18n("KFileReplace Results File")+ "</title>\n"
+                    "     <style type=\"text/css\">\n"
+                    "      .a {background-color : lightblue;}\n"
+                    "      .b {background-color : paleturquoise;}\n"
+                    "      body { border: solid teal;}\n"
+                    "      .date { text-align:right; color:darkcyan;}\n"
+                    "     </style>\n"
+                    "  </head>\n"
+                    "  <body>\n"
+                    "   <div style=\"background-color:ivory;padding :10px;\">\n"
+                    "    <table width=\"100%\">\n"
+                    "     <tr>\n"
+                    "      <td><h1>";
+           XHTML += i18n("KFileReplace Results File")+"</h1></td>\n"
+                    "      <td><div class=\"date\">";
+           XHTML += i18n("Creation date : ")+dateString+"</div></td>\n"
+                    "     </tr>\n"
+                    "    </table>\n"
+                    "   <div>\n"
+                    "    <dl>\n";
    QTextStream oTStream( &fResults );
-   oTStream <<"<?xml version=\"1.0\" ?>\n"
-                     <<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
-                     <<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
-                     << "<head>\n"
-                     <<"<title>"<<i18n("KFileReplace Results File")<<"KFileReplace Results File</title></head>\n"
-                     <<"<body><h1>"<<i18n("KFileReplace Results File")<<"</h1>\n"
-                     <<"<dl><p>\n";
+   oTStream << XHTML;
 
   // c) Write the file list
-  QListViewItem *lviCurItem;
-  QListViewItem *lviFirst;
+  QListViewItem* lviCurItem;
+  QListViewItem* lviFirst;
   QString strPath;
 
   lviCurItem = lviFirst = lvResult->firstChild();
   if (lviCurItem == 0)
     return ;
-
+  unsigned int replacedFileNumber = 0;
+  QString classValue="a";
   do
     {
       strPath = KFileReplaceLib::instance()->formatFullPath(lviCurItem->text(1), lviCurItem->text(0));
-      oTStream <<"<dt><a href=\"file:"<<strPath<<"\">file:"<<strPath<<"</a><br/>\n";
-      oTStream <<i18n("Size: "+ lviCurItem->text(2)+" --> "+lviCurItem->text(3)+" **** "+lviCurItem->text(2)+" strings replaced.<br/><br/>\n");
+      QString divclassString ="     <div class=\""+classValue+"\">\n"
+                              "      <dt><a href=\"file:"+strPath+"\">file:"+strPath+"</a>\n"
+                              "      </dt>\n";
+              divclassString += "      <dd>"
+                             + i18n("Old size: "
+                             + lviCurItem->text(2)+" --> New size:"+ lviCurItem->text(3)
+                             + " **** "
+                             + lviCurItem->text(4)+
+                             " strings replaced.</dd>\n"
+                             "     </div>\n");
+      oTStream << divclassString;
+
+      if(classValue == "a")
+        classValue = "b";
+      else
+        classValue = "a";
+
+      replacedFileNumber ++;
 
       lviCurItem = lviCurItem->nextSibling();
     } while(lviCurItem && lviCurItem != lviFirst);
 
 
   // d) Write the end of the file
-   oTStream<<"</dl></p>\n</body>\n</html>\n";
+
+   oTStream<<"     </dl>\n"
+             "    </div>\n"
+             "    <div style=\"text-align:right;color:darkcyan\">"
+           <<"Number of replaced files: "
+           <<replacedFileNumber
+           <<"</div>\n"
+             "   </div>\n"
+             "  </body>\n"
+             "</html>\n";
    fResults.close();
    updateCommands();
 }
@@ -791,7 +799,7 @@ void KFileReplacePart::slotStringsEdit()
 
 void KFileReplacePart::slotStringsSave()
 {
-  QWidget *w = widget();
+  QWidget* w = widget();
 
   // Check there are strings in the list
   if (m_view->stringView()->childCount() == 0)
@@ -801,72 +809,73 @@ void KFileReplacePart::slotStringsSave()
     }
 
    QString header("<?xml version=\"1.0\" ?>\n<kfr>"),
-                 footer("\n</kfr>"),
-                 body;
-   QListViewItem * lvi = m_view->stringView()->firstChild();
-        while( lvi )
-        {
-            body += "\n\t<replacement>\n\t\t<oldstring><![CDATA[";
-            body += lvi->text(0);
-            body += "]]></oldstring>\n\t\t";
-            body += "<newstring><![CDATA[";
-            body += lvi->text(1);
-            body += "]]></newstring>\n\t</replacement>";
-            lvi = lvi->nextSibling();
-        }
+           footer("\n</kfr>"),
+           body;
+   QListViewItem*  lvi = m_view->stringView()->firstChild();
 
-  // Select the file where strings will be saved
-  QString strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.kfr|KFileReplace Strings (*.kfr)\n*|All Files (*)"), w, i18n("Save Strings to File"));
-  if (strFilename.isEmpty())
-    return;
+   while( lvi )
+     {
+       body += "\n\t<replacement>\n\t\t<oldstring><![CDATA[";
+       body += lvi->text(0);
+       body += "]]></oldstring>\n\t\t";
+       body += "<newstring><![CDATA[";
+       body += lvi->text(1);
+       body += "]]></newstring>\n\t</replacement>";
+       lvi = lvi->nextSibling();
+     }
 
-  // Force the extension to be "kfr" == KFileReplace extension
-  strFilename = KFileReplaceLib::instance()->addFilenameExtension(strFilename, "kfr");
+   // Select the file where strings will be saved
+   QString fileName = KFileDialog::getSaveFileName(QString::null, i18n("*.kfr|KFileReplace Strings (*.kfr)\n*|All Files (*)"), w, i18n("Save Strings to File"));
+   if (fileName.isEmpty())
+     return;
 
-    QFile file( strFilename );
-    if(!file.open( IO_WriteOnly ))
-    {
-      KMessageBox::error(w, i18n("File %1 cannot be saved.").arg(strFilename));
-      return ;
-    }
-    QTextStream oTStream( &file );
-    oTStream << header
-                      << body
-                      << footer;
-     file.close();
+   // Force the extension to be "kfr" == KFileReplace extension
+   fileName = KFileReplaceLib::instance()->addFilenameExtension(fileName, "kfr");
+
+   QFile file( fileName );
+   if(!file.open( IO_WriteOnly ))
+     {
+       KMessageBox::error(w, i18n("File %1 cannot be saved.").arg(fileName));
+       return ;
+     }
+   QTextStream oTStream( &file );
+   oTStream << header
+            << body
+            << footer;
+   file.close();
 }
 
-void KFileReplacePart::loadStringFile(const QString& strFilename)
+void KFileReplacePart::loadStringFile(const QString& fileName)
 {
   //load kfr file
   QDomDocument doc( "mydocument" );
-  QFile file( strFilename );
-    if ( !file.open( IO_ReadOnly ) )
-     {
-       KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(strFilename));
+  QFile file( fileName );
+  if ( !file.open( IO_ReadOnly ) )
+    {
+      KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(fileName));
       return ;
-     }
-    if ( !doc.setContent( &file ) )
-     {
+    }
+  if ( !doc.setContent( &file ) )
+    {
       file.close();
-      KMessageBox::information(widget(), i18n("<qt>File <b>%1</b> seems to be an old kfr format. Remember that this format will be soon abandoned!</qt>").arg(strFilename),i18n("Warning"));
+      KMessageBox::information(widget(), i18n("<qt>File <b>%1</b> seems to be an old kfr format. Remember that this format will be soon abandoned!</qt>").arg(fileName),i18n("Warning"));
 
-      convertOldToNewKFRFormat(strFilename,m_view);
+      convertOldToNewKFRFormat(fileName,m_view);
       return;
 
-     }
-    file.close();
+    }
+  file.close();
 
-    //clear view
-    m_view->stringView()->clear();
+  //clear view
+  m_view->stringView()->clear();
 
-    QDomElement docElem = doc.documentElement();
+  QDomElement docElem = doc.documentElement();
 
-    QDomNode n = docElem.firstChild();
-    while( !n.isNull() )
+  QDomNode n = docElem.firstChild();
+  while( !n.isNull() )
     {
-        QDomElement e = n.toElement(); // try to convert the node to an element.
-        if( !e.isNull() )
+      QDomElement e = n.toElement(); // try to convert the node to an element.
+      if( !e.isNull() )
         {
           QListViewItem* lvi = new QListViewItem(m_view->stringView());
           QString oldString = e.firstChild().toElement().text();
@@ -875,59 +884,60 @@ void KFileReplacePart::loadStringFile(const QString& strFilename)
           lvi->setText(1,newString);
           lvi->setPixmap(0, m_view->iconString());
         }
-        n = n.nextSibling();
+      n = n.nextSibling();
     }
 
      // Add file to "load strings form file" menu
-  if (!m_recentStringFileList.contains(strFilename))
+  if (!m_recentStringFileList.contains(fileName))
     {
-      m_recentStringFileList.append(strFilename);
-      ((KRecentFilesAction *) actionCollection()->action("strings_load_recent"))->setItems(m_recentStringFileList);
+      m_recentStringFileList.append(fileName);
+      ((KRecentFilesAction* ) actionCollection()->action("strings_load_recent"))->setItems(m_recentStringFileList);
     }
-      updateCommands();
+  updateCommands();
 }
 
 void KFileReplacePart::slotStringsLoad()
 {
-  QString strFilename;
+  QString fileName;
 
   // Select the file to load from
-  strFilename = KFileDialog::getOpenFileName(QString::null, i18n("*.kfr|KFileReplace strings (*.kfr)\n*|All Files (*)"), widget(), i18n("Load Strings From File"));
+  fileName = KFileDialog::getOpenFileName(QString::null, i18n("*.kfr|KFileReplace strings (*.kfr)\n*|All Files (*)"), widget(), i18n("Load Strings From File"));
 
-  if(!strFilename.isEmpty())
-    loadStringFile(strFilename);
+  if(!fileName.isEmpty())
+    loadStringFile(fileName);
   updateCommands();
 }
 
 void KFileReplacePart::slotStringsInvertCur()
 {
-  QListViewItem *lviCurItem;
+  QListViewItem* lviCurItem;
   lviCurItem = m_view->stringView()->currentItem();
   if (lviCurItem == 0)
     return;
 
-  QString strSearch, strReplace;
-  strSearch = lviCurItem->text(0);
-  strReplace = lviCurItem->text(1);
+  QString searchText, replaceText;
+  searchText = lviCurItem->text(0);
+  replaceText = lviCurItem->text(1);
 
   // Cannot invert the string if search string will be empty
-  if (strReplace.isEmpty())
+  if (replaceText.isEmpty())
     {
-      KMessageBox::error(widget(), i18n("<qt>Cannot invert string <b>%1</b>, because the search string would be empty.</qt>").arg(strSearch));
+      KMessageBox::error(widget(), i18n("<qt>Cannot invert string <b>%1</b>, because the search string would be empty.</qt>").arg(searchText));
       return;
     }
 
-  lviCurItem->setText(0, strReplace);
-  lviCurItem->setText(1, strSearch);
+  lviCurItem->setText(0, replaceText);
+  lviCurItem->setText(1, searchText);
 }
 
 void KFileReplacePart::slotStringsInvertAll()
 {
-  QListViewItem *lviCurItem;
-  QListViewItem *lviFirst;
+  QListViewItem* lviCurItem,
+               * lviFirst;
   int nItemPos;
-  QString strSearch, strReplace;
-  QString strMess;
+  QString searchText,
+          replaceText,
+          strMess;
 
   nItemPos = 0;
   lviCurItem = lviFirst = m_view->stringView()->firstChild();
@@ -936,18 +946,18 @@ void KFileReplacePart::slotStringsInvertAll()
 
   do
     {
-      strSearch = lviCurItem->text(0);
-      strReplace = lviCurItem->text(1);
+      searchText = lviCurItem->text(0);
+      replaceText = lviCurItem->text(1);
 
       // Cannot invert the string if search string will be empty
-      if (strReplace.isEmpty())
+      if (replaceText.isEmpty())
         {
-          KMessageBox::error(widget(), i18n("<qt>Cannot invert string <b>%1</b>, because the search string would be empty.</qt>").arg(strSearch));
+          KMessageBox::error(widget(), i18n("<qt>Cannot invert string <b>%1</b>, because the search string would be empty.</qt>").arg(searchText));
           return;
         }
 
-      lviCurItem->setText(0, strReplace);
-      lviCurItem->setText(1, strSearch);
+      lviCurItem->setText(0, replaceText);
+      lviCurItem->setText(1, searchText);
 
       lviCurItem = lviCurItem->nextSibling();
     } while(lviCurItem && lviCurItem != lviFirst);
@@ -955,25 +965,25 @@ void KFileReplacePart::slotStringsInvertAll()
 
 void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
 {
-  QString strFilename;
+  QString fileName;
   QFileInfo fi;
 
   if (g_bThreadRunning) // Thread running: it has not finished since the last call of this function
     return ;
 
   // Download file if need (if url is "http://...")
-  if (!(KIO::NetAccess::download(urlFile, strFilename))) // Open the Archive
+  if (!(KIO::NetAccess::download(urlFile, fileName))) // Open the Archive
     return;
 
   // Check it's not a directory
-  fi.setFile(strFilename);
+  fi.setFile(fileName);
   if (fi.isDir())
     {
       KMessageBox::error(widget(), i18n("Cannot open folders."));
       return;
     }
 
-  loadStringFile(strFilename);
+  loadStringFile(fileName);
   updateCommands();
 }
 
@@ -1054,12 +1064,12 @@ void KFileReplacePart::appHelpActivated()
 
 void KFileReplacePart::showAboutApplication()
 {
-  if(m_dlgAbout == 0)
-    {
+  /*if(m_dlgAbout == 0)
+    {*/
       m_dlgAbout = new KAboutKFileReplace(widget(), 0, false);
       if(m_dlgAbout == 0)
         return;
-    }
+    //}
 
   if(!m_dlgAbout->isVisible())
     m_dlgAbout->show();
@@ -1070,7 +1080,7 @@ void KFileReplacePart::showAboutApplication()
   updateCommands();
 }
 
-void KFileReplacePart::convertOldToNewKFRFormat(const QString& strFilename, KFileReplaceView* view)
+void KFileReplacePart::convertOldToNewKFRFormat(const QString& fileName, KFileReplaceView* view)
 {
  //if is an old format file try to open it
  typedef struct
@@ -1082,22 +1092,22 @@ void KFileReplacePart::convertOldToNewKFRFormat(const QString& strFilename, KFil
 
  KFRHeader head;
 
- FILE* f = fopen(strFilename.ascii(),"rb");
+ FILE* f = fopen(fileName.ascii(),"rb");
  if(!f)
  {
-  KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(strFilename));
+  KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(fileName));
   return ;
  }
  int err = fread(&head, sizeof(KFRHeader), 1, f);
  if(err != 1)
  {
-  KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(strFilename));
+  KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(fileName));
   return ;
  }
 
  if (strcmp(head.szPgm, "KFileReplace") != 0)
  {
-  KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list. This file seems not to be a valid old kfr file.</qt>").arg(strFilename));
+  KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list. This file seems not to be a valid old kfr file.</qt>").arg(fileName));
   return ;
  }
 
@@ -1113,52 +1123,48 @@ void KFileReplacePart::convertOldToNewKFRFormat(const QString& strFilename, KFil
       nErrors += (fread(&nOldTextSize, sizeof(int), 1, f)) != 1;
       nErrors += (fread(&nNewTextSize, sizeof(int), 1, f)) != 1;
       if (nErrors > 0)
-      {
-       KMessageBox::error(widget(), i18n("<qt>Cannot read data.</qt>"));
-      }
+        {
+          KMessageBox::error(widget(), i18n("<qt>Cannot read data.</qt>"));
+        }
       else
-      {
-       nStrSize = ((nOldTextSize > nNewTextSize) ? nOldTextSize : nNewTextSize) + 2;
-       char* oldString = (char*) malloc(nStrSize+10),
-           * newString = (char*) malloc(nStrSize+10);
-       memset(oldString, 0, nStrSize);
-       memset(newString,0, nStrSize);
-       if (oldString == 0 || newString == 0)
-       {
-        KMessageBox::error(widget(), i18n("<qt>Out of memory.</qt>"));
-       }
-       else
-       {
-        if (fread(oldString, nOldTextSize, 1, f) != 1)
         {
-         KMessageBox::error(widget(), i18n("<qt>Cannot read data.</qt>"));
-        }
-        else
-        {
-         if (nNewTextSize > 0) // If there is a Replace text
-         {
-          if (fread(newString, nNewTextSize, 1, f) != 1)
-          {
-           KMessageBox::error(widget(), i18n("<qt>Cannot read data.</qt>"));
-          }
+          nStrSize = ((nOldTextSize > nNewTextSize) ? nOldTextSize : nNewTextSize) + 2;
+          char* oldString = (char*) malloc(nStrSize+10),
+              * newString = (char*) malloc(nStrSize+10);
+          memset(oldString, 0, nStrSize);
+          memset(newString,0, nStrSize);
+          if (oldString == 0 || newString == 0)
+            KMessageBox::error(widget(), i18n("<qt>Out of memory.</qt>"));
+
           else
-          {
-           view->stringView()->clear();
-           QListViewItem* lvi = new QListViewItem(view->stringView());
-           lvi->setText(0,oldString);
-           lvi->setText(1,newString);
-           lvi->setPixmap(0, view->iconString());
+            {
+              if (fread(oldString, nOldTextSize, 1, f) != 1)
+                KMessageBox::error(widget(), i18n("<qt>Cannot read data.</qt>"));
 
-           if(newString)
-            free(newString);
-           if(oldString)
-            free(oldString);
-          }
+              else
+                {
+                  if (nNewTextSize > 0) // If there is a Replace text
+                    {
+                      if (fread(newString, nNewTextSize, 1, f) != 1)
+                        KMessageBox::error(widget(), i18n("<qt>Cannot read data.</qt>"));
 
-         }
+                      else
+                        {
+                          view->stringView()->clear();
+                          QListViewItem* lvi = new QListViewItem(view->stringView());
+                          lvi->setText(0,oldString);
+                          lvi->setText(1,newString);
+                          lvi->setPixmap(0, view->iconString());
+
+                          if(newString)
+                            free(newString);
+                          if(oldString)
+                            free(oldString);
+                        }
+                    }
+                }
+            }
         }
-       }
-      }
     }
     fclose(f);
     return ;

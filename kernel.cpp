@@ -456,9 +456,9 @@ int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString&
   app = (KFileReplaceApp *) (argu->mainwnd);
 
   // Items of the string list
-  int nReplaceCount[MAX_STRINGSTOSEARCHREP];
-  QString strOld[MAX_STRINGSTOSEARCHREP];
-  QString strNew[MAX_STRINGSTOSEARCHREP];
+  int nReplaceCount[MaxStringToSearch];
+  QString strOld[MaxStringToSearch];
+  QString strNew[MaxStringToSearch];
 
   // 0. Init
   *nNbReplacements = 0;
@@ -690,8 +690,8 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbRep
   app = (KFileReplaceApp *) (argu->mainwnd);
 
   // Items of the string list
-  int nReplaceCount[MAX_STRINGSTOSEARCHREP];
-  QString strOld[MAX_STRINGSTOSEARCHREP];
+  int nReplaceCount[MaxStringToSearch];
+  QString strOld[MaxStringToSearch];
 
   // 0. Init
   *nNbReplacements = 0;

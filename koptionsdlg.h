@@ -3,7 +3,7 @@
                              -------------------
     begin                : Tue Dec 28 1999
     copyright            : (C) 1999 by François Dupoux
-                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+                           (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
