@@ -6,4 +6,5 @@
   </Menu>
   <Menu name="kfilerepace"><text>Search/&amp;Replace</text>
   </Menu>    
+</MenuBar>
 </kpartgui>
