@@ -460,10 +460,10 @@ void KNewProjectDlg::saveBackupExtensionOptions()
 
 void KNewProjectDlg::setDatas(const QString& directoryString, const QString& filterString)
 {
-  if (not directoryString.isEmpty())
+  if (!directoryString.isEmpty())
     m_cbLocation->setEditText(directoryString);
 
-  if (not filterString.isEmpty())
+  if (!filterString.isEmpty())
     m_cbFilter->setEditText(filterString);
 }
 

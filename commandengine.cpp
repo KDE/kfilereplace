@@ -109,7 +109,7 @@ QString CommandEngine::mathexp(const QString& opt, const QString& arg)
    connect(proc, SIGNAL(processExited(KProcess*)), this, SLOT(slotProcessExited(KProcess*)));
 
   //Through slotGetScriptOutput, m_processOutput contains the result of the KProcess call
-   if(not proc->start(KProcess::Block, KProcess::All))
+   if(!proc->start(KProcess::Block, KProcess::All))
      {
        return QString::null;
      }
@@ -192,7 +192,7 @@ void CommandEngine::slotGetScriptError(KProcess* proc, char* s, int i)
   Q_UNUSED(proc);
   Q_UNUSED(proc);
   QCString temp(s,i+1);
-  if(temp.isEmpty() or temp == "\n") return;
+  if(temp.isEmpty() || temp == "\n") return;
 }
 
 void CommandEngine::slotGetScriptOutput(KProcess* proc, char* s, int i)
@@ -200,7 +200,7 @@ void CommandEngine::slotGetScriptOutput(KProcess* proc, char* s, int i)
   Q_UNUSED(proc);
   QCString temp(s,i+1);
 
-  if(temp.isEmpty() or temp == "\n") return;
+  if(temp.isEmpty() || temp == "\n") return;
 
   m_processOutput += QString::fromLocal8Bit(temp);
 }
