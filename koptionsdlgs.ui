@@ -280,7 +280,7 @@
                                     <bool>true</bool>
                                 </property>
                                 <property name="text">
-                                    <string>Don't show file if no strings is found or replaced</string>
+                                    <string>Do not show file if no strings are found or replaced</string>
                                 </property>
                             </widget>
                         </grid>
