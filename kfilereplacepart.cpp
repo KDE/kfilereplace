@@ -768,7 +768,7 @@ void KFileReplacePart::slotFileSave()
 
   do
     {
-      strPath = formatFullPath(lviCurItem -> text(1).ascii(), lviCurItem -> text(0).ascii());
+      strPath = formatFullPath(lviCurItem -> text(1), lviCurItem -> text(0));
       fprintf(fResults,"<DT><A HREF=\"file:%s\">file:%s</A><br>\n",        strPath.ascii(), strPath.ascii());
       fprintf(fResults,i18n("Size: %s --> %s **** %.3ld strings replaced.<br><br>\n"), lviCurItem -> text(2).ascii(),
               lviCurItem -> text(3).ascii(), lviCurItem -> text(2).toULong());

@@ -175,8 +175,8 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
           return -1;
         }
 
-      strFileWritepath = formatFullPath(szDir, dir[i].ascii()) + QString("new");
-      strFileReadpath = formatFullPath(szDir, dir[i].ascii());
+      strFileWritepath = formatFullPath(szDir, dir[i]) + "new";
+      strFileReadpath = formatFullPath(szDir, dir[i]);
       fiOld.setFile(strFileReadpath);
 
       // if the file dates & size are correct for options
@@ -309,7 +309,7 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
                                     {
                                       if (argu -> bBackup) // Create a backup of the file if option is true
                                         {
-                                          strBackup = formatFullPath(szDir, dir[i].ascii()) + QString(".old");
+                                          strBackup = formatFullPath(szDir, dir[i]) + QString(".old");
                                           nRes = unlink(strBackup.ascii()); // Delete OLD file if exists
                                           nRes = rename(strFileReadpath.ascii(), strBackup.ascii());
                                         }
@@ -377,7 +377,7 @@ int ReplaceDirectory(const char *szDir, RepDirArg* argu, bool bReplace)
 
               if (bReplace == false || argu -> bConfirmDirs == false || nConfirm == KMessageBox::Yes)
                 {
-                  strDirpath = formatFullPath(szDir, dir[i].ascii());
+                  strDirpath = formatFullPath(szDir, dir[i]);
                   nRes = ReplaceDirectory(strDirpath.ascii(), argu, bReplace); // Use recursivity
                   if (nRes == -1) // If error
                     return -1; // Stop the operation
