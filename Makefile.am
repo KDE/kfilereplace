@@ -31,9 +31,7 @@ messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/kfilereplace.pot
 
 KDE_ICON = AUTO
-apps_DATA = kfilereplacepart.desktop
-appsdir = $(kde_appsdir)/Utilities
-
+kde_services_DATA = kfilereplacepart.desktop
 xdg_apps_DATA = kfilereplace.desktop
 
 # this is where the XML-GUI resource file goes
