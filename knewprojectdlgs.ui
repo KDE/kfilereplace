@@ -1,0 +1,576 @@
+<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<class>KNewProjectDlgS</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>KNewProjectDlgS</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>575</width>
+            <height>456</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>New search &amp; replace project</string>
+    </property>
+    <property name="sizeGripEnabled">
+        <bool>true</bool>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLabel" row="0" column="0">
+            <property name="name">
+                <cstring>textLabel1</cstring>
+            </property>
+            <property name="text">
+                <string>&amp;Location:</string>
+            </property>
+            <property name="buddy" stdset="0">
+                <cstring>m_comboDirectory</cstring>
+            </property>
+        </widget>
+        <widget class="QLabel" row="1" column="0">
+            <property name="name">
+                <cstring>textLabel2</cstring>
+            </property>
+            <property name="text">
+                <string>&amp;Filter:</string>
+            </property>
+            <property name="buddy" stdset="0">
+                <cstring>m_comboFilter</cstring>
+            </property>
+        </widget>
+        <widget class="QLayoutWidget" row="5" column="1">
+            <property name="name">
+                <cstring>Layout1</cstring>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
+                    <number>0</number>
+                </property>
+                <property name="spacing">
+                    <number>6</number>
+                </property>
+                <spacer>
+                    <property name="name">
+                        <cstring>Horizontal Spacing2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>20</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>buttonOk</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&amp;OK</string>
+                    </property>
+                    <property name="accel">
+                        <string></string>
+                    </property>
+                    <property name="autoDefault">
+                        <bool>true</bool>
+                    </property>
+                    <property name="default">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>buttonCancel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&amp;Cancel</string>
+                    </property>
+                    <property name="accel">
+                        <string></string>
+                    </property>
+                    <property name="autoDefault">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+        <widget class="QGroupBox" row="3" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>groupBox2</cstring>
+            </property>
+            <property name="title">
+                <string>Access date filtering</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>textLabel5</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Dates valid for:</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>m_checkDateMin</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Accessed before: </string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="2" column="0">
+                    <property name="name">
+                        <cstring>m_checkDateMax</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Accessed after:</string>
+                    </property>
+                </widget>
+                <widget class="KLineEdit" row="1" column="1">
+                    <property name="name">
+                        <cstring>m_editDateMin</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="KComboBox" row="0" column="1">
+                    <item>
+                        <property name="text">
+                            <string>last writing access</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>last reading access</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>m_comboDateRW</cstring>
+                    </property>
+                </widget>
+                <widget class="KLineEdit" row="2" column="1">
+                    <property name="name">
+                        <cstring>m_editDateMax</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <spacer row="0" column="2">
+                    <property name="name">
+                        <cstring>spacer3</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>251</width>
+                            <height>10</height>
+                        </size>
+                    </property>
+                </spacer>
+            </grid>
+        </widget>
+        <widget class="QGroupBox" row="4" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>groupBox3</cstring>
+            </property>
+            <property name="title">
+                <string>Ownership filtering</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="0">
+                    <property name="name">
+                        <cstring>m_checkOwnerUser</cstring>
+                    </property>
+                    <property name="text">
+                        <string>User: </string>
+                    </property>
+                </widget>
+                <widget class="KComboBox" row="0" column="1">
+                    <item>
+                        <property name="text">
+                            <string>Name</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>ID (Number)</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>m_comboOwnerUserType</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="KComboBox" row="0" column="2">
+                    <item>
+                        <property name="text">
+                            <string>equals to</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>is not</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>m_comboOwnerUserBool</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="KComboBox" row="1" column="2">
+                    <item>
+                        <property name="text">
+                            <string>equals to</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>is not</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>m_comboOwnerGroupBool</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="KComboBox" row="1" column="1">
+                    <item>
+                        <property name="text">
+                            <string>Name</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>ID (Number)</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>m_comboOwnerGroupType</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>m_checkOwnerGroup</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Group:</string>
+                    </property>
+                </widget>
+                <spacer row="0" column="4">
+                    <property name="name">
+                        <cstring>spacer4</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>60</width>
+                            <height>16</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="KLineEdit" row="0" column="3">
+                    <property name="name">
+                        <cstring>m_editOwnerUser</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="KLineEdit" row="1" column="3">
+                    <property name="name">
+                        <cstring>m_editOwnerGroup</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="KComboBox" row="1" column="1">
+            <item>
+                <property name="text">
+                    <string>*</string>
+                </property>
+            </item>
+            <property name="name">
+                <cstring>m_comboFilter</cstring>
+            </property>
+            <property name="editable">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QGroupBox" row="2" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>groupBox1</cstring>
+            </property>
+            <property name="title">
+                <string>Size filtering</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="0">
+                    <property name="name">
+                        <cstring>m_checkSizeMin</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Minimum size:</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>m_checkSizeMax</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Maximum size:</string>
+                    </property>
+                </widget>
+                <spacer row="1" column="3">
+                    <property name="name">
+                        <cstring>spacer2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>190</width>
+                            <height>16</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QLabel" row="1" column="2">
+                    <property name="name">
+                        <cstring>textLabel4</cstring>
+                    </property>
+                    <property name="text">
+                        <string>KB</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="2">
+                    <property name="name">
+                        <cstring>textLabel3</cstring>
+                    </property>
+                    <property name="text">
+                        <string>KB</string>
+                    </property>
+                </widget>
+                <widget class="KLineEdit" row="0" column="1">
+                    <property name="name">
+                        <cstring>m_editSizeMin</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="KLineEdit" row="1" column="1">
+                    <property name="name">
+                        <cstring>m_editSizeMax</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QLayoutWidget" row="0" column="1">
+            <property name="name">
+                <cstring>layout3</cstring>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="KComboBox" row="0" column="0">
+                    <property name="name">
+                        <cstring>m_comboDirectory</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>3</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="editable">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="0" column="1">
+                    <property name="name">
+                        <cstring>m_btnDir</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Browse...</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>buttonCancel</sender>
+        <signal>clicked()</signal>
+        <receiver>KNewProjectDlgS</receiver>
+        <slot>reject()</slot>
+    </connection>
+    <connection>
+        <sender>m_checkSizeMin</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_editSizeMin</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>m_checkSizeMax</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_editSizeMax</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>m_checkDateMin</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_editDateMin</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>m_checkDateMax</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_editDateMax</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>m_checkOwnerUser</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_comboOwnerUserType</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>m_checkOwnerUser</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_comboOwnerUserBool</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>m_checkOwnerUser</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_editOwnerUser</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>m_checkOwnerGroup</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_comboOwnerGroupType</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>m_checkOwnerGroup</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_comboOwnerGroupBool</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>m_checkOwnerGroup</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>m_editOwnerGroup</receiver>
+        <slot>setEnabled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>buttonOk</sender>
+        <signal>clicked()</signal>
+        <receiver>KNewProjectDlgS</receiver>
+        <slot>slotOk()</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>m_comboDirectory</tabstop>
+    <tabstop>m_btnDir</tabstop>
+    <tabstop>m_comboFilter</tabstop>
+    <tabstop>m_checkSizeMin</tabstop>
+    <tabstop>m_editSizeMin</tabstop>
+    <tabstop>m_checkSizeMax</tabstop>
+    <tabstop>m_editSizeMax</tabstop>
+    <tabstop>m_comboDateRW</tabstop>
+    <tabstop>m_checkDateMin</tabstop>
+    <tabstop>m_editDateMin</tabstop>
+    <tabstop>m_checkDateMax</tabstop>
+    <tabstop>m_editDateMax</tabstop>
+    <tabstop>m_checkOwnerUser</tabstop>
+    <tabstop>m_comboOwnerUserType</tabstop>
+    <tabstop>m_comboOwnerUserBool</tabstop>
+    <tabstop>m_editOwnerUser</tabstop>
+    <tabstop>m_checkOwnerGroup</tabstop>
+    <tabstop>m_comboOwnerGroupType</tabstop>
+    <tabstop>m_comboOwnerGroupBool</tabstop>
+    <tabstop>m_editOwnerGroup</tabstop>
+    <tabstop>buttonOk</tabstop>
+    <tabstop>buttonCancel</tabstop>
+</tabstops>
+<slots>
+    <slot>slotOk()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+</includehints>
+</UI>

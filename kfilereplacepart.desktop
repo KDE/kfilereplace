@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+MimeType=all/all
+Icon=kfilereplace.png
+MiniIcon=kfilereplace.png
+ServiceTypes=KParts/ReadOnlyPart
+X-KDE-Library=libkfilereplacepart
+Comment=A batch search and replace tool
+Name=KFileReplace
