@@ -521,7 +521,7 @@ void KFileReplaceView::initGUI()
                            i18n("Open Parent &Folder"),
                            this,
                            SLOT(slotResultDirOpen()));
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("eraser")),
+  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("editdelete")),
                            i18n("&Delete"),
                            this,
                            SLOT(slotResultDelete()));

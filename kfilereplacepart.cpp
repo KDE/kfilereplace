@@ -570,15 +570,15 @@ void KFileReplacePart::initGUI()
   (void)new KAction(i18n("S&imulate"), "filesimulate", 0, this, SLOT(slotSimulatingOperation()), actionCollection(), "file_simulate");
   (void)new KAction(i18n("&Replace"),  "filereplace", 0, this, SLOT(slotReplacingOperation()), actionCollection(), "replace");
   (void)new KAction(i18n("Sto&p"), "stop", 0, this, SLOT(slotStop()), actionCollection(), "stop");
-  (void)new KAction(i18n("Cre&ate Report File..."), "filesave", 0, this, SLOT(slotCreateReport()), actionCollection(), "save_results");
+  (void)new KAction(i18n("Cre&ate Report File..."), "filesaveas", 0, this, SLOT(slotCreateReport()), actionCollection(), "save_results");
 
   // Strings
   (void)new KAction(i18n("&Add String..."), "editadd", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
 
   (void)new KAction(i18n("&Delete String"), "editremove", 0, this, SLOT(slotStringsDeleteItem()), actionCollection(), "strings_del");
-  (void)new KAction(i18n("&Empty Strings List"), "eraser", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
+  (void)new KAction(i18n("&Empty Strings List"), "editdelete", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
   (void)new KAction(i18n("Edit Selected String..."), "edit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
-  (void)new KAction(i18n("&Save Strings List to File..."), "filesave", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
+  (void)new KAction(i18n("&Save Strings List to File..."), "filesaveas", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
   (void)new KAction(i18n("&Load Strings List From File..."), "unsortedList", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
   (void)new KRecentFilesAction(i18n("&Load Recent Strings Files"), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),"strings_load_recent");
   (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
@@ -601,7 +601,7 @@ void KFileReplacePart::initGUI()
       (void)new KAction(i18n("&Edit in Quanta"), "quanta", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
     }
   (void)new KAction(i18n("Open Parent &Folder"), "fileopen", 0, m_view, SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
-  (void)new KAction(i18n("&Delete"), "eraser", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");
+  (void)new KAction(i18n("&Delete"), "editdelete", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");
   (void)new KAction(i18n("E&xpand Tree"), 0, m_view, SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
   (void)new KAction(i18n("&Reduce Tree"), 0, m_view, SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
   (void)new KAction(i18n("&About KFileReplace"), "kfilereplace", 0, this, SLOT(showAboutApplication()), actionCollection(), "help_about_kfilereplace");
