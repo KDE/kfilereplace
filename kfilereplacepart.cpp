@@ -731,7 +731,7 @@ void KFileReplacePart::slotFileSave()
     }
 
   // Select the file where results will be saved
-  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.html|HTML files (*.html)\n*|All Files (*)"), w, i18n("Save Results"));
+  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.html|HTML Files (*.html)\n*|All Files (*)"), w, i18n("Save Results"));
   if (strFilename.isEmpty())
     return ;
 
@@ -833,7 +833,7 @@ void KFileReplacePart::slotStringsSave()
     }
 
   // Select the file where strings will be saved
-  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.kfr|KFileReplace strings (*.kfr)\n*|All Files (*)"), w, i18n("Save Strings to File"));
+  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.kfr|KFileReplace Strings (*.kfr)\n*|All Files (*)"), w, i18n("Save Strings to File"));
   if (strFilename.isEmpty())
     return;
 
