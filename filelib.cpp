@@ -17,7 +17,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifdef HAVE_SYS_VFS_H
 #include <sys/vfs.h>
+#endif
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
+#ifdef HAVE_SYS_MOUNT_H
+#include <sys/mount.h>
+#endif
 #include <errno.h>
 
 #include "filelib.h"

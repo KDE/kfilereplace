@@ -49,9 +49,19 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <sys/param.h>
+#ifdef HAVE_SYS_MOUNT_H
+#include <sys/mount.h>
+#endif
+#ifdef HAVE_SYS_VFS_H
 #include <sys/vfs.h>
-#include <sys/stat.h>
+#endif
+#ifdef HAVE_SYS_STATVFS_H
 #include <sys/statvfs.h>
+#define STATFS statvfs
+#else
+#define STATFS statfs
+#endif
+#include <sys/stat.h>
 #include <errno.h>
 #include <ctype.h>
 
@@ -799,11 +809,11 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
 int GetDiskFreeSpaceForFile(uint *nAvailDiskSpace, const QString &szFilename)
 {
   int nRes;
-  struct statvfs fsInfo;
+  struct STATFS fsInfo;
 
   *nAvailDiskSpace = 0;
 
-  nRes = statvfs(szFilename.local8Bit(), &fsInfo); //FIXME: replace with a QT/KDE function
+  nRes = STATFS(szFilename.local8Bit(), &fsInfo); //FIXME: replace with a QT/KDE function
   if (nRes == -1)
     return -1;
 

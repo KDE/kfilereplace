@@ -22,6 +22,7 @@
 #include <config.h>
 #endif
 
+#include <sys/types.h> /* mode_t and off_t */
 #include <sys/mman.h>
 #include <sys/param.h>
 
