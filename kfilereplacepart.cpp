@@ -35,6 +35,7 @@
 #include <dcopref.h>
 #include <kapplication.h>
 #include <kaboutapplication.h>
+#include <kcombobox.h>
 
 //own includes
 #include "kfilereplacelib.h"
@@ -68,9 +69,6 @@ KFileReplacePart::KFileReplacePart(QWidget* parentWidget, const char* , QObject*
   initView();
   initGUI();
   setWhatsThis();
-
-  launchNewProjectDialog();
-
 }
 
 KFileReplacePart::~KFileReplacePart()
@@ -85,10 +83,11 @@ KFileReplacePart::~KFileReplacePart()
   delete m_config;
 }
 
-void KFileReplacePart::launchNewProjectDialog()
+void KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
 {
   KNewProjectDlg dlg(0L, m_config);
-
+  if (!startURL.isEmpty())
+    dlg.cbLocation->setCurrentText(startURL.path());
   if(!dlg.exec())
     return;
 
@@ -817,6 +816,7 @@ bool KFileReplacePart::openURL(const KURL &url)
     emit canceled("");
     return false;
   }
+  launchNewProjectDialog(url);
   return true;
 }
 
@@ -1230,7 +1230,7 @@ void KFileReplacePart::slotFileNew()
 {
   m_view->resultView()->clear();
   m_config->reparseConfiguration();
-  launchNewProjectDialog();
+  launchNewProjectDialog(KURL());
   emit setStatusBarText(i18n("Ready."));
 }
 

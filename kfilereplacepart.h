@@ -120,7 +120,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void searchExpression(const QString& currentDir, const QString& oldFileName);
     void searchLiteral(const QString& currentDir, const QString& oldFileName);
     void loadInformationFromView();
-    void launchNewProjectDialog();
+    void launchNewProjectDialog(const KURL &startURL);
     void setOptionMask();
 
     QString variableValue(const QString& variable);
