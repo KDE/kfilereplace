@@ -510,7 +510,10 @@ bool KFileReplacePart::openURL(const KURL &url)
   if (!url.isEmpty())
       return launchNewProjectDialog(url);
   else
+  {
+      resetActions();
       return true;
+  }
 }
 
 void KFileReplacePart::initGUI()
@@ -854,8 +857,8 @@ bool KFileReplacePart::checkBeforeOperation()
 
   QFileInfo dirInfo(directory);
   if(!(dirInfo.isReadable() && dirInfo.isExecutable())
-     or
-     not(dirInfo.isWritable()))
+     ||
+     !(dirInfo.isWritable()))
     {
       KMessageBox::error(m_w, i18n("<qt>Access denied in the main folder of the project:<br><b>%1</b></qt>").arg(directory));
       return false;
