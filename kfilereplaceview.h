@@ -40,7 +40,7 @@ public:
   /** Constructor for the main view */
   KFileReplaceView(QWidget *parent,const char *name);
   /** Destructor for the main view */
-  ~KFileReplaceView();
+  virtual ~KFileReplaceView();
 
   /** returns a pointer to the document connected to the view instance. Mind that this method requires a KFileReplaceApp instance as a parent
           * widget to get to the window document pointer by calling the KFileReplaceApp::getDocument() method.
