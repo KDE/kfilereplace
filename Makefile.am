@@ -27,7 +27,7 @@ kde_services_DATA = kfilereplacepart.desktop
 messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/kfilereplace.pot
 
-KDE_ICON = kfilereplace
+KDE_ICON = AUTO
 apps_DATA = kfilereplacepart.desktop
 appsdir = $(kde_appsdir)/Utilities
 
