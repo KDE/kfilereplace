@@ -70,7 +70,7 @@ KFileReplacePart::KFileReplacePart(QWidget *parentWidget, const char *, QObject 
   g_nFilesRep = 0;
   g_szErrMsg = "";
   m_parentWidget = parentWidget;
-  m_config = new KConfig(locateLocal("appdata", "kfilereplacerc"));
+  m_config = new KConfig(locateLocal("config", "kfilereplacerc"));
   m_dlgAbout = 0L;
 
   initDocument();
@@ -84,6 +84,7 @@ KFileReplacePart::KFileReplacePart(QWidget *parentWidget, const char *, QObject 
 
 KFileReplacePart::~KFileReplacePart()
 {
+  m_config->sync();
   slotFileStop();
 }
 
@@ -104,7 +105,7 @@ bool KFileReplacePart::openURL(const KURL &url)
 {
   if (url.protocol() != "file")
   {
-    KMessageBox::sorry(0, i18n("Sorry, currently the KFileReplace plugin works only for local files"), i18n("Non local file"));
+    KMessageBox::sorry(0, i18n("Sorry, currently the KFileReplace part works only for local files!"), i18n("Non local file"));
     emit canceled("");
     return false;
   }
