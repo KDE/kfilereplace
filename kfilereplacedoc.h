@@ -2,7 +2,7 @@
                           kfilereplacedoc.h  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by François Dupoux
+    copyright            : (C) 1999 by Franï¿½is Dupoux
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
@@ -66,7 +66,7 @@ class KFileReplaceDoc : public QObject
     /** removes a view from the list of currently connected views */
     void removeView(KFileReplaceView* m_pView);
     /** sets the modified flag for the document after a modifying action on the view connected to the document.*/
-    void setModified(bool modified=true); 
+    void setModified(bool modified=true);
     /** returns if the document is modified or not. Use this to determine if your document needs saving by the user on closing.*/
     bool isModified();
     /** "save modified" - asks the user for saving if the document is modified */
@@ -85,6 +85,14 @@ class KFileReplaceDoc : public QObject
     void setTitle(const char* title);
     /** returns the title of the document */
     const QString& title() const;
+
+    QString searchFor() {return m_strSearch; }
+    QString replaceWith() {return m_strReplace; }
+    bool includeSubfolders() {return m_bIncludeSubfolder;}
+    bool caseSensitive() {return m_bCaseSensitive;}
+    bool enableWildcards() {return m_bEnableWildcards;}
+    bool enableVariables() {return m_bEnableVariables;}
+    bool searchLater() {return m_bSearchLater;}
 
   public slots:
     /** calls repaint() on all views connected to the document object and is called by the view by which the document has been changed.
@@ -110,6 +118,15 @@ class KFileReplaceDoc : public QObject
     // General data
     QString m_strProjectDirectory;
     QString m_strProjectFilter;
+    QString m_strSearch;
+    QString m_strReplace;
+
+    //Options
+    bool  m_bIncludeSubfolder,
+            m_bCaseSensitive,
+            m_bEnableWildcards,
+            m_bEnableVariables,
+            m_bSearchLater;
 
     // Size Criteria
     bool m_bMinSize,

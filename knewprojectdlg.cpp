@@ -2,7 +2,7 @@
                           knewprojectdlg.cpp  -  description
                              -------------------
     begin                : Tue Dec 28 1999
-    copyright            : (C) 1999 by François Dupoux
+    copyright            : (C) 1999 by Franï¿½is Dupoux
                                   (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
@@ -31,6 +31,7 @@
 #include <kfiledialog.h>
 #include <klineedit.h>
 #include <klocale.h>
+#include <kpushbutton.h>
 #include <kstandarddirs.h>
 #include <kdeversion.h>
 #include <kdebug.h>
@@ -45,20 +46,22 @@ KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *nam
 {
    // copy data
  m_config = config;
+ m_searchLater = false;
  QIconSet iconSet = SmallIconSet(QString::fromLatin1("fileopen"));
  QPixmap pixMap = iconSet.pixmap( QIconSet::Small, QIconSet::Normal );
  pbLocation->setIconSet(iconSet);
  pbLocation->setFixedSize( pixMap.width()+8, pixMap.height()+8 );
- 
+
  spbSizeMin->setEnabled(chbSizeMin->isChecked());
- 
+
  spbSizeMax->setEnabled(chbSizeMax->isChecked());
- 
+
  setWhatsThis();
  loadLocationsList();
  loadFiltersList();
  connect(pbLocation, SIGNAL(clicked()), this, SLOT(slotDir()));
  connect(pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
+ connect(pbLater, SIGNAL(clicked()), this, SLOT(slotLater()));
  connect(pbCancel, SIGNAL(clicked()), this, SLOT(reject()));
  connect(chbSizeMin, SIGNAL(toggled(bool)), this, SLOT(slotEnableSpinboxSizeMin(bool)));
  connect(chbSizeMax, SIGNAL(toggled(bool)), this, SLOT(slotEnableSpinboxSizeMax(bool)));
@@ -68,6 +71,37 @@ KNewProjectDlg::~KNewProjectDlg()
 {
  m_config = 0L;
 }
+
+QString KNewProjectDlg::searchFor()
+{
+  return lineSearch->text();
+}
+
+QString KNewProjectDlg::replaceWith()
+{
+  return lineReplace->text();
+}
+
+bool KNewProjectDlg::includeSubfolders()
+{
+  return chbIncludeSubfolders->isChecked();
+}
+
+bool KNewProjectDlg::caseSensitive()
+{
+  return chbCaseSensitive->isChecked();
+}
+
+bool KNewProjectDlg::enableWildcards()
+{
+  return chbEnableWildcards->isChecked();
+}
+
+bool KNewProjectDlg::enableVariables()
+{
+  return chbEnableVariables->isChecked();
+}
+
 
 QString KNewProjectDlg::location()
 {
@@ -100,6 +134,7 @@ void KNewProjectDlg::slotOK()
    if (location().isEmpty() || filter().isEmpty())
      {
        KMessageBox::error(this, i18n("You must fill the combo boxes (directory and filter) before continuing."));
+       m_searchLater = false;
        return;
      }
 
@@ -127,16 +162,18 @@ void KNewProjectDlg::slotOK()
    if ((OwnerUser && edOwnerUser->text().isEmpty()) || (OwnerGroup && edOwnerGroup->text().isEmpty()))
    {
       KMessageBox::error(this, i18n("Some edit boxes are empty in the <b>Owner</b> page."));
+      m_searchLater = false;
       return ;
    }
 
    // =========================================================
-   
+
    // Check all the fields are filled
    if (   (minimumDate && edDateMin->text().isEmpty())
        || (maximumDate && edDateMax->text().isEmpty()) )
    {
       KMessageBox::error(this, i18n("Some edit boxes are empty"));
+      m_searchLater = false;
       return ;
    }
 
@@ -144,6 +181,7 @@ void KNewProjectDlg::slotOK()
    if (maximumSize && minimumSize && (m_MaximumSizeNumber < m_MinimumSizeNumber))
    {
       KMessageBox::error(this, i18n("The minimum size is greater than the maximum size."));
+      m_searchLater = false;
       return ;
    }
 
@@ -157,6 +195,7 @@ void KNewProjectDlg::slotOK()
       if ( !QDate::fromString(minimumDateString, Qt::ISODate).isValid())
       {
          KMessageBox::error(this, i18n("The dates must be in the YYYY-MM-DD format."));
+         m_searchLater = false;
          return ;
       }
    }
@@ -167,6 +206,7 @@ void KNewProjectDlg::slotOK()
       if ( !QDate::fromString(maximumDateString, Qt::ISODate).isValid())
       {
          KMessageBox::error(this, i18n("The dates must be in the YYYY-MM-DD format."));
+         m_searchLater = false;
          return ;
       }
    }
@@ -182,10 +222,18 @@ void KNewProjectDlg::slotOK()
    if (minimumDate && maximumDate && m_MinDate > m_MaxDate)
    {
       KMessageBox::error(this, i18n("<qt>The <i>accessed after</i> date is after the <i>accessed before</i> date."));
+      m_searchLater = false;
       return ;
    }
 
    accept();
+}
+
+
+void KNewProjectDlg::slotLater()
+{
+    m_searchLater = true;
+    slotOK();
 }
 
 void KNewProjectDlg::slotEnableSpinboxSizeMin(bool b)

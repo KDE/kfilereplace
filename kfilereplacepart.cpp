@@ -33,8 +33,8 @@
 #include <kmessagebox.h>
 #include <kparts/genericfactory.h>
 #include <kstandarddirs.h>
-#include <dcopclient.h> 
-#include <dcopref.h> 
+#include <dcopclient.h>
+#include <dcopref.h>
 
 //own includes
 #include "apistruct.h"
@@ -79,13 +79,12 @@ KFileReplacePart::KFileReplacePart(QWidget* parentWidget, const char* , QObject*
   m_config = new KConfig(configName);
   m_dlgAbout = 0L;
 
-  initDocument();
   initView();
   initGUI();
   setWhatsThis();
   readOptions();
   updateCommands(); // Gray or ungray commands
-
+  initDocument();
 }
 
 KFileReplacePart::~KFileReplacePart()
@@ -118,7 +117,19 @@ bool KFileReplacePart::openURL(const KURL &url)
     emit canceled("");
     return false;
   }
-  return m_doc->newDocument(url.path(), "*", true);
+  if (m_doc->newDocument(url.path(), "*", true))
+  {
+      m_settings.bRecursive = m_doc->includeSubfolders();
+      m_settings.bCaseSensitive = m_doc->caseSensitive();
+      m_settings.bWildcards = m_doc->enableWildcards();
+      m_settings.bVariables = m_doc->enableVariables();
+      m_view->addString(0L, m_doc->searchFor(), m_doc->replaceWith());
+      if (m_doc->replaceWith().isEmpty())
+        slotFileSearch();
+      else
+        slotFileReplace();
+      return true;
+  } else return false;
 }
 
 void KFileReplacePart::initGUI()
@@ -127,72 +138,72 @@ void KFileReplacePart::initGUI()
 
    // File
    (void)new KAction(i18n("New Search Project..."), "newproject", 0, this, SLOT(slotFileNew()), actionCollection(), "new_project");
-   
+
    (void)new KAction(i18n("&Search"), "find", 0, this, SLOT(slotFileSearch()), actionCollection(), "search");
-   
+
    (void)new KAction(i18n("&Simulate"), "filesimulate", 0, this, SLOT(slotFileSimulate()), actionCollection(), "file_simulate");
-   
+
    (void)new KAction(i18n("&Replace"), "filereplace", 0, this, SLOT(slotFileReplace()), actionCollection(), "replace");
-   
+
    (void)new KAction(i18n("Sto&p"), "filestop", 0, this, SLOT(slotFileStop()), actionCollection(), "stop");
-   
+
    (void)new KAction(i18n("Save &Results As..."), "filesave", 0, this, SLOT(slotFileSave()), actionCollection(), "save_results");
 
    // Strings
    (void)new KAction(i18n("&Add String..."), "edit_add", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
-   
+
    (void)new KAction(i18n("&Delete String"), "edit_remove", 0, this, SLOT(slotStringsDel()), actionCollection(), "strings_del");
-   
+
    (void)new KAction(i18n("&Empty Strings List"), "strempty", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
-   
+
    (void)new KAction(i18n("Edi&t Selected String..."), "lineedit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
-   
+
    (void)new KAction(i18n("&Save Strings List to File..."), "filesave", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
-   
+
    (void)new KAction(i18n("&Load Strings List From File..."), "unsortedList", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
-   
+
    (void)new KRecentFilesAction(i18n("&Load Recent Strings Files..."), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),"strings_load_recent");
-                                
+
    (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
-   
+
    (void)new KAction(i18n("&Invert All Strings (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertAll()), actionCollection(), "strings_invert_all");
 
    // Options
    (void)new KToggleAction(i18n("&Include Sub-Folders"), "recursive", 0, this, SLOT(slotOptionsRecursive()), actionCollection(), "options_recursive");
-   
+
    (void)new KToggleAction(i18n("Create &Backup"), "backup", 0, this, SLOT(slotOptionsBackup()), actionCollection(), "options_backup");
-   
+
    (void)new KToggleAction(i18n("Case &Sensitive"), "casesensitive", 0, this, SLOT(slotOptionsCaseSensitive()), actionCollection(), "options_case");
-   
+
    (void)new KToggleAction(i18n("Enable &Wildcards"), "optwildcards", 0, this, SLOT(slotOptionsWildcards()), actionCollection(), "options_wildcards");
-   
+
    (void)new KToggleAction(i18n("Enable &Variables in Replace String: [$name:format$]"), "optvar", 0, this, SLOT(slotOptionsVariables()), actionCollection(), "options_var");
 
    (void) new KAction(i18n("Configure &KFileReplace..."), "configure", 0, this, SLOT(slotOptionsPreferences()), actionCollection(), "configure_kfilereplace");
 
    // Results
    (void)new KAction(i18n("&Properties"), "resfileinfo", 0, m_view, SLOT(slotResultProperties()), actionCollection(), "results_infos");
-   
+
    (void)new KAction(i18n("&Open"), "resfileopen", 0, m_view, SLOT(slotResultOpen()), actionCollection(), "results_openfile");
-   
+
    //if(QString(kapp->startupId()).contains("quanta")==0)
    (void)new KAction(i18n("&Open in Quanta"), "resfileedit", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
-   
-   
+
+
    (void)new KAction(i18n("Open Parent &Folder"), "resdiropen", 0, m_view, SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
-   
+
    (void)new KAction(i18n("&Delete"), "resfiledel", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");
-   
+
    (void)new KAction(i18n("E&xpand Tree"), 0, m_view, SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
-   
+
    (void)new KAction(i18n("&Reduce Tree"), 0, m_view, SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
 
    // Help menu
 //   setHelpMenuEnabled(false);
    (void)new KAction(i18n("&About KFileReplace"), "kfilereplace", 0, this, SLOT(showAboutApplication()), actionCollection(), "about_kfilereplace");
-   
+
    (void)new KAction(i18n("KFileReplace &Handbook"), "help", 0, this, SLOT(appHelpActivated()), actionCollection(), "help_kfilereplace");
-   
+
    (void)new KAction(i18n("&Report Bug..."), 0, 0, this, SLOT(reportBug()), actionCollection(), "report_bug");
 }
 
@@ -201,6 +212,7 @@ void KFileReplacePart::initDocument()
   bool nRes;
 
   m_doc = new KFileReplaceDoc(m_parentWidget, this);
+  m_doc->addView(m_view);
   nRes = m_doc->newDocument(QDir::homeDirPath(), "*", false);
 }
 
@@ -212,7 +224,6 @@ void KFileReplacePart::initView()
 
   m_view = new KFileReplaceView(m_parentWidget, "view");
 
-  m_doc->addView(m_view);
   setWidget(m_view);
 
   m_view->setAcceptDrops(false);
@@ -505,12 +516,24 @@ void KFileReplacePart::slotFileNew()
 
   if (m_doc->newDocument())
   {
-   // Empty lists views
- // m_view->stringView()->clear();
-  m_view->resultView()->clear();
+      // Empty lists views
+    // m_view->stringView()->clear();
+      m_view->resultView()->clear();
 
-  emit setStatusBarText(i18n("Ready."));
-  updateCommands();
+      emit setStatusBarText(i18n("Ready."));
+      updateCommands();
+      m_settings.bRecursive = m_doc->includeSubfolders();
+      m_settings.bCaseSensitive = m_doc->caseSensitive();
+      m_settings.bWildcards = m_doc->enableWildcards();
+      m_settings.bVariables = m_doc->enableVariables();
+      m_view->addString(0L, m_doc->searchFor(), m_doc->replaceWith());
+      if (!m_doc->searchLater())
+      {
+          if (m_doc->replaceWith().isEmpty())
+            slotFileSearch();
+          else
+            slotFileReplace();
+      }
   }
 
 }
@@ -684,7 +707,7 @@ void KFileReplacePart::slotFileStop()
 void KFileReplacePart::slotFileSave()
 {
   QString fileName;
-  
+
   QWidget* w = widget();
 
   QListView* lvResult = m_view->resultView();
@@ -1088,7 +1111,7 @@ void KFileReplacePart::showAboutApplication()
   m_dlgAbout = new KAboutKFileReplace(widget(), 0, false);
   if(m_dlgAbout == 0)
     return;
-    
+
   if(!m_dlgAbout->isVisible())
     m_dlgAbout->show();
   else

@@ -2,7 +2,7 @@
                           kfilereplaceview.h  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by François Dupoux <dupoux@dupoux.com>
+    copyright            : (C) 1999 by Franï¿½is Dupoux <dupoux@dupoux.com>
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
  ***************************************************************************/
 
@@ -46,13 +46,13 @@ public:
   KFileReplaceView(QWidget *parent,const char *name);
   /** Destructor for the main view */
   virtual ~KFileReplaceView();
-  
+
   QListView *stringView();
   QListView *resultView();
   QPixmap iconString();
-  
+
   QString currentItem();
-  bool addString(QListViewItem *lviCurrent);
+  bool addString(QListViewItem *lviCurrent, const QString &searchStr = QString::null, const QString &replaceStr = QString::null);
   bool editString(QListViewItem *lviCurrent);
   KFileReplaceDoc* document() const;
   QListViewItem* addFullItem(bool bSuccess, const QString& szName, const QString& szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
@@ -72,7 +72,7 @@ public slots:
   void slotResultTreeExpand();
   void slotResultTreeReduce();
   void slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column);
-  
+
 private:
   void expand(QListViewItem *lviCurrent, bool bExpand);
 

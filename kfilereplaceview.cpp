@@ -2,7 +2,7 @@
                           kfilereplaceview.cpp  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by François Dupoux <dupoux@dupoux.com>
+    copyright            : (C) 1999 by Franï¿½is Dupoux <dupoux@dupoux.com>
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
 ***************************************************************************/
 
@@ -20,12 +20,12 @@
 #include <qpainter.h>
 #include <qwhatsthis.h>
 #include <qfile.h>
-#include <qfileinfo.h> 
+#include <qfileinfo.h>
 #include <qtextstream.h>
 #include <qlistview.h>
 #include <qcstring.h>
 #include <qdatastream.h>
-#include <qvaluelist.h> 
+#include <qvaluelist.h>
 
 // include files for KDE
 #include <kmessagebox.h>
@@ -38,9 +38,9 @@
 #include <kurl.h>
 #include <kpropertiesdialog.h>
 #include <kiconloader.h>
-#include <kapplication.h> 
-#include <dcopclient.h> 
-#include <dcopref.h> 
+#include <kapplication.h>
+#include <dcopclient.h>
+#include <dcopref.h>
 // application specific includes
 #include "kfilereplaceview.h"
 #include "kfilereplacedoc.h"
@@ -57,60 +57,60 @@
 #include "resource.h"
 #include "whatthis.h"
 
-using namespace whatthisNameSpace; 
+using namespace whatthisNameSpace;
 
 KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplaceViewWdg(parent,name)
 {
   m_path = KGlobal::instance()->dirs()->saveLocation("data", "kfilereplace/");
-  
+
   // Create popup menus
   m_kpmResult = new KPopupMenu(this, "ResultPopup");
- 
+
   m_kpmResult->insertItem(QPixmap("resfileopen"),
-                          i18n("&Open"), 
-                          this, 
+                          i18n("&Open"),
+                          this,
                           SLOT(slotResultOpen()));
-  m_kpmResult->insertItem(i18n("Open &With..."), 
-                          this, 
+  m_kpmResult->insertItem(i18n("Open &With..."),
+                          this,
                           SLOT(slotResultOpenWith()));
   /*DCOPClient *client = kapp->dcopClient();
   if(QString(client->appId()).contains("quanta"))*/
   //if(QString(kapp->startupId()).contains("quanta")==0)
   m_kpmResult->insertItem(QPixmap("resfileedit"),
-                          i18n("&Edit with Quanta"), 
-                          this, 
+                          i18n("&Edit with Quanta"),
+                          this,
                           SLOT(slotResultEdit()));
   m_kpmResult->insertItem(QPixmap("resdiropen"),
-                          i18n("Open Parent &Folder"), 
-                          this, 
+                          i18n("Open Parent &Folder"),
+                          this,
                           SLOT(slotResultDirOpen()));
   m_kpmResult->insertItem(QPixmap("resfiledel"),
-                          i18n("&Delete"), 
-                          this, 
+                          i18n("&Delete"),
+                          this,
                           SLOT(slotResultDelete()));
   m_kpmResult->insertSeparator();
   m_kpmResult->insertItem(QPixmap("resfileinfo"),
-                          i18n("&Properties"), 
-                          this, 
+                          i18n("&Properties"),
+                          this,
                           SLOT(slotResultProperties()));
-  
+
   // Load icons
   m_pmIconString.load( locate("data", "kfilereplace/pics/string.png"));
   m_pmIconSuccess.load( locate("data", "kfilereplace/pics/success.png"));
   m_pmIconError.load( locate("data", "kfilereplace/pics/error.png"));
   m_pmIconSubString.load( locate("data", "kfilereplace/pics/substring.png"));
-  
+
   // connect events
-  connect(lwResult, 
-          SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)), this, 
+  connect(lwResult,
+          SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)), this,
           SLOT(slotMouseButtonClicked(int, QListViewItem *, const QPoint &, int)));
-  connect(lwStrings, 
-          SIGNAL(doubleClicked(QListViewItem *)), 
-          this, 
+  connect(lwStrings,
+          SIGNAL(doubleClicked(QListViewItem *)),
+          this,
           SLOT(slotStringsEdit(QListViewItem *)));
 
   dlg = new KAddStringDlg(parentWidget());
-  
+
   QWhatsThis::add(lwResult, i18n(lwResultWhatthis));
   QWhatsThis::add(lwStrings, i18n(lwStringsWhatthis));
 }
@@ -147,12 +147,20 @@ KFileReplaceDoc* KFileReplaceView::document() const
 #endif
 }
 
-bool KFileReplaceView::addString( QListViewItem *lviCurrent)
+bool KFileReplaceView::addString( QListViewItem *lviCurrent, const QString &searchStr, const QString &replaceStr)
 {
   QListViewItem *lviCurItem,
                 *lviFirst;
-  QString searchText = dlg->searchText(),
-          replaceText = dlg->replaceText();
+  QString searchText, replaceText;
+   if (searchStr.isEmpty())
+   {
+       searchText = dlg->searchText(),
+       replaceText = dlg->replaceText();
+   } else
+   {
+       searchText = searchStr;
+       replaceText = replaceStr;
+   }
   // Check item is not already in the TextList
   lviCurItem = lviFirst = lwStrings->firstChild();
   if (lviCurItem != 0)
@@ -413,14 +421,14 @@ QString KFileReplaceView::currentItem()
   if(!m_lviCurrent)
     if(!(m_lviCurrent = lwResult->currentItem()))
       return QString::null;
-  
+
   lvi = m_lviCurrent;
   while (lvi->parent())
     lvi = lvi->parent();
 
   //strFilename = QString("%1/%2").arg(lvi->text(1)).arg(lvi->text(0));
   strFilename = QString(lvi->text(1)+"/"+lvi->text(0));
-  return strFilename; 
+  return strFilename;
 }
 
 void KFileReplaceView::slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column)
@@ -494,16 +502,16 @@ void KFileReplaceView::slotResultEdit()
 
   QString filePath = currentItem();
   DCOPClient *client = kapp->dcopClient();
- 
+
   DCOPRef quanta(client->appId(),"WindowManagerIf");
-  
+
   bool success = quanta.send("openFile",filePath,1,1);
-  
+
   if(!success)
     {
       QString message = QString(i18n("<qt>File <b>%1</b> cannot be opened. Might be a DCOP problem.</qt>")).arg(filePath);
       KMessageBox::error(parentWidget(), message);
-    }  
+    }
   m_lviCurrent = 0L;
 }
 

@@ -2,7 +2,7 @@
                           kfilereplacedoc.cpp  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by François Dupoux
+    copyright            : (C) 1999 by Franï¿½is Dupoux
                                   (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
@@ -71,12 +71,12 @@ void KFileReplaceDoc::removeView(KFileReplaceView* m_pView)
 }
 
 void KFileReplaceDoc::setModified(bool modified)
-{ 
-  b_modified=modified; 
+{
+  b_modified=modified;
 }
 
 bool KFileReplaceDoc::isModified()
-{ 
+{
   return b_modified;
 }
 
@@ -139,34 +139,43 @@ bool KFileReplaceDoc::newDocument(const QString& strArguDir, const QString& strA
 
       if (dlg.exec() ) // If Cancel
       {
-        // Get the Directory and the Filter
-      m_strProjectDirectory = dlg.location();
-      m_strProjectFilter = dlg.filter();
+            // Get the Directory and the Filter
+          m_strSearch = dlg.searchFor();
+          m_strReplace = dlg.replaceWith();
+          m_strProjectDirectory = dlg.location();
+          m_strProjectFilter = dlg.filter();
 
-      // criters (date & time)
-      m_nTypeOfAccess = dlg.accessType();
+          //options
+          m_bIncludeSubfolder = dlg.includeSubfolders();
+          m_bCaseSensitive = dlg.caseSensitive();
+          m_bEnableWildcards = dlg.enableWildcards();
+          m_bEnableVariables = dlg.enableVariables();
+          m_bSearchLater = dlg.searchLater();
 
-      m_bMinDate = dlg.isMinDate();
-      m_bMaxDate = dlg.isMaxDate();
-      m_qdMinDate = dlg.minDate();
-      m_qdMaxDate = dlg.maxDate();
+          // criters (date & time)
+          m_nTypeOfAccess = dlg.accessType();
 
-      m_bMinSize = dlg.isMinSize();
-      m_bMaxSize = dlg.isMaxSize();
-      m_nMinSize = dlg.minSize();
-      m_nMaxSize = dlg.maxSize();
+          m_bMinDate = dlg.isMinDate();
+          m_bMaxDate = dlg.isMaxDate();
+          m_qdMinDate = dlg.minDate();
+          m_qdMaxDate = dlg.maxDate();
 
-      // owner
-      m_bOwnerUserBool = dlg.isOwnerUser();
-      m_bOwnerGroupBool = dlg.isOwnerGroup();
-      m_bOwnerUserMustBe = dlg.ownerUserMustBe();
-      m_bOwnerGroupMustBe = dlg.ownerGroupMustBe();
-      m_strOwnerUserType = dlg.ownerUserType();
-      m_strOwnerGroupType = dlg.ownerGroupType();
-      m_strOwnerUserValue = dlg.ownerUserValue();
-      m_strOwnerGroupValue = dlg.ownerGroupValue();
-      }  
-      else return false;  
+          m_bMinSize = dlg.isMinSize();
+          m_bMaxSize = dlg.isMaxSize();
+          m_nMinSize = dlg.minSize();
+          m_nMaxSize = dlg.maxSize();
+
+          // owner
+          m_bOwnerUserBool = dlg.isOwnerUser();
+          m_bOwnerGroupBool = dlg.isOwnerGroup();
+          m_bOwnerUserMustBe = dlg.ownerUserMustBe();
+          m_bOwnerGroupMustBe = dlg.ownerGroupMustBe();
+          m_strOwnerUserType = dlg.ownerUserType();
+          m_strOwnerGroupType = dlg.ownerGroupType();
+          m_strOwnerUserValue = dlg.ownerUserValue();
+          m_strOwnerGroupValue = dlg.ownerGroupValue();
+      }
+      else return false;
 
     }
 

@@ -2,7 +2,7 @@
                           knewprojectdlg.h  -  description
                              -------------------
     begin                : Tue Dec 28 1999
-    copyright            : (C) 1999 by François Dupoux
+    copyright            : (C) 1999 by Franï¿½is Dupoux
                                   (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
@@ -34,20 +34,29 @@ class KNewProjectDlg : public KNewProjectDlgS
   virtual ~KNewProjectDlg();
 
  private:
+  bool m_searchLater;
   KConfig *m_config;
   QDate m_MinDate;
   QDate m_MaxDate;
   unsigned long int m_MinimumSizeNumber;
   unsigned long int m_MaximumSizeNumber;
- 
+
  protected slots:
   void slotDir();
+  void slotLater();
   void slotOK();
   void slotEnableSpinboxSizeMin(bool b);
   void slotEnableSpinboxSizeMax(bool b);
- public: 
+ public:
   QString location();
   QString filter();
+  QString searchFor();
+  QString replaceWith();
+
+  bool includeSubfolders();
+  bool caseSensitive();
+  bool enableWildcards();
+  bool enableVariables();
 
   int accessType();
   bool isMinDate();
@@ -71,19 +80,21 @@ class KNewProjectDlg : public KNewProjectDlgS
 
   QString ownerUserValue();
   QString ownerGroupValue();
-  
+
   void loadLocationsList();
   void loadFiltersList();
- 
+
   void saveLocationsList();
   void saveFiltersList();
-  
+
  // void addCurrentStringToCombo();
   void setDatas(const QString& strDir, const QString& strFilter);
   void setWhatsThis();
-  
+
   void maxFilesSize(bool & bChecked, long unsigned int & nMaxSize);
   void minFilesSize(bool & bChecked, long unsigned int & nMinSize);
+
+  bool searchLater() {return m_searchLater;}
 };
 
 #endif

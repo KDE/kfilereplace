@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="kfilereplace" version="2">
+<kpartgui name="kfilereplace" version="3">
 <MenuBar>
     <Menu name="kfilerepace"><text>Search/&amp;Replace</text>
         <Action name="new_project"/>
@@ -8,7 +8,6 @@
         <Action name="replace"/>
         <Action name="stop"/>
         <Separator/>
-        <Action name="save_results"/>
         <Menu name="strings"><text>&amp;Strings</text>
             <Action name="strings_add"/>
             <Action name="strings_del"/>
@@ -22,22 +21,24 @@
             <Action name="strings_invert"/>
             <Action name="strings_invert_all"/>
         </Menu>
+        <Menu name="results"><text>&amp;Results</text>
+            <Action name="results_openfile"/>
+            <Action name="results_opendir"/>
+            <Action name="results_editfile"/>
+            <Action name="results_delete"/>
+            <Action name="results_infos"/>
+            <Separator/>
+            <Action name="save_results"/>
+            <Separator/>
+            <Action name="results_treeexpand"/>
+            <Action name="results_treereduce"/>
+        </Menu>
         <Menu name="options"><text>&amp;Options</text>
             <Action name="options_recursive"/>
             <Action name="options_backup"/>
             <Action name="options_case"/>
             <Action name="options_wildcards"/>
             <Action name="options_var"/>
-        </Menu>
-        <Menu name="results"><text>&amp;Results</text>
-            <Action name="results_infos"/>
-            <Action name="results_openfile"/>
-            <Action name="results_opendir"/>
-            <Action name="results_editfile"/>
-            <Action name="results_delete"/>
-            <Separator/>
-            <Action name="results_treeexpand"/>
-            <Action name="results_treereduce"/>
         </Menu>
     </Menu>
     <Menu name="settings"><text>&amp;Settings</text>
