@@ -66,8 +66,10 @@ void *ReplaceThread(void *param)
 
   g_bThreadRunning = true;
 
+  kdDebug(23000) << "Starting ReplaceDirectory..." << endl;
   // Call another function to make easier to verify Thread Variables
   nRes = ReplaceDirectory(argu -> szDir, argu, true); // true --> replace
+  kdDebug(23000) << "ReplaceDirectory exited..." << endl;
 
   // The thread always finished here: success or error
   g_nFilesRep = nRes; // Number of replaced files
@@ -173,6 +175,7 @@ int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
       // Check the Thread needn't to stop
       if (g_bThreadMustStop == true)
         {
+          kdDebug(23000) << "STOP THREAD!" << endl;
           return -1;
         }
 

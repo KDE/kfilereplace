@@ -70,7 +70,9 @@ KFileReplacePart::KFileReplacePart(QWidget *parentWidget, const char *, QObject 
   g_nFilesRep = 0;
   g_szErrMsg = "";
   m_parentWidget = parentWidget;
-  m_config = new KConfig(locateLocal("config", "kfilereplacerc"));
+  QString configName = locateLocal("config", "kfilereplacerc");
+  kdDebug(23000) << "config file: " << configName << endl;
+  m_config = new KConfig(configName);
   m_dlgAbout = 0L;
 
   initDocument();
@@ -84,7 +86,7 @@ KFileReplacePart::KFileReplacePart(QWidget *parentWidget, const char *, QObject 
 
 KFileReplacePart::~KFileReplacePart()
 {
-  m_config->sync();
+  saveOptions();
   slotFileStop();
 }
 
@@ -555,7 +557,7 @@ void KFileReplacePart::slotFileSearch()
 
    // Show results after operation
    if (g_nFilesRep == -1) // Error
-      strMess.sprintf(i18n("Error while searching/replacing"));
+      strMess = i18n("Error while searching/replacing");
    else // Success
    {
       if (!g_argu.bHaltOnFirstOccur)
