@@ -94,6 +94,9 @@
                     <property name="accel">
                         <string></string>
                     </property>
+                    <property name="default">
+                        <bool>true</bool>
+                    </property>
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
@@ -944,6 +947,14 @@
     <tabstop>m_chbCaseSensitive</tabstop>
     <tabstop>m_chbRegularExpressions</tabstop>
     <tabstop>m_chbEnableVariables</tabstop>
+    <tabstop>m_chbBackup</tabstop>
+    <tabstop>m_leBackup</tabstop>
+    <tabstop>m_leSearch</tabstop>
+    <tabstop>m_leReplace</tabstop>
+    <tabstop>m_pbHelp</tabstop>
+    <tabstop>m_pbSearchNow</tabstop>
+    <tabstop>m_pbSearchLater</tabstop>
+    <tabstop>m_pbCancel</tabstop>
     <tabstop>m_chbSizeMin</tabstop>
     <tabstop>m_spbSizeMin</tabstop>
     <tabstop>m_chbSizeMax</tabstop>
@@ -959,8 +970,8 @@
     <tabstop>m_cbOwnerGroupType</tabstop>
     <tabstop>m_cbOwnerGroupBool</tabstop>
     <tabstop>m_edOwnerGroup</tabstop>
-    <tabstop>m_pbHelp</tabstop>
-    <tabstop>m_pbCancel</tabstop>
+    <tabstop>m_dedDateMin</tabstop>
+    <tabstop>m_dedDateMax</tabstop>
 </tabstops>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

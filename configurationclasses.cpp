@@ -159,7 +159,7 @@ QString ResultViewEntry::message(const QString& capturedText, int x, int y) cons
 {
   QString data = m_data;
   //data.replace('\n',"\\n");
-  return i18n(" captured text \"%1\" replaced with \"%2\" at line %3, column %4 ").arg(capturedText).arg(data).arg(QString::number(x,10)).arg(QString::number(y,10));
+  return i18n(" captured text \"%1\" replaced with \"%2\" at line: %3, column: %4 ").arg(capturedText).arg(data).arg(QString::number(x,10)).arg(QString::number(y,10));
 }
 
 int ResultViewEntry::keyLength() const

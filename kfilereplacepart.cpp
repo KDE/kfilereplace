@@ -21,6 +21,7 @@
 #include <qimage.h>
 
 // KDE
+#include <dcopclient.h>
 #include <kaboutapplication.h>
 #include <kapplication.h>
 #include <kaction.h>
@@ -552,7 +553,21 @@ void KFileReplacePart::initGUI()
   // Results
   (void)new KAction(i18n("&Properties"), "informations", 0, m_view, SLOT(slotResultProperties()), actionCollection(), "results_infos");
   (void)new KAction(i18n("&Open"), "filenew", 0, m_view, SLOT(slotResultOpen()), actionCollection(), "results_openfile");
-  (void)new KAction(i18n("&Open in Quanta"), "edit", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
+  DCOPClient *client = kapp->dcopClient();
+  QCStringList appList = client->registeredApplications();
+  bool quantaFound = false;
+  for (QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
+  {
+      if ((*it).left(6) == "quanta")
+      {
+          quantaFound = true;
+          break;
+      }
+  }
+  if (quantaFound)
+  {
+      (void)new KAction(i18n("&Edit in Quanta"), "quanta", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
+  }
   (void)new KAction(i18n("Open Parent &Folder"), "fileopen", 0, m_view, SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
   (void)new KAction(i18n("&Delete"), "eraser", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");
   (void)new KAction(i18n("E&xpand Tree"), 0, m_view, SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
@@ -779,7 +794,8 @@ void KFileReplacePart::resetActions()
   // Results
   actionCollection()->action("results_infos")->setEnabled(hasItems);
   actionCollection()->action("results_openfile")->setEnabled(hasItems);
-  actionCollection()->action("results_editfile")->setEnabled(hasItems);
+  if (actionCollection()->action("results_editfile"))
+      actionCollection()->action("results_editfile")->setEnabled(hasItems);
   actionCollection()->action("results_opendir")->setEnabled(hasItems);
   actionCollection()->action("results_delete")->setEnabled(hasItems);
   actionCollection()->action("results_treeexpand")->setEnabled(hasItems);
@@ -818,7 +834,8 @@ void KFileReplacePart::freezeActions()
   actionCollection()->action("configure_kfilereplace")->setEnabled(false);
   actionCollection()->action("results_infos")->setEnabled(false);
   actionCollection()->action("results_openfile")->setEnabled(false);
-  actionCollection()->action("results_editfile")->setEnabled(false);
+  if (actionCollection()->action("results_editfile"))
+      actionCollection()->action("results_editfile")->setEnabled(false);
   actionCollection()->action("results_opendir")->setEnabled(false);
   actionCollection()->action("results_delete")->setEnabled(false);
   actionCollection()->action("results_treeexpand")->setEnabled(false);
@@ -1295,22 +1312,12 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               if(regex)
                 {
                   capturedText = rxKey.cap(1).replace('\n',"\\n");
-                  msg = i18n(" first captured text")+
-                        " \""+capturedText+"\" "+
-                        i18n("at line:")+
-                        QString::number(lineNumber,10)+
-                        i18n(", column:")+
-                        QString::number(columnNumber,10);
+                  msg = i18n(" first captured text \"%1\" at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
                 }
               else
                 {
                   capturedText = line.mid(pos,strKey.length()).replace('\n',"\\n");
-                  msg = i18n(" first occurence of string")+
-                        " \""+capturedText+"\" "+
-                        i18n("found at line:")+
-                        QString::number(lineNumber,10)+
-                        i18n(", column:")+
-                        QString::number(columnNumber,10);
+                  msg = i18n(" first occurence of string \"%1\" found at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
                 }
               tempItem->setText(0,msg);
               occurrence = 1;
@@ -1343,23 +1350,13 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               if(regex)
                 {
                   capturedText = rxKey.cap(1).replace('\n',"\\n");
-                  msg = i18n(" captured text")+
-                        " \""+capturedText+"\" "+
-                        i18n("at line:")+
-                        QString::number(lineNumber,10)+
-                        i18n(", column:")+
-                        QString::number(columnNumber,10);
+                  msg = i18n(" captured text \"%1\" at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
                   pos = rxKey.search(line, pos+rxKey.matchedLength());
                 }
               else
                 {
                   capturedText = line.mid(pos,strKey.length()).replace('\n',"\\n");
-                  msg = i18n(" string")+
-                        " \""+capturedText+"\" "+
-                        i18n("found at line:")+
-                        QString::number(lineNumber,10)+
-                        i18n(", column:")+
-                        QString::number(columnNumber,10);
+                  msg = i18n(" string \"%1\" found at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
                   pos = line.find(strKey,pos+strKey.length());
                 }
               tempItem->setText(0,msg);

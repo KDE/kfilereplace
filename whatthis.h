@@ -60,7 +60,7 @@ namespace whatthisNameSpace
 
   const QString chbHaltOnFirstOccurrenceWhatthis = i18n("Enable this option when you are searching for a string and you are only interested to know if the string is present or not in the current file.");
 
-  const QString chbIgnoreWhitespacesWhatthis = i18n("");
+  const QString chbIgnoreWhitespacesWhatthis ="";
 
   const QString chbFollowSymLinksWhatthis = i18n("If kfilereplace encounters a symbolic link treats it like a normal folder or file.");
 

@@ -57,10 +57,24 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
   m_menuResult->insertItem(i18n("Open &With..."),
                            this,
                            SLOT(slotResultOpenWith()));
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("edit")),
-                           i18n("&Edit in Quanta"),
-                           this,
-                           SLOT(slotResultEdit()));
+  DCOPClient *client = kapp->dcopClient();
+  QCStringList appList = client->registeredApplications();
+  bool quantaFound = false;
+  for (QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
+  {
+      if ((*it).left(6) == "quanta")
+      {
+          quantaFound = true;
+          break;
+      }
+  }
+  if (quantaFound)
+  {
+      m_menuResult->insertItem(SmallIconSet("quanta"),
+                              i18n("&Edit in Quanta"),
+                              this,
+                              SLOT(slotResultEdit()));
+  }
   m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("up")),
                            i18n("Open Parent &Folder"),
                            this,
@@ -183,7 +197,8 @@ void KFileReplaceView::slotResultEdit()
 
   int line = 1,
       column = 1;
-
+//FIXME: Don't get the line and column number from the text as it's translated and it will
+//fail for non-English languages!
   line = lvi->text(0).section(":",1,1).remove(", column").toInt();
   column = lvi->text(0).section(":",2,2).toInt();
 
