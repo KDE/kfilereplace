@@ -147,7 +147,7 @@ void KOptionsDlg::saveOptions()
   // Check the Search text is not empty
   if (strWildcardsLetters.isEmpty() || strWildcardsWords.isEmpty())
     {
-      KMessageBox::error(this, i18n("You must type the symbols for expressions and for characters before clicking on 'Ok'."));
+      KMessageBox::error(this, i18n("You must type the symbols for expressions and for characters before clicking on 'OK'."));
       return;
     }
 

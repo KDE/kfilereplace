@@ -26,7 +26,7 @@
 KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool modal)
   :KAboutDialog(AbtKDEStandard | AbtProduct, "KFileReplace", KDialogBase::Close, KDialogBase::Close, parent, name, modal)
 {
-  setTitle("KFileReplace for KDE 3");
+  setTitle(i18n( "KFileReplace for KDE 3" ));
   setImage(locate("data", "kfilereplace/pics/about.png"));
   setImageFrame(false);
   setProduct(QString(PACKAGE), QString(VERSION), QString("François Dupoux"), QString("2002"));
@@ -85,7 +85,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
     {
       cAuthors->addPerson(QString("François Dupoux"), QString("dupoux@dupoux.com"), QString::null, i18n("Main author and French translator"), true);
       cAuthors->addPerson(QString("Andras Mantia"), QString("amantia@kde.org"), QString::null, i18n("KPartification, integration with Quanta Plus"), true);
-      cAuthors->addPerson(QString("Heiko Goller"), QString("heiko.goller@tuebingen.mpg.de"), QString::null, QString("German translator"), true);
+      cAuthors->addPerson(QString("Heiko Goller"), QString("heiko.goller@tuebingen.mpg.de"), QString::null, i18n("German translator"), true);
     }
 
   // GPL license text

@@ -169,7 +169,7 @@ bool KFileReplaceView::addString( QListViewItem *lviCurrent, const QString &sear
         {
           if ((lviCurrent != lviCurItem) && (searchText == lviCurItem->text(0))) // Item is already in the TextList
             {
-              QString strMess = QString(i18n("<qt>The <b>%1</b> item is already present in the list.</qt>")).arg(searchText);
+              QString strMess = i18n("<qt>The <b>%1</b> item is already present in the list.</qt>").arg(searchText);
               KMessageBox::error(parentWidget(), strMess);
               return false;
             }
@@ -181,7 +181,7 @@ bool KFileReplaceView::addString( QListViewItem *lviCurrent, const QString &sear
   // Check there is not too items to replace
   if (lwStrings->childCount() >= MaxStringToSearch)
     {
-      QString strMess = QString(i18n("Unable to have more than %1 items to search or replace.")).arg(MaxStringToSearch);
+      QString strMess = i18n("Unable to have more than %1 items to search or replace.").arg(MaxStringToSearch);
       KMessageBox::error(parentWidget(), strMess);
       return false;
     }
@@ -214,7 +214,7 @@ bool KFileReplaceView::editString(QListViewItem *lviCurrent)
         {
           if ((lviCurrent != lviCurItem) && (searchText == lviCurItem->text(0))) // Item is already in the TextList
             {
-              strMess = QString(i18n("<qt>The <b>%1</b> item is already present in the list.</qt>")).arg(searchText);
+              strMess = i18n("<qt>The <b>%1</b> item is already present in the list.</qt>").arg(searchText);
               KMessageBox::error(parentWidget(), strMess);
               return false;
             }
@@ -226,7 +226,7 @@ bool KFileReplaceView::editString(QListViewItem *lviCurrent)
   // Check there is not too items to replace
   if (lwStrings->childCount() >= MaxStringToSearch)
     {
-      strMess = QString(i18n("Unable to have more than %1 items to search or replace.")).arg(MaxStringToSearch);
+      strMess = i18n("Unable to have more than %1 items to search or replace.").arg(MaxStringToSearch);
       KMessageBox::error(parentWidget(), strMess);
       return false;
     }
@@ -509,7 +509,7 @@ void KFileReplaceView::slotResultEdit()
 
   if(!success)
     {
-      QString message = QString(i18n("<qt>File <b>%1</b> cannot be opened. Might be a DCOP problem.</qt>")).arg(filePath);
+      QString message = i18n("<qt>File <b>%1</b> cannot be opened. Might be a DCOP problem.</qt>").arg(filePath);
       KMessageBox::error(parentWidget(), message);
     }
   m_lviCurrent = 0L;

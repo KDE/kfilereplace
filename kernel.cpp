@@ -273,13 +273,13 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                                     if (argu->bBackup) // Create a backup of the file if option is true
                                       {
                                         strBackup = KFileReplaceLib::instance()->formatFullPath(szDir, dir[i]) + QString(".old");
-                                        nRes = ::unlink(strBackup.local8Bit()); // Delete OLD file if exists
-                                        nRes = ::rename(strFileReadpath.local8Bit(), strBackup.local8Bit());
+                                        nRes = ::unlink(QFile::encodeName( strBackup )); // Delete OLD file if exists
+                                        nRes = ::rename(QFile::encodeName( strFileReadpath ), QFile::encodeName( strBackup ));
                                       }
                                     else // Delete the old file
-                                      nRes = ::unlink(strFileReadpath.local8Bit());
+                                      nRes = ::unlink(QFile::encodeName( strFileReadpath ));
                                     // Rename the new file into OldFileName
-                                    nRes = ::rename(strFileWritepath.local8Bit(), strFileReadpath.local8Bit());
+                                    nRes = ::rename(QFile::encodeName( strFileWritepath ), QFile::encodeName( strFileReadpath ));
                                   }
                                 if (nRes == replaceSkipDir) // end of replaceDirectory() ==> go to next dir
                                   return replaceSuccess;
@@ -288,7 +288,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                               {
                                 // delete file.new
                                 if (!argu->bSimulation)
-                                  ::unlink(strFileWritepath.local8Bit());
+                                    ::unlink(QFile::encodeName( strFileWritepath ));
 
                                 // update Result ListView
                                 argu->view->updateItem(lvi, false, 0, 0, g_szErrMsg);
@@ -777,7 +777,7 @@ int Kernel::diskFreeSpaceForFile(unsigned int& nAvailDiskSpace, const QString &s
 
   nAvailDiskSpace = 0;
 
-  nRes = STATFS(szFilename.local8Bit(), &fsInfo); //FIXME: replace with a QT/KDE function
+  nRes = STATFS(QFile::encodeName( szFilename ), &fsInfo); //FIXME: replace with a QT/KDE function
   if (nRes == -1)
     return -1;
 

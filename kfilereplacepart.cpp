@@ -331,7 +331,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
       return -1;
     }
 
-  if (::access(m_doc->m_strProjectDirectory.local8Bit(), R_OK | X_OK) == -1)
+  if (::access(QFile::encodeName( m_doc->m_strProjectDirectory ), R_OK | X_OK) == -1)
     {
       strMess = i18n("<qt>Access denied in the main folder of the project:<br><b>%1</b></qt>").arg(m_doc->m_strProjectDirectory);
       KMessageBox::error(w, strMess);
@@ -770,7 +770,7 @@ void KFileReplacePart::slotFileSave()
                     "\t\t\t\t\t<td><h1>";
            XHTML += i18n("KFileReplace Results File")+"</h1></td>\n"
                     "\t\t\t\t\t<td><div class=\"date\">";
-           XHTML += i18n("Creation date : ")+dateString+"</div></td>\n"
+           XHTML += i18n("Creation date: %1").arg( dateString ) + "</div></td>\n"
                     "\t\t\t\t</tr>\n"
                     "\t\t\t</table>\n"
                     "\t\t<div>\n"
@@ -829,8 +829,7 @@ void KFileReplacePart::slotFileSave()
    oTStream<<"\t\t\t\t</dl>\n"
              "\t\t\t</div>\n"
              "\t\t\t<div style=\"text-align:right;color:darkcyan\">"
-           <<i18n("Number of replaced strings: ")
-           <<replacedFileNumber
+           <<i18n("Number of replaced strings: %1").arg( replacedFileNumber )
            <<"</div>\n"
              "\t\t</div>\n"
              "\t</body>\n"
