@@ -95,8 +95,8 @@ QString KFileReplaceLib::formatFileSize(double size)
 
   if(size < kilo)
     {
-    const int asInt = (int) size;
-    stringSize = i18n("1 byte", "%n bytes", asInt);
+      const int asInt = (int) size;
+      stringSize = i18n("1 byte", "%n bytes", asInt);
     }
   else
   if(size >= kilo && size < mega)
@@ -301,28 +301,47 @@ void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
   QFileInfo fi(path);
   QString extension = fi.extension(),
           baseName = fi.baseName();
+
   KeyValueMap extensionMap;
 
+  extensionMap["a"] = "binary";
+  extensionMap["am"] = "shellscript";
+  extensionMap["bz"] = "zip";
+  extensionMap["bz2"] = "zip";
+  extensionMap["c"] = "source_c";
+  extensionMap["cc"] = "source_cpp";
   extensionMap["cpp"] = "source_cpp";
+  extensionMap["eml"] = "message";
+  extensionMap["gz"] = "zip";
   extensionMap["h"] = "source_h";
-  extensionMap["o"] = "source_o";
-  extensionMap["png"] = "image";
-  extensionMap["jpg"] = "image";
-  extensionMap["xpm"] = "image";
   extensionMap["htm"] = "html";
   extensionMap["html"] = "html";
-  extensionMap["xml"] = "html";
-  extensionMap["pdf"] = "pdf";
-  extensionMap["wav"] = "sound";
-  extensionMap["mp3"] = "sound";
-  extensionMap["txt"] = "txt";
-  extensionMap["eml"] = "message";
-  extensionMap["sh"] = "shellscript";
-  extensionMap["php"] = "source_php";
-  extensionMap["pl"] = "source_pl";
-  extensionMap["tex"] = "tex";
-  extensionMap["moc"] = "source_moc";
+  extensionMap["in"] = "shellscript";
+  extensionMap["java"] = "source_java";
+  extensionMap["jpg"] = "image";
+  extensionMap["kwd"] = "kword_kwd";
   extensionMap["log"] = "log";
+  extensionMap["moc"] = "source_moc";
+  extensionMap["mp3"] = "sound";
+  extensionMap["o"] = "source_o";
+  extensionMap["pdf"] = "pdf";
+  extensionMap["php"] = "source_php";
+  extensionMap["py"] = "source_py";
+  extensionMap["pl"] = "source_pl";
+  extensionMap["p"] = "source_p";
+  extensionMap["ps"] = "postscript";
+  extensionMap["png"] = "image";
+  extensionMap["sa"] = "binary";
+  extensionMap["sh"] = "shellscript";
+  extensionMap["so"] = "binary";
+  extensionMap["tar"] = "tar";
+  extensionMap["tex"] = "tex";
+  extensionMap["tgz"] = "tgz";
+  extensionMap["txt"] = "txt";
+  extensionMap["uml"] = "umbrellofile";
+  extensionMap["wav"] = "sound";
+  extensionMap["xml"] = "html";
+  extensionMap["xpm"] = "image";
 
   KeyValueMap::Iterator itExtensionMap;
 
@@ -337,9 +356,13 @@ void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
 
   KeyValueMap baseNameMap;
 
-  baseNameMap["makefile"] = "make";
   baseNameMap["configure"] = "shellscript";
-  baseNameMap["readme"] = "txt";
+  baseNameMap["core"] = "core";
+  baseNameMap["makefile"] = "make";
+  baseNameMap["readme"] = "readme";
+  baseNameMap["README"] = "readme";
+  baseNameMap["Readme"] = "readme";
+  baseNameMap["TODO"] = "txt";
 
   KeyValueMap::Iterator itBaseNameMap;
 

@@ -51,6 +51,7 @@ const QString rcOwnerGroup="Owner group filters";
 const QString rcSearchMode="Search only mode";
 const QString rcBackupExtension="Backup file extension";
 const QString rcIgnoreFiles="Ignore files if there is no match";
+const QString rcNotifyOnErrors="Don't ask me again";
 
 // Default configuration options
 const bool RecursiveOption = true;
@@ -71,6 +72,7 @@ const QString OwnerOption="false,Name,Equals To";
 const bool SearchMode=true;
 const QString BackupExtensionOption="false,~";
 const bool IgnoreFilesOption = true;
+const bool NotifyOnErrorsOption = false;
 
 // This class store configuration informations
 class RCOptions
@@ -123,6 +125,8 @@ class RCOptions
             m_quickReplaceString;
 
     QStringList m_recentStringFileList;
+
+    bool m_notifyOnErrors;
 
   public:
     RCOptions& operator=(const RCOptions& ci);
@@ -210,6 +214,8 @@ class RCOptions
     void setRecentStringFileList(const QStringList fl) { m_recentStringFileList = fl; }
     QStringList recentStringFileList() const { return m_recentStringFileList; }
 
+    void setNotifyOnErrors(bool noe) { m_notifyOnErrors = noe; }
+    bool notifyOnErrors() const { return m_notifyOnErrors; }
 };
 
 class ResultViewEntry

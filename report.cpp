@@ -33,7 +33,7 @@ void Report::createReportFile()
   QString xmlFileName = m_docPath + ".xml",
           cssFileName = m_docPath + ".css";
 
-  // Generate a report file
+  // Generates a report file
   // a) Open the file
   QFile report(xmlFileName);
   if (!report.open( IO_WriteOnly ))

@@ -87,7 +87,7 @@ KNewProjectDlg::~KNewProjectDlg()
 void KNewProjectDlg::readOptions(const RCOptions& info)
 {
   m_option = info;
-  
+
   loadOptions();
   loadFileSizeOptions();
   loadDateAccessOptions();
@@ -175,14 +175,7 @@ void KNewProjectDlg::slotSearchLater()
 
 void KNewProjectDlg::slotSearchLineEdit(const QString& t)
 {
-  if(t.isEmpty())
-    {
-      m_pbSearchNow->setEnabled(false);
-    }
-  else
-    {
-      m_pbSearchNow->setEnabled(true);
-    }
+  m_pbSearchNow->setEnabled(!t.isEmpty());
 }
 
 void KNewProjectDlg::slotEnableSpinboxSizeMin(bool b)
@@ -264,8 +257,6 @@ void KNewProjectDlg::loadDateAccessOptions()
 {
   // ================== DATE OPTIONS ========================
 
-  //QString validDate = m_config->readEntry(rcValidAccessDate,ValidAccessDateOption);
-
   QString date = m_option.minDate();
   if(date == AccessDateOption)
     {
@@ -337,7 +328,7 @@ void KNewProjectDlg::loadFiltersList()
 void KNewProjectDlg::loadBackupExtensionOptions()
 {
   bool enableBackup = m_option.backup();
-  
+
   m_chbBackup->setChecked(enableBackup);
   m_leBackup->setEnabled(enableBackup);
   m_tlBackup->setEnabled(enableBackup);
@@ -358,7 +349,7 @@ void KNewProjectDlg::saveFileSizeOptions()
     m_option.setMaxSize(m_spbSizeMax->value());
   else
     m_option.setMaxSize(FileSizeOption);
-    
+
   if(m_chbSizeMin->isChecked())
     m_option.setMinSize(m_spbSizeMin->value());
   else
@@ -367,7 +358,7 @@ void KNewProjectDlg::saveFileSizeOptions()
 
 void KNewProjectDlg::saveDateAccessOptions()
 {
-  if(m_chbDateMin->isChecked() or m_chbDateMax->isChecked())
+  if(m_chbDateMin->isChecked() || m_chbDateMax->isChecked())
     m_option.setDateAccess(m_cbDateValid->currentText());
   else
     m_option.setDateAccess(ValidAccessDateOption);
@@ -391,7 +382,6 @@ void KNewProjectDlg::saveDateAccessOptions()
 
 void KNewProjectDlg::saveOwnerOptions()
 {
-  //QStringList l = QStringList::split(",",OwnerOption);
   bool isChecked = m_chbOwnerUser->isChecked();
   if(isChecked)
     {
@@ -427,21 +417,8 @@ void KNewProjectDlg::saveOwnerOptions()
 
 void KNewProjectDlg::saveLocationsList()
 {
-  /*QString current = m_cbLocation->currentText();
-  QStringList locationsEntryList;
-  locationsEntryList.append(current);
-  int count = m_cbLocation->listBox()->count(),
-      i;
-  for(i = 0; i < count; i++)
-    {
-      QString text =  m_cbLocation->listBox()->item(i)->text();
-      if(text != current)
-        locationsEntryList.append(text);
-    }
-  //locationsEntryList.prepend(current);
-  m_option.setDirectories(locationsEntryList.join(","));*/
   QString current = m_cbLocation->currentText(), list = current;
-  
+
   int count = m_cbLocation->listBox()->count(),
       i;
   for(i = 0; i < count; i++)
@@ -455,20 +432,8 @@ void KNewProjectDlg::saveLocationsList()
 
 void KNewProjectDlg::saveFiltersList()
 {
-  /*QString current = m_cbFilter->currentText();
-  QStringList filtersEntryList;
-  int count = m_cbFilter->listBox()->count(),
-      i;
-  for(i = 0; i < count; i++)
-    {
-      QString text =  m_cbFilter->listBox()->item(i)->text();
-      if(text != current)
-        filtersEntryList.append(text);
-    }
-  filtersEntryList.prepend(current);
-  m_option.setFilters(filtersEntryList.join(","));*/
   QString current = m_cbFilter->currentText(), list = current;
-  
+
   int count = m_cbFilter->listBox()->count(),
       i;
   for(i = 0; i < count; i++)
@@ -505,11 +470,6 @@ bool KNewProjectDlg::contains(QListView* lv,const QString& s, int column)
       i = i->nextSibling();
     }
   return false;
-}
-
-void KNewProjectDlg::slotHelp()
-{
-  kapp->invokeHelp(QString::null, "kfilereplace");
 }
 
 void KNewProjectDlg::whatsThis()

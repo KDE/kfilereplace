@@ -42,12 +42,11 @@ KOptionsDlg::KOptionsDlg(QWidget *parent, const char *name) : KOptionsDlgS(paren
 {
   //QString configName = locateLocal("config", "kfilereplacerc");
   //m_config = new KConfig(configName);
-   
   connect(m_pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
   connect(m_pbDefault, SIGNAL(clicked()),this,SLOT(slotDefaults()));
   connect(m_chbBackup, SIGNAL(toggled(bool)), this, SLOT(slotChbBackup(bool)));
   connect(m_pbHelp, SIGNAL(clicked()), this, SLOT(slotHelp()));  
-  
+
   whatsThis();
 }
 
@@ -63,18 +62,18 @@ void KOptionsDlg::slotOK()
 void KOptionsDlg::readOptions(const RCOptions& info)
 {
   m_option = info;
-  
+
   m_chbCaseSensitive->setChecked(m_option.caseSensitive());
   m_chbRecursive->setChecked(m_option.recursive());
 
   bool enableBackup = m_option.backup();
-  
+
   m_chbBackup->setChecked(enableBackup);
   m_leBackup->setEnabled(enableBackup);
   m_tlBackup->setEnabled(enableBackup);
-  
+
   m_leBackup->setText(m_option.backupExtension()); 
-  
+
   m_chbVariables->setChecked(m_option.variables());
   m_chbRegularExpressions->setChecked(m_option.regularExpressions());
   m_chbHaltOnFirstOccurrence->setChecked(m_option.haltOnFirstOccur());
@@ -82,6 +81,7 @@ void KOptionsDlg::readOptions(const RCOptions& info)
   m_chbIgnoreHidden->setChecked(m_option.ignoreHidden());
   m_chbIgnoreFiles->setChecked(m_option.ignoreFiles());
   m_chbConfirmStrings->setChecked(m_option.confirmStrings());
+  m_chbNotifyOnErrors->setChecked(m_option.notifyOnErrors());
 }
 
 RCOptions KOptionsDlg::writeOptions()
@@ -97,6 +97,7 @@ RCOptions KOptionsDlg::writeOptions()
   m_option.setIgnoreHidden(m_chbIgnoreHidden->isChecked());
   m_option.setIgnoreFiles(m_chbIgnoreFiles->isChecked());
   m_option.setConfirmStrings(m_chbConfirmStrings->isChecked());
+  m_option.setNotifyOnErrors(m_chbNotifyOnErrors->isChecked());
 
   return m_option;
 }
@@ -107,34 +108,31 @@ void KOptionsDlg::slotDefaults()
   m_chbCaseSensitive->setChecked(CaseSensitiveOption);
   m_chbRecursive->setChecked(RecursiveOption);
   m_chbHaltOnFirstOccurrence->setChecked(StopWhenFirstOccurenceOption);
-  
+
   m_chbFollowSymLinks->setChecked(FollowSymbolicLinksOption);
   m_chbIgnoreHidden->setChecked(IgnoreHiddenOption);
   m_chbRegularExpressions->setChecked(RegularExpressionsOption);
   m_chbIgnoreFiles->setChecked(IgnoreFilesOption);
-  
+
   QStringList bkList = QStringList::split(",",BackupExtensionOption,true);
-  
+
   bool enableBackup = (bkList[0] == "true" ? true : false);
-  
+
   m_chbBackup->setChecked(enableBackup);
   m_leBackup->setEnabled(enableBackup);
   m_tlBackup->setEnabled(enableBackup);
-  
+
   m_leBackup->setText(bkList[1]);
-  
+
   m_chbVariables->setChecked(VariablesOption);
+
+  m_chbNotifyOnErrors->setChecked(NotifyOnErrorsOption);
 }
 
 void KOptionsDlg::slotChbBackup(bool b)
 {
   m_leBackup->setEnabled(b);
   m_tlBackup->setEnabled(b);
-}
-
-void KOptionsDlg::slotHelp()
-{
-  kapp->invokeHelp(QString::null, "kfilereplace");
 }
 
 void KOptionsDlg::whatsThis()

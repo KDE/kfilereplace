@@ -20,15 +20,6 @@
 
 #ifndef KFILEREPLACELIB_H
 #define KFILEREPLACELIB_H
-/*
-// Standard includes
-#ifdef HAVE_SYS_MOUNT_H
-#include <sys/mount.h>
-#endif
-#include <sys/stat.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/param.h> */
 
 // KDE
 #include <klocale.h>
@@ -40,10 +31,7 @@ class KlistView;
 class KFileReplaceLib
 {
   public:
-    KFileReplaceLib() {}
 
-  public:
- 
     /**
     Format a path, from a path and a filename, or another sub-path (avoid double '/' risks)
     Parameters::.....* basePath: fist path (can be "/" if root, or "/usr/bin/" or "/usr/bin" for example)

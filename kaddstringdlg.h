@@ -40,7 +40,7 @@ class KAddStringDlg : public KAddStringDlgS
     /**
      *Loads the content of 'map' in a qlistview
      */
-    void loadViewContent(KeyValueMap map);
+    //void loadMapContent(KeyValueMap map);
     /**
      *Cleans the 'stringView' up
      */

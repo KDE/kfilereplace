@@ -52,9 +52,11 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
   m_menuResult->insertItem(i18n("Open &With..."),
                            this,
                            SLOT(slotResultOpenWith()));
+
   DCOPClient *client = kapp->dcopClient();
   QCStringList appList = client->registeredApplications();
   bool quantaFound = false;
+
   for (QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
     {
       if ((*it).left(6) == "quanta")
@@ -63,6 +65,7 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
           break;
         }
     }
+
   if (quantaFound)
     {
       m_menuResult->insertItem(SmallIconSet("quanta"),
@@ -70,6 +73,7 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
                                this,
                                SLOT(slotResultEdit()));
     }
+
   m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("up")),
                            i18n("Open Parent &Folder"),
                            this,
@@ -98,16 +102,6 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
 
 KFileReplaceView::~KFileReplaceView()
 {
-}
-
-KListView* KFileReplaceView::stringView()
-{
-  return m_lvStrings;
-}
-
-KListView* KFileReplaceView::resultView()
-{
-  return m_lvResults;
 }
 
 QString KFileReplaceView::currentItem()
@@ -291,11 +285,6 @@ void KFileReplaceView::setMap()
       i = i->nextSibling();
     }
   m_option.setMapStringsView(map);
-}
-
-void KFileReplaceView::loadMap(KeyValueMap extMap)
-{
-  loadMapIntoView(extMap);
 }
 
 void KFileReplaceView::loadMapIntoView(KeyValueMap map)

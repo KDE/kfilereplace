@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>600</width>
-            <height>325</height>
+            <width>601</width>
+            <height>367</height>
         </rect>
     </property>
     <property name="caption">
@@ -127,9 +127,9 @@
                 </property>
                 <property name="alternateBackground">
                     <color>
-                        <red>255</red>
-                        <green>240</green>
-                        <blue>240</blue>
+                        <red>238</red>
+                        <green>246</green>
+                        <blue>255</blue>
                     </color>
                 </property>
             </widget>
@@ -173,7 +173,172 @@
                 </property>
             </widget>
         </widget>
+        <widget class="QLayoutWidget" row="1" column="0">
+            <property name="name">
+                <cstring>layout7</cstring>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout6</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="KLed">
+                            <property name="name">
+                                <cstring>m_ledGo</cstring>
+                            </property>
+                            <property name="minimumSize">
+                                <size>
+                                    <width>20</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                            <property name="state">
+                                <enum>On</enum>
+                            </property>
+                            <property name="color">
+                                <color>
+                                    <red>170</red>
+                                    <green>255</green>
+                                    <blue>0</blue>
+                                </color>
+                            </property>
+                            <property name="toolTip" stdset="0">
+                                <string>Green means ready</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>Ready</string>
+                            </property>
+                        </widget>
+                        <widget class="KLed">
+                            <property name="name">
+                                <cstring>m_ledWait</cstring>
+                            </property>
+                            <property name="minimumSize">
+                                <size>
+                                    <width>20</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                            <property name="state">
+                                <enum>On</enum>
+                            </property>
+                            <property name="color">
+                                <color>
+                                    <red>255</red>
+                                    <green>255</green>
+                                    <blue>0</blue>
+                                </color>
+                            </property>
+                            <property name="toolTip" stdset="0">
+                                <string>Yellow means wait while sorting list</string>
+                            </property>
+                            <property name="whatsThis" stdset="0">
+                                <string>Please wait while sorting list</string>
+                            </property>
+                        </widget>
+                        <widget class="KLed">
+                            <property name="name">
+                                <cstring>m_ledStop</cstring>
+                            </property>
+                            <property name="minimumSize">
+                                <size>
+                                    <width>20</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                            <property name="color">
+                                <color>
+                                    <red>255</red>
+                                    <green>0</green>
+                                    <blue>0</blue>
+                                </color>
+                            </property>
+                            <property name="toolTip" stdset="0">
+                                <string>Red means scanning files</string>
+                            </property>
+                        </widget>
+                    </hbox>
+                </widget>
+                <spacer>
+                    <property name="name">
+                        <cstring>spacer1</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>300</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout1</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>m_tlFilesNumber</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Scanned files</string>
+                            </property>
+                        </widget>
+                        <widget class="QLCDNumber">
+                            <property name="name">
+                                <cstring>m_lcdFilesNumber</cstring>
+                            </property>
+                            <property name="font">
+                                <font>
+                                    <family>Helvetica</family>
+                                </font>
+                            </property>
+                            <property name="frameShape">
+                                <enum>LineEditPanel</enum>
+                            </property>
+                            <property name="frameShadow">
+                                <enum>Raised</enum>
+                            </property>
+                            <property name="numDigits">
+                                <number>7</number>
+                            </property>
+                            <property name="mode">
+                                <enum>Dec</enum>
+                            </property>
+                            <property name="segmentStyle">
+                                <enum>Flat</enum>
+                            </property>
+                            <property name="intValue" stdset="0">
+                                <number>0</number>
+                            </property>
+                        </widget>
+                    </hbox>
+                </widget>
+            </hbox>
+        </widget>
     </grid>
 </widget>
 <layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>klistview.h</includehint>
+    <includehint>klistview.h</includehint>
+    <includehint>kled.h</includehint>
+    <includehint>kled.h</includehint>
+    <includehint>kled.h</includehint>
+</includehints>
 </UI>

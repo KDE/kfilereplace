@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>461</width>
-            <height>304</height>
+            <width>447</width>
+            <height>317</height>
         </rect>
     </property>
     <property name="caption">
@@ -167,7 +167,7 @@
                                     <string>Enable variables in replace strings</string>
                                 </property>
                             </widget>
-                            <widget class="QLayoutWidget" row="4" column="0">
+                            <widget class="QLayoutWidget" row="5" column="0">
                                 <property name="name">
                                     <cstring>layout7</cstring>
                                 </property>
@@ -210,6 +210,14 @@
                                         </hbox>
                                     </widget>
                                 </vbox>
+                            </widget>
+                            <widget class="QCheckBox" row="4" column="0">
+                                <property name="name">
+                                    <cstring>m_chbNotifyOnErrors</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Notify on errors</string>
+                                </property>
                             </widget>
                         </grid>
                     </widget>

@@ -97,7 +97,6 @@ void KAddStringDlg::updateStringsViewContent()
 
 void KAddStringDlg::slotOK()
 {
-  qWarning("KAddStringDlg::slotOK--->search=%d",m_option.searchMode());
   accept();
 }
 
@@ -157,7 +156,7 @@ void KAddStringDlg::slotAdd()
         }
     }
   m_option.setSearchMode(searchOnly);
-  qWarning("KAddStringDlg::slotAdd--->search=%d",m_option.searchMode());
+
   updateStringsMapContent();
 }
 
@@ -181,10 +180,13 @@ void KAddStringDlg::slotDel()
       m_edSearch->setText(currentItem->text(0));
       m_edReplace->setText(currentItem->text(1));
     }
+
   delete currentItem;
+
   currentItem = 0;
+
   m_option.setSearchMode(searchOnly);
-  qWarning("KAddStringDlg::slotDel--->search=%d",m_option.searchMode());
+
   updateStringsMapContent();
 }
 
@@ -193,7 +195,7 @@ void KAddStringDlg::slotHelp()
   kapp->invokeHelp(QString::null, "kfilereplace");
 }
 
-void KAddStringDlg::loadViewContent(KeyValueMap map)
+/*void KAddStringDlg::loadMapContent(KeyValueMap map)
 {
   m_stringView->clear();
 
@@ -221,7 +223,7 @@ void KAddStringDlg::loadViewContent(KeyValueMap map)
   qWarning("KAddStringDlg::loadViewContent--->search=%d",m_option.searchMode());
 
   updateStringsMapContent();
-}
+}*/
 
 void KAddStringDlg::clearStringsView()
 {

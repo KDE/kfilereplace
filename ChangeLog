@@ -1,3 +1,9 @@
+2004-11-10 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+  *  I added a graphical file counter.
+  *  I added a semaphore to notify user about the state of the search.
+  *  I improved a little the speed.
+  *  I made some cleanup.
+   
 2004-09-27 Emiliano Gulmini <emi_barbarossa@yahoo.it>
   *  I fixed a bug that affect some strings in case of translation.
   *  I fixed a bug that affect "Create backup" option, I think that now this feature should work

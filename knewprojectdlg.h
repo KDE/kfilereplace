@@ -19,7 +19,7 @@
 #ifndef KNEWPROJECTDLG_H
 #define KNEWPROJECTDLG_H
 
-//KDE 
+//KDE
 class KConfig;
 
 //local
@@ -33,11 +33,11 @@ class KNewProjectDlg : public KNewProjectDlgS
   private:
     QString m_searchNowFlag;
     RCOptions m_option;
-      
+
   public:
     KNewProjectDlg(QWidget *parent, const char *name=0);
     ~KNewProjectDlg();
-    
+
   public:
     void readOptions(const RCOptions& info);
     RCOptions writeOptions();
@@ -55,8 +55,8 @@ class KNewProjectDlg : public KNewProjectDlgS
     void slotEnableChbUser(bool b);
     void slotEnableChbGroup(bool b); 
     void slotEnableChbBackup(bool b);
-    void slotHelp();
-    
+    void slotHelp(){ kapp->invokeHelp(QString::null, "kfilereplace"); }
+
   private:
     bool contains(QListView* lv,const QString& s, int column);
 

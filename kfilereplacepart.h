@@ -84,9 +84,6 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void resetActions();
 
   private slots:
-    /**
-     *this method is used to retrieve searchMode option from m_view
-     */
     void searchMode(bool b){ m_option.setSearchMode(b); }
 
   //METHODS
@@ -99,14 +96,21 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     virtual bool openURL (const KURL &url);
 
   private:
+    /**
+     * Initialization methods
+     */
     void initView();
     void initGUI();
 
+    /**
+     * This method freezes the GUI of kfilereplace during searching
+     */
     void freezeActions();
 
+    /**
+     * These methods load the resources from kfilereplacerc
+     */
     void loadOptionsFromRC();
-    void saveOptionsToRC();
-
     void loadOptions();
     void loadFileSizeOptions();
     void loadDateAccessOptions();
@@ -115,6 +119,10 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void loadFiltersList();
     void loadBackupExtensionOptions();
 
+    /**
+     * These methods save the resources to kfilereplacerc
+     */
+    void saveOptionsToRC();
     void saveOptions();
     void saveFileSizeOptions();
     void saveDateAccessOptions();
@@ -123,15 +131,20 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void saveFiltersList();
     void saveBackupExtensionOptions();
 
+    /**
+     * Replacing system
+     */
     void fileReplace();
-    void recursiveFileReplace(const QString& dirName);
+    void recursiveFileReplace(const QString& dirName, int& filesNumber);
     void replaceAndBackup(const QString& currentDir, const QString& oldFileName);
     void replaceAndOverwrite(const QString& currentDir, const QString& oldFileName);
-    void replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regex);
+    void replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regularExpression);
 
-
+    /**
+     * Searching system
+     */
     void fileSearch(const QString& dirName, const QString& filters);
-    void recursiveFileSearch(const QString& dirName, const QString& filters);
+    void recursiveFileSearch(const QString& dirName, const QString& filters, uint& filesNumber);
     void search(const QString& currentDir, const QString& fileName);
 
     void loadViewContent();
@@ -139,8 +152,8 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void loadRulesFile(const QString& fileName);
 
     /**
-    Launches new project dialog
-    */
+     *Launches new project dialog
+     */
     bool launchNewProjectDialog(const KURL& startURL);
 
     void setOptionMask();

@@ -38,16 +38,16 @@ class KOptionsDlg : public KOptionsDlgS
     ~KOptionsDlg();
     void readOptions(const RCOptions& info);
     RCOptions writeOptions();
-      
-  private: 
+
+  private:
     RCOptions m_option;
-      
+
   protected slots:
     void slotOK();
     void slotDefaults();
     void slotChbBackup(bool b);
-    void slotHelp();
-           
+    void slotHelp(){ kapp->invokeHelp(QString::null, "kfilereplace"); }
+
   private:
     void whatsThis();
 };

@@ -75,6 +75,8 @@ RCOptions& RCOptions::operator=(const RCOptions& ci)
 
   m_recentStringFileList = ci.m_recentStringFileList;
 
+  m_notifyOnErrors = ci.m_notifyOnErrors;
+
   return (*this);
 }
 

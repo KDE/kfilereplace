@@ -48,10 +48,10 @@ class KFileReplaceView : public KFileReplaceViewWdg
   public:
     void readOptions(const RCOptions& info) { m_option = info; }
     RCOptions writeOptions() { return m_option; }
-    KListView *stringView();
-    KListView *resultView();
+    KListView* stringView(){ return m_lvStrings; }
+    KListView* resultView(){ return m_lvResults; }
     QString currentItem();
-    void loadMap(KeyValueMap extMap);
+    void loadMap(KeyValueMap extMap){ loadMapIntoView(extMap); }
     KeyValueMap stringsViewMap()const { return m_option.mapStringsView();}
     void setCurrentStringsViewMap(){ setMap();}
 
