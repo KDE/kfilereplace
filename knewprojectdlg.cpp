@@ -27,7 +27,7 @@
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
-#include <qmultilinedit.h>
+#include <qmultilineedit.h>
 #include <qdir.h>
 #include <qframe.h>
 

@@ -28,7 +28,6 @@
 #include <kseparator.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
-#include <qmultilinedit.h>
 #include <qdialog.h>
 
 /**
