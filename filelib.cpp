@@ -48,7 +48,7 @@ QString formatSize(QWORD qwSize)
 
   if (qwSize < llKiloB) // In Bytes
     {
-      strSize = i18n("1 byte", "%1 bytes").arg((unsigned long)qwSize);
+      strSize = i18n("%n byte", "%n bytes", (unsigned long)qwSize);
     }
   else if (qwSize < llMegaB) // In KiloBytes
     {

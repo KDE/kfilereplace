@@ -326,7 +326,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
       // -- Check Maximum expression length is valid
       if ((m_settings.nMaxExpressionLength < 2) || (m_settings.nMaxExpressionLength > 10000))
             {
-          KMessageBox::error(w, i18n("The maximum expression wildcard length is not valid (beetween 2 and 10000)"));
+          KMessageBox::error(w, i18n("The maximum expression wildcard length is not valid (between 2 and 10000)"));
           return -1;
             }
 
@@ -624,7 +624,7 @@ void KFileReplacePart::slotFileReplace()
       if (!g_argu.bHaltOnFirstOccur)
          strMess = i18n("One string successfully replaced in one file", "%1 strings successfully replaced in %2 files").arg(g_nStringsRep).arg(g_nFilesRep);
       else
-         strMess = i18n("One file successfully replaced", "%1 files successfully replaced").arg(g_nFilesRep);
+         strMess = i18n("%n file successfully replaced", "%n files successfully replaced", g_nFilesRep);
    }
 
    emit setStatusBarText(strMess); // Show message in status bar
@@ -685,7 +685,7 @@ void KFileReplacePart::slotFileSimulate()
       if (!g_argu.bHaltOnFirstOccur)
          strMess = i18n("One string successfully replaced in one file","%1 strings successfully replaced in %2 files").arg(g_nStringsRep).arg(g_nFilesRep);
       else
-         strMess = i18n("One file successfully replaced", "%1 files successfully replaced").arg(g_nFilesRep);
+         strMess = i18n("%n file successfully replaced", "%n files successfully replaced", g_nFilesRep);
    }
 
    emit setStatusBarText(strMess); // Show message in status bar
@@ -1161,13 +1161,13 @@ void KFileReplacePart::setWhatsThis()
                                                                      "in the wildcards options). For example, you can search for <b>KMsgBox::message(*)</b> "
                                                                      "and replace with <b>KMessageBox::error(*)</b>"));
   actionCollection()->action("options_backup")->setWhatsThis(i18n("Create a copy of the original replaced files with the BAK extension before replacing"));
-  actionCollection()->action("options_case")->setWhatsThis(i18n("The lowers and uppers are differents. For example, if you search for <b>Linux</b> and "
+  actionCollection()->action("options_case")->setWhatsThis(i18n("The lowers and uppers are different. For example, if you search for <b>Linux</b> and "
                                                                 "there is <b>linux</b>, then the string won't be found/replaced."));
   actionCollection()->action("options_var")->setWhatsThis(i18n("Enable use of the variables, as the date & time or the name of the current file. "
                                                                "The variable must be in the replace string, with the format [$Name:  $]. When doing the replace, "
                                                                "the value of the variable "
                                                                "is written instead of the variable. If disabled, the replace string will be copied without "
-                                                               "substitution. Please, read help for"
+                                                               "substitution. Please, read help for "
                                                                "more details on the variables names and formats."));
   actionCollection()->action("options_recursive")->setWhatsThis(i18n("Search/Replace files in the subfolders of the main folder selected "
                                                                      "when creating a new project at startup."));

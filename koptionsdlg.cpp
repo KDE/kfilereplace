@@ -95,7 +95,7 @@ void KOptionsDlg::slotOk()
   // Check the maximum expression length is a valid integer
   if (nMaxExpressionLength < 2 || nMaxExpressionLength > 10000)
     {
-      KMessageBox::error(this, i18n("The maximum wildcard expression length must be a valid number (beetween 2 and 10000)."));
+      KMessageBox::error(this, i18n("The maximum wildcard expression length must be a valid number (between 2 and 10000)."));
       return;
     }
 
@@ -183,7 +183,7 @@ void KOptionsDlg::initPage1()
 
   // Create check boxes
   m_checkCaseSensitive = new QCheckBox(i18n("Case sensitive"), tab1,"m_checkCaseSensitive");
-  m_checkRecursive = new QCheckBox(i18n("Recursiveh (search/replace in all sub folders)"),tab1,"m_checkRecursive");
+  m_checkRecursive = new QCheckBox(i18n("Recursive (search/replace in all sub folders)"),tab1,"m_checkRecursive");
   m_checkHaltOnFirstOccur = new QCheckBox(i18n("When searching, stop on first string found (faster but no details)"),tab1, "m_checkHaltOnFirstOccur");
   m_checkIgnoreWhitespaces = new QCheckBox(i18n("Ignore whitespaces (\\n,\\r,\\t,multi-spaces) (useful in HTML code)"),tab1, "m_checkIgnoreWhitespaces");
   m_checkFollowSymLinks = new QCheckBox(i18n("Follow symbolic links"),tab1, "m_checkFollowSymLinks");
@@ -191,7 +191,7 @@ void KOptionsDlg::initPage1()
   m_checkIgnoreHidden = new QCheckBox(i18n("Ignore hidden files and folders"),tab1, "m_bCheckIgnoreHidden");
 
   // Create help QWhatsThis
-  QWhatsThis::add(m_checkCaseSensitive, i18n("If enabled, lowers and uppers are differents. If you are "
+  QWhatsThis::add(m_checkCaseSensitive, i18n("If enabled, lowers and uppers are different. If you are "
                                              "searching for \"Linux\" and this option is on, \"LINUX\" won't be found."));
   QWhatsThis::add(m_checkRecursive, i18n("Work in all subfolders of the main folder of the project"));
   QWhatsThis::add(m_checkHaltOnFirstOccur, i18n("When searching, KFileReplace reads all the data of each "
@@ -201,7 +201,7 @@ void KOptionsDlg::initPage1()
   QWhatsThis::add(m_checkIgnoreWhitespaces, i18n("Ignore some characters when searching a string: \\r (carriage return), \\n (line feed) \\t (tab), "
                                                  "and multi-spaces. It's very "
                                                  "useful in HTML code, and with the end of the lines. For example, if you are searching for "
-                                                 "\"Linux is fast\" in a file, and there is a line feed beetween "
+                                                 "\"Linux is fast\" in a file, and there is a line feed between "
                                                  "\"Linux\" and \"is\", then the string won't be found. This options can solve the problem."));
   QWhatsThis::add(m_checkFollowSymLinks, i18n("If a folder symbolic link is found, it will be opened."));
   QWhatsThis::add(m_checkAllStringsMustBeFound, i18n("The file will be found/replaced only if all strings from the list are found in the file."));
@@ -273,7 +273,7 @@ void KOptionsDlg::initPage3()
   QWhatsThis::add(m_checkVariables, i18n("If enabled, KFileReplace will replace variables with their values in the replace string. For example "
                                          "if the replace string is \"The current time is [$datetime:mm/dd/yyyy$]\", then the date will be written."));
   QWhatsThis::add(m_checkBackup, i18n("If enabled, create backup of replaced files before any modifications. Then you can restore the old data "
-                                      "if there is an error durring the replace operation. A copy of the original files will be created, with the .OLD extension."));
+                                      "if there is an error during the replace operation. A copy of the original files will be created, with the .OLD extension."));
 
 
   addTab(tab3, i18n("Replace"));
