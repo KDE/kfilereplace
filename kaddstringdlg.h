@@ -37,20 +37,6 @@ class KAddStringDlg : public KAddStringDlgS
   public: //Constructors
     KAddStringDlg(RCOptions* info, bool wantEdit, QWidget *parent=0, const char *name=0);
 
-  public:
-    /**
-     *Deletes all the items of the view
-     */
-    void eraseViewItems();
-    /**
-     *Deletes all the items of the map
-     */
-    void clearMap() { KeyValueMap m; m_option->m_mapStringsView = m; }
-    /**
-     *inits... the GUI :-)
-     */
-    void initGUI();
-
   private slots:
     void slotOK();
     void slotSearchOnly();
@@ -60,12 +46,24 @@ class KAddStringDlg : public KAddStringDlgS
     void slotHelp();
 
   private:
+   /**
+    * inits... the GUI :-)
+    */
+    void initGUI(); 
+   /**
+    * Deletes all the items of the view
+    */
+    void eraseViewItems();
     /**
-     *The view is actually a stack widget that contains two different views widget
+     * Deletes all the items of the map
+     */
+    void clearMap() { KeyValueMap m; m_option->m_mapStringsView = m; }
+    /**
+     * The view is actually a stack widget that contains two different views widget
      */
     void raiseView();
     /**
-     *Verifies whether 'lv' contains 's'
+     * Verifies whether 'lv' contains 's'
      */
     bool columnContains(QListView* lv,const QString& s, int column);
     void saveViewContentIntoMap();

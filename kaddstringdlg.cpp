@@ -55,6 +55,59 @@ KAddStringDlg::KAddStringDlg(RCOptions* info, bool wantEdit, QWidget *parent, co
   whatsThis();
 }
 
+//PRIVATE
+void KAddStringDlg::initGUI()
+{
+  m_pbAdd->setIconSet(SmallIconSet(QString::fromLatin1("forward")));
+  m_pbDel->setIconSet(SmallIconSet(QString::fromLatin1("back")));
+
+  m_stack->addWidget(m_stringView);
+  m_stack->addWidget(m_stringView_2);
+
+
+  if(m_option->m_searchingOnlyMode)
+  {
+    if(m_wantEdit)
+      m_rbSearchReplace->setEnabled(false);
+    m_rbSearchOnly->setChecked(true);
+    m_edSearch->setEnabled(true);
+    m_edReplace->setEnabled(false);
+    m_tlSearch->setEnabled(true);
+    m_tlReplace->setEnabled(false);
+  }
+  else
+  {
+    if(m_wantEdit)
+      m_rbSearchOnly->setEnabled(false);
+    m_rbSearchReplace->setChecked(true);
+    m_edSearch->setEnabled(true);
+    m_edReplace->setEnabled(true);
+    m_tlSearch->setEnabled(true);
+    m_tlReplace->setEnabled(true);
+  }
+
+  raiseView();
+
+  if(m_wantEdit)
+    loadMapIntoView();
+}
+
+void KAddStringDlg::eraseViewItems()
+{
+  QListViewItem* item = m_sv->firstChild();
+  if(item == 0)
+    return;
+  else
+  {
+    while(item)
+    {
+      QListViewItem* tempItem = item;
+      item = item->nextSibling();
+      delete tempItem;
+    }
+  }
+}
+
 void KAddStringDlg::raiseView()
 {
   if(m_option->m_searchingOnlyMode)
@@ -103,6 +156,15 @@ void KAddStringDlg::loadMapIntoView()
     }
 }
 
+void KAddStringDlg::whatsThis()
+{
+  QWhatsThis::add(m_rbSearchOnly, rbSearchOnlyWhatthis);
+  QWhatsThis::add(m_rbSearchReplace, rbSearchReplaceWhatthis);
+  QWhatsThis::add(m_edSearch, edSearchWhatthis);
+  QWhatsThis::add(m_edReplace, edReplaceWhatthis);
+}
+
+//PRIVATE SLOTS
 void KAddStringDlg::slotOK()
 {
   m_option->m_mapStringsView = m_currentMap;
@@ -207,64 +269,5 @@ void KAddStringDlg::slotHelp()
   kapp->invokeHelp(QString::null, "kfilereplace");
 }
 
-void KAddStringDlg::eraseViewItems()
-{
-  QListViewItem* item = m_sv->firstChild();
-  if(item == 0)
-    return;
-  else
-    {
-      while(item)
-        {
-          QListViewItem* tempItem = item;
-          item = item->nextSibling();
-          delete tempItem;
-        }
-    }
-}
-
-void KAddStringDlg::initGUI()
-{
-  m_pbAdd->setIconSet(SmallIconSet(QString::fromLatin1("forward")));
-  m_pbDel->setIconSet(SmallIconSet(QString::fromLatin1("back")));
-
-  m_stack->addWidget(m_stringView);
-  m_stack->addWidget(m_stringView_2);
-
-
- if(m_option->m_searchingOnlyMode)
-    {
-      if(m_wantEdit)
-        m_rbSearchReplace->setEnabled(false);
-      m_rbSearchOnly->setChecked(true);
-      m_edSearch->setEnabled(true);
-      m_edReplace->setEnabled(false);
-      m_tlSearch->setEnabled(true);
-      m_tlReplace->setEnabled(false);
-    }
-  else
-   {
-     if(m_wantEdit)
-       m_rbSearchOnly->setEnabled(false);
-     m_rbSearchReplace->setChecked(true);
-     m_edSearch->setEnabled(true);
-     m_edReplace->setEnabled(true);
-     m_tlSearch->setEnabled(true);
-     m_tlReplace->setEnabled(true);
-   }
-
-  raiseView();
-
-  if(m_wantEdit)
-    loadMapIntoView();
-}
-
-void KAddStringDlg::whatsThis()
-{
-  QWhatsThis::add(m_rbSearchOnly, rbSearchOnlyWhatthis);
-  QWhatsThis::add(m_rbSearchReplace, rbSearchReplaceWhatthis);
-  QWhatsThis::add(m_edSearch, edSearchWhatthis);
-  QWhatsThis::add(m_edReplace, edReplaceWhatthis);
-}
 #include "kaddstringdlg.moc"
 

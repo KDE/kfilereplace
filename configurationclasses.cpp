@@ -32,11 +32,11 @@ RCOptions::RCOptions()
 
 RCOptions& RCOptions::operator=(const RCOptions& ci)
 {
-  m_callResetActions = ci.m_callResetActions;
+  //m_callResetActions = ci.m_callResetActions;
 
   m_directories = ci.m_directories;
   m_filters = ci.m_filters;
-
+  m_currentDirectory = ci.m_currentDirectory;
   m_minSize = ci.m_minSize;
   m_maxSize = ci.m_maxSize;
 

@@ -44,7 +44,6 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     bool m_stop,
          m_searchingOperation;
     int m_optionMask;
-    QString m_currentDir;
 
   public://Constructors
     KFileReplacePart(QWidget *parentWidget,
@@ -87,7 +86,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
   //METHODS
   public:
     static KAboutData* createAboutData();
-    KConfig *config();
+    KConfig *config(){ return m_config; }
 
   protected:
     virtual bool openFile() { return false; }
@@ -97,8 +96,8 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     /**
      * Initialization methods
      */
-    void initView();
     void initGUI();
+    void initView();
 
     /**
      * This method freezes the GUI of kfilereplace during searching
@@ -145,21 +144,15 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void recursiveFileSearch(const QString& dirName, const QString& filters, uint& filesNumber);
     void search(const QString& currentDir, const QString& fileName);
 
-    void loadViewContent();
-
-    void loadRulesFile(const QString& fileName);
-
     /**
-     *Launches new project dialog
+     * Others methods
      */
+    void loadViewContent();
+    void loadRulesFile(const QString& fileName);
     bool launchNewProjectDialog(const KURL& startURL);
-
     void setOptionMask();
-
     bool checkBeforeOperation();
-
     bool dontAskAgain();
-
     void whatsThis();
 };
 

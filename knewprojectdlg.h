@@ -39,7 +39,7 @@ class KNewProjectDlg : public KNewProjectDlgS
     ~KNewProjectDlg();
 
   public:
-    void updateOptions(const RCOptions& info);
+    //void updateOptions(const RCOptions& info);
     void saveRCOptions();
 
   protected slots:
@@ -60,8 +60,6 @@ class KNewProjectDlg : public KNewProjectDlgS
   private:
     void initGUI();
 
-    bool contains(QListView* lv,const QString& s, int column);
-
     void loadOptions();
     void loadFileSizeOptions();
     void loadDateAccessOptions();
@@ -78,6 +76,7 @@ class KNewProjectDlg : public KNewProjectDlgS
     void saveFiltersList();
     void saveBackupExtensionOptions();
 
+    bool contains(QListView* lv,const QString& s, int column);
     void setDatas(const QString& directoryString, const QString& filterString);
     void whatsThis();
 };

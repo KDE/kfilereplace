@@ -41,7 +41,7 @@ class KOptionsDlg : public KOptionsDlgS
     RCOptions* m_option;
     KConfig *m_config;
 
-  protected slots:
+  private slots:
     void slotOK();
     void slotDefaults();
     void slotChbBackup(bool b);

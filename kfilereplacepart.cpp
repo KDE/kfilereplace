@@ -94,7 +94,7 @@ KFileReplacePart::~KFileReplacePart()
   delete m_option;
 }
 
-//PUBLIC SLOTS
+//PRIVATE SLOTS
 void KFileReplacePart::slotSetNewParameters()
 {
   launchNewProjectDialog(KURL());
@@ -123,7 +123,7 @@ void KFileReplacePart::slotSearchingOperation()
   QString currentDirectory = QStringList::split(",",m_option->m_directories)[0],
           currentFilter = QStringList::split(",",m_option->m_filters)[0];
 
-  m_currentDir = currentDirectory;
+  //m_currentDir = currentDirectory;
 
   m_view->showSemaphore("red");
 
@@ -275,7 +275,7 @@ void KFileReplacePart::slotCreateReport()
   Report report(m_option, rv, sv);
          report.createDocument(documentPath);
 
-  resetActions();
+  //resetActions();
 }
 
 void KFileReplacePart::slotStringsAdd()
@@ -439,15 +439,15 @@ void KFileReplacePart::showAboutApplication()
     m_aboutDlg->raise();
 }
 
+void KFileReplacePart::appHelpActivated()
+{
+  kapp->invokeHelp(QString::null, "kfilereplace");
+}
+
 void KFileReplacePart::reportBug()
 {
   KBugReport dlg(m_w, true, createAboutData());
   dlg.exec();
-}
-
-void KFileReplacePart::appHelpActivated()
-{
-  kapp->invokeHelp(QString::null, "kfilereplace");
 }
 
 void KFileReplacePart::resetActions()
@@ -512,8 +512,8 @@ KAboutData* KFileReplacePart::createAboutData()
                                           KFR_VERSION,
                                           I18N_NOOP( "Batch search and replace tool."),
                                           KAboutData::License_GPL_V2,
-                                          "(C) 1999-2002 Franï¿½is Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini", I18N_NOOP("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
-  aboutData->addAuthor("Franï¿½is Dupoux",
+                                          "(C) 1999-2002 François Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini", I18N_NOOP("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
+  aboutData->addAuthor("François Dupoux",
                        I18N_NOOP("Original author of the KFileReplace tool"),
                        "dupoux@dupoux.com");
   aboutData->addAuthor("Emiliano Gulmini",
@@ -526,11 +526,6 @@ KAboutData* KFileReplacePart::createAboutData()
                        I18N_NOOP("Original german translator"),
                        "heiko.goller@tuebingen.mpg.de");
   return aboutData;
-}
-
-KConfig* KFileReplacePart::config()
-{
-  return m_config;
 }
 
 //PROTECTED METHODS
@@ -603,7 +598,7 @@ void KFileReplacePart::initGUI()
 
   if(quantaFound)
     {
-      (void)new KAction(i18n("&Edit in Quanta"), "quanta", 0, m_view, SLOT(slotResultsEdit()), actionCollection(), "results_editfile");
+      (void)new KAction(i18n("&Edit in Quanta"), "quanta", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
     }
   (void)new KAction(i18n("Open Parent &Folder"), "fileopen", 0, m_view, SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
   (void)new KAction(i18n("&Delete"), "eraser", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");
@@ -1030,8 +1025,6 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
 
   QString backupExtension = m_option->m_backupExtension;
 
-//  kapp->processEvents();
-
   bool atLeastOneStringFound = false;
   KListViewItem *item = 0;
   int occurrence = 0;
@@ -1113,8 +1106,6 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
       return ;
     }
 
-  //kapp->processEvents();
-
   QString fileSizeBeforeReplacing =  KFileReplaceLib::formatFileSize(oldFileInfo.size());
   KListViewItem *item = 0;
 
@@ -1161,25 +1152,20 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
       item->setText(1,currentDir);
       item->setText(2,fileSizeBeforeReplacing);
       if(!m_option->m_simulation)
-        {
-          item->setText(3,fileSizeAfterReplacing);
-        }
+        item->setText(3,fileSizeAfterReplacing);
       else
-        {
-          item->setText(3,"-");
-        }
+        item->setText(3,"-");
+
       item->setText(4,QString::number(occurrence,10));
       item->setText(5,QString("%1[%2]").arg(oldFileInfo.owner()).arg(oldFileInfo.ownerId()));
       item->setText(6,QString("%1[%2]").arg(oldFileInfo.group()).arg(oldFileInfo.groupId()));
     }
-  //  kapp->processEvents();
 }
 
 void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regularExpression, bool& askConfirmReplace)
 {
   KeyValueMap tempMap = m_replacementMap;
   KeyValueMap::Iterator it;
-  bool caseSensitive = m_option->m_caseSensitive;
   KListView* rv = m_view->getResultsView();
 
   for(it = tempMap.begin(); it != tempMap.end(); ++it)
@@ -1187,7 +1173,7 @@ void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& 
       if(m_stop)
         break;
 
-      ResultViewEntry entry(it.key(), it.data(), regularExpression, caseSensitive);
+      ResultViewEntry entry(it.key(), it.data(), regularExpression, m_option->m_caseSensitive);
       while(entry.pos(line) != -1)
         {
           if(m_stop)
@@ -1344,9 +1330,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
   QFileInfo fileInfo(currentDir+"/"+fileName);
 
   KListViewItem *item = 0;
-  bool caseSensitive = m_option->m_caseSensitive,
-       haltOnFirstOccur = m_option->m_haltOnFirstOccur;
-
+ 
   //Counts occurrences
   int occurrence = 0;
 
@@ -1370,19 +1354,19 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
       QRegExp rxKey;
 
       if(m_option->m_regularExpressions)
-        rxKey = QRegExp("("+key+")", caseSensitive, false);
+        rxKey = QRegExp("("+key+")", m_option->m_caseSensitive, false);
       else
         strKey = key;
       /* If this option is true then for any string in
       *  the map we search for the first match*/
-      if(haltOnFirstOccur)
+      if(m_option->m_haltOnFirstOccur)
         {
           int pos;
 
           if(m_option->m_regularExpressions)
             pos = line.find(rxKey);
           else
-            pos = line.find(strKey, 0 ,caseSensitive);
+            pos = line.find(strKey, 0 ,m_option->m_caseSensitive);
 
           if(pos != -1)
             {
@@ -1402,13 +1386,12 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               else
                 capturedText = line.mid(pos,strKey.length());
 
-              //msg = i18n(" first captured text \"%1\" at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
 	      msg = i18n(" Line:%2, Col:%3 - \"%1\"").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
               tempItem->setMultiLinesEnabled(true);
               tempItem->setText(0,msg);
               occurrence = 1;
             }
-        }// ends haltOnFirstOccur if-block
+        }// ends m_option->m_haltOnFirstOccur if-block
       else
         {
           /* This point of the code is reached when we must search for all
@@ -1418,7 +1401,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
           if(m_option->m_regularExpressions)
             pos = rxKey.search(line,pos);
           else
-            pos = line.find(strKey, pos ,caseSensitive);
+            pos = line.find(strKey, pos ,m_option->m_caseSensitive);
 
           while(pos != -1)
             {
@@ -1443,8 +1426,8 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
                   pos = line.find(strKey,pos+strKey.length());
                 }
 
-		msg = i18n(" Line:%2, Col:%3 - \"%1\"").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
-	      //msg = i18n(" captured text \"%1\" at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
+              msg = i18n(" Line:%2, Col:%3 - \"%1\"").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
+
               if(!item)
                  item = new KListViewItem(rv);
               KListViewItem* tempItem = new KListViewItem(item);
@@ -1580,7 +1563,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 
   m_view->loadMap(docMap);
 
-  resetActions();
+  //resetActions();
 }
 
 bool KFileReplacePart::launchNewProjectDialog(const KURL & startURL)

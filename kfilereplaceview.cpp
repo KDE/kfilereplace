@@ -2,7 +2,7 @@
                           kfilereplaceview.cpp  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by Franï¿½is Dupoux <dupoux@dupoux.com>
+    copyright            : (C) 1999 by François Dupoux <dupoux@dupoux.com>
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
 *****************************************************************************/
 
@@ -112,7 +112,7 @@ void KFileReplaceView::stringsInvert(bool invertAll)
   do
   {
     QString searchText = lviCurItem->text(0),
-    replaceText = lviCurItem->text(1);
+            replaceText = lviCurItem->text(1);
 
       // Cannot invert the string when search string is empty
     if (replaceText.isEmpty())
@@ -168,6 +168,7 @@ KListView* KFileReplaceView::getStringsView()
   return m_sv;
 }
 
+//PUBLIC SLOTS
 void KFileReplaceView::slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos)
 {
   if (lvi == 0) // No item selected
@@ -225,32 +226,32 @@ void KFileReplaceView::slotResultDirOpen()
       m_lviCurrent = 0;
     }
 }
-#include <kdebug.h>
-void KFileReplaceView::slotResultsEdit()
+
+void KFileReplaceView::slotResultEdit()
 {
-  DCOPClient *client = kapp->dcopClient();
-  DCOPRef quanta(client->appId(),"WindowManagerIf");
   QListViewItem *lvi = m_rv->firstChild();
 
   while (lvi)
     {
-
+      DCOPClient *client = kapp->dcopClient();
+      DCOPRef quanta(client->appId(),"WindowManagerIf");
+      QString path = QString(lvi->text(1)+"/"+lvi->text(0));
       QListViewItem *lviChild = lvi;
 
       while(lviChild)
         {
           if(lviChild->isSelected())
             {
-              QString path = lvi->text(1)+"/"+lvi->text(0);
               coord c;
-              if (lviChild == lvi) 
-              {
-                c.line = 0;
-                c.column = 0;
-              } else
-              {
-                c= extractWordCoordinates(lviChild);
-              }
+              if(lviChild == lvi)
+                {
+                  c.line = 0;
+                  c.column = 0;
+                }
+              else
+                {
+                  c= extractWordCoordinates(lviChild);
+                }
               bool success = quanta.send("openFile", path, c.line, c.column);
 
               if(!success)
@@ -306,199 +307,6 @@ void KFileReplaceView::slotResultTreeReduce()
     expand(lviRoot, false);
 }
 
-void KFileReplaceView::initGUI()
-{
-  m_option->m_searchingOnlyMode = true;
-
-  m_stackResults->addWidget(m_lvResults);
-  m_stackResults->addWidget(m_lvResults_2);
-  m_stackStrings->addWidget(m_lvStrings);
-  m_stackStrings->addWidget(m_lvStrings_2);
-
-  DCOPClient *client = kapp->dcopClient();
-  QCStringList appList = client->registeredApplications();
-  bool quantaFound = false;
-
-
-  for(QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
-    {
-      if((*it).left(6) == "quanta")
-        {
-          quantaFound = true;
-          break;
-        }
-    }
-
-  m_menuResult = new KPopupMenu(this, "ResultPopup");
-
-
-
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("fileopen")),
-                           i18n("&Open"),
-                           this,
-                           SLOT(slotResultOpen()));
-  if(!quantaFound)
-    {
-      m_menuResult->insertItem(i18n("Open &With..."),
-                               this,
-                               SLOT(slotResultOpenWith()));
-    }
-
-  if(quantaFound)
-    {
-      m_menuResult->insertItem(SmallIconSet("quanta"),
-                               i18n("&Edit in Quanta"),
-                               this,
-                               SLOT(slotResultsEdit()));
-    }
-
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("up")),
-                           i18n("Open Parent &Folder"),
-                           this,
-                           SLOT(slotResultDirOpen()));
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("eraser")),
-                           i18n("&Delete"),
-                           this,
-                           SLOT(slotResultDelete()));
-  m_menuResult->insertSeparator();
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("info")),
-                           i18n("&Properties"),
-                           this,
-                           SLOT(slotResultProperties()));
-  raiseResultsView();
-  raiseStringsView();
-}
-
-void KFileReplaceView::raiseStringsView()
-{
-  if(m_option->m_searchingOnlyMode)
-    m_sv = m_lvStrings_2;
-  else
-    m_sv = m_lvStrings;
-
-  m_stackStrings->raiseWidget(m_sv);
-}
-
-void KFileReplaceView::raiseResultsView()
-{
-  if(m_option->m_searchingOnlyMode)
-    m_rv = m_lvResults_2;
-  else
-    m_rv = m_lvResults;
-
-  m_stackResults->raiseWidget(m_rv);
-}
-
-coord KFileReplaceView::extractWordCoordinates(QListViewItem* lvi)
-{
-  //get coordinates of the first string of the current selected file
-  coord c;
-  c.line = 0;
-  c.column = 0;
-  QString s;
-  
-  if(lvi->parent()) s = lvi->text(0);
-  else return c;
-
-  QString temp;
-  int i = 0;
-
-  //extracts line and column from lvi->text(0)
-  //FIXME: Don't get the line and column number from the text as it's translated and it will
-  //fail for non-English languages!
-
-  //EMILIANO: This is not a good fixing but for now it should reduce the problems
-  while(true)
-    {
-      if(s[i] < '0' || s[i] > '9')
-	i++;
-      else
-	break;
-    }
-  while(true)
-    {
-      if(s[i] >= '0' && s[i] <= '9')
-        {
-	  temp += s[i];
-	  i++;
-	}
-      else
-	break;
-    }
-  c.line = temp.toInt();
-  temp = QString::null;
-
-  while(true)
-    {
-      if(s[i] < '0' || s[i] > '9')
-	i++;
-      else
-	break;
-    }
-  while(true)
-    {
-      if(s[i] >= '0' && s[i] <= '9')
-      {
-	temp += s[i];
-	i++;
-      }
-      else
-	break;
-    }
-  c.column = temp.toInt();
-   
-  if(c.line > 0) c.line--;
-  if(c.column > 0) c.column--;
-
-  return c;
-}
-
-void KFileReplaceView::expand(QListViewItem *lviCurrent, bool b)
-{
-  // current item
-  lviCurrent->setOpen(b);
-
-  // recursivity
-  while((lviCurrent = lviCurrent->nextSibling()) != 0)
-    {
-      lviCurrent->setOpen(b);
-
-      if (lviCurrent->firstChild())
-        expand(lviCurrent->firstChild(), b);
-    }
-}
-
-void KFileReplaceView::setMap()
-{
-  KeyValueMap map;
-  QListViewItem* i = m_sv->firstChild();
-  while(i != 0)
-  {
-    if(m_option->m_searchingOnlyMode)
-      map[i->text(0)] = QString::null;
-    else
-      map[i->text(0)] = i->text(1);
-    i = i->nextSibling();
-  }
-  m_option->m_mapStringsView = map;
-}
-
-void KFileReplaceView::loadMapIntoView(KeyValueMap map)
-{
-  m_sv->clear();
-  KeyValueMap::Iterator itMap;
-
-  for(itMap = map.begin(); itMap != map.end(); ++itMap)
-    {
-      QListViewItem* lvi = new QListViewItem(m_sv);
-      lvi->setMultiLinesEnabled(true);
-      lvi->setText(0,itMap.key());
-      if(!m_option->m_searchingOnlyMode)
-        lvi->setText(1,itMap.data());
-    }
-
-}
-
 void KFileReplaceView::slotStringsAdd()
 {
   KeyValueMap oldMap(m_option->m_mapStringsView);
@@ -506,7 +314,7 @@ void KFileReplaceView::slotStringsAdd()
   KAddStringDlg addStringDlg(m_option, false);
 
   if(!addStringDlg.exec())
-     return;
+    return;
 
   KeyValueMap addedStringsMap(m_option->m_mapStringsView);
   KeyValueMap::Iterator itMap;
@@ -525,26 +333,26 @@ void KFileReplaceView::slotStringsAdd()
 void KFileReplaceView::slotQuickStringsAdd(const QString& quickSearch, const QString& quickReplace)
 {
   if(!quickSearch.isEmpty())
+  {
+    KeyValueMap map;
+    if(quickReplace.isEmpty())
     {
-      KeyValueMap map;
-      if(quickReplace.isEmpty())
-        {
-          map[quickSearch] = QString::null;
-          m_option->m_searchingOnlyMode = true;
-        }
-      else
-        {
-          map[quickSearch] = quickReplace;
-          m_option->m_searchingOnlyMode = false;
-        }
-
-      m_option->m_mapStringsView = map;
-
-      raiseResultsView();
-      raiseStringsView();
-
-      loadMapIntoView(map);
+      map[quickSearch] = QString::null;
+      m_option->m_searchingOnlyMode = true;
     }
+    else
+    {
+      map[quickSearch] = quickReplace;
+      m_option->m_searchingOnlyMode = false;
+    }
+
+    m_option->m_mapStringsView = map;
+
+    raiseResultsView();
+    raiseStringsView();
+
+    loadMapIntoView(map);
+  }
 }
 
 void KFileReplaceView::slotStringsEdit()
@@ -566,13 +374,13 @@ void KFileReplaceView::slotStringsEdit()
 
   KeyValueMap newMap(m_option->m_mapStringsView);
   if(oldSearchFlagValue == m_option->m_searchingOnlyMode)
-    {
-      KeyValueMap::Iterator itMap;
+  {
+    KeyValueMap::Iterator itMap;
 
       //merges the two maps
-      for(itMap = oldMap.begin(); itMap != oldMap.end(); ++itMap)
-        newMap.insert(itMap.key(),itMap.data());
-    }
+    for(itMap = oldMap.begin(); itMap != oldMap.end(); ++itMap)
+      newMap.insert(itMap.key(),itMap.data());
+  }
 
   m_option->m_mapStringsView = newMap;
 
@@ -640,25 +448,219 @@ void KFileReplaceView::slotStringsDeleteItem()
 {
   QListViewItem* item = m_sv->currentItem();
   if(item != 0)
-    {
-      KeyValueMap m = m_option->m_mapStringsView;
-      m.remove(item->text(0));
-      m_option->m_mapStringsView = m;
-      delete item;
-    }
+  {
+    KeyValueMap m = m_option->m_mapStringsView;
+    m.remove(item->text(0));
+    m_option->m_mapStringsView = m;
+    delete item;
+  }
 }
 
 void KFileReplaceView::slotStringsEmpty()
 {
   QListViewItem * myChild = m_sv->firstChild();
   while( myChild )
-    {
-      QListViewItem* item = myChild;
-      myChild = myChild->nextSibling();
-      delete item;
-    }
+  {
+    QListViewItem* item = myChild;
+    myChild = myChild->nextSibling();
+    delete item;
+  }
   KeyValueMap m;
   m_option->m_mapStringsView = m;
+}
+
+//PRIVATE
+void KFileReplaceView::initGUI()
+{
+  m_option->m_searchingOnlyMode = true;
+
+  m_stackResults->addWidget(m_lvResults);
+  m_stackResults->addWidget(m_lvResults_2);
+  m_stackStrings->addWidget(m_lvStrings);
+  m_stackStrings->addWidget(m_lvStrings_2);
+
+  DCOPClient *client = kapp->dcopClient();
+  QCStringList appList = client->registeredApplications();
+  bool quantaFound = false;
+
+
+  for(QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
+    {
+      if((*it).left(6) == "quanta")
+        {
+          quantaFound = true;
+          break;
+        }
+    }
+
+  m_menuResult = new KPopupMenu(this, "ResultPopup");
+
+
+
+  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("fileopen")),
+                           i18n("&Open"),
+                           this,
+                           SLOT(slotResultOpen()));
+  if(!quantaFound)
+    {
+      m_menuResult->insertItem(i18n("Open &With..."),
+                               this,
+                               SLOT(slotResultOpenWith()));
+    }
+
+  if(quantaFound)
+    {
+      m_menuResult->insertItem(SmallIconSet("quanta"),
+                               i18n("&Edit in Quanta"),
+                               this,
+                               SLOT(slotResultEdit()));
+    }
+
+  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("up")),
+                           i18n("Open Parent &Folder"),
+                           this,
+                           SLOT(slotResultDirOpen()));
+  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("eraser")),
+                           i18n("&Delete"),
+                           this,
+                           SLOT(slotResultDelete()));
+  m_menuResult->insertSeparator();
+  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("info")),
+                           i18n("&Properties"),
+                           this,
+                           SLOT(slotResultProperties()));
+  raiseResultsView();
+  raiseStringsView();
+}
+
+void KFileReplaceView::raiseStringsView()
+{
+  if(m_option->m_searchingOnlyMode)
+    m_sv = m_lvStrings_2;
+  else
+    m_sv = m_lvStrings;
+
+  m_stackStrings->raiseWidget(m_sv);
+}
+
+void KFileReplaceView::raiseResultsView()
+{
+  if(m_option->m_searchingOnlyMode)
+    m_rv = m_lvResults_2;
+  else
+    m_rv = m_lvResults;
+
+  m_stackResults->raiseWidget(m_rv);
+}
+
+coord KFileReplaceView::extractWordCoordinates(QListViewItem* lvi)
+{
+  //get coordinates of the first string of the current selected file
+  coord c;
+  c.line = 0;
+  c.column = 0;
+  QString s = lvi->text(0);
+  //qWarning("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW=%s",s.latin1());
+ /* if(lvi->parent()) s = lvi->text(0);
+  else return c;*/
+
+  QString temp;
+  int i = 0;
+
+  //extracts line and column from lvi->text(0)
+  //FIXME: Don't get the line and column number from the text as it's translated and it will
+  //fail for non-English languages!
+
+  //EMILIANO: This is not a good fixing but for now it should reduce the problems
+  while(true)
+    {
+      if(s[i] < '0' || s[i] > '9')
+	i++;
+      else
+	break;
+    }
+  while(true)
+    {
+      if(s[i] >= '0' && s[i] <= '9')
+        {
+	  temp += s[i];
+	  i++;
+	}
+      else
+	break;
+    }
+  c.line = temp.toInt();
+  temp = QString::null;
+
+  while(true)
+    {
+      if(s[i] < '0' || s[i] > '9')
+	i++;
+      else
+	break;
+    }
+  while(true)
+    {
+      if(s[i] >= '0' && s[i] <= '9')
+      {
+	temp += s[i];
+	i++;
+      }
+      else
+	break;
+    }
+  c.column = temp.toInt();
+
+  if(c.line > 0) c.line--;
+  if(c.column > 0) c.column--;
+
+  return c;
+}
+
+void KFileReplaceView::expand(QListViewItem *lviCurrent, bool b)
+{
+  // current item
+  lviCurrent->setOpen(b);
+
+  // recursivity
+  while((lviCurrent = lviCurrent->nextSibling()) != 0)
+    {
+      lviCurrent->setOpen(b);
+
+      if (lviCurrent->firstChild())
+        expand(lviCurrent->firstChild(), b);
+    }
+}
+
+void KFileReplaceView::setMap()
+{
+  KeyValueMap map;
+  QListViewItem* i = m_sv->firstChild();
+  while(i != 0)
+  {
+    if(m_option->m_searchingOnlyMode)
+      map[i->text(0)] = QString::null;
+    else
+      map[i->text(0)] = i->text(1);
+    i = i->nextSibling();
+  }
+  m_option->m_mapStringsView = map;
+}
+
+void KFileReplaceView::loadMapIntoView(KeyValueMap map)
+{
+  m_sv->clear();
+  KeyValueMap::Iterator itMap;
+
+  for(itMap = map.begin(); itMap != map.end(); ++itMap)
+    {
+      QListViewItem* lvi = new QListViewItem(m_sv);
+      lvi->setMultiLinesEnabled(true);
+      lvi->setText(0,itMap.key());
+      if(!m_option->m_searchingOnlyMode)
+        lvi->setText(1,itMap.data());
+    }
+
 }
 
 void KFileReplaceView::whatsThis()

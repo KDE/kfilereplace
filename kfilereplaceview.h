@@ -68,35 +68,35 @@ class KFileReplaceView : public KFileReplaceViewWdg
     KFileReplaceView(RCOptions* info, QWidget *parent,const char *name);
 
   public:
-    void updateOptions(RCOptions* info) { m_option = info; }
+    QString currentPath();
+    void showSemaphore(QString s);
+    void displayScannedFiles(int filesNumber) { m_lcdFilesNumber->display(QString::number(filesNumber,10)); }
+    void stringsInvert(bool invertAll);
     void changeView(bool searchingOnlyMode);
     KListView* getResultsView();
     KListView* getStringsView();
-    QString currentPath();
+    void updateOptions(RCOptions* info) { m_option = info; }
     void loadMap(KeyValueMap extMap){ loadMapIntoView(extMap); }
     KeyValueMap getStringsViewMap()const { return m_option->m_mapStringsView;}
-    void setCurrentStringsViewMap(){ setMap();}
-    void displayScannedFiles(int filesNumber) { m_lcdFilesNumber->display(QString::number(filesNumber,10)); }
-    void emitSearchingOnlyMode(bool b) { emit searchingOnlyMode(b); }
-    void showSemaphore(QString s);
-    void stringsInvert(bool invertAll);
+    void setCurrentStringsViewMap(){ setMap(); }
+    //void emitSearchingOnlyMode(bool b) { emit searchingOnlyMode(b); }
 
   public slots:
+    void slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos);
+    void slotResultProperties();
+    void slotResultOpen();
+    void slotResultOpenWith();
+    void slotResultDirOpen();
+    void slotResultEdit();
+    void slotResultDelete();
+    void slotResultTreeExpand();
+    void slotResultTreeReduce();
     void slotStringsAdd();
     void slotQuickStringsAdd(const QString& quickSearch, const QString& quickReplace);
     void slotStringsDeleteItem();
     void slotStringsEmpty();
     void slotStringsEdit();
     void slotStringsSave();
-    void slotResultProperties();
-    void slotResultOpen();
-    void slotResultOpenWith();
-    void slotResultsEdit();
-    void slotResultDirOpen();
-    void slotResultDelete();
-    void slotResultTreeExpand();
-    void slotResultTreeReduce();
-    void slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos);
 
   private:
     void initGUI();
@@ -108,9 +108,9 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void loadMapIntoView(KeyValueMap map);
     void whatsThis();
 
-  signals:
+  /*signals:
     void resetActions();
-    void searchingOnlyMode(bool);
+    void searchingOnlyMode(bool);*/
 };
 
 #endif // KFILEREPLACEVIEW_H

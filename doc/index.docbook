@@ -55,7 +55,7 @@
 
 <chapter id="introduction">
  <title>Introduction</title>
-  <para>&kfilereplace; is an application that performs search and replace of one or more strings in one or more files. The strings you want search for, may be literals or QT-like regular expressions. There are even other options that you may use to tune your search.
+  <para>&kfilereplace; is an application used to perform searching and replacing of a list of strings in a file tree. The strings may be literals or QT-like regular expressions. There are even other options that you may use to tune your search.
   </para>
 </chapter>
 
@@ -83,7 +83,7 @@
 <sect1 id="kfilereplace-the-toolbar">
 <title>The Toolbar</title>
 
-<para>The KFileReplace toolbar should looks like this:
+<para>The &kfilereplace; toolbar should looks like this:
  <screenshot>
   <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
    <mediaobject>
@@ -100,7 +100,7 @@
  </screenshot>
 </para>
 
-<para>The toolbar allows you to choose the main functionalities. For example if you want to search for strings you should add them in the bottom view, so to do this you will click on "+" button and a dialog will appear that allows you to insert your strings. Let me explain the functionality of each icon in the toolbar:
+<para>The toolbar shows you the buttons of the main functionalities.
  <variablelist>
   <title>Toolbar icons</title>
 
@@ -118,7 +118,7 @@
         </imageobject>
        </mediaobject>
       </screenshot>
-      This button shows a session dialog window in wich you can set several basic options, if KFileReplace run as standalone application you should click this button as first step.
+      This button shows a <link linkend="kfilereplace-the-project-dialog">session dialog</link> in wich you can set several basic options, if &kfilereplace; run as standalone application you should click this button as first step.
      </para>
     </listitem>
    </varlistentry>
@@ -156,7 +156,7 @@
            </imageobject>
          </mediaobject>
         </screenshot>
-        This button starts a search&amp;replace loop. When a string has been found KFileReplace replaces it with another string.
+        This button starts a search&amp;replace loop. When a string has been found &kfilereplace; replaces it with another string.
      </para>
     </listitem>
    </varlistentry>
@@ -194,7 +194,7 @@
              </imageobject>
            </mediaobject>
          </screenshot>
-         This button stops a search.
+         This button stops an operation.
        </para>
      </listitem>
    </varlistentry>
@@ -213,7 +213,7 @@
              </imageobject>
            </mediaobject>
          </screenshot>
-         This button opens the <link linkend="kfilereplace-the-add-dialog">Add strings</link>  dialog in which you can edit your strings list..
+         This button opens the <link linkend="kfilereplace-the-add-dialog">Add strings</link>  dialog in which you can edit your strings list.
        </para>
      </listitem>
    </varlistentry>
@@ -232,7 +232,7 @@
              </imageobject>
            </mediaobject>
          </screenshot>
-         This button cancels a string from the list.
+         This button cancels the selected(or the current if there is no selection) string from the list.
        </para>
      </listitem>
    </varlistentry>
@@ -309,7 +309,7 @@
              </imageobject>
            </mediaobject>
          </screenshot>
-	 This button loads a <link linkend="kfilereplace-the-kfr-file">strings list</link>.
+	 This button loads a <link linkend="kfilereplace-the-kfr-file">strings list</link> saved in a xml file with "kfr" extension.
        </para>
      </listitem>
    </varlistentry>
@@ -328,7 +328,7 @@
              </imageobject>
            </mediaobject>
          </screenshot>
-         This button allows you to even search/replace in the subfolders of your base directory.
+         This button allows you to search/replace recursively in the subfolders of your base directory.
        </para>
      </listitem>
    </varlistentry>
@@ -347,7 +347,7 @@
              </imageobject>
            </mediaobject>
          </screenshot>
-         This button enables generation of backup files. Your original files are with the same name, but with another extension.
+	 This button enables generation of <link linkend="kfilereplace-backup-file">backup</link> files.
        </para>
      </listitem>
    </varlistentry>
@@ -385,7 +385,7 @@
              </imageobject>
            </mediaobject>
          </screenshot>
-	 This button enables commands capability. Commands are special replace strings. Say for example that you want substitute the word "date" with the actual date string in ISO format, then you should insert in your list "date" as search string and " [$datetime:local$]" as replace string. See <link linkend="kfilereplace-commands">Commands</link> section.
+	 This button enables commands capability. Commands are special strings. See <link linkend="kfilereplace-commands">Commands</link> section.
        </para>
      </listitem>
    </varlistentry>
@@ -404,7 +404,7 @@
              </imageobject>
            </mediaobject>
          </screenshot>
-         This button enables QT-like regular expressions. if you want search the strings "xml", "html", and "uml" you can write the line "(x|ht|u)ml" in the search column of the list.
+	 This button enables <link linkend="kfilereplace-QT-regexp">QT-like regular expressions</link>.
        </para>
      </listitem>
    </varlistentry>
@@ -434,7 +434,7 @@
     </screenshot>
   </para>
 
-  <para>The results view shows the name of the files that contain the strings you have to retrieve(and replace). This view also provides the exact position of the matching strings.
+  <para>The results view shows the name of the files that contain the strings you have to retrieve(and replace), their path, their size, the number of found strings and the user id of the files. This view also provides the exact position of each match. You can also open a file by clicking with right mouse button on the entry of the list view that contains line and column position.
   </para>
 
 </sect1>
@@ -459,14 +459,14 @@
     </screenshot>
   </para>
 
-  <para>The strings view visualizes the list of words you want search/replace. Please not that  in search mode the results view and the strings view have a different layout. 
+  <para>The strings view visualizes the list of strings you want search/replace. Please note that in search mode the results view and the strings view have a different layout.
   </para>
 
 </sect1>
 
 <sect1 id="kfilereplace-the-project-dialog">
  <title>The New Session Dialog</title>
- <para>The new session dialog is used to setup the basic parameters needed by KFileReplace to work. It consists of two page the "General" page and the "Advanced" page.
+ <para>The new session dialog is used to setup the basic parameters needed by &kfilereplace; to work. It consists of two page the "General" page and the "Advanced" page.
  </para>
  <sect2 id="kfilereplace-the-project-dialog-general-page">
    <title>The General Page</title>
@@ -502,7 +502,7 @@
          </textobject>
        </mediaobject>
      </screenshot>
-     Then you could set some usefull options, like searching in all the sub folders, doing a case sensitive search, enabling commands and/or regular expressions(please note that regular expressions and commands could slow down the speed performances!), doing a backup copy of each file that KFileReplace should modify.
+     Then you could set some usefull options, like searching in all the sub folders, doing a case sensitive search, enabling commands and/or regular expressions(please note that regular expressions and commands could slow down the speed performances!), doing a backup copy of each file before replacing.
      <screenshot>
        <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
        <mediaobject>
@@ -517,7 +517,7 @@
          </textobject>
        </mediaobject>
      </screenshot>
-     Finally if you wish to start now then put a string in the search line edit widget and press "Search now" button, otherwise live the line edit widgets empty and press "Search later" button.
+     If you wish to start searching you may put a string in the search line edit widget and press "Search Now" button, otherwise leave the line edit widgets empty and press "Search Later" button.
      <screenshot>
        <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
        <mediaobject>
@@ -554,7 +554,7 @@
      </screenshot>
    </para>
    <para>
-     The Advanced Page allows you to set up some usefull options to restrict search to subset of your target tree. If you want execute KFileReplace only over files that have dimensions in the range of 10KB - 100KB then you could use the size options.
+     The Advanced Page allows you to set up some usefull options to restrict search to a subset of your target file tree. If you want execute &kfilereplace; only over files that have dimensions in the range of 10KB - 100KB then you could use the size options.
      <screenshot>
        <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
        <mediaobject>
@@ -569,7 +569,7 @@
 	 </textobject>
        </mediaobject>
      </screenshot>
-     Date option, restrict the search in a temporal range.
+     Date option restricts the search in a temporal range.
      <screenshot>
        <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
        <mediaobject>
@@ -584,7 +584,7 @@
 	 </textobject>
        </mediaobject>
      </screenshot>
-     This last option, allows you to only search for files owned (or not owned) by a particular user. Actually this could be more usefull to the system administrators. 
+     This last option allows you to only search for files owned (or not owned) by a particular user. Actually this may be more usefull to the system administrators.
      <screenshot>
        <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
        <mediaobject>
@@ -605,12 +605,12 @@
 
 <sect1 id="kfilereplace-the-options-dialog">
  <title>The Options Dialog</title>
- <para>This dialog contains options that are in the toolbar and extra options, that may come in handy in some situation. You can invoke it selecting "Settings | Configure KFileReplace" in the menu.
+ <para>This dialog contains options that are in the toolbar and extra options that may come in handy in some situation. You can invoke it selecting "Settings | Configure KFileReplace" in the menu.
  </para>
  <sect2 id="kfilereplace-the-options-dialog-general-page">
   <title>General options</title>
   <para>
-    These options have been presented in the <link linkend="kfilereplace-the-toolbar">Toolbar</link> section, so go to the advanced options.
+    These options have been presented in the <link linkend="kfilereplace-the-toolbar">Toolbar</link> section.
    <screenshot>
        <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
        <mediaobject>
@@ -644,12 +644,18 @@
 	</textobject>
       </mediaobject>
      </screenshot>
-     <itemizedlist>
-       <listitem><para>Do not show files if no strings are found or replaced - lets you to visualize only the files that match with some of your strings. This will speed up the search. </para></listitem>
-       <listitem><para>When searching, stop on firts string found - KFileReplace will stop when match a string, and will continue to search for other strings or, if you only search for one string, it will continue with the next file.</para></listitem>
-       <listitem><para>Follow symbolic links - if a file is a link to another one, then search in the real file.</para></listitem>
-       <listitem><para>Ignore hidden files and directories - well need to be explained?.</para></listitem>
-   </itemizedlist>
+     <segmentedlist>
+       <segtitle>Do not show files if no strings are found or replaced</segtitle>
+       <segtitle>When searching, stop on first string found</segtitle>
+       <segtitle>Follow symbolic links</segtitle>
+       <segtitle>Ignore hidden files and directories</segtitle>
+       <seglistitem>
+	 <seg>lets you to visualize only the files that match with some of your strings. This will speed up the search.</seg>
+	 <seg>&kfilereplace; will stop when match a string, and will continue to search for other strings or, if you only search for one string, it will continue with the next file.</seg>
+	 <seg>if a file is a link to another one, then search in the real file.</seg>
+	 <seg>well need to be explained?.</seg>
+       </seglistitem>
+   </segmentedlist>
   </para>
  </sect2>
 </sect1>
@@ -670,15 +676,15 @@
 	</textobject>
       </mediaobject>
      </screenshot>
-   This dialog is used to insert and edit a list of strings. It is simple to use, you only must choose wheter to insert a search-only list or a search-and-replace list, then with the two mini editors you will introduce your texts. The arrow buttons, allow you to add a pair of strings or delete it if you think you made a mystake.
+   This dialog is used to insert and edit a list of strings. It is simple to use, you only must choose whether to insert a search-only list or a search-and-replace list, then with the two mini editors you will introduce your texts. The arrow buttons, allow you to add a pair of strings or delete it if you think you made a mystake. When you finish click Ok button.
   </para>
 </sect1>
 </chapter>
 
 <chapter id="kfilereplace-features">
- <title>KFilreplace features</title>
+ <title>&kfilereplace; features</title>
  <para>
-  This chapter provides informations about the main capabilities of KFileReplace.
+  This chapter provides informations about some usefull capabilities of &kfilereplace;.
  </para>
  <sect1 id="kfilereplace-the-kfr-file">
   <title>How to save your string list</title>
@@ -700,13 +706,13 @@
      </screenshot>
   </para>
   <para>
-   if you are using a previous format you can update your file simply by according it to the above scheme.
+   if you are using a previous format you can update by hand your file by simply according it to the above scheme. In alternative you can load the file written in the old format and save it again with &kfilereplace; in the way we explained before.
   </para>
 </sect1>
 <sect1 id="kfilereplace-the-report-file">
   <title>How to create a simple report</title>
   <para>
-   You can create a report by choosing "Search/Replace | Results | Create Report File" from the menu. A report is a directory containing an xml file and a css file. Look the picture
+   You can create a report by choosing "Search/Replace | Results | Create Report File" from the menu. A report is a directory containing an xml file and a css file. Reports may be usefull to maintain a simple log system of your operations. Look at the picture.
     <screenshot>
       <screeninfo>Here's a screenshot of &kfilereplace;</screeninfo>
       <mediaobject>
@@ -723,10 +729,28 @@
     </screenshot>
   </para>
 </sect1>
+<sect1 id="kfilereplace-QT-regexp">
+ <title>How to use regular expressions</title>
+  <para>
+    If you want search for every string that starts with "x" or "ht" or "u" and ends with "ml" you can write a regular expression like this "(x|ht|u)ml". Insert this expression in the search editor, click Ok button, and finally enable regular expressions by toggling the <link linkend="kfilereplace-the-toolbar">regexp button</link>. Please note that using regular expressions lets you to make very complicated search, but the cost could be a speed performance degradation.
+  </para>
+</sect1>
+<sect1 id="kfilereplace-backup-file">
+  <title>How to protect original files</title>
+  <para>
+    If you don't want to lose your original files, you can do a copy of them before the replacing the strings. You only must insert your strings, and before starting replace you must toggle the <link linkend="kfilereplace-the-toolbar">backup button</link>. If you want to customize the extension of the backup files open the <link linkend="kfilereplace-the-options-dialog">option dialog</link>.
+  </para>
+</sect1>
+<sect1 id="kfilereplace-open-file">
+  <title>How to open a file</title>
+  <para>
+   If you want to open a file that matches some of your strings, you must select a line in the result view and click with the right button of the mouse. A menu will appear, then you only have to choose a option on it. Note that if you use &kfilereplace; embedded in Quanta+ you can open the file directly on it at the specified line and column.
+  </para>
+</sect1>
 <sect1 id="kfilereplace-commands">
  <title>Commands</title>
   <para>
-    Suppose you want subtitute the phrase "Alice's adventures in wonderland" with the entire file that contains Carroll's novel. Probably you don't want to do this by hand, what you need is a "command" that do it for you. So click the <link linkend="kfilereplace-the-toolbar">add</link> button, select "search and replace mode" and insert the following strings: "Alice's adventure in wonderland" in the search mini editor and the string <quote>[$loadfile:/the-path-to-my-directory/my-directory/my-file$]</quote> in the replace mini editor. Click Ok button, and when you come back to KFileReplace main window, toggle the <link linkend="kfilereplace-the-toolbar">command action</link> button that enables the commands, and start the replace. Other commands are presents, please see <link linkend="available-commands">Appendix B</link> for a list of available commands.
+    Suppose you want subtitute the phrase "Alice's adventures in wonderland" with the entire file that contains Carroll's novel. Probably you don't want to do this by hand, what you need is a "command" that do it for you. So click the <link linkend="kfilereplace-the-toolbar">add</link> button, select "search and replace mode" and insert the following strings: "Alice's adventure in wonderland" in the search mini editor and the string <quote>[$loadfile:/the-path-to-my-directory/my-directory/my-file$]</quote> in the replace mini editor. Click Ok button, and when you come back to &kfilereplace; main window, toggle the <link linkend="kfilereplace-the-toolbar">command action</link> button that enables the commands, and start the replace. Other commands are presents, please see <link linkend="available-commands">Appendix B</link> for a list of available commands.
   </para>
 </sect1>
 </chapter>
@@ -770,9 +794,9 @@ Documentation copyright 2004 Gulmini Emiliano <email>emi_barbarossa&#64;yahoo&#4
 <title>Installation</title>
 
 <sect1 id="getting-kfilereplace">
-<title>How to install KFileReplace</title>
+<title>How to install &kfilereplace;</title>
 <para>
-KFileReplace is actually part of Kdewebdev tool, so to in order to install it, you must obtain a copy of Kdewebdev. Note that if you are using a KDE installation provided by your OS vendor, probably you already have Kdewebdev installed, in this case you can use KFileReplace either by opening Quanta plus web editor or by calling it directly. If not you can download Kdewebdev package from the internet, please refer to <ulink url="http://kdewebdev.org">Kdewebdev home site</ulink> for more informations.
+&kfilereplace; is actually part of Kdewebdev tool, so in order to install it, you must obtain a copy of Kdewebdev. Note that if you are using a KDE installation provided by your OS vendor, probably you already have Kdewebdev installed, in this case you can use &kfilereplace; either by opening Quanta plus web editor or by calling it directly(unless you have an old KDE version). If not you can download Kdewebdev package from the internet, please refer to <ulink url="http://kdewebdev.org">Kdewebdev home site</ulink> for more informations.
 <!--&install.intro.documentation;-->
 </para>
 <para>http://kde-apps.org
@@ -791,7 +815,7 @@ KFileReplace is actually part of Kdewebdev tool, so to in order to install it, y
 </appendix>
 
 <appendix id="available-commands">
- <title>KFileReplace commands</title>
+ <title>&kfilereplace; commands</title>
  <para>
    <segmentedlist>
      <segtitle>[$datetime:iso$]</segtitle>

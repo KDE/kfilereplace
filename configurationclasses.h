@@ -81,7 +81,8 @@ class RCOptions
          m_dontAskAgain;
 
     QString m_directories,
-            m_filters;
+            m_filters,
+	    m_currentDirectory;
 
     int m_minSize,
         m_maxSize;

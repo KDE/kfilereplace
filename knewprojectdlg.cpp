@@ -200,6 +200,7 @@ void KNewProjectDlg::slotEnableChbBackup(bool b)
   m_tlBackup->setEnabled(b);
 }
 
+//PRIVATE
 void KNewProjectDlg::initGUI()
 {
   QIconSet iconSet = SmallIconSet("fileopen");

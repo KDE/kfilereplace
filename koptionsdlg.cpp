@@ -60,12 +60,79 @@ KOptionsDlg::~KOptionsDlg()
 {
 }
 
+//PRIVATE SLOTS
 void KOptionsDlg::slotOK()
 {
   saveRCOptions();
   accept();
 }
 
+/** Set defaults values for all options of the dialog */
+void KOptionsDlg::slotDefaults()
+{
+  m_chbCaseSensitive->setChecked(CaseSensitiveOption);
+  m_chbRecursive->setChecked(RecursiveOption);
+  m_chbHaltOnFirstOccurrence->setChecked(StopWhenFirstOccurenceOption);
+
+  m_chbFollowSymLinks->setChecked(FollowSymbolicLinksOption);
+  m_chbIgnoreHidden->setChecked(IgnoreHiddenOption);
+  m_chbRegularExpressions->setChecked(RegularExpressionsOption);
+  m_chbIgnoreFiles->setChecked(IgnoreFilesOption);
+  m_chbConfirmStrings->setChecked(AskConfirmReplaceOption);
+
+  QStringList bkList = QStringList::split(",",BackupExtensionOption,true);
+
+  bool enableBackup = (bkList[0] == "true" ? true : false);
+
+  m_chbBackup->setChecked(enableBackup);
+  m_leBackup->setEnabled(enableBackup);
+  m_tlBackup->setEnabled(enableBackup);
+
+  m_leBackup->setText(bkList[1]);
+
+  m_chbVariables->setChecked(VariablesOption);
+
+  m_chbNotifyOnErrors->setChecked(NotifyOnErrorsOption);
+}
+
+void KOptionsDlg::slotChbBackup(bool b)
+{
+  m_leBackup->setEnabled(b);
+  m_tlBackup->setEnabled(b);
+}
+
+void KOptionsDlg::slotChbConfirmStrings(bool b)
+{
+  if(b)
+  {
+    m_chbShowConfirmDialog->setEnabled(true);
+    m_chbShowConfirmDialog->setChecked(true);
+    m_config->setGroup("Notification Messages");
+    m_config->writeEntry(rcDontAskAgain,"no");
+  }
+  else
+  {
+    m_chbShowConfirmDialog->setEnabled(false);
+    m_chbShowConfirmDialog->setChecked(false);
+    m_config->setGroup("Notification Messages");
+    m_config->writeEntry(rcDontAskAgain,"yes");
+  }
+}
+
+void KOptionsDlg::slotChbShowConfirmDialog(bool b)
+{
+  m_config->setGroup("Notification Messages");
+  if(b)
+  {
+    m_config->writeEntry(rcDontAskAgain,"no");
+  }
+  else
+  {
+    m_config->writeEntry(rcDontAskAgain,"yes");
+  }
+}
+
+//PRIVATE
 void KOptionsDlg::initGUI()
 {
   m_config->sync();
@@ -125,71 +192,6 @@ void KOptionsDlg::saveRCOptions()
   m_config->writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
 
   m_config->sync();
-}
-
-/** Set defaults values for all options of the dialog */
-void KOptionsDlg::slotDefaults()
-{
-  m_chbCaseSensitive->setChecked(CaseSensitiveOption);
-  m_chbRecursive->setChecked(RecursiveOption);
-  m_chbHaltOnFirstOccurrence->setChecked(StopWhenFirstOccurenceOption);
-
-  m_chbFollowSymLinks->setChecked(FollowSymbolicLinksOption);
-  m_chbIgnoreHidden->setChecked(IgnoreHiddenOption);
-  m_chbRegularExpressions->setChecked(RegularExpressionsOption);
-  m_chbIgnoreFiles->setChecked(IgnoreFilesOption);
-  m_chbConfirmStrings->setChecked(AskConfirmReplaceOption);
-
-  QStringList bkList = QStringList::split(",",BackupExtensionOption,true);
-
-  bool enableBackup = (bkList[0] == "true" ? true : false);
-
-  m_chbBackup->setChecked(enableBackup);
-  m_leBackup->setEnabled(enableBackup);
-  m_tlBackup->setEnabled(enableBackup);
-
-  m_leBackup->setText(bkList[1]);
-
-  m_chbVariables->setChecked(VariablesOption);
-
-  m_chbNotifyOnErrors->setChecked(NotifyOnErrorsOption);
-}
-
-void KOptionsDlg::slotChbBackup(bool b)
-{
-  m_leBackup->setEnabled(b);
-  m_tlBackup->setEnabled(b);
-}
-
-void KOptionsDlg::slotChbConfirmStrings(bool b)
-{
-  if(b)
-    {
-      m_chbShowConfirmDialog->setEnabled(true);
-      m_chbShowConfirmDialog->setChecked(true);
-      m_config->setGroup("Notification Messages");
-      m_config->writeEntry(rcDontAskAgain,"no");
-    }
-  else
-    {
-      m_chbShowConfirmDialog->setEnabled(false);
-      m_chbShowConfirmDialog->setChecked(false);
-      m_config->setGroup("Notification Messages");
-      m_config->writeEntry(rcDontAskAgain,"yes");
-    }
-}
-
-void KOptionsDlg::slotChbShowConfirmDialog(bool b)
-{
-  m_config->setGroup("Notification Messages");
-  if(b)
-    {
-      m_config->writeEntry(rcDontAskAgain,"no");
-    }
-  else
-    {
-      m_config->writeEntry(rcDontAskAgain,"yes");
-    }
 }
 
 void KOptionsDlg::whatsThis()
