@@ -112,12 +112,13 @@ namespace whatthisNameSpace
   const QString optionsCaseWhatthis = i18n( "The lowers and uppers are different. For example, if you search for <b>Linux</b> and "
                                       "there is <b>linux</b>, then the string will not be found/replaced." );
 
+  // Stop CVS from putting the CVS tag in the pot file
   const QString optionsVarWhatthis = i18n( "Enable use of the variables, as the date & time or the name of the current file. "
-                                     "The variable must be in the replace string, with the format [$Name:  $]. When doing the replace, "
+                                     "The variable must be in the replace string, with the format [$%1:  $]. When doing the replace, "
                                      "the value of the variable "
                                      "is written instead of the variable. If disabled, the replace string will be copied without "
                                      "substitution. Please, read help for "
-                                     "more details on the variables names and formats." );
+                                     "more details on the variables names and formats." ).arg( i18n( "Name of variable", "Name" ) );
 
   const QString optionsRecursiveWhatthis = i18n( "Search/Replace files in the subfolders of the main folder selected "
                                            "when creating a new project at startup." );
