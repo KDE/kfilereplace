@@ -57,7 +57,7 @@ QString g_szErrMsg;
 
 // Factory code for KDE 3
 typedef KParts::GenericFactory<KFileReplacePart> KFileReplaceFactory;
-K_EXPORT_COMPONENT_FACTORY( libkfilereplacepart, KFileReplaceFactory );
+K_EXPORT_COMPONENT_FACTORY( libkfilereplacepart, KFileReplaceFactory )
 
 KFileReplacePart::KFileReplacePart(QWidget *parentWidget, const char *, QObject *parent, const char *name, const QStringList & )
   : KParts::ReadOnlyPart(parent,name)
