@@ -2,7 +2,7 @@
                           kfilereplaceview.cpp  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by François Dupoux <dupoux@dupoux.com>
+    copyright            : (C) 1999 by Franï¿½is Dupoux <dupoux@dupoux.com>
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
 *****************************************************************************/
 
@@ -278,9 +278,10 @@ void KFileReplaceView::slotResultDelete()
   if (!currItem.isEmpty())
     {
       QFile fi;
-      int answer = KMessageBox::questionYesNo(this, i18n("Do you really want to delete %1?").arg(currItem));
+      int answer = KMessageBox::warningContinueCancel(this, i18n("Do you really want to delete %1?").arg(currItem),
+                                                      QString::null,KStdGuiItem::del());
 
-      if(answer == KMessageBox::Yes)
+      if(answer == KMessageBox::Continue)
         {
           fi.setName(currItem);
           fi.remove();
