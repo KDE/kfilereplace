@@ -5,7 +5,7 @@ INCLUDES  = $(all_includes)
 
 # this has all of the subdirectories that make will recurse into.  if
 # there are none, comment this out
-SUBDIRS = . pics toolbar
+SUBDIRS = toolbar
 
 # these are the headers for your project
 noinst_HEADERS = kaddstringdlg.h kfilereplaceiface.h kfilereplacelib.h \
