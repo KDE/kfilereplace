@@ -24,6 +24,7 @@ class QString;
 
 // KDE
 #include <klocale.h>
+#include "configurationclasses.h"
 class KListView;
 
 /** Report class is used to create a pair of files (a xml and a css file) which are
@@ -33,20 +34,25 @@ class KListView;
 class Report
 {
   private:
-    KListView* m_stringView,
-             * m_resultView;
+    KListView* m_stringsView,
+             * m_resultsView;
     QString m_docPath;
     bool m_isSearchFlag;
+    RCOptions* m_option;
 
   public:
-    Report() {}
-
+    Report(RCOptions* info, KListView* rv, KListView* sv) { m_option = info;
+                                                            m_resultsView = rv;
+                                                            m_stringsView = sv;
+                                                            m_isSearchFlag = m_option->m_searchingOnlyMode;
+                                                          }
+    ~Report() { m_option = 0; }
   private:
     void createReportFile();
     void createStyleSheet();
 
   public:
-    void createDocument(const QString& docPath, KListView* stringView, KListView* resultView, bool isSearchFlag);
+    void createDocument(const QString& docPath);
 };
 
 #endif // REPORT_H

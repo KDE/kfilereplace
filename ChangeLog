@@ -1,9 +1,39 @@
+2005-01-14 Andras Mantia <amantia@kde.org>
+  *  Don't show the cannot open file dialogs for directories
+  *  Don't create a backup for every scanned file, only for those that were modified
+  *  Don't update the timestap for every scanned file
+  *  Fix installation of the icons (they go to the part's data dir now)
+
+2005-01-13 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+  *  I added some other infos to the docbook manual, I hope to complete it as soon as possible.
+  *  I added a new command: [$mathexp:some_expression$]. It uses the bc calculator to 
+     compute the result of an expression.
+
+2005-01-11 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+  *  Fixed a bug in KAddStringDlg: now when we want edit a string the search-only mode and search-replace mode 
+     don't merge.
+  *  Modified KFR file format: I added the tag '<mode search=""/>' just after the root <kfr> to allows 
+     kfilereplace to recognize if the list to load is a list of only search strings. I added some lines of code
+     to permit users to load files that don't have this new tag.
+  *  I'm writing docbook manual. 
+
+2005-01-10 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+  *  The KFilereplaceView widget has been modified. Now it change the layout of kfilereplace depending of the 
+     value of m_option->m_searchOnlyMode.
+  *  I fixed a bug in the backup file option.
+
+2004-12-13 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+  *  I modified the way we can open files in quanta. Now we can select one or more entries
+     in the QListView that store the results, and open several files, at the same time.
+     For selecting more than one file, we must press CTRL button while clicking with mouse
+     on the entry we want open.
+
 2004-11-10 Emiliano Gulmini <emi_barbarossa@yahoo.it>
   *  I added a graphical file counter.
   *  I added a semaphore to notify user about the state of the search.
   *  I improved a little the speed.
   *  I made some cleanup.
-   
+
 2004-09-27 Emiliano Gulmini <emi_barbarossa@yahoo.it>
   *  I fixed a bug that affect some strings in case of translation.
   *  I fixed a bug that affect "Create backup" option, I think that now this feature should work
@@ -20,8 +50,8 @@
 
 2004-08-13 Emiliano Gulmini <emi_barbarossa@yahoo.it>
   *  I added CommandEngine class and Report class.
-  In fact I moved the code that do the report document and the 
-  code that do commands feature from KFileREplaceLib to these two classes.
+     In fact I moved the code that do the report document and the 
+     code that do commands feature from KFileREplaceLib to these two classes.
 
 2004-08-09 Emiliano Gulmini <emi_barbarossa@yahoo.it>
   *  I fixed a bug that affected the method "void KFileReplaceView::slotStringsClear()" in kfilereplaceview.cpp file.

@@ -47,14 +47,19 @@ void Report::createReportFile()
   QDateTime datetime = QDateTime::currentDateTime(Qt::LocalTime);
   QString dateString = datetime.toString(Qt::LocalDate);
   KUser user;
-  QString columnTextFour = i18n("Replaced Strings"),
-          columnReplaceWith = i18n("Replace with");
-
-  if(m_isSearchFlag)
+  QString columnTextFour,
+          columnReplaceWith;
+  if(!m_isSearchFlag)
+    {
+      columnTextFour = i18n("Replaced Strings");
+      columnReplaceWith = i18n("Replace with");
+    }
+  else
     {
       columnTextFour = i18n("Total number occurrences");
       columnReplaceWith = i18n("-");
     }
+
   QString css =  cssFileName.mid(cssFileName.findRev("/")+1,cssFileName.length()-(cssFileName.findRev("/")+1));
   QTextStream oTStream( &report );
   oTStream << "<?xml version=\"1.0\"?>\n"
@@ -68,15 +73,18 @@ void Report::createReportFile()
               " <tablecaption> "+i18n("Searching/Replacing Strings Table")+" </tablecaption>\n"
               " <header>\n"
               "  <row>\n"
-              "   <searchfor class=\"header\">"+i18n("Search for")+"</searchfor>\n"
-              "   <replacewith class=\"header\" >"+columnReplaceWith+"</replacewith>\n"
-              "  </row>\n"
+              "   <searchfor class=\"header\">"+i18n("Search for")+"</searchfor>\n";
+
+              if(!m_isSearchFlag)
+                oTStream<< "   <replacewith class=\"header\" >"+columnReplaceWith+"</replacewith>\n";
+
+              oTStream<< "  </row>\n"
               " </header>\n";
   // c) Write the strings list
   QListViewItem *lviCurItem,
                 *lviFirst;
 
-  lviCurItem = lviFirst = m_stringView->firstChild();
+  lviCurItem = lviFirst = m_stringsView->firstChild();
 
   if(lviCurItem == 0)
     return ;
@@ -104,10 +112,17 @@ void Report::createReportFile()
              "  <header>\n"
              "   <row>\n"
              "    <name class=\"header\">"+i18n("Name")+"</name>\n"
-             "    <folder class=\"header\">"+i18n("Folder")+"</folder>\n"
-             "    <oldsize class=\"header\">"+i18n("Old Size")+"</oldsize>\n"
-             "    <newsize class=\"header\">"+i18n("New Size")+"</newsize>\n"
-             "    <replacedstrings class=\"header\" >"+columnTextFour+"</replacedstrings>\n"
+             "    <folder class=\"header\">"+i18n("Folder")+"</folder>\n";
+             if(m_isSearchFlag)
+               {
+                 oTStream<< "    <oldsize class=\"header\">"+i18n("Size")+"</oldsize>\n";
+               }
+             else
+               {
+                 oTStream<< "    <oldsize class=\"header\">"+i18n("Old Size")+"</oldsize>\n"
+                            "    <newsize class=\"header\">"+i18n("New Size")+"</newsize>\n";
+               }
+  oTStream<< "    <replacedstrings class=\"header\" >"+columnTextFour+"</replacedstrings>\n"
              "    <owneruser class=\"header\">"+i18n("Owner User")+"</owneruser>\n"
              "    <ownergroup class=\"header\">"+i18n("Owner Group")+"</ownergroup>\n"
              "   </row>\n"
@@ -115,7 +130,7 @@ void Report::createReportFile()
 
   // d) Write the result list
 
-  lviCurItem = lviFirst = m_resultView->firstChild();
+  lviCurItem = lviFirst = m_resultsView->firstChild();
 
   if(lviCurItem == 0)
     return ;
@@ -127,19 +142,33 @@ void Report::createReportFile()
   do
     { QString rowTag = "   <row >\n"
                        "    <name class=\""+rowType+"\"><![CDATA["+lviCurItem->text(0)+"]]></name>\n"
-                       "    <folder class=\""+rowType+"\"><![CDATA["+lviCurItem->text(1)+"]]></folder>\n"
-                       "    <oldsize class=\""+rowType+"\"><![CDATA["+lviCurItem->text(2)+"]]></oldsize>\n"
-                       "    <newsize class=\""+rowType+"\"><![CDATA["+lviCurItem->text(3)+"]]></newsize>\n"
-                       "    <replacedstrings class=\""+rowType+"\"><![CDATA["+lviCurItem->text(4)+"]]></replacedstrings>\n"
-                       "    <owneruser class=\""+rowType+"\"><![CDATA["+lviCurItem->text(5)+"]]></owneruser>\n"
-                       "    <ownergroup class=\""+rowType+"\"><![CDATA["+lviCurItem->text(6)+"]]></ownergroup>\n"
-                       "   </row>\n";
+                           "    <folder class=\""+rowType+"\"><![CDATA["+lviCurItem->text(1)+"]]></folder>\n";
+      if(m_isSearchFlag)
+        {
+          rowTag += "    <oldsize class=\""+rowType+"\"><![CDATA["+lviCurItem->text(2)+"]]></oldsize>\n"
+                    "    <replacedstrings class=\""+rowType+"\"><![CDATA["+lviCurItem->text(3)+"]]></replacedstrings>\n"
+                    "    <owneruser class=\""+rowType+"\"><![CDATA["+lviCurItem->text(4)+"]]></owneruser>\n"
+                    "    <ownergroup class=\""+rowType+"\"><![CDATA["+lviCurItem->text(5)+"]]></ownergroup>\n"
+                    "   </row>\n";
+        }
+      else
+        {
+          rowTag += "    <oldsize class=\""+rowType+"\"><![CDATA["+lviCurItem->text(2)+"]]></oldsize>\n"
+                    "    <newsize class=\""+rowType+"\"><![CDATA["+lviCurItem->text(3)+"]]></newsize>\n"
+                    "    <replacedstrings class=\""+rowType+"\"><![CDATA["+lviCurItem->text(4)+"]]></replacedstrings>\n"
+                    "    <owneruser class=\""+rowType+"\"><![CDATA["+lviCurItem->text(5)+"]]></owneruser>\n"
+                    "    <ownergroup class=\""+rowType+"\"><![CDATA["+lviCurItem->text(6)+"]]></ownergroup>\n"
+                    "   </row>\n";
+        }
 
       oTStream << rowTag;
 
       rowType = ((rowType == "a1") ? "a2" : "a1");
 
-      totalOccurrences += lviCurItem->text(4).toInt();
+      if(m_isSearchFlag)
+        totalOccurrences += lviCurItem->text(3).toInt();
+      else
+        totalOccurrences += lviCurItem->text(4).toInt();
 
       lviCurItem = lviCurItem->nextSibling();
     } while(lviCurItem && lviCurItem != lviFirst);
@@ -181,38 +210,43 @@ void Report::createStyleSheet()
                 "searchfor {\n"
                 "           display:table-cell;\n"
                 "           border:1px solid black;\n"
-                "           padding:0 7px 0; }\n\n"
-                "replacewith {\n"
-                "             display:table-cell;\n"
-                "             border:1px solid black;\n"
-                "             padding:0 7px 0; }\n\n"
-                "folder {\n"
-                "        display:table-cell;\n"
-                "        border:1px solid black;\n"
-                "        padding:0 7px 0; }\n\n"
-                "header { display: table-header-group; }\n\n"
-                "name {\n"
-                "      display:table-cell;\n"
-                "      border:1px solid black;\n"
-                "      padding:0 7px 0; }\n\n"
-                "newsize {\n"
-                "         display:table-cell;\n"
-                "         border:1px solid black;\n"
-                "         padding:0 7px 0;\n"
-                "         text-align:right; }\n\n"
-                "oldsize {\n"
-                "         display:table-cell;\n"
-                "         border:1px solid black;\n"
-                "         padding:0 7px 0;\n"
-                "         text-align:right; }\n\n"
-                "ownergroup {\n"
-                "            display:table-cell;\n"
-                "            border:1px solid black;\n"
-                "            padding:0 7px 0; }\n\n"
-                "owneruser {\n"
-                "           display:table-cell;\n"
-                "           border:1px solid black;\n"
-                "           padding:0 7px 0; }\n\n"
+                "           padding:0 7px 0; }\n\n";
+
+                if(!m_isSearchFlag)
+                  {
+                    css += "replacewith {\n"
+                           "             display:table-cell;\n"
+                           "             border:1px solid black;\n"
+                        "             padding:0 7px 0; }\n\n";
+                  }
+
+                css += "folder {\n"
+                       "        display:table-cell;\n"
+                       "        border:1px solid black;\n"
+                       "        padding:0 7px 0; }\n\n"
+                       "header { display: table-header-group; }\n\n"
+                       "name {\n"
+                       "      display:table-cell;\n"
+                       "      border:1px solid black;\n"
+                       "      padding:0 7px 0; }\n\n"
+                       "newsize {\n"
+                       "         display:table-cell;\n"
+                       "         border:1px solid black;\n"
+                       "         padding:0 7px 0;\n"
+                       "         text-align:right; }\n\n"
+                       "oldsize {\n"
+                       "         display:table-cell;\n"
+                       "         border:1px solid black;\n"
+                       "         padding:0 7px 0;\n"
+                       "         text-align:right; }\n\n"
+                       "ownergroup {\n"
+                       "            display:table-cell;\n"
+                       "            border:1px solid black;\n"
+                       "            padding:0 7px 0; }\n\n"
+                       "owneruser {\n"
+                       "           display:table-cell;\n"
+                       "           border:1px solid black;\n"
+                       "           padding:0 7px 0; }\n\n"
                 "replacedstrings {\n"
                 "                 text-align:right;\n"
                 "                 display:table-cell;\n"
@@ -238,12 +272,9 @@ void Report::createStyleSheet()
   styleSheet.close();
 }
 
-void Report::createDocument(const QString& docPath, KListView* stringView, KListView* resultView, bool isSearchFlag)
+void Report::createDocument(const QString& docPath)
 {
   m_docPath = docPath;
-  m_stringView = stringView;
-  m_resultView = resultView;
-  m_isSearchFlag = isSearchFlag;
 
   createStyleSheet();
   createReportFile();

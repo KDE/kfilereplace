@@ -21,9 +21,16 @@
 
 // QT
 class QString;
+#include <qobject.h>
 
-class CommandEngine
+//KDE
+class KProcess;
+
+class CommandEngine : public QObject
 {
+  Q_OBJECT
+  private:
+    QString m_processOutput;
   public:
     CommandEngine() {}
 
@@ -40,6 +47,11 @@ class CommandEngine
     QString random(const QString& opt, const QString& arg);
     QString stringmanip(const QString& opt, const QString& arg);
     QString variableValue(const QString &variable);
+
+  private slots:
+    void slotGetScriptOutput(KProcess*,char*,int);
+    void slotGetScriptError(KProcess*,char*,int);
+    void slotProcessExited(KProcess*);
 };
 
 #endif // COMMANDENGINE_H

@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>KNewProjectDlgS</class>
 <widget class="QDialog">
     <property name="name">
@@ -86,7 +86,7 @@
                         <cstring>m_pbSearchNow</cstring>
                     </property>
                     <property name="text">
-                        <string>Search Now</string>
+                        <string>Search now</string>
                     </property>
                     <property name="accel">
                         <string></string>
@@ -100,7 +100,7 @@
                         <cstring>m_pbSearchLater</cstring>
                     </property>
                     <property name="text">
-                        <string>Search Later</string>
+                        <string>Search later</string>
                     </property>
                     <property name="accel">
                         <string></string>
@@ -158,7 +158,7 @@
                                     <cstring>groupBox5</cstring>
                                 </property>
                                 <property name="title">
-                                    <string>Base Folder Options</string>
+                                    <string>Base folder options</string>
                                 </property>
                                 <grid>
                                     <property name="name">
@@ -279,7 +279,7 @@
                                     <cstring>groupBox4</cstring>
                                 </property>
                                 <property name="title">
-                                    <string>General Options</string>
+                                    <string>General options</string>
                                 </property>
                                 <grid>
                                     <property name="name">
@@ -328,7 +328,10 @@
                                                     <cstring>m_chbEnableVariables</cstring>
                                                 </property>
                                                 <property name="text">
-                                                    <string>Enable &amp;variables in the replace string</string>
+                                                    <string>Enable co&amp;mmands in the replace string</string>
+                                                </property>
+                                                <property name="accel">
+                                                    <string>Alt+M</string>
                                                 </property>
                                             </widget>
                                             <widget class="QLayoutWidget">
@@ -384,7 +387,7 @@
                                     <cstring>groupBox6</cstring>
                                 </property>
                                 <property name="title">
-                                    <string>Quick Search/Replace</string>
+                                    <string>Quick search/replace</string>
                                 </property>
                                 <grid>
                                     <property name="name">
@@ -953,4 +956,19 @@
     <tabstop>m_dedDateMax</tabstop>
 </tabstops>
 <layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+</includehints>
 </UI>

@@ -32,15 +32,15 @@ class KNewProjectDlg : public KNewProjectDlgS
 
   private:
     QString m_searchNowFlag;
-    RCOptions m_option;
+    RCOptions* m_option;
 
   public:
-    KNewProjectDlg(QWidget *parent, const char *name=0);
+    KNewProjectDlg(RCOptions* info, QWidget *parent=0, const char *name=0);
     ~KNewProjectDlg();
 
   public:
-    void readOptions(const RCOptions& info);
-    RCOptions writeOptions();
+    void updateOptions(const RCOptions& info);
+    void saveRCOptions();
 
   protected slots:
     void slotDir();
@@ -53,11 +53,13 @@ class KNewProjectDlg : public KNewProjectDlgS
     void slotEnableSpinboxSizeMax(bool b);
     void slotEnableCbValidDate(bool b);
     void slotEnableChbUser(bool b);
-    void slotEnableChbGroup(bool b); 
+    void slotEnableChbGroup(bool b);
     void slotEnableChbBackup(bool b);
     void slotHelp(){ kapp->invokeHelp(QString::null, "kfilereplace"); }
 
   private:
+    void initGUI();
+
     bool contains(QListView* lv,const QString& s, int column);
 
     void loadOptions();

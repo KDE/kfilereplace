@@ -22,45 +22,54 @@
 // local
 #include "kaddstringdlgs.h"
 #include "configurationclasses.h"
-
+/**
+ * This is the dialog used to add a list of searching/replacing strings
+ */
 class KAddStringDlg : public KAddStringDlgS
 {
   Q_OBJECT
   private:
-    RCOptions m_option;
+    RCOptions* m_option;
+    QListView* m_sv;
+    KeyValueMap m_currentMap;
+    bool m_wantEdit;
+
+  public: //Constructors
+    KAddStringDlg(RCOptions* info, bool wantEdit, QWidget *parent=0, const char *name=0);
 
   public:
-    KAddStringDlg(QWidget *parent=0, const char *name=0);
-    ~KAddStringDlg();
-
-  public:
-    void readOptions(const RCOptions& info) { m_option = info;
-                                              updateStringsViewContent(); }
-    RCOptions writeOptions() { return m_option; }
     /**
-     *Loads the content of 'map' in a qlistview
+     *Deletes all the items of the view
      */
-    //void loadMapContent(KeyValueMap map);
+    void eraseViewItems();
     /**
-     *Cleans the 'stringView' up
+     *Deletes all the items of the map
      */
-    void clearStringsView();
+    void clearMap() { KeyValueMap m; m_option->m_mapStringsView = m; }
+    /**
+     *inits... the GUI :-)
+     */
+    void initGUI();
 
   private slots:
     void slotOK();
-    void slotSearchOnly(bool b);
-    void slotSearchReplace(bool b);
-    void slotAdd();
-    void slotDel();
+    void slotSearchOnly();
+    void slotSearchReplace();
+    void slotAddStringToView();
+    void slotDeleteStringFromView();
     void slotHelp();
 
   private:
     /**
+     *The view is actually a stack widget that contains two different views widget
+     */
+    void raiseView();
+    /**
      *Verifies whether 'lv' contains 's'
      */
-    bool contains(QListView* lv,const QString& s, int column);
-    void updateStringsMapContent();
-    void updateStringsViewContent();
+    bool columnContains(QListView* lv,const QString& s, int column);
+    void saveViewContentIntoMap();
+    void loadMapIntoView();
     void whatsThis();
 };
 

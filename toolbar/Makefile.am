@@ -1,2 +1,3 @@
-appdir = $(kde_datadir)/kfilereplace/pics
-app_ICON=AUTO
+appdir = $(kde_datadir)/kfilereplacepart/icons
+app_ICON = AUTO
+

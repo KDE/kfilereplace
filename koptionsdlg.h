@@ -34,13 +34,12 @@ class KOptionsDlg : public KOptionsDlgS
 {
   Q_OBJECT
   public:
-    KOptionsDlg(QWidget *parent, const char *name);
+    KOptionsDlg(RCOptions* info, QWidget *parent, const char *name);
     ~KOptionsDlg();
-    void readOptions(const RCOptions& info);
-    RCOptions writeOptions();
+    void saveRCOptions();
 
   private:
-    RCOptions m_option;
+    RCOptions* m_option;
     KConfig *m_config;
 
   protected slots:
@@ -50,6 +49,7 @@ class KOptionsDlg : public KOptionsDlgS
     void slotHelp(){ kapp->invokeHelp(QString::null, "kfilereplace"); }
 
   private:
+    void initGUI();
     void whatsThis();
 };
 

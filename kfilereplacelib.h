@@ -37,7 +37,7 @@ class KFileReplaceLib
     Parameters::.....* basePath: fist path (can be "/" if root, or "/usr/bin/" or "/usr/bin" for example)
     .................* filename: second path (can be "/doc/html/", or "doc/html/" or "doc/html/index.html" for example)
     Return values:...* Full valid path (without double "/")
-    */ 
+    */
     static QString formatFullPath(const QString& basePath, const QString& fileName);
 
     /**
@@ -53,12 +53,12 @@ class KFileReplaceLib
     /**
     converts the old kfr format file in the new xml-based format.
     */
-    static void convertOldToNewKFRFormat(const QString& fileName, QListView* stringView);
+    static void convertOldToNewKFRFormat(const QString& fileName, KListView* stringView);
     /**
     Verifies that files, which we are scanning, respect some
     conditions
     */
-    static bool isAnAccessibleFile(const QString& filePath, const QString& fileName, const RCOptions& info);
+    static bool isAnAccessibleFile(const QString& filePath, const QString& fileName, RCOptions* info);
 
     static void setIconForFileEntry(QListViewItem* item, QString path);
 };

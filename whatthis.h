@@ -70,7 +70,7 @@ namespace whatthisNameSpace
 
   const QString chbRegularExpressionsWhatthis = i18n("Allows you to apply QT-like regular expressions on the search string. Note that a complex regular expression could affect speed performance");
 
-  const QString chbVariablesWhatthis = i18n("Enable \"variables commands\". For example: if search string is \"user\" and replace string is the command \"[$user:uid$]\", KFR will substitute \"user\" with the uid of the user.");
+  const QString chbVariablesWhatthis = i18n("Enable \"commands\". For example: if search string is \"user\" and replace string is the command \"[$user:uid$]\", KFR will substitute \"user\" with the uid of the user.");
 
   const QString chbBackupWhatthis = i18n("Enable this option if you want leave original files untouched.");
 

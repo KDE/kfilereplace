@@ -40,13 +40,12 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     KConfig* m_config;
     KAboutApplication* m_aboutDlg;
     KeyValueMap m_replacementMap;
-    RCOptions m_option;
+    RCOptions* m_option;
     bool m_stop,
          m_searchingOperation;
     int m_optionMask;
 
-  //CONTRUCTORS
-  public:
+  public://Constructors
     KFileReplacePart(QWidget *parentWidget,
                      const char *widgetName,
                      QObject *parent,
@@ -55,13 +54,13 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     ~KFileReplacePart();
 
   //SLOTS
-  protected slots:
-    void slotFileNew();
-    void slotFileSearch();
-    void slotFileReplace();
-    void slotFileSimulate();
-    void slotFileStop();
-    void slotFileSave();
+  private slots:
+    void slotSetNewParameters();
+    void slotSearchingOperation();
+    void slotReplacingOperation();
+    void slotSimulatingOperation();
+    void slotStop();
+    void slotSave();
     void slotStringsAdd();
     void slotQuickStringsAdd();
     void slotStringsDeleteItem();
@@ -72,19 +71,17 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void slotStringsInvertCur();
     void slotStringsInvertAll();
     void slotOpenRecentStringFile(const KURL& urlFile);
-    void slotOptionsRecursive();
-    void slotOptionsBackup();
-    void slotOptionsCaseSensitive();
-    void slotOptionsVariables();
-    void slotOptionsRegularExpressions();
-    void slotOptionsPreferences();
+    void slotOptionRecursive();
+    void slotOptionBackup();
+    void slotOptionCaseSensitive();
+    void slotOptionVariables();
+    void slotOptionRegularExpressions();
+    void slotOptionPreferences();
     void showAboutApplication(void);
     void appHelpActivated();
     void reportBug();
     void resetActions();
-
-  private slots:
-    void searchMode(bool b){ m_option.setSearchMode(b); }
+    void slotSearchMode(bool b){ m_option->m_searchingOnlyMode = b; }
 
   //METHODS
   public:
@@ -132,7 +129,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void saveBackupExtensionOptions();
 
     /**
-     * Replacing system
+     * Replacing methods
      */
     void fileReplace();
     void recursiveFileReplace(const QString& dirName, int& filesNumber);
@@ -141,7 +138,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regularExpression);
 
     /**
-     * Searching system
+     * Searching methods
      */
     void fileSearch(const QString& dirName, const QString& filters);
     void recursiveFileSearch(const QString& dirName, const QString& filters, uint& filesNumber);

@@ -23,37 +23,61 @@
 #endif
 
 //QT
+#include <qlcdnumber.h>
+#include <qwidgetstack.h>
 class QPixMap;
-class KListView;
 
 //KDE
 class KPopupMenu;
+class KListView;
 
 //local
 #include "kfilereplaceviewwdg.h"
 #include "configurationclasses.h"
 
+class coord
+{
+  public:
+    int line,
+        column;
+  public:
+    coord(){ line = 1;
+             column = 1;}
+    coord(const coord& c) { line = c.line;
+                            column = c.column;}
+    coord operator=(const coord& c) { line = c.line;
+                                      column = c.column;
+                                      return (*this);}
+};
+
+
+/**
+ * The view of KFilereplace.
+ */
 class KFileReplaceView : public KFileReplaceViewWdg
 {
   Q_OBJECT
   private:
     KPopupMenu* m_menuResult;
-    RCOptions m_option;
+    RCOptions* m_option;
     KListViewItem* m_lviCurrent;
+    KListView* m_rv,
+             * m_sv;
+
+  public://Constructors
+    KFileReplaceView(RCOptions* info, QWidget *parent,const char *name);
 
   public:
-    KFileReplaceView(QWidget *parent,const char *name);
-    ~KFileReplaceView();
-
-  public:
-    void readOptions(const RCOptions& info) { m_option = info; }
-    RCOptions writeOptions() { return m_option; }
-    KListView* stringView(){ return m_lvStrings; }
-    KListView* resultView(){ return m_lvResults; }
+    void updateOptions(RCOptions* info) { m_option = info; }
+    void changeView(bool searchingOnlyMode);
+    KListView* getResultsView();
+    KListView* getStringsView();
     QString currentItem();
     void loadMap(KeyValueMap extMap){ loadMapIntoView(extMap); }
-    KeyValueMap stringsViewMap()const { return m_option.mapStringsView();}
+    KeyValueMap getStringsViewMap()const { return m_option->m_mapStringsView;}
     void setCurrentStringsViewMap(){ setMap();}
+    void displayScannedFiles(int filesNumber) { m_lcdFilesNumber->display(QString::number(filesNumber,10)); }
+    void emitSearchingOnlyMode(bool b) { emit searchingOnlyMode(b); }
 
   public slots:
     void slotStringsAdd();
@@ -64,7 +88,7 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void slotResultProperties();
     void slotResultOpen();
     void slotResultOpenWith();
-    void slotResultEdit();
+    void slotResultsEdit();
     void slotResultDirOpen();
     void slotResultDelete();
     void slotResultTreeExpand();
@@ -72,6 +96,10 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos);
 
   private:
+    void initGUI();
+    void raiseStringsView();
+    void raiseResultsView();
+    coord extractWordCoordinates(QListViewItem* lvi);
     void expand(QListViewItem *lviCurrent, bool b);
     void setMap();
     void loadMapIntoView(KeyValueMap map);
@@ -79,7 +107,7 @@ class KFileReplaceView : public KFileReplaceViewWdg
 
   signals:
     void resetActions();
-    void searchMode(bool);
+    void searchingOnlyMode(bool);
 };
 
 #endif // KFILEREPLACEVIEW_H

@@ -38,10 +38,14 @@
 using namespace whatthisNameSpace;
 
 
-KOptionsDlg::KOptionsDlg(QWidget *parent, const char *name) : KOptionsDlgS(parent,name,true)
+KOptionsDlg::KOptionsDlg(RCOptions* info, QWidget *parent, const char *name) : KOptionsDlgS(parent,name,true)
 {
   QString configName = locateLocal("config", "kfilereplacerc");
   m_config = new KConfig(configName);
+  m_option = info;
+
+  initGUI();
+
   connect(m_pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
   connect(m_pbDefault, SIGNAL(clicked()),this,SLOT(slotDefaults()));
   connect(m_chbBackup, SIGNAL(toggled(bool)), this, SLOT(slotChbBackup(bool)));
@@ -59,55 +63,50 @@ void KOptionsDlg::slotOK()
   accept();
 }
 
-void KOptionsDlg::readOptions(const RCOptions& info)
+void KOptionsDlg::initGUI()
 {
-  m_option = info;
   m_config->sync();
   m_config->setGroup("Notification Messages");
-  m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, true));
+  m_option->m_notifyOnErrors = m_config->readBoolEntry(rcNotifyOnErrors, true);
 
-  m_chbCaseSensitive->setChecked(m_option.caseSensitive());
-  m_chbRecursive->setChecked(m_option.recursive());
+  m_chbCaseSensitive->setChecked(m_option->m_caseSensitive);
+  m_chbRecursive->setChecked(m_option->m_recursive);
 
-  bool enableBackup = m_option.backup();
+  bool enableBackup = m_option->m_backup;
 
   m_chbBackup->setChecked(enableBackup);
   m_leBackup->setEnabled(enableBackup);
   m_tlBackup->setEnabled(enableBackup);
 
-  m_leBackup->setText(m_option.backupExtension());
+  m_leBackup->setText(m_option->m_backupExtension);
 
-  m_chbVariables->setChecked(m_option.variables());
-  m_chbRegularExpressions->setChecked(m_option.regularExpressions());
-  m_chbHaltOnFirstOccurrence->setChecked(m_option.haltOnFirstOccur());
-  m_chbFollowSymLinks->setChecked(m_option.followSymLinks());
-  m_chbIgnoreHidden->setChecked(m_option.ignoreHidden());
-  m_chbIgnoreFiles->setChecked(m_option.ignoreFiles());
-  m_chbConfirmStrings->setChecked(m_option.confirmStrings());
-  m_chbNotifyOnErrors->setChecked(m_option.notifyOnErrors());
+  m_chbVariables->setChecked(m_option->m_variables);
+  m_chbRegularExpressions->setChecked(m_option->m_regularExpressions);
+  m_chbHaltOnFirstOccurrence->setChecked(m_option->m_haltOnFirstOccur);
+  m_chbFollowSymLinks->setChecked(m_option->m_followSymLinks);
+  m_chbIgnoreHidden->setChecked(m_option->m_ignoreHidden);
+  m_chbIgnoreFiles->setChecked(m_option->m_ignoreFiles);
+  m_chbNotifyOnErrors->setChecked(m_option->m_notifyOnErrors);
 }
 
-RCOptions KOptionsDlg::writeOptions()
+void KOptionsDlg::saveRCOptions()
 {
-  m_option.setCaseSensitive(m_chbCaseSensitive->isChecked());
-  m_option.setRecursive(m_chbRecursive->isChecked());
+  m_option->m_caseSensitive = m_chbCaseSensitive->isChecked();
+  m_option->m_recursive = m_chbRecursive->isChecked();
   QString backupExt = m_leBackup->text();
-  m_option.setBackup(m_chbBackup->isChecked() && !backupExt.isEmpty());
-  m_option.setBackupExtension(backupExt);
-  m_option.setVariables(m_chbVariables->isChecked());
-  m_option.setRegularExpressions(m_chbRegularExpressions->isChecked());
-  m_option.setHaltOnFirstOccur(m_chbHaltOnFirstOccurrence->isChecked());
-  m_option.setFollowSymLinks(m_chbFollowSymLinks->isChecked());
-  m_option.setIgnoreHidden(m_chbIgnoreHidden->isChecked());
-  m_option.setIgnoreFiles(m_chbIgnoreFiles->isChecked());
-  m_option.setConfirmStrings(m_chbConfirmStrings->isChecked());
-  m_option.setNotifyOnErrors(m_chbNotifyOnErrors->isChecked());
+  m_option->m_backup = (m_chbBackup->isChecked() && !backupExt.isEmpty());
+  m_option->m_backupExtension = backupExt;
+  m_option->m_variables = m_chbVariables->isChecked();
+  m_option->m_regularExpressions = m_chbRegularExpressions->isChecked();
+  m_option->m_haltOnFirstOccur = m_chbHaltOnFirstOccurrence->isChecked();
+  m_option->m_followSymLinks = m_chbFollowSymLinks->isChecked();
+  m_option->m_ignoreHidden = m_chbIgnoreHidden->isChecked();
+  m_option->m_ignoreFiles = m_chbIgnoreFiles->isChecked();
+  m_option->m_notifyOnErrors = m_chbNotifyOnErrors->isChecked();
 
   m_config->setGroup("Notification Messages");
-  m_config->writeEntry(rcNotifyOnErrors, m_option.notifyOnErrors());
+  m_config->writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
   m_config->sync();
-
-  return m_option;
 }
 
 /** Set defaults values for all options of the dialog */

@@ -16,20 +16,22 @@
  *                                                                         *
  ***************************************************************************/
 
-// QT 
+// QT
 #include <qdatetime.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <qdom.h>
 
 // KDE
 #include <kuser.h>
 #include <krandomsequence.h>
+#include <kprocess.h>
 
 // local
 #include "commandengine.h"
-  
-QString CommandEngine::datetime(const QString& opt, const QString& arg) 
-{ 
+
+QString CommandEngine::datetime(const QString& opt, const QString& arg)
+{
   Q_UNUSED(arg);
   if(opt == "iso")
     return QDateTime::currentDateTime(Qt::LocalTime).toString(Qt::ISODate);
@@ -38,8 +40,8 @@ QString CommandEngine::datetime(const QString& opt, const QString& arg)
   return QString::null;
 }
 
-QString CommandEngine::user(const QString& opt, const QString& arg) 
-{ 
+QString CommandEngine::user(const QString& opt, const QString& arg)
+{
   Q_UNUSED(arg);
   KUser u;
   if(opt == "uid")
@@ -57,39 +59,76 @@ QString CommandEngine::user(const QString& opt, const QString& arg)
   return QString::null;
 }
 
-QString CommandEngine::loadfile(const QString& opt, const QString& arg) 
-{ 
+QString CommandEngine::loadfile(const QString& opt, const QString& arg)
+{
   Q_UNUSED(arg);
-  
+
   QFile f(opt);
   if(!f.open(IO_ReadOnly)) return QString::null;
-  
+
   QTextStream t(&f);
-  
+
   QString s = t.read();
-  
+
   f.close();
-  
+
   return s;
 }
 
-QString CommandEngine::empty(const QString& opt, const QString& arg) 
-{ 
+QString CommandEngine::empty(const QString& opt, const QString& arg)
+{
   Q_UNUSED(opt);
   Q_UNUSED(arg);
-  return "";  
+  return "";
 }
 
-QString CommandEngine::mathexp(const QString& opt, const QString& arg)
-{ 
-  //needs a calculator
-  Q_UNUSED(opt);
+QString CommandEngine::mathexp(const QString& _opt, const QString& arg)
+{
+  /* We will use bc 1.06 by Philip A. Nelson <philnelson@acm.org> */
+  //Q_UNUSED(opt);
   Q_UNUSED(arg);
-  return "";  
+
+  QString opt = _opt;
+  opt.replace("ln","l");
+  opt.replace("sin","s");
+  opt.replace("cos","c");
+  opt.replace("arctan","a");
+  opt.replace("exp","e");
+  
+  QString program = "var=("+opt+");print var";
+  QString script = "echo '"+program+"' | bc -l;";
+
+  KProcess* proc = new KProcess();
+
+  proc->setUseShell(true);
+
+  *(proc) << script;
+
+   connect(proc, SIGNAL(receivedStdout(KProcess*,char*,int)), this, SLOT(slotGetScriptOutput(KProcess*,char*,int)));
+   connect(proc, SIGNAL(receivedStderr(KProcess*,char*,int)), this, SLOT(slotGetScriptError(KProcess*,char*,int)));
+   connect(proc, SIGNAL(processExited(KProcess*)), this, SLOT(slotProcessExited(KProcess*)));
+
+  //Through slotGetScriptOutput, m_processOutput contains the result of the KProcess call
+   if(not proc->start(KProcess::Block, KProcess::All))
+     {
+       //qWarning("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+     }
+   else
+     {
+       proc->wait();
+     }
+   if(proc)
+     delete proc;
+
+   QString tempbuf = m_processOutput;
+   m_processOutput = QString::null;
+
+   return tempbuf;
+
 }
 
 QString CommandEngine::random(const QString& opt, const QString& arg)
-{ 
+{
   Q_UNUSED(arg);
   long seed;
   if(opt.isEmpty())
@@ -99,9 +138,9 @@ QString CommandEngine::random(const QString& opt, const QString& arg)
     }
   else
     seed = opt.toLong();
-   
+
   KRandomSequence seq(seed);
-  return QString::number(seq.getLong(1000000),10);  
+  return QString::number(seq.getLong(1000000),10);
 }
 
 QString CommandEngine::stringmanip(const QString& opt, const QString& arg)
@@ -114,9 +153,9 @@ QString CommandEngine::stringmanip(const QString& opt, const QString& arg)
 QString CommandEngine::variableValue(const QString &variable)
 {
   QString s = variable;
-   
+
   s.remove("[$").remove("$]").remove(" ");
-  
+
   if(s.contains(":") == 0)
     return variable;
   else
@@ -124,12 +163,12 @@ QString CommandEngine::variableValue(const QString &variable)
       QString leftValue = s.section(":",0,0),
               midValue = s.section(":",1,1),
               rightValue = s.section(":",2,2);
-      
+
       QString opt = midValue;
       QString arg = rightValue;
-      
+
       if(leftValue == "stringmanip")
-        return stringmanip(opt, arg);               
+        return stringmanip(opt, arg);
       if(leftValue == "datetime")
         return datetime(opt, arg);
       if(leftValue == "user")
@@ -142,7 +181,36 @@ QString CommandEngine::variableValue(const QString &variable)
         return mathexp(opt, arg);
       if(leftValue == "random")
         return random(opt, arg);
-      
+
       return variable;
-    } 
+    }
 }
+
+//SLOTS
+void CommandEngine::slotGetScriptError(KProcess* proc, char* s, int i)
+{
+  Q_UNUSED(proc);
+  Q_UNUSED(proc);
+  QCString temp(s,i+1);
+  if(temp.isEmpty() or temp == "\n") return;
+ // KMessageBox::error(0,QString::fromLocal8Bit(temp)+"\n","ERROR");
+}
+
+void CommandEngine::slotGetScriptOutput(KProcess* proc, char* s, int i)
+{
+  Q_UNUSED(proc);
+  QCString temp(s,i+1);
+
+  if(temp.isEmpty() or temp == "\n") return;
+
+  m_processOutput += QString::fromLocal8Bit(temp);
+
+  //qWarning("m_resultBuffer [%s]",m_processOutput.latin1());
+}
+
+void CommandEngine::slotProcessExited(KProcess* proc)
+{
+  Q_UNUSED(proc);
+}
+
+

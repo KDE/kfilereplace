@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>KAddStringDlgS</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,12 +8,12 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>700</width>
-            <height>357</height>
+            <width>586</width>
+            <height>347</height>
         </rect>
     </property>
     <property name="caption">
-        <string>Insert Searching/Replacing Strings</string>
+        <string>Insert searching/replacing strings</string>
     </property>
     <property name="sizeGripEnabled">
         <bool>true</bool>
@@ -24,7 +24,7 @@
         </property>
         <widget class="QLayoutWidget" row="0" column="0">
             <property name="name">
-                <cstring>layout18</cstring>
+                <cstring>layout14</cstring>
             </property>
             <vbox>
                 <property name="name">
@@ -68,261 +68,119 @@
                         </widget>
                     </grid>
                 </widget>
-                <widget class="QLayoutWidget">
+                <widget class="QFrame">
                     <property name="name">
-                        <cstring>layout17</cstring>
+                        <cstring>frame4</cstring>
                     </property>
-                    <vbox>
+                    <property name="frameShape">
+                        <enum>StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Raised</enum>
+                    </property>
+                    <grid>
                         <property name="name">
                             <cstring>unnamed</cstring>
                         </property>
-                        <widget class="QFrame">
+                        <widget class="QLayoutWidget" row="0" column="0">
                             <property name="name">
-                                <cstring>frame4</cstring>
+                                <cstring>layout11</cstring>
                             </property>
-                            <property name="frameShape">
-                                <enum>StyledPanel</enum>
-                            </property>
-                            <property name="frameShadow">
-                                <enum>Raised</enum>
-                            </property>
-                            <grid>
+                            <vbox>
                                 <property name="name">
                                     <cstring>unnamed</cstring>
                                 </property>
-                                <widget class="QLayoutWidget" row="0" column="0">
+                                <widget class="QLayoutWidget">
                                     <property name="name">
-                                        <cstring>layout11</cstring>
+                                        <cstring>layout13</cstring>
                                     </property>
                                     <vbox>
                                         <property name="name">
                                             <cstring>unnamed</cstring>
                                         </property>
-                                        <widget class="QLayoutWidget">
+                                        <widget class="QLabel">
                                             <property name="name">
-                                                <cstring>layout13</cstring>
+                                                <cstring>m_tlSearch</cstring>
                                             </property>
-                                            <vbox>
-                                                <property name="name">
-                                                    <cstring>unnamed</cstring>
-                                                </property>
-                                                <widget class="QLabel">
-                                                    <property name="name">
-                                                        <cstring>m_tlSearch</cstring>
-                                                    </property>
-                                                    <property name="text">
-                                                        <string>Search for:</string>
-                                                    </property>
-                                                </widget>
-                                                <widget class="QTextEdit">
-                                                    <property name="name">
-                                                        <cstring>m_edSearch</cstring>
-                                                    </property>
-                                                    <property name="textFormat">
-                                                        <enum>PlainText</enum>
-                                                    </property>
-                                                </widget>
-                                            </vbox>
+                                            <property name="text">
+                                                <string>Search for:</string>
+                                            </property>
                                         </widget>
-                                        <widget class="QLayoutWidget">
+                                        <widget class="QTextEdit">
                                             <property name="name">
-                                                <cstring>layout14</cstring>
+                                                <cstring>m_edSearch</cstring>
                                             </property>
-                                            <vbox>
-                                                <property name="name">
-                                                    <cstring>unnamed</cstring>
-                                                </property>
-                                                <widget class="QLabel">
-                                                    <property name="name">
-                                                        <cstring>m_tlReplace</cstring>
-                                                    </property>
-                                                    <property name="enabled">
-                                                        <bool>false</bool>
-                                                    </property>
-                                                    <property name="text">
-                                                        <string>Replace with:</string>
-                                                    </property>
-                                                </widget>
-                                                <widget class="QTextEdit">
-                                                    <property name="name">
-                                                        <cstring>m_edReplace</cstring>
-                                                    </property>
-                                                    <property name="enabled">
-                                                        <bool>false</bool>
-                                                    </property>
-                                                    <property name="textFormat">
-                                                        <enum>PlainText</enum>
-                                                    </property>
-                                                    <property name="autoFormatting">
-                                                        <set>AutoAll</set>
-                                                    </property>
-                                                </widget>
-                                            </vbox>
+                                            <property name="textFormat">
+                                                <enum>PlainText</enum>
+                                            </property>
                                         </widget>
                                     </vbox>
                                 </widget>
-                                <widget class="QListView" row="0" column="2">
-                                    <column>
-                                        <property name="text">
-                                            <string>Search For</string>
-                                        </property>
-                                        <property name="clickable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="resizable">
-                                            <bool>true</bool>
-                                        </property>
-                                    </column>
-                                    <column>
-                                        <property name="text">
-                                            <string>Replace With</string>
-                                        </property>
-                                        <property name="clickable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="resizable">
-                                            <bool>true</bool>
-                                        </property>
-                                    </column>
+                                <widget class="QLayoutWidget">
                                     <property name="name">
-                                        <cstring>m_stringView</cstring>
-                                    </property>
-                                    <property name="allColumnsShowFocus">
-                                        <bool>true</bool>
-                                    </property>
-                                    <property name="showSortIndicator">
-                                        <bool>false</bool>
-                                    </property>
-                                    <property name="resizeMode">
-                                        <enum>AllColumns</enum>
-                                    </property>
-                                </widget>
-                                <widget class="QLayoutWidget" row="0" column="1">
-                                    <property name="name">
-                                        <cstring>layout16</cstring>
+                                        <cstring>layout14</cstring>
                                     </property>
                                     <vbox>
                                         <property name="name">
                                             <cstring>unnamed</cstring>
                                         </property>
-                                        <spacer>
+                                        <widget class="QLabel">
                                             <property name="name">
-                                                <cstring>spacer8</cstring>
+                                                <cstring>m_tlReplace</cstring>
                                             </property>
-                                            <property name="orientation">
-                                                <enum>Vertical</enum>
+                                            <property name="enabled">
+                                                <bool>false</bool>
                                             </property>
-                                            <property name="sizeType">
-                                                <enum>Expanding</enum>
+                                            <property name="text">
+                                                <string>Replace with:</string>
                                             </property>
-                                            <property name="sizeHint">
-                                                <size>
-                                                    <width>20</width>
-                                                    <height>90</height>
-                                                </size>
-                                            </property>
-                                        </spacer>
-                                        <widget class="QLayoutWidget">
-                                            <property name="name">
-                                                <cstring>layout15</cstring>
-                                            </property>
-                                            <hbox>
-                                                <property name="name">
-                                                    <cstring>unnamed</cstring>
-                                                </property>
-                                                <widget class="QPushButton">
-                                                    <property name="name">
-                                                        <cstring>m_pbDel</cstring>
-                                                    </property>
-                                                    <property name="maximumSize">
-                                                        <size>
-                                                            <width>30</width>
-                                                            <height>32767</height>
-                                                        </size>
-                                                    </property>
-                                                    <property name="text">
-                                                        <string></string>
-                                                    </property>
-                                                </widget>
-                                                <widget class="QPushButton">
-                                                    <property name="name">
-                                                        <cstring>m_pbAdd</cstring>
-                                                    </property>
-                                                    <property name="maximumSize">
-                                                        <size>
-                                                            <width>30</width>
-                                                            <height>32767</height>
-                                                        </size>
-                                                    </property>
-                                                    <property name="text">
-                                                        <string></string>
-                                                    </property>
-                                                    <property name="flat">
-                                                        <bool>false</bool>
-                                                    </property>
-                                                </widget>
-                                            </hbox>
                                         </widget>
-                                        <spacer>
+                                        <widget class="QTextEdit">
                                             <property name="name">
-                                                <cstring>spacer9</cstring>
+                                                <cstring>m_edReplace</cstring>
                                             </property>
-                                            <property name="orientation">
-                                                <enum>Vertical</enum>
+                                            <property name="enabled">
+                                                <bool>false</bool>
                                             </property>
-                                            <property name="sizeType">
-                                                <enum>Expanding</enum>
+                                            <property name="textFormat">
+                                                <enum>PlainText</enum>
                                             </property>
-                                            <property name="sizeHint">
-                                                <size>
-                                                    <width>20</width>
-                                                    <height>90</height>
-                                                </size>
+                                            <property name="autoFormatting">
+                                                <set>AutoAll</set>
                                             </property>
-                                        </spacer>
+                                        </widget>
                                     </vbox>
                                 </widget>
-                            </grid>
+                            </vbox>
                         </widget>
-                        <widget class="QLayoutWidget">
+                        <widget class="QLayoutWidget" row="0" column="1">
                             <property name="name">
-                                <cstring>layout2</cstring>
+                                <cstring>layout16</cstring>
                             </property>
-                            <hbox>
+                            <vbox>
                                 <property name="name">
                                     <cstring>unnamed</cstring>
                                 </property>
-                                <widget class="QPushButton">
-                                    <property name="name">
-                                        <cstring>m_pbHelp</cstring>
-                                    </property>
-                                    <property name="enabled">
-                                        <bool>true</bool>
-                                    </property>
-                                    <property name="text">
-                                        <string>&amp;Help</string>
-                                    </property>
-                                </widget>
                                 <spacer>
                                     <property name="name">
-                                        <cstring>spacer1</cstring>
+                                        <cstring>spacer8</cstring>
                                     </property>
                                     <property name="orientation">
-                                        <enum>Horizontal</enum>
+                                        <enum>Vertical</enum>
                                     </property>
                                     <property name="sizeType">
                                         <enum>Expanding</enum>
                                     </property>
                                     <property name="sizeHint">
                                         <size>
-                                            <width>90</width>
-                                            <height>20</height>
+                                            <width>20</width>
+                                            <height>90</height>
                                         </size>
                                     </property>
                                 </spacer>
                                 <widget class="QLayoutWidget">
                                     <property name="name">
-                                        <cstring>layout1</cstring>
+                                        <cstring>layout15</cstring>
                                     </property>
                                     <hbox>
                                         <property name="name">
@@ -330,25 +188,227 @@
                                         </property>
                                         <widget class="QPushButton">
                                             <property name="name">
-                                                <cstring>m_pbOK</cstring>
+                                                <cstring>m_pbDel</cstring>
+                                            </property>
+                                            <property name="maximumSize">
+                                                <size>
+                                                    <width>30</width>
+                                                    <height>32767</height>
+                                                </size>
                                             </property>
                                             <property name="text">
-                                                <string>&amp;OK</string>
+                                                <string></string>
                                             </property>
                                         </widget>
                                         <widget class="QPushButton">
                                             <property name="name">
-                                                <cstring>m_pbCancel</cstring>
+                                                <cstring>m_pbAdd</cstring>
+                                            </property>
+                                            <property name="maximumSize">
+                                                <size>
+                                                    <width>30</width>
+                                                    <height>32767</height>
+                                                </size>
                                             </property>
                                             <property name="text">
-                                                <string>&amp;Cancel</string>
+                                                <string></string>
+                                            </property>
+                                            <property name="flat">
+                                                <bool>false</bool>
                                             </property>
                                         </widget>
                                     </hbox>
                                 </widget>
+                                <spacer>
+                                    <property name="name">
+                                        <cstring>spacer9</cstring>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Vertical</enum>
+                                    </property>
+                                    <property name="sizeType">
+                                        <enum>Expanding</enum>
+                                    </property>
+                                    <property name="sizeHint">
+                                        <size>
+                                            <width>20</width>
+                                            <height>90</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                            </vbox>
+                        </widget>
+                        <widget class="QWidgetStack" row="0" column="2">
+                            <property name="name">
+                                <cstring>m_stack</cstring>
+                            </property>
+                            <property name="sizePolicy">
+                                <sizepolicy>
+                                    <hsizetype>7</hsizetype>
+                                    <vsizetype>7</vsizetype>
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                            <widget class="QWidget">
+                                <property name="name">
+                                    <cstring>WStackPage</cstring>
+                                </property>
+                                <attribute name="id">
+                                    <number>0</number>
+                                </attribute>
+                                <grid>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <property name="margin">
+                                        <number>0</number>
+                                    </property>
+                                    <widget class="QListView" row="0" column="0">
+                                        <column>
+                                            <property name="text">
+                                                <string>Search for:</string>
+                                            </property>
+                                            <property name="clickable">
+                                                <bool>true</bool>
+                                            </property>
+                                            <property name="resizable">
+                                                <bool>true</bool>
+                                            </property>
+                                        </column>
+                                        <property name="name">
+                                            <cstring>m_stringView_2</cstring>
+                                        </property>
+                                        <property name="allColumnsShowFocus">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="showSortIndicator">
+                                            <bool>false</bool>
+                                        </property>
+                                        <property name="resizeMode">
+                                            <enum>AllColumns</enum>
+                                        </property>
+                                    </widget>
+                                </grid>
+                            </widget>
+                            <widget class="QWidget">
+                                <property name="name">
+                                    <cstring>WStackPage</cstring>
+                                </property>
+                                <attribute name="id">
+                                    <number>1</number>
+                                </attribute>
+                                <grid>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <property name="margin">
+                                        <number>0</number>
+                                    </property>
+                                    <widget class="QListView" row="0" column="0">
+                                        <column>
+                                            <property name="text">
+                                                <string>Search for:</string>
+                                            </property>
+                                            <property name="clickable">
+                                                <bool>true</bool>
+                                            </property>
+                                            <property name="resizable">
+                                                <bool>true</bool>
+                                            </property>
+                                        </column>
+                                        <column>
+                                            <property name="text">
+                                                <string>Replace with:</string>
+                                            </property>
+                                            <property name="clickable">
+                                                <bool>true</bool>
+                                            </property>
+                                            <property name="resizable">
+                                                <bool>true</bool>
+                                            </property>
+                                        </column>
+                                        <property name="name">
+                                            <cstring>m_stringView</cstring>
+                                        </property>
+                                        <property name="allColumnsShowFocus">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="showSortIndicator">
+                                            <bool>false</bool>
+                                        </property>
+                                        <property name="resizeMode">
+                                            <enum>AllColumns</enum>
+                                        </property>
+                                    </widget>
+                                </grid>
+                            </widget>
+                        </widget>
+                    </grid>
+                </widget>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout2</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>m_pbHelp</cstring>
+                            </property>
+                            <property name="enabled">
+                                <bool>true</bool>
+                            </property>
+                            <property name="text">
+                                <string>&amp;Help</string>
+                            </property>
+                        </widget>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer1</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>90</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QLayoutWidget">
+                            <property name="name">
+                                <cstring>layout1</cstring>
+                            </property>
+                            <hbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QPushButton">
+                                    <property name="name">
+                                        <cstring>m_pbOK</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>&amp;OK</string>
+                                    </property>
+                                </widget>
+                                <widget class="QPushButton">
+                                    <property name="name">
+                                        <cstring>m_pbCancel</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>&amp;Cancel</string>
+                                    </property>
+                                </widget>
                             </hbox>
                         </widget>
-                    </vbox>
+                    </hbox>
                 </widget>
             </vbox>
         </widget>

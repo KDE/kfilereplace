@@ -119,7 +119,7 @@ QString KFileReplaceLib::formatFileSize(double size)
   return stringSize;
 }
 
-void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListView* stringView)
+void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, KListView* stringView)
 {
  //this method convert old format in new XML-based format
  typedef struct
@@ -195,9 +195,9 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
     return ;
  }
 
-bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString& fileName, const RCOptions& info)
+bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString& fileName, RCOptions* info)
 {
-  QString bkExt = info.backupExtension();
+  QString bkExt = info->m_backupExtension;
   if(fileName == ".." || fileName == "." || (!bkExt.isEmpty() && fileName.right(bkExt.length()) == bkExt))
     return false;
 
@@ -210,11 +210,11 @@ bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString&
   if(fi.isDir())
     return true;
 
-   int minSize = info.minSize(),
-       maxSize = info.maxSize();
-   QString minDate = info.minDate(),
-           maxDate = info.maxDate(),
-           dateAccess = info.dateAccess();
+   int minSize = info->m_minSize,
+       maxSize = info->m_maxSize;
+   QString minDate = info->m_minDate,
+           maxDate = info->m_maxDate,
+           dateAccess = info->m_dateAccess;
 
   // Avoid files that not match access date requirements
   QString last = "unknown";
@@ -253,41 +253,41 @@ bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString&
       return false;
 
   // Avoid files that not match ownership requirements
-  if(info.ownerUserIsChecked())
+  if(info->m_ownerUserIsChecked)
     {
       QString fileOwnerUser;
-      if(info.ownerUserType() == "Name")
+      if(info->m_ownerUserType == "Name")
         fileOwnerUser = fi.owner();
       else
         fileOwnerUser = QString::number(fi.ownerId(),10);
 
-      if(info.ownerUserBool() == "Equals To")
+      if(info->m_ownerUserBool == "Equals To")
         {
-          if(info.ownerUserValue() != fileOwnerUser)
+          if(info->m_ownerUserValue != fileOwnerUser)
             return false;
         }
       else
         {
-          if(info.ownerUserValue() == fileOwnerUser)
+          if(info->m_ownerUserValue == fileOwnerUser)
             return false;
         }
     }
 
-  if(info.ownerGroupIsChecked())
+  if(info->m_ownerGroupIsChecked)
     {
       QString fileOwnerGroup;
-      if(info.ownerGroupType() == "Name")
+      if(info->m_ownerGroupType == "Name")
         fileOwnerGroup = fi.group();
       else
         fileOwnerGroup = QString::number(fi.groupId(),10);
-      if(info.ownerGroupBool() == "Equals To")
+      if(info->m_ownerGroupBool == "Equals To")
         {
-          if(info.ownerGroupValue() != fileOwnerGroup)
+          if(info->m_ownerGroupValue != fileOwnerGroup)
             return false;
         }
       else
         {
-          if(info.ownerGroupValue() == fileOwnerGroup)
+          if(info->m_ownerGroupValue == fileOwnerGroup)
             return false;
         }
     }
@@ -341,7 +341,9 @@ void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
   extensionMap["uml"] = "umbrellofile";
   extensionMap["wav"] = "sound";
   extensionMap["xml"] = "html";
+  extensionMap["kfr"] = "html";
   extensionMap["xpm"] = "image";
+  extensionMap["exe"] = "exec_wine";
 
   KeyValueMap::Iterator itExtensionMap;
 

@@ -25,8 +25,15 @@
 using namespace whatthisNameSpace;
 
 //RCOptions Class
+RCOptions::RCOptions()
+{
+  m_searchingOnlyMode = false;
+}
+
 RCOptions& RCOptions::operator=(const RCOptions& ci)
 {
+  m_callResetActions = ci.m_callResetActions;
+
   m_directories = ci.m_directories;
   m_filters = ci.m_filters;
 
@@ -47,14 +54,10 @@ RCOptions& RCOptions::operator=(const RCOptions& ci)
   m_regularExpressions = ci.m_regularExpressions;
 
   m_variables = ci.m_variables;
-  m_confirmFiles = ci.m_confirmFiles;
-  m_confirmStrings = ci.m_confirmStrings;
-  m_confirmDirs = ci.m_confirmDirs;
   m_haltOnFirstOccur = ci.m_haltOnFirstOccur;
-  m_ignoreWhitespaces = ci.m_ignoreWhitespaces;
   m_ignoreHidden = ci.m_ignoreHidden;
   m_simulation = ci.m_simulation;
-  m_searchMode = ci.m_searchMode;
+  m_searchingOnlyMode = ci.m_searchingOnlyMode;
 
   m_ownerUserIsChecked = ci.m_ownerUserIsChecked;
   m_ownerGroupIsChecked = ci.m_ownerGroupIsChecked;
@@ -179,6 +182,8 @@ int ResultViewEntry::dataLength() const
 
 void ResultViewEntry::updateLine(QString& line)
 {
+  //qWarning("PRIMA=%s",line.mid(m_pos,m_data.length()).latin1());
   line.insert(m_pos, m_data);
   line.remove(m_pos + dataLength(), keyLength());
+  //qWarning("DOPO =%s",line.mid(m_pos,m_data.length()).latin1());
 }
