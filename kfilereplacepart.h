@@ -27,7 +27,7 @@ class KConfig;
 #include "configurationclasses.h"
 class KFileReplaceView;
 
-#define KFR_VERSION "0.8.0"
+#define KFR_VERSION "0.8.1"
 
 class KFileReplacePart: public KParts::ReadOnlyPart
 {
