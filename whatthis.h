@@ -99,26 +99,26 @@ namespace whatthisNameSpace
 
 
   //KFileReplacePart
-  const QString fileSimulateWhatthis = i18n( "The same operation as the replace one, but do not make any changes in files. "
+  const QString fileSimulateWhatthis = i18n( "The same operation as the replace one, but does not make any changes to files. "
                                        "This is not a simple search, because you will see the exact changes that could "
                                        "be done (with regexp or variables for example.)" );
 
-  const QString optionsWildcardsWhatthis = i18n( "Enable use of the wildcards (* for expressions, and ? for single character if not modified "
+  const QString optionsWildcardsWhatthis = i18n( "Enable use of wildcards (* for expressions, and ? for single characters if not modified "
                                            "in the wildcards options). For example, you can search for <b>KMsgBox::message(*)</b> "
                                            "and replace with <b>KMessageBox::error(*)</b>." );
 
   const QString optionsBackupWhatthis = i18n( "Create a copy of the original replaced files with the BAK extension before replacing." );
 
-  const QString optionsCaseWhatthis = i18n( "The lowers and uppers are different. For example, if you search for <b>Linux</b> and "
-                                      "there is <b>linux</b>, then the string will not be found/replaced." );
+  const QString optionsCaseWhatthis = i18n( "The lower and upper cases are different. For example, if you search for <b>Linux</b> and "
+                                      "the word <b>linux</b> exists then the string will not be found/replaced." );
 
   // Stop CVS from putting the CVS tag in the pot file
-  const QString optionsVarWhatthis = i18n( "Enable use of the variables, as the date & time or the name of the current file. "
+  const QString optionsVarWhatthis = i18n( "Enable use of variables, such as the date & time or the name of the current file. "
                                      "The variable must be in the replace string, with the format [$%1:  $]. When doing the replace, "
                                      "the value of the variable "
                                      "is written instead of the variable. If disabled, the replace string will be copied without "
-                                     "substitution. Please, read help for "
-                                     "more details on the variables names and formats." ).arg( i18n( "Name of variable", "Name" ) );
+                                     "substitution. Please read help for "
+                                     "more details on the variables' names and formats." ).arg( i18n( "Name of variable", "Name" ) );
 
   const QString optionsRecursiveWhatthis = i18n( "Search/Replace files in the subfolders of the main folder selected "
                                            "when creating a new project at startup." );
