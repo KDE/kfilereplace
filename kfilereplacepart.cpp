@@ -266,7 +266,6 @@ void KFileReplacePart::replaceAndBackupExpression(const QString& currentDir, con
    item->setText(2,fileSizeBeforeReplacing);
    QFileInfo nf(currentDir+"/"+oldFileName+backupExtension);
    item->setText(3,KFileReplaceLib::formatFileSize(nf.size()));
-   m_view->resultView()->setColumnText(4,"Replaced strings");
 
    item->setText(4,QString::number(occur,10));
    item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(QString::number(fi.ownerId(),10)));
@@ -356,7 +355,6 @@ void KFileReplacePart::replaceAndOverwriteExpression(const QString& currentDir, 
    item->setText(2,fileSizeBeforeReplacing);
 
    item->setText(3,fileSizeAfterReplacing);
-   m_view->resultView()->setColumnText(4,"Replaced strings");
 
    item->setText(4,QString::number(occur,10));
    item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(QString::number(fi.ownerId(),10)));
@@ -432,7 +430,6 @@ void KFileReplacePart::replaceAndBackupLiteral(const QString& currentDir, const 
    item->setText(2,fileSizeBeforeReplacing);
    QFileInfo nf(currentDir+"/"+oldFileName+backupExtension);
    item->setText(3,KFileReplaceLib::formatFileSize(nf.size()));
-   m_view->resultView()->setColumnText(4,"Replaced strings");
 
    item->setText(4,QString::number(occur,10));
    item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(QString::number(fi.ownerId(),10)));
@@ -520,7 +517,6 @@ void KFileReplacePart::replaceAndOverwriteLiteral(const QString& currentDir, con
    item->setText(2,fileSizeBeforeReplacing);
 
    item->setText(3,fileSizeAfterReplacing);
-   m_view->resultView()->setColumnText(4,"Replaced strings");
 
    item->setText(4,QString::number(occur,10));
    item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(QString::number(fi.ownerId(),10)));
@@ -1291,6 +1287,7 @@ void KFileReplacePart::slotFileReplace()
     return;
 
   emit setStatusBarText(i18n("Replacing files..."));
+  m_view->resultView()->setColumnText(4, i18n("Replaced strings"));
 
   // show wait cursor
   QApplication::setOverrideCursor( Qt::waitCursor );
