@@ -656,7 +656,11 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
   // --------------------------------------------
 
   // Unamp files
+#if defined(USE_SOLARIS)
+  ::munmap(cBeginOldFile, nOldFileSize);
+#else
   ::munmap(vBeginOldFile, nOldFileSize);
+#endif  
 
   // Close files
   oldFile.close();
@@ -772,7 +776,11 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
               if (bHaltOnFirstOccur && (*bAllStringsFound || !argu->bAllStringsMustBeFound) )
                 {
                   *nNbReplacements = 1;
+#if defined(USE_SOLARIS)
+                  ::munmap(cBeginOldFile, nOldFileSize);
+#else
                   ::munmap(vBeginOldFile, nOldFileSize);
+#endif  
                   oldFile.close();
                   return 0; // Success
                 }
@@ -796,7 +804,11 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
     }
 
   // Unamp files
+#if defined(USE_SOLARIS)
+  ::munmap(cBeginOldFile, nOldFileSize);
+#else
   ::munmap(vBeginOldFile, nOldFileSize);
+#endif  
 
   // Close files
   oldFile.close();
