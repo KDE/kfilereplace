@@ -6,6 +6,7 @@ MiniIcon=kfilereplace
 ServiceTypes=KParts/ReadOnlyPart
 X-KDE-Library=libkfilereplacepart
 Comment=A batch search and replace tool
+Comment[ar]=أداة بحث وتبديل دفعية
 Comment[bg]=Програма за търсене и замяна във фонов режим
 Comment[ca]=Eina per a cercar i substituir coses
 Comment[da]=Et batch søge- og erstatte-værktøj
