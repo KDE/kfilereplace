@@ -1,7 +1,7 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
 <kpartgui name="kfilereplace" version="2">
 <MenuBar>
-    <Menu name="kfilerepace"><text>&amp;KFileReplace</text>
+    <Menu name="kfilerepace"><text>Search/&amp;Replace</text>
         <Action name="new_project"/>
         <Action name="search"/>
         <Action name="file_simulate"/>
