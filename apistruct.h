@@ -25,7 +25,6 @@
 class QWidget;
 class QListView;
 class KFileReplaceView;
-//class KResultView;
 
 struct RepDirArg
 {
@@ -83,7 +82,7 @@ struct Settings
        bIgnoreHidden;
 
   // Wildcards
-  bool bWildcards;      
+  bool bWildcards;
   char cWildcardsLetters,
        cWildcardsWords;
   bool bWildcardsInReplaceStrings;
