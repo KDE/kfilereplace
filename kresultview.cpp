@@ -346,7 +346,7 @@ void KResultView::slotResultOpen()
   if (getCurrentItem().isEmpty())
     return;
 
-  (void) new KRun(getCurrentItem(), 0, true, true);
+  (void) new KRun(KURL( getCurrentItem() ), 0, true, true);
   m_lviCurrent = 0;
 }
 
@@ -357,7 +357,7 @@ void KResultView::slotResultOpenWith()
     return;
 
   KURL::List kurls;
-  kurls.append(getCurrentItem());
+  kurls.append(KURL( getCurrentItem() ));
 
   KRun::displayOpenWithDialog(kurls);
 
@@ -373,7 +373,7 @@ void KResultView::slotResultDirOpen()
   QFileInfo fiFile;
   fiFile.setFile(getCurrentItem());
 
-  (void) new KRun (fiFile.dirPath(), 0, true, true);
+  (void) new KRun (KURL::fromPathOrURL( fiFile.dirPath() ), 0, true, true);
   m_lviCurrent = 0;
 }
 
