@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>486</width>
-            <height>516</height>
+            <width>588</width>
+            <height>580</height>
         </rect>
     </property>
     <property name="caption">
@@ -145,310 +145,279 @@
                     <property name="name">
                         <cstring>unnamed</cstring>
                     </property>
-                    <widget class="QLayoutWidget" row="0" column="0">
+                    <widget class="QGroupBox" row="0" column="0">
                         <property name="name">
-                            <cstring>layout26</cstring>
+                            <cstring>groupBox6</cstring>
                         </property>
-                        <vbox>
+                        <property name="title">
+                            <string>Search/Replace Strings</string>
+                        </property>
+                        <grid>
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-                            <widget class="QGroupBox">
+                            <widget class="QLayoutWidget" row="0" column="0">
                                 <property name="name">
-                                    <cstring>groupBox5</cstring>
+                                    <cstring>layout24</cstring>
                                 </property>
-                                <property name="title">
-                                    <string>Base Folder Options</string>
+                                <vbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QLabel">
+                                        <property name="name">
+                                            <cstring>m_tlSearch</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Search:</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel">
+                                        <property name="name">
+                                            <cstring>m_tlReplace</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Replace:</string>
+                                        </property>
+                                    </widget>
+                                </vbox>
+                            </widget>
+                            <widget class="QLayoutWidget" row="0" column="1">
+                                <property name="name">
+                                    <cstring>layout23</cstring>
+                                </property>
+                                <vbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QLineEdit">
+                                        <property name="name">
+                                            <cstring>m_leSearch</cstring>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit">
+                                        <property name="name">
+                                            <cstring>m_leReplace</cstring>
+                                        </property>
+                                    </widget>
+                                </vbox>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QGroupBox" row="1" column="0">
+                        <property name="name">
+                            <cstring>groupBox5</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Startup Folder Options</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLayoutWidget" row="0" column="0">
+                                <property name="name">
+                                    <cstring>layout8</cstring>
                                 </property>
                                 <grid>
                                     <property name="name">
                                         <cstring>unnamed</cstring>
                                     </property>
-                                    <widget class="QLayoutWidget" row="0" column="0">
+                                    <widget class="QLabel" row="1" column="0">
                                         <property name="name">
-                                            <cstring>layout8</cstring>
+                                            <cstring>m_tlFilter</cstring>
                                         </property>
-                                        <grid>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <widget class="QLabel" row="1" column="0">
-                                                <property name="name">
-                                                    <cstring>m_tlFilter</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>Filter:</string>
-                                                </property>
-                                                <property name="buddy" stdset="0">
-                                                    <cstring>cbFilter</cstring>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLabel" row="0" column="0">
-                                                <property name="name">
-                                                    <cstring>m_tlLocation</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>Location:</string>
-                                                </property>
-                                                <property name="textFormat">
-                                                    <enum>AutoText</enum>
-                                                </property>
-                                                <property name="buddy" stdset="0">
-                                                    <cstring>cbLocation</cstring>
-                                                </property>
-                                            </widget>
-                                            <widget class="KComboBox" row="0" column="1">
-                                                <property name="name">
-                                                    <cstring>m_cbLocation</cstring>
-                                                </property>
-                                                <property name="sizePolicy">
-                                                    <sizepolicy>
-                                                        <hsizetype>3</hsizetype>
-                                                        <vsizetype>0</vsizetype>
-                                                        <horstretch>0</horstretch>
-                                                        <verstretch>0</verstretch>
-                                                    </sizepolicy>
-                                                </property>
-                                                <property name="editable">
-                                                    <bool>true</bool>
-                                                </property>
-                                                <property name="sizeLimit">
-                                                    <number>20</number>
-                                                </property>
-                                                <property name="maxCount">
-                                                    <number>10</number>
-                                                </property>
-                                                <property name="insertionPolicy">
-                                                    <enum>AtTop</enum>
-                                                </property>
-                                                <property name="duplicatesEnabled">
-                                                    <bool>false</bool>
-                                                </property>
-                                                <property name="whatsThis" stdset="0">
-                                                    <string>Insert a search path here. You can use the search path button.</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QPushButton" row="0" column="2">
-                                                <property name="name">
-                                                    <cstring>m_pbLocation</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string></string>
-                                                </property>
-                                                <property name="accel">
-                                                    <string></string>
-                                                </property>
-                                            </widget>
-                                            <widget class="KComboBox" row="1" column="1" rowspan="1" colspan="2">
-                                                <property name="name">
-                                                    <cstring>m_cbFilter</cstring>
-                                                </property>
-                                                <property name="sizePolicy">
-                                                    <sizepolicy>
-                                                        <hsizetype>3</hsizetype>
-                                                        <vsizetype>0</vsizetype>
-                                                        <horstretch>0</horstretch>
-                                                        <verstretch>0</verstretch>
-                                                    </sizepolicy>
-                                                </property>
-                                                <property name="editable">
-                                                    <bool>true</bool>
-                                                </property>
-                                                <property name="sizeLimit">
-                                                    <number>20</number>
-                                                </property>
-                                                <property name="maxCount">
-                                                    <number>10</number>
-                                                </property>
-                                                <property name="insertionPolicy">
-                                                    <enum>AtTop</enum>
-                                                </property>
-                                                <property name="duplicatesEnabled">
-                                                    <bool>false</bool>
-                                                </property>
-                                                <property name="whatsThis" stdset="0">
-                                                    <string></string>
-                                                </property>
-                                            </widget>
-                                        </grid>
+                                        <property name="text">
+                                            <string>Filter:</string>
+                                        </property>
+                                        <property name="buddy" stdset="0">
+                                            <cstring>cbFilter</cstring>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="0" column="0">
+                                        <property name="name">
+                                            <cstring>m_tlLocation</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Location:</string>
+                                        </property>
+                                        <property name="textFormat">
+                                            <enum>AutoText</enum>
+                                        </property>
+                                        <property name="buddy" stdset="0">
+                                            <cstring>cbLocation</cstring>
+                                        </property>
+                                    </widget>
+                                    <widget class="KComboBox" row="0" column="1">
+                                        <property name="name">
+                                            <cstring>m_cbLocation</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>3</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="editable">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="sizeLimit">
+                                            <number>20</number>
+                                        </property>
+                                        <property name="maxCount">
+                                            <number>10</number>
+                                        </property>
+                                        <property name="insertionPolicy">
+                                            <enum>AtTop</enum>
+                                        </property>
+                                        <property name="duplicatesEnabled">
+                                            <bool>false</bool>
+                                        </property>
+                                        <property name="whatsThis" stdset="0">
+                                            <string>Insert a search path here. You can use the search path button.</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QPushButton" row="0" column="2">
+                                        <property name="name">
+                                            <cstring>m_pbLocation</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string></string>
+                                        </property>
+                                        <property name="accel">
+                                            <string></string>
+                                        </property>
+                                    </widget>
+                                    <widget class="KComboBox" row="1" column="1" rowspan="1" colspan="2">
+                                        <property name="name">
+                                            <cstring>m_cbFilter</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>3</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="editable">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="sizeLimit">
+                                            <number>20</number>
+                                        </property>
+                                        <property name="maxCount">
+                                            <number>10</number>
+                                        </property>
+                                        <property name="insertionPolicy">
+                                            <enum>AtTop</enum>
+                                        </property>
+                                        <property name="duplicatesEnabled">
+                                            <bool>false</bool>
+                                        </property>
+                                        <property name="whatsThis" stdset="0">
+                                            <string></string>
+                                        </property>
                                     </widget>
                                 </grid>
                             </widget>
-                            <widget class="QGroupBox">
+                            <widget class="QCheckBox" row="1" column="0">
                                 <property name="name">
-                                    <cstring>groupBox4</cstring>
+                                    <cstring>m_chbIncludeSubfolders</cstring>
                                 </property>
-                                <property name="title">
-                                    <string>General Options</string>
+                                <property name="text">
+                                    <string>&amp;Include subfolders</string>
                                 </property>
-                                <grid>
+                                <property name="accel">
+                                    <string>Alt+I</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QGroupBox" row="2" column="0">
+                        <property name="name">
+                            <cstring>groupBox4</cstring>
+                        </property>
+                        <property name="title">
+                            <string>General Options</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QCheckBox" row="0" column="0">
+                                <property name="name">
+                                    <cstring>m_chbCaseSensitive</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>&amp;Case sensitive</string>
+                                </property>
+                                <property name="accel">
+                                    <string>Alt+C</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="1" column="0">
+                                <property name="name">
+                                    <cstring>m_chbRegularExpressions</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="text">
+                                    <string>Enable &amp;regular expressions</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="2" column="0">
+                                <property name="name">
+                                    <cstring>m_chbEnableVariables</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Enable co&amp;mmands in the replace string</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="3" column="0">
+                                <property name="name">
+                                    <cstring>m_chbBackup</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Do &amp;backup copy instead of overwrite</string>
+                                </property>
+                                <property name="accel">
+                                    <string>Alt+B</string>
+                                </property>
+                            </widget>
+                            <widget class="QLayoutWidget" row="4" column="0">
+                                <property name="name">
+                                    <cstring>layout37</cstring>
+                                </property>
+                                <hbox>
                                     <property name="name">
                                         <cstring>unnamed</cstring>
                                     </property>
-                                    <widget class="QLayoutWidget" row="0" column="0">
+                                    <widget class="QLabel">
                                         <property name="name">
-                                            <cstring>layout39</cstring>
+                                            <cstring>m_tlBackup</cstring>
                                         </property>
-                                        <vbox>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <widget class="QCheckBox">
-                                                <property name="name">
-                                                    <cstring>m_chbIncludeSubfolders</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>&amp;Include subfolders</string>
-                                                </property>
-                                                <property name="checked">
-                                                    <bool>true</bool>
-                                                </property>
-                                            </widget>
-                                            <widget class="QCheckBox">
-                                                <property name="name">
-                                                    <cstring>m_chbCaseSensitive</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>&amp;Case sensitive</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QCheckBox">
-                                                <property name="name">
-                                                    <cstring>m_chbRegularExpressions</cstring>
-                                                </property>
-                                                <property name="enabled">
-                                                    <bool>true</bool>
-                                                </property>
-                                                <property name="text">
-                                                    <string>Enable &amp;regular expressions</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QCheckBox">
-                                                <property name="name">
-                                                    <cstring>m_chbEnableVariables</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>Enable co&amp;mmands in the replace string</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QLayoutWidget">
-                                                <property name="name">
-                                                    <cstring>layout38</cstring>
-                                                </property>
-                                                <vbox>
-                                                    <property name="name">
-                                                        <cstring>unnamed</cstring>
-                                                    </property>
-                                                    <widget class="QCheckBox">
-                                                        <property name="name">
-                                                            <cstring>m_chbBackup</cstring>
-                                                        </property>
-                                                        <property name="text">
-                                                            <string>Do &amp;backup copy instead of overwrite</string>
-                                                        </property>
-                                                    </widget>
-                                                    <widget class="QLayoutWidget">
-                                                        <property name="name">
-                                                            <cstring>layout37</cstring>
-                                                        </property>
-                                                        <hbox>
-                                                            <property name="name">
-                                                                <cstring>unnamed</cstring>
-                                                            </property>
-                                                            <widget class="QLabel">
-                                                                <property name="name">
-                                                                    <cstring>m_tlBackup</cstring>
-                                                                </property>
-                                                                <property name="text">
-                                                                    <string>Backup copy suffix:</string>
-                                                                </property>
-                                                            </widget>
-                                                            <widget class="QLineEdit">
-                                                                <property name="name">
-                                                                    <cstring>m_leBackup</cstring>
-                                                                </property>
-                                                                <property name="text">
-                                                                    <string></string>
-                                                                </property>
-                                                            </widget>
-                                                        </hbox>
-                                                    </widget>
-                                                </vbox>
-                                            </widget>
-                                        </vbox>
+                                        <property name="text">
+                                            <string>Backup copy suffix:</string>
+                                        </property>
                                     </widget>
-                                </grid>
-                            </widget>
-                            <widget class="QGroupBox">
-                                <property name="name">
-                                    <cstring>groupBox6</cstring>
-                                </property>
-                                <property name="title">
-                                    <string>Quick Search/Replace</string>
-                                </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <widget class="QLayoutWidget" row="0" column="0">
+                                    <widget class="QLineEdit">
                                         <property name="name">
-                                            <cstring>layout25</cstring>
+                                            <cstring>m_leBackup</cstring>
                                         </property>
-                                        <hbox>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <widget class="QLayoutWidget">
-                                                <property name="name">
-                                                    <cstring>layout24</cstring>
-                                                </property>
-                                                <vbox>
-                                                    <property name="name">
-                                                        <cstring>unnamed</cstring>
-                                                    </property>
-                                                    <widget class="QLabel">
-                                                        <property name="name">
-                                                            <cstring>m_tlSearch</cstring>
-                                                        </property>
-                                                        <property name="text">
-                                                            <string>Search:</string>
-                                                        </property>
-                                                    </widget>
-                                                    <widget class="QLabel">
-                                                        <property name="name">
-                                                            <cstring>m_tlReplace</cstring>
-                                                        </property>
-                                                        <property name="text">
-                                                            <string>Replace:</string>
-                                                        </property>
-                                                    </widget>
-                                                </vbox>
-                                            </widget>
-                                            <widget class="QLayoutWidget">
-                                                <property name="name">
-                                                    <cstring>layout23</cstring>
-                                                </property>
-                                                <vbox>
-                                                    <property name="name">
-                                                        <cstring>unnamed</cstring>
-                                                    </property>
-                                                    <widget class="QLineEdit">
-                                                        <property name="name">
-                                                            <cstring>m_leSearch</cstring>
-                                                        </property>
-                                                    </widget>
-                                                    <widget class="QLineEdit">
-                                                        <property name="name">
-                                                            <cstring>m_leReplace</cstring>
-                                                        </property>
-                                                    </widget>
-                                                </vbox>
-                                            </widget>
-                                        </hbox>
+                                        <property name="text">
+                                            <string></string>
+                                        </property>
                                     </widget>
-                                </grid>
+                                </hbox>
                             </widget>
-                        </vbox>
+                        </grid>
                     </widget>
                 </grid>
             </widget>
@@ -918,7 +887,8 @@
     </grid>
 </widget>
 <tabstops>
-    <tabstop>tabWidget2</tabstop>
+    <tabstop>m_leSearch</tabstop>
+    <tabstop>m_leReplace</tabstop>
     <tabstop>m_cbLocation</tabstop>
     <tabstop>m_pbLocation</tabstop>
     <tabstop>m_cbFilter</tabstop>
@@ -928,12 +898,11 @@
     <tabstop>m_chbEnableVariables</tabstop>
     <tabstop>m_chbBackup</tabstop>
     <tabstop>m_leBackup</tabstop>
-    <tabstop>m_leSearch</tabstop>
-    <tabstop>m_leReplace</tabstop>
-    <tabstop>m_pbHelp</tabstop>
     <tabstop>m_pbSearchNow</tabstop>
     <tabstop>m_pbSearchLater</tabstop>
     <tabstop>m_pbCancel</tabstop>
+    <tabstop>m_pbHelp</tabstop>
+    <tabstop>tabWidget2</tabstop>
     <tabstop>m_chbSizeMin</tabstop>
     <tabstop>m_spbSizeMin</tabstop>
     <tabstop>m_chbSizeMax</tabstop>
@@ -953,19 +922,4 @@
     <tabstop>m_dedDateMax</tabstop>
 </tabstops>
 <layoutdefaults spacing="6" margin="11"/>
-<includehints>
-    <includehint>kpushbutton.h</includehint>
-    <includehint>kpushbutton.h</includehint>
-    <includehint>kcombobox.h</includehint>
-    <includehint>klineedit.h</includehint>
-    <includehint>kcombobox.h</includehint>
-    <includehint>klineedit.h</includehint>
-    <includehint>kcombobox.h</includehint>
-    <includehint>kcombobox.h</includehint>
-    <includehint>kcombobox.h</includehint>
-    <includehint>kcombobox.h</includehint>
-    <includehint>klineedit.h</includehint>
-    <includehint>klineedit.h</includehint>
-    <includehint>kcombobox.h</includehint>
-</includehints>
 </UI>

@@ -626,9 +626,9 @@ void KFileReplacePart::initGUI()
   (void)new KAction(i18n("Cre&ate Report File"), "filesave", 0, this, SLOT(slotCreateReport()), actionCollection(), "save_results");
 
   // Strings
-  (void)new KAction(i18n("&Add String"), "edit_add", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
+  (void)new KAction(i18n("&Add String"), "editadd", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
 
-  (void)new KAction(i18n("&Delete String"), "edit_remove", 0, this, SLOT(slotStringsDeleteItem()), actionCollection(), "strings_del");
+  (void)new KAction(i18n("&Delete String"), "editremove", 0, this, SLOT(slotStringsDeleteItem()), actionCollection(), "strings_del");
   (void)new KAction(i18n("&Empty Strings List"), "eraser", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
   (void)new KAction(i18n("Edit Selected String"), "edit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
   (void)new KAction(i18n("&Save Strings List to File"), "filesave", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
@@ -651,7 +651,7 @@ void KFileReplacePart::initGUI()
 
   if(quantaFound)
     {
-      (void)new KAction(i18n("&Edit in Quanta"), "quanta", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
+      (void)new KAction(i18n("&Edit in Quanta"), "quanta", 0, m_view, SLOT(slotResultsEdit()), actionCollection(), "results_editfile");
     }
   (void)new KAction(i18n("Open Parent &Folder"), "fileopen", 0, m_view, SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
   (void)new KAction(i18n("&Delete"), "eraser", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");

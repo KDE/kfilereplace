@@ -2,7 +2,7 @@
                           kfilereplaceview.cpp  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by François Dupoux <dupoux@dupoux.com>
+    copyright            : (C) 1999 by Franï¿½is Dupoux <dupoux@dupoux.com>
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
 *****************************************************************************/
 
@@ -172,14 +172,22 @@ void KFileReplaceView::slotResultsEdit()
       DCOPClient *client = kapp->dcopClient();
       DCOPRef quanta(client->appId(),"WindowManagerIf");
 
-      QListViewItem *lviChild = lvi->firstChild();
+      QListViewItem *lviChild = lvi;
 
       while(lviChild)
         {
           if(lviChild->isSelected())
             {
-              coord c = extractWordCoordinates(lviChild);
               QString path = QString(lvi->text(1)+"/"+lvi->text(0));
+              coord c;
+              if (lviChild == lvi) 
+              {
+                c.line = 0;
+                c.column = 0;
+              } else
+              {
+                c= extractWordCoordinates(lviChild);
+              }
               bool success = quanta.send("openFile", path, c.line, c.column);
 
               if(!success)
