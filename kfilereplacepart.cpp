@@ -1317,7 +1317,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               else
                 {
                   capturedText = line.mid(pos,strKey.length()).replace('\n',"\\n");
-                  msg = i18n(" first occurence of string \"%1\" found at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
+                  msg = i18n(" first occurrence of string \"%1\" found at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
                 }
               tempItem->setText(0,msg);
               occurrence = 1;

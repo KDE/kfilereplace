@@ -31,6 +31,9 @@
 #include <klistview.h>
 #include <kiconloader.h>
 
+//needed for malloc/free
+#include <stdlib.h>
+
 // local
 #include "kfilereplacelib.h"
 
@@ -91,7 +94,10 @@ QString KFileReplaceLib::formatFileSize(double size)
   QString stringSize;
 
   if(size < kilo)
-    stringSize = i18n("%1 bytes").arg(QString::number(size,'f',0));
+    {
+    const int asInt = (int) size;
+    stringSize = i18n("1 byte", "%n bytes", asInt);
+    }
   else
   if(size >= kilo && size < mega)
     {

@@ -46,7 +46,7 @@ KFileReplace::KFileReplace()
     }
     else
     {
-        KMessageBox::error(this, i18n("Could not find the KFileReplace part!"));
+        KMessageBox::error(this, i18n("Could not find the KFileReplace part."));
         close();
         return;
     }
