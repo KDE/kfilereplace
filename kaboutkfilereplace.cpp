@@ -45,8 +45,8 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
                                  "<p>There are very powerful options in the new version: the wildcards and the variables "
                                  "support.</p>"
                                  "<p>The wildcards (* for an expression, and ? for a single character) can be used in the "
-                                 "search and in the replace strings!</p>"
-                                 "<p>The variables, can be the date, or the currently file name, in the format you want.</p>");
+                                 "search and in the replace strings.</p>"
+                                 "<p>The variables can be the date, or the current file name, in the format you want.</p>");
 
   const QString strContribute = i18n("<p><b>Everyone is welcome to contribute</b> to this project. "
                                      "You do not have to be a developer to do it. You can do many things:<br>"
