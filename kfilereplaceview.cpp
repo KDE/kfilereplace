@@ -464,7 +464,7 @@ void KFileReplaceView::slotResultOpen()
 {
   if (!currentItem().isEmpty())
   {
-    (void) new KRun(currentItem(), 0, true, true);
+    (void) new KRun(KURL(currentItem()), 0, true, true);
     m_lviCurrent = 0L;
   }
 }
@@ -474,7 +474,7 @@ void KFileReplaceView::slotResultOpenWith()
   if (!currentItem().isEmpty())
   {
     KURL::List kurls;
-    kurls.append(currentItem());
+    kurls.append(KURL(currentItem()));
     KRun::displayOpenWithDialog(kurls);
     m_lviCurrent = 0L;
   }
@@ -486,7 +486,7 @@ void KFileReplaceView::slotResultDirOpen()
   {
     QFileInfo fiFile;
     fiFile.setFile(currentItem());
-    (void) new KRun (fiFile.dirPath(), 0, true, true);
+    (void) new KRun (KURL(fiFile.dirPath()), 0, true, true);
     m_lviCurrent = 0L;
   }
 }
