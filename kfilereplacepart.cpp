@@ -1665,7 +1665,7 @@ bool KFileReplacePart::checkBeforeOperation()
   if(!(dirInfo.isReadable() && dirInfo.isExecutable())
        || (!m_option->m_searchingOnlyMode && !m_option->m_simulation && !(dirInfo.isWritable())))
     {
-      KMessageBox::error(m_w, i18n("<qt>Access denied in the main folder of the project:<bt><b>%1</b></qt>").arg(directory));
+      KMessageBox::error(m_w, i18n("<qt>Access denied in the main folder of the project:<br><b>%1</b></qt>").arg(directory));
       return false;
     }
 
