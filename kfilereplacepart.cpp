@@ -165,7 +165,7 @@ void KFileReplacePart::initGUI()
 
    (void)new KAction(i18n("&Load Strings List From File..."), "unsortedList", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
 
-   (void)new KRecentFilesAction(i18n("&Load Recent Strings Files..."), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),"strings_load_recent");
+   (void)new KRecentFilesAction(i18n("&Load Recent Strings Files"), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),"strings_load_recent");
 
    (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
 

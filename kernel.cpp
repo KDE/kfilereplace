@@ -59,7 +59,7 @@
 void *Kernel::replaceThread(RepDirArg* r)
 {
   int nRes;
-  
+
   g_bThreadRunning = true;
 
   kdDebug(23000) << "Starting replaceDirectory..." << endl;
@@ -79,7 +79,7 @@ void *Kernel::searchThread(RepDirArg* r)
 {
 
   int nRes;
-  
+
   g_bThreadRunning = true;
 
   // Call another function to make easier to verify Thread Variables
@@ -106,7 +106,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
   int nConfirm = 0;
   QListViewItem *lvi;
   bool bAllStringsFound;
-  
+
 
   //KFileReplaceApp *appKFR;
   //appKFR = (KFileReplaceApp *) (argu->mainwnd);
@@ -148,9 +148,9 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
       fiOld.setFile(strFileReadpath);
 
       // if the file dates & size are correct for options
-      if ((dir[i].right(4) != ".old") && 
-           hasFileGoodOwners(strFileReadpath, argu) && 
-           isFileGoodSizeProperties(strFileReadpath, argu->bMinSize, argu->bMaxSize, argu->nMinSize, argu->nMaxSize) && 
+      if ((dir[i].right(4) != ".old") &&
+           hasFileGoodOwners(strFileReadpath, argu) &&
+           isFileGoodSizeProperties(strFileReadpath, argu->bMinSize, argu->bMaxSize, argu->nMinSize, argu->nMaxSize) &&
            ((!argu->bMinDate  && !argu->bMaxDate) || isFileGoodDateProperties(strFileReadpath, argu->nTypeOfAccess, argu->bMinDate, argu->bMaxDate, argu->qdMinDate, argu->qdMaxDate)))
         {
 
@@ -232,10 +232,10 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                         if ((argu->bConfirmFiles ) && (!argu->bSimulation ))
                           {
                             QString strMess = i18n("<qt>Directory: %1<br>Path: %2<br>Do you want to replace strings inside <b>%3</b> ?</qt>").arg(szDir).arg(dir[i]).arg(strFileReadpath);
-                            nConfirm = KMessageBox::questionYesNo(argu->mainwnd, strMess, i18n("Replace file confirmation"));
+                            nConfirm = KMessageBox::warningContinueCancel(argu->mainwnd, strMess, i18n("Replace File Confirmation"),i18n("&Replace"));
                           }
 
-                        if ((!argu->bConfirmFiles  || nConfirm == KMessageBox::Yes) || (argu->bSimulation )) // if we must replace in this file
+                        if ((!argu->bConfirmFiles  || nConfirm == KMessageBox::Continue) || (argu->bSimulation )) // if we must replace in this file
                           {
                             // Check there is enough free disk space
                             if (!argu->bSimulation ) // if not a simulation
@@ -332,10 +332,10 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
               if (argu->bConfirmDirs && bReplace) // If doing a replace and dir confirm activated (do not confirm when searching)
                 {
                   QString strMess = i18n("<qt>Directory: <b>%1</b><br>Full path: <b>%2/%3</b><br><br>Do you want to replace strings in files of this directory?</qt>").arg(dir[i]).arg(szDir).arg(dir[i]);
-                  nConfirm = KMessageBox::questionYesNo(argu->mainwnd, strMess, i18n("Replace directory confirmation"));
+                  nConfirm = KMessageBox::warningContinueCancel(argu->mainwnd, strMess, i18n("Replace Directory Confirmation"),i18n("&Replace"));
                 }
 
-              if (!bReplace  || !argu->bConfirmDirs  || nConfirm == KMessageBox::Yes)
+              if (!bReplace  || !argu->bConfirmDirs  || nConfirm == KMessageBox::Continue)
                 {
                   strDirpath = KFileReplaceLib::instance()->formatFullPath(szDir, dir[i]);
                   nRes = replaceDirectory(strDirpath, argu, bReplace); // Use recursivity
@@ -395,7 +395,7 @@ int Kernel::replaceFile2(QListViewItem *lvi, const QString& folder, const QStrin
  Q_UNUSED(newFile);
  Q_UNUSED(replacementsNumber);
  Q_UNUSED(argu);
- return 0;  
+ return 0;
 }
 
 int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFile, const QString& szNewFile, int& nNbReplacements, RepDirArg* argu)
@@ -717,7 +717,7 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int& nNbRep
                   bool bAllPresent = true;
                   for (j=0; j < nNbStrings; j++)
                     if (!nReplaceCount[j])
-                      { 
+                      {
                         bAllPresent = false;
                         break;
                       }

@@ -115,7 +115,7 @@ QListViewItem* KResultView::addFullItem(bool bSuccess, const QString &szName, co
           strNbRepl,
           strTemp;
   QListViewItem *lvi;
-  QFileInfo fi; 
+  QFileInfo fi;
 
   // Prepare text to add
   strOldSize = KFileReplaceLib::instance()->formatSize(nOldSize);
@@ -281,7 +281,7 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
   return true;
 }
 
-QPixmap KResultView::iconString() 
+QPixmap KResultView::iconString()
 {
  return m_pmIconString;
 }
@@ -340,7 +340,7 @@ void KResultView::slotResultProperties()
     KURL url(currentItem());
     (void) new KPropertiesDialog(url);
     m_lviCurrent = 0L;
-  }  
+  }
 }
 
 
@@ -350,7 +350,7 @@ void KResultView::slotResultOpen()
   {
     (void) new KRun(currentItem(), 0, true, true);
     m_lviCurrent = 0L;
-  }  
+  }
 }
 
 
@@ -362,7 +362,7 @@ void KResultView::slotResultOpenWith()
     kurls.append(currentItem());
     KRun::displayOpenWithDialog(kurls);
     m_lviCurrent = 0L;
-  } 
+  }
 }
 
 
@@ -384,7 +384,7 @@ void KResultView::slotResultEdit()
     QString strCommand = QString("kate %1 &").arg(currentItem());
     KRun::runCommand(strCommand);
     m_lviCurrent = 0L;
-  }    
+  }
 }
 
 void KResultView::slotResultDelete()
@@ -392,9 +392,9 @@ void KResultView::slotResultDelete()
   if (!currentItem().isEmpty())
   {
     QFile fiFile;
-    int nRes = KMessageBox::questionYesNo(this, i18n("<qt>Do you really want to delete <b>%1</b>?</qt>").arg(currentItem()));
+    int nRes = KMessageBox::warningContinueCancel(this, i18n("<qt>Do you really want to delete <b>%1</b>?</qt>").arg(currentItem()),i18n("Delete Confirmation"),KGuiItem(i18n("&Delete"),"editdelete"));
 
-    if (nRes == KMessageBox::Yes)
+    if (nRes == KMessageBox::Continue)
     {
       fiFile.setName(currentItem());
       fiFile.remove();
@@ -404,7 +404,7 @@ void KResultView::slotResultDelete()
     }
 
    m_lviCurrent = 0L;
-  } 
+  }
 }
 
 

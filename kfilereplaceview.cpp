@@ -66,7 +66,7 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
   // Create popup menus
   m_kpmResult = new KPopupMenu(this, "ResultPopup");
 
-  m_kpmResult->insertItem(QPixmap("resfileopen"),
+  m_kpmResult->insertItem(SmallIconSet("resfileopen"),
                           i18n("&Open"),
                           this,
                           SLOT(slotResultOpen()));
@@ -76,20 +76,20 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
   /*DCOPClient *client = kapp->dcopClient();
   if(QString(client->appId()).contains("quanta"))*/
   //if(QString(kapp->startupId()).contains("quanta")==0)
-  m_kpmResult->insertItem(QPixmap("resfileedit"),
+  m_kpmResult->insertItem(SmallIconSet("resfileedit"),
                           i18n("&Edit with Quanta"),
                           this,
                           SLOT(slotResultEdit()));
-  m_kpmResult->insertItem(QPixmap("resdiropen"),
+  m_kpmResult->insertItem(SmallIconSet("resdiropen"),
                           i18n("Open Parent &Folder"),
                           this,
                           SLOT(slotResultDirOpen()));
-  m_kpmResult->insertItem(QPixmap("resfiledel"),
+  m_kpmResult->insertItem(SmallIconSet("resfiledel"),
                           i18n("&Delete"),
                           this,
                           SLOT(slotResultDelete()));
   m_kpmResult->insertSeparator();
-  m_kpmResult->insertItem(QPixmap("resfileinfo"),
+  m_kpmResult->insertItem(SmallIconSet("resfileinfo"),
                           i18n("&Properties"),
                           this,
                           SLOT(slotResultProperties()));
@@ -520,9 +520,10 @@ void KFileReplaceView::slotResultDelete()
   if (!currentItem().isEmpty())
   {
     QFile fiFile;
-    int nRes = KMessageBox::questionYesNo(this, i18n("<qt>Do you really want to delete <b>%1</b>?</qt>").arg(currentItem()));
+    int nRes = KMessageBox::warningContinueCancel(this, i18n("<qt>Do you really want to delete <b>%1</b>?</qt>").arg(currentItem()),
+      i18n("Delete Confirmation"),KGuiItem(i18n("&Delete"),"editdelete"));
 
-    if (nRes == KMessageBox::Yes)
+    if (nRes == KMessageBox::Continue)
     {
       fiFile.setName(currentItem());
       fiFile.remove();

@@ -76,7 +76,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
     }
 
   // Text pages
-  addTextPage(i18n("&What KFileReplace does"), strUseful, true);
+  addTextPage(i18n("&What KFileReplace Does"), strUseful, true);
   addTextPage(i18n("&Contribute"), strContribute, true);
 
   // Authors page
