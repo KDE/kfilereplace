@@ -194,7 +194,7 @@ void KOptionsDlg::initPage1()
   QWhatsThis::add(m_checkCaseSensitive, i18n("If enabled, lowers and uppers are differents. If you are "
                                              "searching for \"Linux\" and this option is on, \"LINUX\" won't be found."));
   QWhatsThis::add(m_checkRecursive, i18n("Work in all sub-directories of the main directory of the project"));
-  QWhatsThis::add(m_checkHaltOnFirstOccur, i18n("When searching, KFileReplace reads all the datas of each "
+  QWhatsThis::add(m_checkHaltOnFirstOccur, i18n("When searching, KFileReplace reads all the data of each "
                                                 "file to know how many times each strings appears in the files. If you needn't "
                                                 "to have this details, you can enable this options to make the search faster. "
                                                 "Then the search will be finished in a file when the first occurrence of a string will be found."));
@@ -242,7 +242,7 @@ void KOptionsDlg::initPage2()
   m_checkWildcardsInReplaceStr->setText(i18n("Use wildcards in the replace string"));
 
   // Add QWhatsThis messages
-  QWhatsThis::add(m_editExpLength, i18n("This is the maximal lenght of the search made to find wildcards in a text. For example, if the lenght is 200, then "
+  QWhatsThis::add(m_editExpLength, i18n("This is the maximal length of the search made to find wildcards in a text. For example, if the length is 200, then "
                                         "the '*' symbol can't code for an expression which length is more than 200 letters (bytes)"));
   QWhatsThis::add(m_checkWildcardsInReplaceStr, i18n("If enabled, the contents of the wildcards found in the search string will be copied into the "
                                                      "replace string. For example, if you search for \"The * is under my bed\" and the text is \"The "
@@ -273,7 +273,7 @@ void KOptionsDlg::initPage3()
   // Add QWhatsThis messages
   QWhatsThis::add(m_checkVariables, i18n("If enabled, KFileReplace will replace variables with their values in the replace string. For example "
                                          "if the replace string is \"The current time is [$datetime:mm/dd/yyyy$]\", then the date will be written."));
-  QWhatsThis::add(m_checkBackup, i18n("If enabled, create backup of replaced files before any modifications. Then you can restore the old datas "
+  QWhatsThis::add(m_checkBackup, i18n("If enabled, create backup of replaced files before any modifications. Then you can restore the old data "
                                       "if there is an error durring the replace operation. A copy of the original files will be created, with the .OLD extension."));
 
 

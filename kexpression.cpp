@@ -272,7 +272,7 @@ QString KExpression::addWildcardsContentToString(const char *szNewString, int nN
           // strList = number of wildcards in the search string
           if (nWildcardsAsked >= (int)strList->count())
             {
-              g_szErrMsg = i18n("<qt>You want to insert wildcard number %1 with [#%2#], but there are only %3 wildcards! The fisrt is [#0#] "
+              g_szErrMsg = i18n("<qt>You want to insert wildcard number %1 with [#%2#], but there are only %3 wildcards! The first is [#0#] "
                                        "and not [#1#]. Then the last is [#%4#].</qt>").arg(nWildcardsAsked).arg(nWildcardsAsked).arg(strList->count()).arg( strList->count()-1);
               kdDebug(23000) << g_szErrMsg << endl;
               return QString::null;

@@ -600,7 +600,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
                     strReplace = dlg.getReplaceString();
                   else if (nConfirm == KConfirmDlg::Cancel)
                     {
-                      g_szErrMsg = i18n("Operation cancelled.");
+                      g_szErrMsg = i18n("Operation canceled.");
                       return REPLACE_CANCEL;
                     }
                   else if (nConfirm == KConfirmDlg::SkipFile)
@@ -631,7 +631,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
                           return REPLACE_ERROR;
                         }
                     }
-                  cOldPt += nRecursiveLength; // The lenght of the string with the wildcards cotents
+                  cOldPt += nRecursiveLength; // The length of the string with the wildcards cotents
                   goto end_replace_pos; // Do not make other replace on this byte
                 }
             }
