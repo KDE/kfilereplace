@@ -2,7 +2,7 @@
                           configurationclasses.h  -  description
                              -------------------
     begin                : Sat Apr 17 2004
-    copyright            : (C) 2004 Emiliano Gulmini 
+    copyright            : (C) 2004 Emiliano Gulmini
     email                : <emi_barbarossa@yahoo.it>
  ***************************************************************************/
 
@@ -15,11 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 #ifndef CONFIGURATIONCLASSES_H
-#define CONFIGURATIONCLASSES_H 
+#define CONFIGURATIONCLASSES_H
 
 // QT
 #include <qstring.h>
-#include <qstringlist.h> 
+#include <qstringlist.h>
 #include <qdatetime.h>
 #include <qmap.h>
 #include <qregexp.h>
@@ -51,7 +51,7 @@ const QString rcOwnerGroup="Owner group filters";
 const QString rcSearchMode="Search only mode";
 const QString rcBackupExtension="Backup file extension";
 const QString rcIgnoreFiles="Ignore files if there is no match";
-const QString rcNotifyOnErrors="Don't ask me again";
+const QString rcNotifyOnErrors="NotifyOnErrors";
 
 // Default configuration options
 const bool RecursiveOption = true;
@@ -161,13 +161,13 @@ class RCOptions
     bool backup() const { return m_backup; }
     void setVariables(bool v) { m_variables = v; }
     bool variables() const { return m_variables; }
-    void setConfirmFiles(bool c) { m_confirmFiles = c; } 
+    void setConfirmFiles(bool c) { m_confirmFiles = c; }
     bool confirmFiles() const { return m_confirmFiles; }
-    void setConfirmStrings(bool c) { m_confirmStrings = c; } 
+    void setConfirmStrings(bool c) { m_confirmStrings = c; }
     bool confirmStrings() const { return m_confirmStrings; }
-    void setConfirmDirs(bool c) { m_confirmDirs = c; } 
+    void setConfirmDirs(bool c) { m_confirmDirs = c; }
     bool confirmDirs() const { return m_confirmDirs; }
-    void setHaltOnFirstOccur(bool fo) { m_haltOnFirstOccur = fo; }  
+    void setHaltOnFirstOccur(bool fo) { m_haltOnFirstOccur = fo; }
     bool haltOnFirstOccur() const { return m_haltOnFirstOccur; }
     void setIgnoreWhitespaces(bool iw) { m_ignoreWhitespaces = iw; }
     bool ignoreWhitespaces() const { return m_ignoreWhitespaces; }
@@ -193,7 +193,7 @@ class RCOptions
     QString ownerGroupType() const { return m_ownerGroupType; }
 
     void setOwnerUserValue(const QString& user) { m_ownerUserValue = user; }
-    QString ownerUserValue() const { return m_ownerUserValue; } 
+    QString ownerUserValue() const { return m_ownerUserValue; }
     void setOwnerGroupValue(const QString& group) { m_ownerGroupValue = group; }
     QString ownerGroupValue() const { return m_ownerGroupValue; }
 

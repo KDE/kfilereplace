@@ -412,7 +412,7 @@ void KNewProjectDlg::saveOwnerOptions()
       m_option.setOwnerGroupType("Name");
       m_option.setOwnerGroupBool("Equals To");
       m_option.setOwnerGroupValue("");
-    }  
+    }
 }
 
 void KNewProjectDlg::saveLocationsList()
@@ -447,8 +447,9 @@ void KNewProjectDlg::saveFiltersList()
 
 void KNewProjectDlg::saveBackupExtensionOptions()
 {
-  m_option.setBackup(m_chbBackup->isChecked());
-  m_option.setBackupExtension(m_leBackup->text());
+  QString backupExt = m_leBackup->text();
+  m_option.setBackup(m_chbBackup->isChecked() && !backupExt.isEmpty());
+  m_option.setBackupExtension(backupExt);
 }
 
 void KNewProjectDlg::setDatas(const QString& directoryString, const QString& filterString)

@@ -137,7 +137,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
 
  if(!f || (err != 1) || (pgm != "KFileReplace"))
  {
-   KMessageBox::error(0, i18n("Cannot open the file %1 and load the string list. This file seems not to be a valid old kfr file or it is broken.").arg(fileName));
+   KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b> and load the string list. This file seems not to be a valid old kfr file or it is broken.</qt>").arg(fileName));
    return ;
  }
 
@@ -198,7 +198,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, QListVie
 bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString& fileName, const RCOptions& info)
 {
   QString bkExt = info.backupExtension();
-  if(fileName == ".." || fileName == "." || fileName.right(bkExt.length()) == bkExt)
+  if(fileName == ".." || fileName == "." || (!bkExt.isEmpty() && fileName.right(bkExt.length()) == bkExt))
     return false;
 
   QFileInfo fi;

@@ -40,12 +40,12 @@ using namespace whatthisNameSpace;
 
 KOptionsDlg::KOptionsDlg(QWidget *parent, const char *name) : KOptionsDlgS(parent,name,true)
 {
-  //QString configName = locateLocal("config", "kfilereplacerc");
-  //m_config = new KConfig(configName);
+  QString configName = locateLocal("config", "kfilereplacerc");
+  m_config = new KConfig(configName);
   connect(m_pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
   connect(m_pbDefault, SIGNAL(clicked()),this,SLOT(slotDefaults()));
   connect(m_chbBackup, SIGNAL(toggled(bool)), this, SLOT(slotChbBackup(bool)));
-  connect(m_pbHelp, SIGNAL(clicked()), this, SLOT(slotHelp()));  
+  connect(m_pbHelp, SIGNAL(clicked()), this, SLOT(slotHelp()));
 
   whatsThis();
 }
@@ -62,6 +62,9 @@ void KOptionsDlg::slotOK()
 void KOptionsDlg::readOptions(const RCOptions& info)
 {
   m_option = info;
+  m_config->sync();
+  m_config->setGroup("Notification Messages");
+  m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, true));
 
   m_chbCaseSensitive->setChecked(m_option.caseSensitive());
   m_chbRecursive->setChecked(m_option.recursive());
@@ -72,7 +75,7 @@ void KOptionsDlg::readOptions(const RCOptions& info)
   m_leBackup->setEnabled(enableBackup);
   m_tlBackup->setEnabled(enableBackup);
 
-  m_leBackup->setText(m_option.backupExtension()); 
+  m_leBackup->setText(m_option.backupExtension());
 
   m_chbVariables->setChecked(m_option.variables());
   m_chbRegularExpressions->setChecked(m_option.regularExpressions());
@@ -88,8 +91,9 @@ RCOptions KOptionsDlg::writeOptions()
 {
   m_option.setCaseSensitive(m_chbCaseSensitive->isChecked());
   m_option.setRecursive(m_chbRecursive->isChecked());
-  m_option.setBackup(m_chbBackup->isChecked());
-  m_option.setBackupExtension(m_leBackup->text());
+  QString backupExt = m_leBackup->text();
+  m_option.setBackup(m_chbBackup->isChecked() && !backupExt.isEmpty());
+  m_option.setBackupExtension(backupExt);
   m_option.setVariables(m_chbVariables->isChecked());
   m_option.setRegularExpressions(m_chbRegularExpressions->isChecked());
   m_option.setHaltOnFirstOccur(m_chbHaltOnFirstOccurrence->isChecked());
@@ -99,11 +103,15 @@ RCOptions KOptionsDlg::writeOptions()
   m_option.setConfirmStrings(m_chbConfirmStrings->isChecked());
   m_option.setNotifyOnErrors(m_chbNotifyOnErrors->isChecked());
 
+  m_config->setGroup("Notification Messages");
+  m_config->writeEntry(rcNotifyOnErrors, m_option.notifyOnErrors());
+  m_config->sync();
+
   return m_option;
 }
 
 /** Set defaults values for all options of the dialog */
-void KOptionsDlg::slotDefaults() 
+void KOptionsDlg::slotDefaults()
 {
   m_chbCaseSensitive->setChecked(CaseSensitiveOption);
   m_chbRecursive->setChecked(RecursiveOption);
@@ -142,8 +150,8 @@ void KOptionsDlg::whatsThis()
   QWhatsThis::add(m_chbRecursive, chbRecursiveWhatthis);
   QWhatsThis::add(m_chbHaltOnFirstOccurrence, chbHaltOnFirstOccurrenceWhatthis);
   QWhatsThis::add(m_chbFollowSymLinks, chbFollowSymLinksWhatthis);
-  QWhatsThis::add(m_chbIgnoreHidden, chbIgnoreHiddenWhatthis); 
-  QWhatsThis::add(m_chbIgnoreFiles, chbIgnoreFilesWhatthis); 
+  QWhatsThis::add(m_chbIgnoreHidden, chbIgnoreHiddenWhatthis);
+  QWhatsThis::add(m_chbIgnoreFiles, chbIgnoreFilesWhatthis);
   QWhatsThis::add(m_chbRegularExpressions, chbRegularExpressionsWhatthis);
   QWhatsThis::add(m_chbVariables, chbVariablesWhatthis);
   QWhatsThis::add(m_chbBackup, chbBackupWhatthis);

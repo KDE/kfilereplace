@@ -246,7 +246,7 @@ void KFileReplacePart::slotFileSave()
   QFileInfo fileInfo(docName);
   if(fileInfo.exists())
     {
-      KMessageBox::error(m_w, i18n("A folder or a file named %1 already exists.").arg(docName));
+      KMessageBox::error(m_w, i18n("<qt>A folder or a file named <b>%1</b> already exists.</qt>").arg(docName));
       return ;
     }
 
@@ -254,7 +254,7 @@ void KFileReplacePart::slotFileSave()
 
   if(!dirName.mkdir(docName, true))
     {
-      KMessageBox::error(m_w, i18n("Cannot create the %1 folder.").arg(docName));
+      KMessageBox::error(m_w, i18n("<qt>Cannot create the <b>%1</b> folder.</qt>").arg(docName));
       return ;
     }
 
@@ -732,8 +732,8 @@ void KFileReplacePart::loadOptions()
   m_option.setIgnoreHidden(m_config->readBoolEntry(rcIgnoreHidden, IgnoreHiddenOption));
   m_option.setIgnoreFiles(m_config->readBoolEntry(rcIgnoreFiles, IgnoreFilesOption));
 
-  m_config->setGroup("Notification messages");
-  m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
+  m_config->setGroup("Notification Messages");
+  m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, true));
 }
 
 void KFileReplacePart::loadFileSizeOptions()
@@ -851,7 +851,7 @@ void KFileReplacePart::saveOptions()
   m_config->writeEntry(rcIgnoreHidden, m_option.ignoreHidden());
   m_config->writeEntry(rcIgnoreFiles, m_option.ignoreFiles());
 
-  m_config->setGroup("Notification messages");
+  m_config->setGroup("Notification Messages");
   m_config->writeEntry(rcNotifyOnErrors, m_option.notifyOnErrors());
 
   m_config->sync();
@@ -1033,12 +1033,9 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   QString oldPathString = currentDir+"/"+oldFileName;
 
   QFile oldFile(oldPathString);
-  if(!oldFile.open(IO_ReadOnly | IO_WriteOnly))
+  if(!oldFile.open(IO_ReadOnly))
     {
-      //KMessageBox::error(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName));
-      KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
-      m_config->setGroup("Notification messages");
-      m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(oldFileName),QString::null, rcNotifyOnErrors);
       return ;
     }
 
@@ -1050,19 +1047,13 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
       QFile backupFile(oldPathString + backupExtension);
       if(!backupFile.open(IO_WriteOnly))
         {
-          //KMessageBox::error(m_w,i18n("Cannot open file %1 for writing.").arg(oldFileName + backupExtension));
-          KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
-          m_config->setGroup("Notification messages");
-          m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
+          KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(backupFile.name()),QString::null, rcNotifyOnErrors);
           return ;
         }
       QFile currentFile(oldPathString);
       if(!currentFile.open(IO_ReadOnly))
         {
-          KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
-          m_config->setGroup("Notification messages");
-          m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
-          //KMessageBox::error(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName));
+          KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(currentFile.name()),QString::null, rcNotifyOnErrors);
           return ;
         }
       QTextStream backupStream(&backupFile);
@@ -1128,12 +1119,9 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   QFile oldFile(oldPathString);
   QFileInfo oldFileInfo(oldPathString);
 
-  if (!oldFile.open(IO_ReadOnly) || !oldFileInfo.isWritable())
+  if (!oldFile.open(IO_ReadOnly))
     {
-      //KMessageBox::error(m_w,i18n("Cannot open file %1 for reading and/or writing.").arg(oldFileName));
-      KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
-      m_config->setGroup("Notification messages");
-      m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(oldFile.name()),QString::null, rcNotifyOnErrors);
       return ;
     }
 
@@ -1160,10 +1148,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
     QFile newFile(oldPathString);
     if(!newFile.open(IO_WriteOnly))
       {
-       // KMessageBox::error(m_w,i18n("Cannot overwrite file %1.").arg(oldFileName));
-        KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
-        m_config->setGroup("Notification messages");
-        m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
+        KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(newFile.name()),QString::null, rcNotifyOnErrors);
         return ;
       }
     QTextStream newStream( &newFile );
@@ -1319,7 +1304,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 
   if(!file.open(IO_ReadOnly))
     {
-      KMessageBox::error(m_w,i18n("Cannot open file %1 for reading.").arg(fileName));
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(fileName), QString::null, rcNotifyOnErrors);
       return ;
     }
   // Creates a stream with the file
@@ -1487,14 +1472,14 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 
   if(!file.open(IO_ReadOnly))
     {
-      KMessageBox::error(m_w, i18n("Cannot open the file %1 and load the string list.").arg(fileName));
+      KMessageBox::error(m_w, i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(fileName));
       return ;
     }
 
   if(!doc.setContent(&file))
     {
       file.close();
-      KMessageBox::information(m_w, i18n("File %1 seems not to be written in new kfr format. Remember that old kfr format will be soon abandoned! You can convert your old rules files by simply saving them with kfilereplace.").arg(fileName),i18n("Warning"));
+      KMessageBox::information(m_w, i18n("<qt>File <b>%1</b> seems not to be written in new kfr format. Remember that old kfr format will be soon abandoned! You can convert your old rules files by simply saving them with kfilereplace.</qt>").arg(fileName),i18n("Warning"));
       KFileReplaceLib::convertOldToNewKFRFormat(fileName, m_view->stringView());
       return;
     }
@@ -1507,7 +1492,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
   QDomElement docElem = doc.documentElement();
   QDomNode n = docElem.firstChild();
   KeyValueMap docMap;
-  
+
   while(!n.isNull())
     {
       QDomElement e = n.toElement(); // tries to convert the node to an element.
@@ -1528,7 +1513,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
       ((KRecentFilesAction* ) actionCollection()->action("strings_load_recent"))->setItems(fileList);
       m_option.setRecentStringFileList(fileList);
     }
-    
+
   m_view->loadMap(docMap);
   m_option = m_view->writeOptions();
 
@@ -1549,6 +1534,7 @@ bool KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
     return false;
 
   m_option = dlg.writeOptions();
+  m_config->sync();
 
   //updating m_view
   m_view->readOptions(m_option);
@@ -1591,7 +1577,7 @@ void KFileReplacePart::stringsInvert(bool invertAll)
       // Cannot invert the string when search string is empty
       if (replaceText.isEmpty())
         {
-          KMessageBox::error(m_w, i18n("Cannot invert string %1, because the search string would be empty.").arg(searchText));
+          KMessageBox::error(m_w, i18n("<qt>Cannot invert string <b>%1</b>, because the search string would be empty.</qt>").arg(searchText));
           return;
         }
 
@@ -1625,23 +1611,17 @@ bool KFileReplacePart::checkBeforeOperation()
 
   if(!dir.exists())
     {
-      KMessageBox::error(m_w, i18n("The main folder of the project %1 does not exist.").arg(directory));
+      KMessageBox::error(m_w, i18n("<qt>The main folder of the project <b>%1</b> does not exist.</qt>").arg(directory));
       return false;
     }
 
   QFileInfo dirInfo(directory);
   if(!(dirInfo.isReadable() && dirInfo.isExecutable())
-     ||
-     !(dirInfo.isWritable()))
+       || (!m_option.searchMode() && !m_option.simulation() && !(dirInfo.isWritable())))
     {
-      KMessageBox::error(m_w, i18n("Access denied in the main folder of the project:%1").arg(directory));
+      KMessageBox::error(m_w, i18n("<qt>Access denied in the main folder of the project:<bt><b>%1</b></qt>").arg(directory));
       return false;
     }
-  /*if(::access(directory.local8Bit(), R_OK | X_OK) == -1)
-    {
-      KMessageBox::error(w, i18n("<qt>Access denied in the main folder of the project:<br><b>" + directory + "</b></qt>"));
-      return false;
-    } */
 
   // Clears the list view
   m_view->resultView()->clear();
