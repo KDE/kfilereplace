@@ -1038,7 +1038,7 @@ void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
     return ;
 
   // Download file if need (if url is "http://...")
-  if (!(KIO::NetAccess::download(urlFile, fileName))) // Open the Archive
+  if (!(KIO::NetAccess::download(urlFile, fileName, 0L))) // Open the Archive
     return;
 
   // Check it's not a directory
