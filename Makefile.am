@@ -28,8 +28,6 @@ messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/kfilereplace.pot
 
 KDE_ICON = AUTO
-apps_DATA = kfilereplacepart.desktop
-appsdir = $(kde_appsdir)/Utilities
 
 # this is where the XML-GUI resource file goes
 rcdir = $(kde_datadir)/kfilereplacepart
