@@ -124,10 +124,13 @@ bool KFileReplacePart::openURL(const KURL &url)
       m_settings.bWildcards = m_doc->enableWildcards();
       m_settings.bVariables = m_doc->enableVariables();
       m_view->addString(0L, m_doc->searchFor(), m_doc->replaceWith());
-      if (m_doc->replaceWith().isEmpty())
-        slotFileSearch();
-      else
-        slotFileReplace();
+      if (!m_doc->searchLater())
+      {
+          if (m_doc->replaceWith().isEmpty())
+            slotFileSearch();
+          else
+            slotFileReplace();
+      }
       return true;
   } else return false;
 }
