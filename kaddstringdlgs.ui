@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string>Replacing rules</string>
+        <string>Replacing Rules</string>
     </property>
     <grid>
         <property name="name">

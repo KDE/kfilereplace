@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string>Search &amp; Replace In Files</string>
+        <string>Search &amp; Replace in Files</string>
     </property>
     <grid>
         <property name="name">
@@ -671,7 +671,7 @@
                         </size>
                     </property>
                     <property name="text">
-                        <string>&amp;Search now</string>
+                        <string>&amp;Search Now</string>
                     </property>
                     <property name="accel">
                         <string>Alt+S</string>
@@ -693,7 +693,7 @@
                         </sizepolicy>
                     </property>
                     <property name="text">
-                        <string>Search later</string>
+                        <string>Search Later</string>
                     </property>
                 </widget>
                 <widget class="KPushButton">

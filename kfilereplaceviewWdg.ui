@@ -54,7 +54,7 @@
                 </column>
                 <column>
                     <property name="text">
-                        <string>Old size</string>
+                        <string>Old Size</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -65,7 +65,7 @@
                 </column>
                 <column>
                     <property name="text">
-                        <string>New size</string>
+                        <string>New Size</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -76,7 +76,7 @@
                 </column>
                 <column>
                     <property name="text">
-                        <string>Replaced items</string>
+                        <string>Replaced Items</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -98,7 +98,7 @@
                 </column>
                 <column>
                     <property name="text">
-                        <string>Owner user</string>
+                        <string>Owner User</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -109,7 +109,7 @@
                 </column>
                 <column>
                     <property name="text">
-                        <string>Owner group</string>
+                        <string>Owner Group</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -131,7 +131,7 @@
             <widget class="QListView">
                 <column>
                     <property name="text">
-                        <string>Search for</string>
+                        <string>Search For</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -142,7 +142,7 @@
                 </column>
                 <column>
                     <property name="text">
-                        <string>Replace with</string>
+                        <string>Replace With</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
