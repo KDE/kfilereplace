@@ -501,13 +501,16 @@ KConfig* KFileReplacePart::config()
 //PROTECTED METHODS
 bool KFileReplacePart::openURL(const KURL &url)
 {
-  if (url.protocol() != "file")
+  if (!url.isEmpty() && url.protocol() != "file")
   {
     KMessageBox::sorry(m_w, i18n("Sorry, currently the KFileReplace part works only for local files."), i18n("Non Local File"));
     emit canceled("");
     return false;
   }
-  return launchNewProjectDialog(url);
+  if (!url.isEmpty())
+      return launchNewProjectDialog(url);
+  else
+      return true;
 }
 
 void KFileReplacePart::initGUI()

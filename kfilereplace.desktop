@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=KFileReplace
+Exec=kfilereplace %i %m -caption "%c"
+Icon=kfilereplace
+Type=Application
+DocPath=kfilereplace/kfilereplace.html
+Terminal=0
+GenericName=Search and Replace Tool
+Categories=Qt;KDE;Utility

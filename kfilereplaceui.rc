@@ -1,0 +1,9 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui name="kfilereplace" version="1">
+<MenuBar>
+  <Menu noMerge="1" name="file"><text>&amp;File</text>
+    <Action name="file_quit"/>
+  </Menu>
+  <Menu name="kfilerepace"><text>Search/&amp;Replace</text>
+  </Menu>    
+</kpartgui>
