@@ -109,13 +109,17 @@ KAboutData* KFileReplacePart::createAboutData()
   return aboutData;
 }
 
-bool KFileReplacePart::openURL(const KURL &url)
+bool KFileReplacePart::openURL(const KURL &a_url)
 {
+  KURL url = a_url;
   if (url.protocol() != "file")
   {
-    KMessageBox::sorry(0, i18n("Sorry, currently the KFileReplace part works only for local files."), i18n("Non Local File"));
-    emit canceled("");
-    return false;
+    if (KMessageBox::warningContinueCancel(0, i18n("KFileReplace part currently works only for local files. Do you still want to continue?"), i18n("Non Local File"), KStdGuiItem::cont(), "Non Local File Warning") == KMessageBox::Cancel)
+    {
+      emit canceled("");
+      return false;
+    }
+    url = KURL::fromPathOrURL(QDir::homeDirPath());
   }
   if (m_doc->newDocument(url.path(), "*", true))
   {
