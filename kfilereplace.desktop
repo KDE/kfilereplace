@@ -1,10 +1,18 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=KFileReplace
+Name[sv]=Kfilereplace
+Name[ta]=Kகோப்பு இடமாற்று
+Name[tg]=KФайлро ҷойгузор кардан
+Name[tr]=K Dosya Değiştirme
+Name[xx]=xxKFileReplacexx
 Exec=kfilereplace %i %m -caption "%c"
 Icon=kfilereplace
 Type=Application
 DocPath=kfilereplace/kfilereplace.html
-Terminal=0
+Terminal=false
 GenericName=Search and Replace Tool
-Categories=Qt;KDE;Utility
+GenericName[da]=Søge og erstatte-værktøj
+GenericName[es]=Herramienta de búsqueda y reemplazo
+GenericName[sv]=Sök- och ersättningsverktyg
+Categories=Qt;KDE;Utility;
