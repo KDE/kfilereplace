@@ -95,17 +95,17 @@ KFileReplaceView::~KFileReplaceView()
  delete dlg;
 }
 
-QListView* KFileReplaceView::stringView()
+QListView* KFileReplaceView::stringView() const
 {
  return lwStrings;
 }
 
-QListView* KFileReplaceView::resultView()
+QListView* KFileReplaceView::resultView() const
 {
  return lwResult;
 }
 
-QPixmap KFileReplaceView::iconString()
+QPixmap KFileReplaceView::iconString() const
 {
  return m_pmIconString;
 }

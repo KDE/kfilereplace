@@ -44,9 +44,9 @@ public:
   /** Destructor for the main view */
   virtual ~KFileReplaceView();
   
-  QListView *stringView();
-  QListView *resultView();
-  QPixmap iconString();
+  QListView *stringView() const;
+  QListView *resultView() const;
+  QPixmap iconString() const;
   
   QString currentItem();
   bool addString(QListViewItem *lviCurrent);
