@@ -29,7 +29,7 @@
 #include <qpushbutton.h>
 #include <klocale.h>
 #include <kmessagebox.h>
-
+#include <knumvalidator.h>
 #include "whatthis.h"
 
 using namespace whatthisNameSpace;
@@ -45,7 +45,7 @@ KOptionsDlg::KOptionsDlg(QWidget *parent, const char *name, Settings settings) :
   m_settings = settings;
 
   loadOptions();
-
+  edLength->setValidator(new KIntValidator(edLength));
   connect(pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
   connect(pbDefault, SIGNAL(clicked()),this,SLOT(slotDefaults()));
 }
