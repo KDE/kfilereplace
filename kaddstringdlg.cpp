@@ -19,6 +19,10 @@
 
 #include <kmessagebox.h>
 #include <klocale.h>
+#include <qmultilineedit.h>
+#include <qlabel.h>
+#include <kpushbutton.h>
+#include <kstdguiitem.h>
 
 #include <qvbox.h>
 #include <qframe.h>
@@ -82,12 +86,10 @@ void KAddStringDlg::initDialog()
   gbox -> addMultiCellWidget (m_editReplace, 4, 4, 0, 1);
 
   // ok / cancel
-  m_btnOk = new QPushButton(this,"m_btnOk");
-  m_btnOk->setText(i18n("&OK"));
+  m_btnOk = new KPushButton( KStdGuiItem::ok(), this,"m_btnOk");
   gbox -> addWidget (m_btnOk, 6, 0);
 
-  m_btnCancel = new QPushButton(this,"m_btnCancel");
-  m_btnCancel->setText(i18n("&Cancel"));
+  m_btnCancel = new KPushButton( KStdGuiItem::cancel(), this,"m_btnCancel");
   gbox -> addWidget (m_btnCancel, 6, 1);
 }
 #include "kaddstringdlg.moc"

@@ -19,12 +19,13 @@
 #define KADDSTRINGDLG_H
 
 #include <qwidget.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
 #include <qmultilineedit.h>
 
 #include <qdialog.h>
 #include <klocale.h>
+class KPushButton;
+class QLabel;
+class QMultiLineEdit;
 
 // ===========================================================================================================================
 class KAddStringDlg : public QDialog
@@ -38,8 +39,8 @@ public: KAddStringDlg(QWidget *parent=0, const char *name=0);
 protected:
 	void initDialog();
 
-	QPushButton *m_btnOk;
-	QPushButton *m_btnCancel;
+	KPushButton *m_btnOk;
+	KPushButton *m_btnCancel;
 	QLabel *m_labelSearch;
 	QMultiLineEdit *m_editSearch;
 	QLabel *m_labelReplace;
