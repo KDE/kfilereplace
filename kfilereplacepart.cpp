@@ -7,7 +7,7 @@
 //
 // Author: Andras Mantia <amantia@freemail.hu>, (C) 2003
 //
-// Copyright: See COPYING file that comes with this distribution
+// Copyright: GPL v2. See COPYING file that comes with this distribution
 //
 //
 
