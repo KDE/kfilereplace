@@ -1036,7 +1036,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   if(!oldFile.open(IO_ReadOnly | IO_WriteOnly))
     {
       //KMessageBox::error(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName));
-      KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Don't ask me again"));
+      KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
       m_config->setGroup("Notification messages");
       m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
       return ;
@@ -1051,7 +1051,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
       if(!backupFile.open(IO_WriteOnly))
         {
           //KMessageBox::error(m_w,i18n("Cannot open file %1 for writing.").arg(oldFileName + backupExtension));
-          KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Don't ask me again"));
+          KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
           m_config->setGroup("Notification messages");
           m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
           return ;
@@ -1059,7 +1059,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
       QFile currentFile(oldPathString);
       if(!currentFile.open(IO_ReadOnly))
         {
-          KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Don't ask me again"));
+          KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
           m_config->setGroup("Notification messages");
           m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
           //KMessageBox::error(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName));
@@ -1131,7 +1131,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   if (!oldFile.open(IO_ReadOnly) || !oldFileInfo.isWritable())
     {
       //KMessageBox::error(m_w,i18n("Cannot open file %1 for reading and/or writing.").arg(oldFileName));
-      KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Don't ask me again"));
+      KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
       m_config->setGroup("Notification messages");
       m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
       return ;
@@ -1161,7 +1161,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
     if(!newFile.open(IO_WriteOnly))
       {
        // KMessageBox::error(m_w,i18n("Cannot overwrite file %1.").arg(oldFileName));
-        KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Don't ask me again"));
+        KMessageBox::warningContinueCancel(m_w,i18n("Cannot open file %1 for reading.").arg(oldFileName),QString::null,i18n("Ok"),i18n("Do not ask me again"));
         m_config->setGroup("Notification messages");
         m_option.setNotifyOnErrors(m_config->readBoolEntry(rcNotifyOnErrors, NotifyOnErrorsOption));
         return ;
