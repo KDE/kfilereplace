@@ -1266,7 +1266,7 @@ void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& 
                                           i18n("Confirm Replace"),
 						      KStdGuiItem::yes(),
 						      KStdGuiItem::no(),
-						      "Dont ask again");
+						      rcDontAskAgain);
 	      if(answer == KMessageBox::Yes)
 	        {
 		  atLeastOneStringFound = true;
