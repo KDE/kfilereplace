@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sat Sep 25 1999
     copyright            : (C) 1999 by François Dupoux
-                           (C) 2003 Andras Mantia <amantia@freemail.hu>
+                           (C) 2003 Andras Mantia <amantia@kde.org>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 

@@ -4,7 +4,7 @@
     begin                : lun mai  3 20:19:52 CEST 1999
 
     copyright            : (C) 1999 by François Dupoux
-                           (C) 2003 Andras Mantia <amantia@freemail.hu>
+                           (C) 2003 Andras Mantia <amantia@kde.org>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 

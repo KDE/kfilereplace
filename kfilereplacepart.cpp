@@ -5,7 +5,7 @@
 // Description:
 //
 //
-// Author: Andras Mantia <amantia@freemail.hu>, (C) 2003
+// Author: Andras Mantia <amantia@kde.org>, (C) 2003
 //
 // Copyright: GPL v2. See COPYING file that comes with this distribution
 //
@@ -98,7 +98,7 @@ KAboutData* KFileReplacePart::createAboutData()
               KAboutData::License_GPL_V2,
               "(C) 1999-2002 Francois Dupoux\n(C) 2003 Andras Mantia");
    aboutData->addAuthor("Francois Dupou",I18N_NOOP("Original author of the KFileReplace tool"), "dupoux@dupoux.com");
-   aboutData->addAuthor("Andras Mantia",I18N_NOOP("Current maintainer, KPart creator"), "amantia@freemail.hu");
+   aboutData->addAuthor("Andras Mantia",I18N_NOOP("Current maintainer, KPart creator"), "amantia@kde.org");
 
     return aboutData;
 }

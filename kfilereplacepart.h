@@ -5,7 +5,7 @@
 // Description:
 //
 //
-// Author: Andras Mantia <amantia@freemail.hu>, (C) 2003
+// Author: Andras Mantia <amantia@kde.org>, (C) 2003
 //
 // Copyright: GPL v2. See COPYING file that comes with this distribution
 //
