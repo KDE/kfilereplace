@@ -26,6 +26,7 @@
 #include <qlistview.h>
 
 #include <kmessagebox.h>
+#include <kpropertiesdialog.h>
 #include <kstandarddirs.h>
 #include <kdebug.h>
 #include <kconfig.h>
@@ -33,7 +34,6 @@
 #include <kpopupmenu.h>
 #include <krun.h>
 #include <kurl.h>
-#include <kpropsdlg.h>
 
 // application specific includes
 #include "kfilereplaceview.h"
