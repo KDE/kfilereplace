@@ -742,7 +742,7 @@ void KFileReplacePart::resetActions()
 
   // File
   actionCollection()->action("new_project")->setEnabled(true);
-  actionCollection()->action("search")->setEnabled(hasItems && searchOnly);
+  actionCollection()->action("search")->setEnabled(hasItems);
 
   actionCollection()->action("file_simulate")->setEnabled(hasItems && !searchOnly);
   actionCollection()->action("replace")->setEnabled(hasItems && !searchOnly);
