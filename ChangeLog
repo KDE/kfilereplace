@@ -1,3 +1,10 @@
+2005-02-20: Andras Mantia <amantia@kde.org>
+  *  Added the possibility to select the encoding of the files and a warning about
+     the possible damaged result if the wrong encoding is chosen
+     
+2005-02-16: Andras Mantia <amantia@kde.org>
+  *  Accept paths as command line arguments
+
 2005-01-29 Emiliano Gulmini <emi_barbarossa@yahoo.it>
   *  Cleaning up.
 
