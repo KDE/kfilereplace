@@ -61,7 +61,6 @@ KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *nam
   m_pbLocation->setFixedSize(pixMap.width() + 8, pixMap.height() + 8);
 
   m_pbSearchNow->setEnabled(false);
-  m_pbSearchLater->setEnabled(false);
 
   loadOptions();
   loadFileSizeFilter();
@@ -72,7 +71,6 @@ KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *nam
   loadFiltersList();
 
   connect(m_pbLocation, SIGNAL(clicked()), this, SLOT(slotDir()));
-  connect(m_pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
   connect(m_pbCancel, SIGNAL(clicked()), this, SLOT(slotReject()));
   connect(m_pbSearchNow, SIGNAL(clicked()), this, SLOT(slotSearchNow()));
   connect(m_pbSearchLater, SIGNAL(clicked()), this, SLOT(slotSearchLater()));
@@ -173,12 +171,10 @@ void KNewProjectDlg::slotSearchLineEdit(const QString& t)
   if(t.isEmpty())
     {
       m_pbSearchNow->setEnabled(false);
-      m_pbSearchLater->setEnabled(false);
     }
   else
     {
       m_pbSearchNow->setEnabled(true);
-      m_pbSearchLater->setEnabled(true);
     }
 }
 

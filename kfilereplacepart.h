@@ -90,6 +90,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void showAboutApplication(void);
     void appHelpActivated();
     void reportBug();
+    void resetActions();
 
   //METHODS
   public:
@@ -104,7 +105,6 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void initView();
     void initGUI();
 
-    void resetActions();
     void freezeActions();
 
     void readOptions();

@@ -1,5 +1,5 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="kfilereplace" version="5">
+<kpartgui name="kfilereplace" version="6">
 <MenuBar>
     <Menu name="kfilerepace"><text>Search/&amp;Replace</text>
         <Action name="new_project"/>
@@ -69,10 +69,5 @@
 	<Action name="options_case"/>
 	<Action name="options_var"/>
 	<Action name="options_regularexpressions"/>
-	<Separator/>
-	<Action name="settings_preferences"/>
-	<Separator/>
-	<Action name="whats_this"/>
-	<Action name="contents"/>
 </ToolBar>
 </kpartgui>

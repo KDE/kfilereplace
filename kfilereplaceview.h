@@ -45,11 +45,11 @@ class KFileReplaceView : public KFileReplaceViewWdg
     KListViewItem* m_lviCurrent;
     KAddStringDlg m_addStringdlg;
     KConfig* m_config;
-        
+
   public:
     KFileReplaceView(QWidget *parent,const char *name);
     ~KFileReplaceView();
-    
+
   public:
     KListView *stringView();
     KListView *resultView();
@@ -59,7 +59,7 @@ class KFileReplaceView : public KFileReplaceViewWdg
     KeyValueMap stringsViewMap()const { return m_info.mapStringsView();}
     void currentStringsViewMap(){ setMap();}
     bool searchOnly()const { return m_info.searchMode();}
-          
+
   public slots:
     void slotStringsAdd();
     void slotQuickStringsAdd(const QString& quickSearch, const QString& quickReplace);
@@ -75,12 +75,15 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void slotResultTreeExpand();
     void slotResultTreeReduce();
     void slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos, int column);
-  
+
   private:
     void expand(QListViewItem *lviCurrent, bool b);
     void setMap();
     void loadMapIntoView(KeyValueMap map);
     void whatsThis();
+
+  signals:
+    void resetActions();
 };
 
 #endif // KFILEREPLACEVIEW_H

@@ -336,6 +336,7 @@ void KFileReplaceView::slotStringsEdit(QListViewItem* lvi)
   m_info.setMapStringsView(map);
 
   loadMapIntoView(map);
+  emit resetActions();
 }
 
 void KFileReplaceView::slotStringsDeleteItem()

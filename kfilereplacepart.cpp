@@ -240,10 +240,6 @@ void KFileReplacePart::slotFileSave()
 void KFileReplacePart::slotStringsAdd()
 {
   m_view->slotStringsAdd();
-
-  m_config->setGroup("General Options");
-  m_info.setSearchMode(m_config->readBoolEntry(rcSearchMode,SearchMode));
-
   resetActions();
 }
 
@@ -521,7 +517,7 @@ void KFileReplacePart::initGUI()
 
   actionCollection()->setHighlightingEnabled(true);
   // File
-  (void)new KAction(i18n("New Search Project..."), "projectopen", this, SLOT(slotFileNew()), actionCollection(), "new_project");
+  (void)new KAction(i18n("New Search Project..."), "projectopen", 0, this, SLOT(slotFileNew()), actionCollection(), "new_project");
   (void)new KAction(i18n("&Search"), "filesearch", 0, this, SLOT(slotFileSearch()), actionCollection(), "search");
   (void)new KAction(i18n("S&imulate"), "filesimulate", 0, this, SLOT(slotFileSimulate()), actionCollection(), "file_simulate");
   (void)new KAction(i18n("&Replace"),  "filereplace", 0, this, SLOT(slotFileReplace()), actionCollection(), "replace");
@@ -564,6 +560,7 @@ void KFileReplacePart::initGUI()
 void KFileReplacePart::initView()
 {
   m_view = new KFileReplaceView(m_parentWidget, "view");
+  connect(m_view, SIGNAL(resetActions()), this, SLOT(resetActions()));
 
   setWidget(m_view);
 
@@ -734,7 +731,9 @@ void KFileReplacePart::saveOptions()
 
 void KFileReplacePart::resetActions()
 {
-  bool hasItems = false,
+ m_config->setGroup("General Options");
+ m_info.setSearchMode(m_config->readBoolEntry(rcSearchMode,SearchMode));
+ bool hasItems = false,
        searchOnly = m_info.searchMode();
 
   if(m_view->stringView()->firstChild() != 0)
