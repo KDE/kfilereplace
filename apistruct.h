@@ -3,7 +3,9 @@
                              -------------------
     begin                : Sat Sep 25 1999
     copyright            : (C) 1999 by François Dupoux
+                                 (C) 2004 by Emiliano Gulmini
     email                : dupoux@dupoux.com
+                               emi_barbarossa@yahoo.it
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,12 +20,12 @@
 #ifndef APISTRUCT_H
 #define APISTRUCT_H
 
-#include <qwidget.h>
-#include <qlistview.h>
 #include <qdatetime.h>
 
 #include <sys/param.h>
 
+class QWidget;
+class QListView;
 class KFileReplaceView;
 class KResultView;
 
@@ -75,7 +77,7 @@ struct RepDirArg
   KFileReplaceView *view;
 };
 
-struct KSettings
+struct Settings
 {        // General
         bool bCaseSensitive;
         bool bRecursive;
@@ -100,21 +102,4 @@ struct KSettings
         bool bHaltOnFirstOccur; // Stop on first occur when searching
 };
 
-struct KFRHeader
-{
-        char szPgm[13]; // Must be "KFileReplace" : like MZ for EXE files
-        int nStringsNb; // Number of strings in file
-        char cReserved[64]; // Reserved for future use
-};
-
-
-
 #endif // APISTRUCT_H
-
-
-
-
-
-
-
-

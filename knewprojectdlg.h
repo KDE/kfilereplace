@@ -1,8 +1,9 @@
 /***************************************************************************
-                          kpropertiesdlg.h  -  description
+                          knewprojectdlg.h  -  description
                              -------------------
     begin                : Tue Dec 28 1999
     copyright            : (C) 1999 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -21,18 +22,9 @@
 #include "knewprojectdlgs.h"
 #include "apistruct.h"
 
-#include <qtabdialog.h>
-#include <qdatetime.h>
-#include <qwhatsthis.h>
-#include <qregexp.h>
-
-class KComboBox;
-class QPushButton;
-class QLabel;
+class QDate;
 class KConfig;
-class QCheckBox;
 
-// ===========================================================================================================================
 class KNewProjectDlg : public KNewProjectDlgS
 {
   Q_OBJECT
@@ -40,56 +32,57 @@ class KNewProjectDlg : public KNewProjectDlgS
  public:
   KNewProjectDlg(QWidget *parent, KConfig *config, const char *name=0);
   virtual ~KNewProjectDlg();
-  void loadComboValues();
-  void saveComboValues();
-  void addCurrentStringToCombo();
-  void setDatas(const QString& strDir, const QString& strFilter);
-  void setWhatsThis();
-  void getMaxFilesSize(bool *bChecked, long unsigned int *nMaxSize);
-  void getMinFilesSize(bool *bChecked, long unsigned int *nMinSize);
 
  private:
   KConfig *m_config;
-
- protected:
-
+  QDate m_MinDate;
+  QDate m_MaxDate;
+  unsigned long int m_MinimumSizeNumber;
+  unsigned long int m_MaximumSizeNumber;
+ 
  protected slots:
   void slotDir();
-  void slotOk();
+  void slotOK();
+ 
+ public: 
+  QString location();
+  QString filter();
 
- public: // retrun results
-  QString getDirectory();
-  QString getFilter();
+  int accessType();
+  bool isMinDate();
+  bool isMaxDate();
+  QDate minDate();
+  QDate maxDate();
 
-  int getTypeOfAccess();
-  bool getBoolMinDate();
-  bool getBoolMaxDate();
-  QDate getMinDate();
-  QDate getMaxDate();
+  bool isMinSize();
+  bool isMaxSize();
+  unsigned long int minSize();
+  unsigned long int maxSize();
 
-  bool getBoolMinSize();
-  bool getBoolMaxSize();
-  unsigned long int getMinSize();
-  unsigned long int getMaxSize();
+  bool isOwnerUser();
+  bool isOwnerGroup();
 
-  bool getBoolOwnerUser();
-  bool getBoolOwnerGroup();
+  bool ownerUserMustBe();
+  bool ownerGroupMustBe();
 
-  bool getOwnerUserMustBe();
-  bool getOwnerGroupMustBe();
+  QString ownerUserType();
+  QString ownerGroupType();
 
-  QString getOwnerUserType();
-  QString getOwnerGroupType();
-
-  QString getOwnerUserValue();
-  QString getOwnerGroupValue();
-
- private:
-  QDate m_qdMinDate;
-  QDate m_qdMaxDate;
-  unsigned long int m_nMinSize;
-  unsigned long int m_nMaxSize;
-
+  QString ownerUserValue();
+  QString ownerGroupValue();
+  
+  void loadLocationsList();
+  void loadFiltersList();
+ 
+  void saveLocationsList();
+  void saveFiltersList();
+  
+ // void addCurrentStringToCombo();
+  void setDatas(const QString& strDir, const QString& strFilter);
+  void setWhatsThis();
+  
+  void maxFilesSize(bool & bChecked, long unsigned int & nMaxSize);
+  void minFilesSize(bool & bChecked, long unsigned int & nMinSize);
 };
 
 #endif

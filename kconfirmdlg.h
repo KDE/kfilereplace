@@ -3,6 +3,7 @@
                              -------------------
     begin                : Fri Jun 23 2000
     copyright            : (C) 2000 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -18,14 +19,11 @@
 #ifndef KCONFIRMDLG_H
 #define KCONFIRMDLG_H
 
-#include <qwidget.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qmultilineedit.h>
 #include <qdialog.h>
 
-
-// ===========================================================================================================================
 class KConfirmDlg : public QDialog
 {
    Q_OBJECT

@@ -3,6 +3,7 @@
                              -------------------
     begin                : Sat Jul 22 2000
     copyright            : (C) 2000 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -21,7 +22,7 @@
 
 #include "kaboutkfilereplace.h"
 #include "config.h"
-// ===========================================================================================================================
+
 KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool modal)
   :KAboutDialog(AbtKDEStandard | AbtProduct, "KFileReplace", KDialogBase::Close, KDialogBase::Close, parent, name, modal)
 {
@@ -94,7 +95,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
 
 }
 
-// ===========================================================================================================================
+
 KAboutKFileReplace::~KAboutKFileReplace()
 {
 }

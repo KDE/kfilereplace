@@ -3,6 +3,7 @@
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
     copyright            : (C) 1999 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -19,7 +20,8 @@
 #include <qdir.h>
 #include <qfileinfo.h>
 #include <qwidget.h>
-
+#include <qdatetime.h>
+#include <qstring.h>
 // include files for KDE
 #include <kapplication.h>
 #include <kmessagebox.h>
@@ -33,8 +35,6 @@
 
 QPtrList<KFileReplaceView>* KFileReplaceDoc::viewList = 0L;
 
-
-// ===========================================================================================================================
 KFileReplaceDoc::KFileReplaceDoc(QWidget *parentWidget, QObject *parent, const char* name):QObject(parentWidget, name)
 {
   if( !viewList )
@@ -56,30 +56,35 @@ KFileReplaceDoc::KFileReplaceDoc(QWidget *parentWidget, QObject *parent, const c
 #endif
 }
 
-// ===========================================================================================================================
 KFileReplaceDoc::~KFileReplaceDoc()
 {
 }
 
-// ===========================================================================================================================
 void KFileReplaceDoc::addView(KFileReplaceView* m_pView)
 {
   viewList->append(m_pView);
 }
 
-// ===========================================================================================================================
 void KFileReplaceDoc::removeView(KFileReplaceView* m_pView)
 {
   viewList->remove(m_pView);
 }
 
-// ===========================================================================================================================
-const QString& KFileReplaceDoc::getPathName() const
+void KFileReplaceDoc::setModified(bool modified)
+{ 
+  b_modified=modified; 
+}
+
+bool KFileReplaceDoc::isModified()
+{ 
+  return b_modified;
+}
+
+const QString& KFileReplaceDoc::pathName() const
 {
   return m_path;
 }
 
-// ===========================================================================================================================
 void KFileReplaceDoc::slotUpdateAllViews(KFileReplaceView* pSender)
 {
   KFileReplaceView* w;
@@ -94,32 +99,26 @@ void KFileReplaceDoc::slotUpdateAllViews(KFileReplaceView* pSender)
 
 }
 
-// ===========================================================================================================================
-void KFileReplaceDoc::pathName( const char* path_name)
+void KFileReplaceDoc::setPathName( const char* path_name)
 {
   m_path=path_name;
 }
 
-// ===========================================================================================================================
-void KFileReplaceDoc::title( const char* title)
+void KFileReplaceDoc::setTitle( const char* title)
 {
   m_title=title;
 }
 
-// ===========================================================================================================================
-const QString& KFileReplaceDoc::getTitle() const
+const QString& KFileReplaceDoc::title() const
 {
   return m_title;
 }
 
-
-// ===========================================================================================================================
 void KFileReplaceDoc::closeDocument()
 {
   deleteContents();
 }
 
-// ===========================================================================================================================
 bool KFileReplaceDoc::newDocument(const QString& strArguDir, const QString& strArguFilter, bool showNewProjectDlg)
 {
   //kDebugInfo("doc::newDoc: argu=(%s) and filter=(%s)\n", strArguDir.data(), strArguFilter.data());
@@ -131,42 +130,43 @@ bool KFileReplaceDoc::newDocument(const QString& strArguDir, const QString& strA
     }
   else // If a value or more is missing
     {
-      KNewProjectDlg dlg(m_parent->widget(), m_parent->getConfig());
+      KNewProjectDlg dlg(m_parent->widget(), m_parent->config());
 
       QString strAdding;
 
       // Add values to combo if they have been passed with the command line (see main.cpp)
       dlg.setDatas(strArguDir, strArguFilter);
 
-      if (dlg.exec() == QDialog::Rejected) // If Cancel
-        return false;
-
-      // Get the Directory and the Filter
-      m_strProjectDirectory = dlg.getDirectory();
-      m_strProjectFilter = dlg.getFilter();
+      if (dlg.exec() ) // If Cancel
+      {
+        // Get the Directory and the Filter
+      m_strProjectDirectory = dlg.location();
+      m_strProjectFilter = dlg.filter();
 
       // criters (date & time)
-      m_nTypeOfAccess = dlg.getTypeOfAccess();
+      m_nTypeOfAccess = dlg.accessType();
 
-      m_bMinDate = dlg.getBoolMinDate();
-      m_bMaxDate = dlg.getBoolMaxDate();
-      m_qdMinDate = dlg.getMinDate();
-      m_qdMaxDate = dlg.getMaxDate();
+      m_bMinDate = dlg.isMinDate();
+      m_bMaxDate = dlg.isMaxDate();
+      m_qdMinDate = dlg.minDate();
+      m_qdMaxDate = dlg.maxDate();
 
-      m_bMinSize = dlg.getBoolMinSize();
-      m_bMaxSize = dlg.getBoolMaxSize();
-      m_nMinSize = dlg.getMinSize();
-      m_nMaxSize = dlg.getMaxSize();
+      m_bMinSize = dlg.isMinSize();
+      m_bMaxSize = dlg.isMaxSize();
+      m_nMinSize = dlg.minSize();
+      m_nMaxSize = dlg.maxSize();
 
       // owner
-      m_bOwnerUserBool = dlg.getBoolOwnerUser();
-      m_bOwnerGroupBool = dlg.getBoolOwnerGroup();
-      m_bOwnerUserMustBe = dlg.getOwnerUserMustBe();
-      m_bOwnerGroupMustBe = dlg.getOwnerGroupMustBe();
-      m_strOwnerUserType = dlg.getOwnerUserType();
-      m_strOwnerGroupType = dlg.getOwnerGroupType();
-      m_strOwnerUserValue = dlg.getOwnerUserValue();
-      m_strOwnerGroupValue = dlg.getOwnerGroupValue();
+      m_bOwnerUserBool = dlg.isOwnerUser();
+      m_bOwnerGroupBool = dlg.isOwnerGroup();
+      m_bOwnerUserMustBe = dlg.ownerUserMustBe();
+      m_bOwnerGroupMustBe = dlg.ownerGroupMustBe();
+      m_strOwnerUserType = dlg.ownerUserType();
+      m_strOwnerGroupType = dlg.ownerGroupType();
+      m_strOwnerUserValue = dlg.ownerUserValue();
+      m_strOwnerGroupValue = dlg.ownerGroupValue();
+      }  
+      else return false;  
 
     }
 
@@ -181,7 +181,6 @@ bool KFileReplaceDoc::newDocument(const QString& strArguDir, const QString& strA
   return true;
 }
 
-// ===========================================================================================================================
 void KFileReplaceDoc::deleteContents()
 {
   /////////////////////////////////////////////////
@@ -189,38 +188,5 @@ void KFileReplaceDoc::deleteContents()
   /////////////////////////////////////////////////
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #include "kfilereplacedoc.moc"

@@ -3,6 +3,7 @@
                              -------------------
     begin                : Mon Dec 20 1999
     copyright            : (C) 1999 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -27,19 +28,16 @@ class QStringList;
 class KExpression
 {
         public:
-
-                KExpression(bool bCaseSensitive, bool bWildcards, bool bIgnoreWhitespaces, char cWord='*', char cLetter='?')
-                {m_cLetter = cLetter; m_cWord = cWord; m_bCaseSensitive = bCaseSensitive; m_bWildcards = bWildcards; m_bIgnoreWhitespaces = bIgnoreWhitespaces;}
-
-                void setWordWildcard(char cWord) {m_cWord = cWord;}
-                void setLetterWildcard(char cLetter) {m_cLetter = cLetter;}
-                void setCaseSensitive(bool bCaseSensitive) {m_bCaseSensitive = bCaseSensitive;}
-                void setIgnoreWhitespaces(bool bIgnoreWhitespaces) {m_bIgnoreWhitespaces = bIgnoreWhitespaces;}
-                char getWordWildcard() {return m_cWord;}
-                char getLetterWildcard() {return m_cLetter;}
-                bool isCaseSensitive() {return m_bCaseSensitive;}
-                bool doesIgnoreWhitespaces() {return m_bIgnoreWhitespaces;}
-                bool areWildcards() {return m_bWildcards;}
+                KExpression(bool bCaseSensitive, bool bWildcards, bool bIgnoreWhitespaces, char cWord='*', char cLetter='?');
+                void setWordWildcard(char cWord); 
+                void setLetterWildcard(char cLetter); 
+                void setCaseSensitive(bool bCaseSensitive);
+                void setIgnoreWhitespaces(bool bIgnoreWhitespaces); 
+                char getWordWildcard();
+                char getLetterWildcard();
+                bool isCaseSensitive();
+                bool doesIgnoreWhitespaces();
+                bool areWildcards();
 
                 bool doesStringMatch(const char *szText, int nTxtLen, const char *szString, int nStrWildcardLen, bool bBeginString, int *nLenMatchingStr=0);
 
@@ -52,8 +50,6 @@ class KExpression
 private: // Functions
                 QString getVariableValue(const QString &strVarName, const QString &strVarFormat, const char *szFilepath);
                 QString formatDateTime(const QDateTime& dt, const QString &strVarFormat);
-
-
 
 private: // Datas
                 char m_cLetter;

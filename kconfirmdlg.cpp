@@ -3,6 +3,7 @@
                              -------------------
     begin                : Fri Jun 23 2000
     copyright            : (C) 2000 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -21,7 +22,7 @@
 
 #include <qlayout.h>
 
-// ===========================================================================================================================
+
 KConfirmDlg::KConfirmDlg(QWidget *parent, const char *name) : QDialog(parent,name,true)
 {
   initDialog();
@@ -35,12 +36,12 @@ KConfirmDlg::KConfirmDlg(QWidget *parent, const char *name) : QDialog(parent,nam
   connect(m_btnCancel,SIGNAL(clicked()),this,SLOT(slotCancel()));
 }
 
-// ===========================================================================================================================
+
 KConfirmDlg::~KConfirmDlg()
 {
 }
 
-// ===========================================================================================================================
+
 void KConfirmDlg::initDialog()
 {
   // resize dialog
@@ -101,7 +102,7 @@ void KConfirmDlg::initDialog()
 
 }
 
-// ===========================================================================================================================
+
 void KConfirmDlg::setData(const QString& strFile, const QString& strDir, const QString& strSearch, const QString& strReplace)
 {
   m_strFile = strFile;
@@ -118,7 +119,7 @@ void KConfirmDlg::setData(const QString& strFile, const QString& strDir, const Q
   m_editReplace -> setText(strReplace);
 }
 
-// ===========================================================================================================================
+
 void KConfirmDlg::slotYes()
 {
   // get new replace string if edited
@@ -129,36 +130,32 @@ void KConfirmDlg::slotYes()
   done(Yes);
 }
 
-// ===========================================================================================================================
+
 void KConfirmDlg::slotNo()
 {
   QApplication::restoreOverrideCursor();
   done(No);
 }
 
-// ===========================================================================================================================
+
 void KConfirmDlg::slotSkipFile()
 {
   QApplication::restoreOverrideCursor();
   done(SkipFile);
 }
 
-// ===========================================================================================================================
+
 void KConfirmDlg::slotSkipDir()
 {
   QApplication::restoreOverrideCursor();
   done(SkipDir);
 }
 
-// ===========================================================================================================================
+
 void KConfirmDlg::slotCancel()
 {
   QApplication::restoreOverrideCursor();
   done(Cancel);
 }
 
-
-
-
 #include "kconfirmdlg.moc"
-

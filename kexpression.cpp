@@ -3,6 +3,7 @@
                              -------------------
     begin                : Mon Dec 20 1999
     copyright            : (C) 1999 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -29,7 +30,50 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// =================================================================================================================
+KExpression::KExpression(bool bCaseSensitive, bool bWildcards, bool bIgnoreWhitespaces, char cWord, char cLetter)
+ {
+   m_cLetter = cLetter; 
+   m_cWord = cWord; 
+   m_bCaseSensitive = bCaseSensitive; 
+   m_bWildcards = bWildcards; 
+   m_bIgnoreWhitespaces = bIgnoreWhitespaces;
+ }
+void KExpression::setWordWildcard(char cWord) 
+{
+  m_cWord = cWord;
+ }
+void KExpression::setLetterWildcard(char cLetter)
+ {
+  m_cLetter = cLetter;
+ }
+void KExpression::setCaseSensitive(bool bCaseSensitive)
+ {
+  m_bCaseSensitive = bCaseSensitive;
+ }
+void KExpression::setIgnoreWhitespaces(bool bIgnoreWhitespaces) 
+{
+ m_bIgnoreWhitespaces = bIgnoreWhitespaces;
+}
+char KExpression::getWordWildcard() 
+{
+ return m_cWord;
+}
+char KExpression::getLetterWildcard() 
+{
+ return m_cLetter;
+}
+bool KExpression::isCaseSensitive() 
+{
+ return m_bCaseSensitive;
+}
+bool KExpression::doesIgnoreWhitespaces() 
+{
+ return m_bIgnoreWhitespaces;
+}
+bool KExpression::areWildcards()
+{
+ return m_bWildcards;
+}
 // Says if a wildcard string can be found inside a text
 // Result: false = String not found
 //         true = String found
@@ -58,7 +102,8 @@ bool KExpression::doesStringMatch(const char *szText, int nTxtLen, const char *s
       bCharMatches = (szString[0] == szText[0]);
     }
   else // case insensitive
-    {        bCharMatches = (::tolower(szString[0]) == ::tolower(szText[0]));
+    {        
+     bCharMatches = (::tolower(szString[0]) == ::tolower(szText[0]));
     }
 
   // CASE 3: IGNORE WHITESPACES (\t, \n, \r, double-spaces) OPTIONS IS ACTIVATED, AND THERE IS ONE HERE
@@ -148,7 +193,7 @@ bool KExpression::doesStringMatch(const char *szText, int nTxtLen, const char *s
   return false;
 }
 
-// =================================================================================================================
+
 int KExpression::extractWildcardsContentsFromFullString(const char *szText, int nTxtLen, const char *szString, int nStrWildcardLen, QStringList *strlResult)
 {
   int nLen;
@@ -232,7 +277,7 @@ int KExpression::extractWildcardsContentsFromFullString(const char *szText, int 
   return 0;
 }
 
-// =================================================================================================================
+
 QString KExpression::addWildcardsContentToString(const char *szNewString, int nNewStrLen, QStringList *strList)
 {
   QString strReplace;
@@ -290,7 +335,7 @@ QString KExpression::addWildcardsContentToString(const char *szNewString, int nN
   return strReplace;
 }
 
-// =================================================================================================================
+
 QString KExpression::substVariablesWithValues(const QString &strOriginal, const char *szFilepath)
 {
   // Save the "m_bWildcards" and "m_bIgnoreWhitespaces" values because current function need m_bWildcards to be true
@@ -356,7 +401,7 @@ QString KExpression::substVariablesWithValues(const QString &strOriginal, const 
   return strResult;
 }
 
-// =================================================================================================================
+
 QString KExpression::getVariableValue(const QString &strVarName, const QString &strVarFormat, const char *szFilepath)
 {
   QFileInfo fi;
@@ -395,12 +440,12 @@ QString KExpression::getVariableValue(const QString &strVarName, const QString &
     {
       return formatDateTime(fi.lastModified(), strVarFormat);
     }
-  // ******************************* FILE-LAST-READ-TIME *******************************************************
+  // ** FILE-LAST-READ-TIME */
   else if (strVarName == "filelrtime")
     {
       return formatDateTime(fi.lastRead(), strVarFormat);
     }
-  // ******************************* FILE-SIZE *******************************************************
+  // ** FILE-SIZE */
   else if (strVarName == "filesize")
     {
       if (strVarFormat == "bytes") // ex: 111222333
@@ -417,7 +462,7 @@ QString KExpression::getVariableValue(const QString &strVarName, const QString &
           return QString::null;
         }
     }
-  // ******************************* FILE-OWNER *******************************************************
+  // ** FILE-OWNER */
   else if (strVarName == "owner")
     {
       if (strVarFormat == "userid")
@@ -443,12 +488,12 @@ QString KExpression::getVariableValue(const QString &strVarName, const QString &
           return QString::null;
         }
     }
-  // ******************************* DATETIME ******************************************************************
+  // ** DATETIME  */
   else if (strVarName == "datetime")
     {
       return formatDateTime(QDateTime::currentDateTime(), strVarFormat);
     }
-  // ***********************************************************************************************************
+  
   else // ERROR: unknown variable
     {
       return QString::null;
@@ -456,7 +501,7 @@ QString KExpression::getVariableValue(const QString &strVarName, const QString &
 
 }
 
-// =================================================================================================================
+
 QString KExpression::formatDateTime(const QDateTime& dt, const QString &strVarFormat)
 {
   QString strTemp;
@@ -496,3 +541,4 @@ QString KExpression::formatDateTime(const QDateTime& dt, const QString &strVarFo
       return QString::null;
     }
 }
+

@@ -2,7 +2,8 @@
                           kfilereplacepref.h  -  description
                              -------------------
     copyright            : (C) 1999 by François Dupoux
-                           (C) 2003 Andras Mantia
+                                  (C) 2003 Andras Mantia
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com, amantia@kde.org
  ***************************************************************************/
 
@@ -20,7 +21,7 @@
 #include <kdialogbase.h>
 #include <qframe.h>
 
-class KFileReplacePrefPageOne;
+/*class KFileReplacePrefPageOne;
 class KFileReplacePrefPageTwo;
 
 class KFileReplacePreferences : public KDialogBase
@@ -30,8 +31,7 @@ public:
     KFileReplacePreferences();
 
 private:
-    KFileReplacePrefPageOne *m_pageOne;
-    KFileReplacePrefPageTwo *m_pageTwo;
+    KFileReplacePrefPageOne *m_pageOne, *m_pageTwo;
 };
 
 class KFileReplacePrefPageOne : public QFrame
@@ -46,6 +46,6 @@ class KFileReplacePrefPageTwo : public QFrame
     Q_OBJECT
 public:
     KFileReplacePrefPageTwo(QWidget *parent = 0);
-};
+};*/
 
 #endif // KFILEREPLACEPREF_H

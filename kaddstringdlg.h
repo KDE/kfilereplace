@@ -3,6 +3,7 @@
                              -------------------
     begin                : Sat Oct 16 1999
     copyright            : (C) 1999 by François Dupoux
+                                 (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -18,40 +19,27 @@
 #ifndef KADDSTRINGDLG_H
 #define KADDSTRINGDLG_H
 
-#include <qwidget.h>
-#include <qmultilineedit.h>
+#include "kaddstringdlgs.h"
 
-#include <qdialog.h>
-#include <klocale.h>
-class KPushButton;
-class QLabel;
-class QMultiLineEdit;
-
-// ===========================================================================================================================
-class KAddStringDlg : public QDialog
+class KAddStringDlg : public KAddStringDlgS
 {
    Q_OBJECT
-public: KAddStringDlg(QWidget *parent=0, const char *name=0);
-	~KAddStringDlg();
-	QString m_strSearch;
-	QString m_strReplace;
-
-protected:
-	void initDialog();
-
-	KPushButton *m_btnOk;
-	KPushButton *m_btnCancel;
-	QLabel *m_labelSearch;
-	QMultiLineEdit *m_editSearch;
-	QLabel *m_labelReplace;
-	QMultiLineEdit *m_editReplace;
+public: 
+       KAddStringDlg(QWidget *parent=0, const char *name=0);
+        ~KAddStringDlg();
+        
+private:
+        QString m_strSearch;
+        QString m_strReplace;
 
 protected slots:
-	void slotOk();
+        void slotOK();
 
 public:
-	void setSearchText(const QString &strText) {m_editSearch -> setText(strText);}
-	void setReplaceText(const QString &strText) {m_editReplace -> setText(strText);}
+        void setSearchText(const QString &strText);
+        QString searchText() const;
+        void setReplaceText(const QString &strText);
+        QString replaceText() const;
 
 };
 

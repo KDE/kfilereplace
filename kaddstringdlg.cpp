@@ -3,6 +3,7 @@
                              -------------------
     begin                : Sat Oct 16 1999
     copyright            : (C) 1999 by François Dupoux
+                                 (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -19,31 +20,21 @@
 
 #include <kmessagebox.h>
 #include <klocale.h>
-#include <qmultilineedit.h>
+
+#include <qtextedit.h>
 #include <qlabel.h>
-#include <kpushbutton.h>
-#include <kstdguiitem.h>
+#include <qpushbutton.h>
 
-#include <qvbox.h>
-#include <qframe.h>
-#include <qlayout.h>
-
-// ===========================================================================================================================
-KAddStringDlg::KAddStringDlg(QWidget *parent, const char *name) : QDialog(parent,name,true)
+KAddStringDlg::KAddStringDlg(QWidget *parent, const char *name) : KAddStringDlgS(parent,name,true)
 {
-  initDialog();
-
-  connect(m_btnOk,SIGNAL(clicked()),this,SLOT(slotOk()));
-  connect(m_btnCancel,SIGNAL(clicked()),this,SLOT(reject()));
+  connect(pbOK,SIGNAL(clicked()),this,SLOT(slotOK()));
 }
 
-// ===========================================================================================================================
 KAddStringDlg::~KAddStringDlg()
 {
 }
 
-// ===========================================================================================================================
-void KAddStringDlg::slotOk()
+void KAddStringDlg::slotOK()
 {
   // Check the Search text is not empty
   if (m_editSearch -> text().isEmpty())
@@ -59,38 +50,21 @@ void KAddStringDlg::slotOk()
   accept();
 }
 
-// ===========================================================================================================================
-void KAddStringDlg::initDialog()
+void KAddStringDlg::setSearchText(const QString &strText) 
 {
-  // resize dialog
-  setMinimumSize(300, 200);
-  resize(500, 300);
-
-  QGridLayout *gbox;
-  gbox = new QGridLayout (this, 2, 2, 0, 10);
-  gbox -> setMargin(15);
-
-  // widgets
-  m_labelSearch = new QLabel(this,"m_labelSearch");
-  m_labelSearch->setText(i18n("Search for:"));
-  gbox -> addWidget (m_labelSearch, 0, 0);
-
-  m_editSearch = new QMultiLineEdit(this,"m_editSearch");
-  gbox -> addMultiCellWidget (m_editSearch, 1, 1, 0, 1);
-
-  m_labelReplace = new QLabel(this,"m_labelReplace");
-  m_labelReplace->setText(i18n("Replace with:"));
-  gbox -> addWidget (m_labelReplace, 3, 0);
-
-  m_editReplace = new QMultiLineEdit(this,"m_editReplace");
-  gbox -> addMultiCellWidget (m_editReplace, 4, 4, 0, 1);
-
-  // ok / cancel
-  m_btnOk = new KPushButton( KStdGuiItem::ok(), this,"m_btnOk");
-  gbox -> addWidget (m_btnOk, 6, 0);
-
-  m_btnCancel = new KPushButton( KStdGuiItem::cancel(), this,"m_btnCancel");
-  gbox -> addWidget (m_btnCancel, 6, 1);
+ m_editSearch -> setText(strText);
 }
+void KAddStringDlg::setReplaceText(const QString &strText) 
+{
+ m_editReplace -> setText(strText);
+ }
+ QString KAddStringDlg::searchText() const
+ {
+  return m_strSearch;
+ }
+ QString KAddStringDlg::replaceText() const
+ {
+  return m_strReplace;
+ }
 #include "kaddstringdlg.moc"
 

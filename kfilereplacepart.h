@@ -6,6 +6,7 @@
 //
 //
 // Author: Andras Mantia <amantia@kde.org>, (C) 2003
+// Maintainer: Emiliano Gulmini <emi_barbarossa@yahoo.it>, (C) 2004
 //
 // Copyright: GPL v2. See COPYING file that comes with this distribution
 //
@@ -49,9 +50,9 @@ public:
   virtual ~KFileReplacePart();
 
   static KAboutData* createAboutData();
-  KFileReplaceDoc* getDocument() const;
-  KConfig *getConfig() {return m_config;}
-  KResultView *getResultView();
+  KFileReplaceDoc* document() const;
+  KConfig *config();
+  KResultView *resultView();
 
 public slots:
   void slotFileNew();
@@ -78,7 +79,7 @@ public slots:
   void showAboutApplication(void);
   void appHelpActivated();
   void reportBug();
-
+  
 
 protected:
   virtual bool openFile() {return false;}
@@ -103,8 +104,8 @@ private:
   KFileReplaceDoc *m_doc;
   QWidget *m_parentWidget;
   /** the configuration object of the application */
-  KConfig* m_config;
-  KSettings m_settings;
+  KConfig *m_config;
+  Settings m_settings;
   QStringList m_recentStringFileList; // a list of recently accessed files
   KAboutKFileReplace *m_dlgAbout;
 

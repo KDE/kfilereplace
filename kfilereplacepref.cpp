@@ -2,7 +2,8 @@
                           kfilereplacepref.cpp  -  description
                              -------------------
     copyright            : (C) 1999 by François Dupoux
-                           (C) 2003 Andras Mantia
+                                  (C) 2003 Andras Mantia
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com, amantia@kde.org
  ***************************************************************************/
 
@@ -21,7 +22,7 @@
 #include <qlayout.h>
 #include <qlabel.h>
 
-KFileReplacePreferences::KFileReplacePreferences()
+/*KFileReplacePreferences::KFileReplacePreferences()
     : KDialogBase(TreeList, "KFileReplace Preferences",
                   Help|Default|Ok|Apply|Cancel, Ok)
 {
@@ -31,9 +32,11 @@ KFileReplacePreferences::KFileReplacePreferences()
     QFrame *frame;
     frame = addPage(i18n("First Page"), i18n("Page One Options"));
     m_pageOne = new KFileReplacePrefPageOne(frame);
+    
+    frame = addPage(i18n("First Page"), i18n("Page One Options"));
+    m_pageTwo = new KFileReplacePrefPageOne(frame);
 
-    frame = addPage(i18n("Second Page"), i18n("Page Two Options"));
-    m_pageTwo = new KFileReplacePrefPageTwo(frame);
+   
 }
 
 KFileReplacePrefPageOne::KFileReplacePrefPageOne(QWidget *parent)
@@ -53,8 +56,8 @@ KFileReplacePrefPageTwo::KFileReplacePrefPageTwo(QWidget *parent)
 
     new QLabel("Add something here", this);
 }
+*/
 
-//#include "kfilereplacepref.moc"
 
 #include "kfilereplacepref.moc"
 

@@ -3,7 +3,8 @@
                              -------------------
     begin                : Sat Sep 25 1999
     copyright            : (C) 1999 by François Dupoux
-                           (C) 2003 Andras Mantia <amantia@kde.org>
+                                 (C) 2003 Andras Mantia <amantia@kde.org>
+                                 (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -19,13 +20,12 @@
 // app includes
 #include "apistruct.h"
 #include "kexpression.h"
-#include "apistruct.h"
 #include "kernel.h"
 #include "resource.h"
 #include "kfilereplacedoc.h"
 #include "kfilereplaceview.h"
 #include "kfilereplacepart.h"
-#include "klistviewstring.h"
+//#include "klistviewstring.h"
 #include "kconfirmdlg.h"
 #include "filelib.h"
 
@@ -40,12 +40,13 @@
 #include <qstring.h>
 #include <qdatetime.h>
 #include <qregexp.h>
+#include <qlistview.h>
 
 // Standard includes
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <unistd.h>
+//#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <sys/param.h>
@@ -65,9 +66,6 @@
 #include <errno.h>
 #include <ctype.h>
 
-#define min(A,B) (A < B ? A : B)
-
-// ===========================================================================================================================
 void *ReplaceThread(void *param)
 {
   int nRes;
@@ -97,7 +95,7 @@ void *ReplaceThread(void *param)
   return 0;
 }
 
-// ===========================================================================================================================
+
 void *SearchThread(void *param)
 {
 
@@ -126,7 +124,7 @@ void *SearchThread(void *param)
   return 0;
 }
 
-// ===========================================================================================================================
+
 int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
 {
 
@@ -143,7 +141,7 @@ int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
   int nNbReplacements; // Nb Rep made in a call to ReplaceFile
   uint nDiskFreeSpace;
   int nConfirm = 0;
-  KListViewString *lvi;
+  QListViewItem *lvi;
   QString strTemp;
   QString strMess;
   bool bAllStringsFound;
@@ -213,7 +211,7 @@ int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
                     {
                       // Add the item in the list, but without details
                       strTemp = formatSize(fiOld.size());
-                      lvi = new KListViewString(argu -> qlvResult, dir[i], szDir, strTemp);
+                      lvi = new QListViewItem(argu -> qlvResult, dir[i], szDir, strTemp);
                       // Run the search operation
                       kdDebug(23000) << "begin CALL for SearchFile()" << endl;
                       nRes = SearchFile(lvi, strFileReadpath, &nNbReplacements, &bAllStringsFound, argu, argu->bHaltOnFirstOccur);
@@ -295,7 +293,7 @@ int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
 
                             // Add the item in the list, but without details
                             strTemp = formatSize(fiOld.size());
-                            lvi = new KListViewString(argu -> qlvResult, dir[i], szDir, strTemp);
+                            lvi = new QListViewItem(argu -> qlvResult, dir[i], szDir, strTemp);
                             if (lvi == 0) // Not enough memory
                               return -1;
 
@@ -397,7 +395,7 @@ int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
   return nNbRepFiles;
 }
 
-// ==================================================================================
+
 bool IsFileGoodSizeProperties(const QString& szFileName, bool bMinSize, bool bMaxSize, uint nMinSize, uint nMaxSize)
 {
 
@@ -410,7 +408,7 @@ bool IsFileGoodSizeProperties(const QString& szFileName, bool bMinSize, bool bMa
   return (!bCond);
 }
 
-// ==================================================================================
+
 bool IsFileGoodDateProperties(const QString& szFileName, int nTypeOfAccess, bool bMinDate, bool bMaxDate, QDate qdMinDate, QDate qdMaxDate)
 {
 
@@ -434,7 +432,7 @@ bool IsFileGoodDateProperties(const QString& szFileName, int nTypeOfAccess, bool
   return true; // File is valid
 }
 
-// ==================================================================================
+
 int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFile, const QString& szNewFile, int *nNbReplacements, RepDirArg* argu)
 {
 
@@ -544,7 +542,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
         {
           nRecursiveLength = 0;
 
-          bRes = kjeSearch.doesStringMatch(cOldPt, min(argu -> nMaxExpressionLength,nMaxLen), strOld[i].utf8(), strOld[i].length(), true, &nRecursiveLength);
+          bRes = kjeSearch.doesStringMatch(cOldPt, MIN(argu -> nMaxExpressionLength,nMaxLen), strOld[i].utf8(), strOld[i].length(), true, &nRecursiveLength);
 
           if (bRes == true) // String matches
             {
@@ -671,7 +669,7 @@ int ReplaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFi
   return REPLACE_SUCCESS; // Success
 }
 
-// ==================================================================================
+
 int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacements, bool *bAllStringsFound, RepDirArg* argu, bool bHaltOnFirstOccur)
 {
 
@@ -759,7 +757,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
 
       for (i=0; i < nNbStrings; i++) // For all strings to search
         {
-          bRes = kjeSearch.doesStringMatch(cOldPt, min(argu -> nMaxExpressionLength, nMaxLen), strOld[i].utf8(), strOld[i].length(), true, &nRecursiveLength);
+          bRes = kjeSearch.doesStringMatch(cOldPt, MIN(argu -> nMaxExpressionLength, nMaxLen), strOld[i].utf8(), strOld[i].length(), true, &nRecursiveLength);
 
           if (bRes == true) // String matches
             {
@@ -780,7 +778,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
                   ::munmap(cBeginOldFile, nOldFileSize);
 #else
                   ::munmap(vBeginOldFile, nOldFileSize);
-#endif
+#endif  
                   oldFile.close();
                   return 0; // Success
                 }
@@ -808,7 +806,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
   ::munmap(cBeginOldFile, nOldFileSize);
 #else
   ::munmap(vBeginOldFile, nOldFileSize);
-#endif
+#endif  
 
   // Close files
   oldFile.close();
@@ -817,7 +815,7 @@ int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacement
 }
 
 
-// ===========================================================================================================================
+
 int GetDiskFreeSpaceForFile(uint *nAvailDiskSpace, const QString &szFilename)
 {
   int nRes;
@@ -834,7 +832,7 @@ int GetDiskFreeSpaceForFile(uint *nAvailDiskSpace, const QString &szFilename)
   return 0;
 }
 
-// ===========================================================================================================================
+
 bool HasFileGoodOwners(const QString &szFile, RepDirArg *argu)
 {
   QFileInfo fi;
@@ -914,17 +912,3 @@ bool HasFileGoodOwners(const QString &szFile, RepDirArg *argu)
 
   return true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

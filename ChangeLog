@@ -1,0 +1,9 @@
+18-02-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- The icons in toolbar directory were redrawn.
+- Deleted the KFRHeader struct from  apistruct.h.
+- The mechanism of saving the string rules has been modified: now we can save the rules in a file like
+  this "a_file_name.kfr" that is an XML file.
+- The file containing the results of the operations  is now a XHTML file.
+- Two new files UI added: now KOptionDlg inherits from KOptionDlgS and KAddstringDlg inherits from KAddstringDlgS.
+- The klistviewstring.(h,cpp) were removed.
+- A lot of clean up has been made in all files.

@@ -3,6 +3,7 @@
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
     copyright            : (C) 1999 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -29,22 +30,17 @@
 #include <kiconloader.h>
 
 // linux includes
-#include <stdlib.h>
+//#include <stdlib.h>
 
 // application specific includes
 #include "kfilereplacepart.h"
 #include "kresultview.h"
 #include "kaddstringdlg.h"
-#include "klistviewstring.h"
+//#include "klistviewstring.h"
 #include "kpropertiesdialog.h"
 #include "resource.h"
 #include "filelib.h"
 
-#ifndef min
-#  define min(a,b) (a<b ? a:b)
-#endif
-
-//===========================================================================================================================
 KResultView::KResultView( QWidget *parent, const char *name): QListView( parent, name )
 {
   int nRes;
@@ -52,7 +48,7 @@ KResultView::KResultView( QWidget *parent, const char *name): QListView( parent,
   // Main application class
   m_app = (KFileReplaceApp *) parentWidget() -> parentWidget();
 
-  m_lviCurrent = 0;
+  m_lviCurrent = 0L;
 
   // Initialize ResultList
   addColumn(i18n("Name"), -1 );
@@ -82,6 +78,8 @@ KResultView::KResultView( QWidget *parent, const char *name): QListView( parent,
   setFrameStyle(QFrame::Panel | QFrame::Sunken);
   setLineWidth(2);
   setRootIsDecorated (true);
+  setResizeMode(QListView::LastColumn);
+  setAllColumnsShowFocus(true);
 
   // Create popup menus
   m_kpmResult = new KPopupMenu(this, "ResultPopup");
@@ -103,18 +101,23 @@ KResultView::KResultView( QWidget *parent, const char *name): QListView( parent,
   connect(this, SIGNAL(mouseButtonClicked (int, QListViewItem *, const QPoint &, int)), this, SLOT(slotMouseButtonClicked (int, QListViewItem *, const QPoint &, int)));
 }
 
-//===========================================================================================================================
+
 KResultView::~KResultView()
 {
+ if(m_kpmResult)
+   delete m_kpmResult;
+ m_kpmResult = 0L;
+ m_lviCurrent = 0L;
+ m_app = 0L;
 }
 
-// ===========================================================================================================================
-KListViewString* KResultView::addFullItem(bool bSuccess, const QString &szName, const QString &szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString &szErrMsg)
+
+QListViewItem* KResultView::addFullItem(bool bSuccess, const QString &szName, const QString &szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString &szErrMsg)
 {
   QString strOldSize;
   QString strNewSize;
   QString strNbRepl;
-  KListViewString *lvi;
+  QListViewItem *lvi;
   QFileInfo fi;
   QString strTemp;
 
@@ -125,7 +128,7 @@ KListViewString* KResultView::addFullItem(bool bSuccess, const QString &szName, 
     strNbRepl.setNum(nNbRepl);
 
   // Add item to list
-  lvi = new KListViewString(this, szName, szDirectory, strOldSize);
+  lvi = new QListViewItem(this, szName, szDirectory, strOldSize);
 
   // set owners infos
   strTemp = szDirectory + "/" + szDirectory, szName;
@@ -152,7 +155,7 @@ KListViewString* KResultView::addFullItem(bool bSuccess, const QString &szName, 
   return lvi;
 }
 
-// ===========================================================================================================================
+
 // BUG IN THIS FUNCTION WITH LISTVIEW WHEN USING THREADS
 int KResultView::updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, const QString& szErrMsg)
 {
@@ -191,35 +194,34 @@ int KResultView::updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, in
   return 0;
 }
 
-// ===========================================================================================================================
-bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QString strTextNew, QString strTextReplace,
-                                      const char *szSearch, int nSearchLen, bool bShowDetails)
+
+bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QString strTextNew, QString strTextReplace,const char *szSearch, int nSearchLen, bool bShowDetails)
 {
   // Add item to list
   QString strNum;
-  QListViewItem *lviCurItem;
-  QListViewItem *lviFirst;
-  KListViewString *lviNew;
-  KListViewString *lviParent = 0;
+  QListViewItem *lviCurItem,
+                            *lviFirst;
+  QListViewItem *lviNew,
+                             *lviParent = 0L;
   bool bPresent = false;
   QString strTextSearch;
   char szTemp[8192];
 
   memset(szTemp, 0, sizeof(szTemp));
-  strncpy(szTemp, szSearch, min((int)nSearchLen,(int)sizeof(szTemp)));
+  strncpy(szTemp, szSearch, MIN((int)nSearchLen,(int)sizeof(szTemp)));
   strTextSearch = QString(szTemp);
 
   // 1. ---------- Add the parent string in list view if not already present
   bPresent = false;
   lviCurItem = lviFirst = lvi -> firstChild();
-  if (lviCurItem != NULL)
+  if (lviCurItem != 0)
     {
       do
         {
           if (lviCurItem -> text(0) == strTextOld)
             {
               bPresent = true;
-              lviParent = (KListViewString *) lviCurItem;
+              lviParent = lviCurItem;
 
                                 // Increase number of strings found
               if (bShowDetails) // if need to show how many strings
@@ -237,7 +239,7 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
   // If parent not present, add it
   if (!bPresent)
     {
-      lviParent = new KListViewString(lvi, strTextOld, strTextNew, "", "", (bShowDetails ? QString("1") : QString("")));
+      lviParent = new QListViewItem(lvi, strTextOld, strTextNew, "", "", (bShowDetails ? QString("1") : QString("")));
       if (!lviParent)
         return false;
       lviParent -> setPixmap(0, m_pmIconString);
@@ -249,7 +251,7 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
   bPresent = false;
   lviCurItem = lviFirst = lviParent -> firstChild();
 
-  if (lviCurItem != NULL)
+  if (lviCurItem != 0)
     {
       do
         {
@@ -274,7 +276,7 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
 
   if (!bPresent)
     {
-      lviNew = new KListViewString(lviParent, strTextSearch, strTextReplace, "", "", (bShowDetails ? QString("1") : QString("")));
+      lviNew = new QListViewItem(lviParent, strTextSearch, strTextReplace, "", "", (bShowDetails ? QString("1") : QString("")));
       if (lviNew == 0)
         return false;
       lviNew -> setPixmap(0, m_pmIconSubString);
@@ -283,7 +285,11 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
   return true;
 }
 
-//===========================================================================================================================
+QPixmap KResultView::iconString() 
+{
+ return m_pmIconString;
+}
+
 void KResultView::slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int /*column*/)
 {
   // Don't look at events while working
@@ -306,17 +312,20 @@ void KResultView::slotMouseButtonClicked (int nButton, QListViewItem *lvi, const
     }
 }
 
-// ===========================================================================================================================
-QString KResultView::getCurrentItem()
+
+QString KResultView::currentItem()
 {
   QString strFilename;
   QListViewItem *lvi;
 
-  if (!m_lviCurrent)
-    m_lviCurrent = currentItem();
+  if(!m_lviCurrent)
+    if(!(m_lviCurrent = QListView::currentItem()))
+      return QString::null;
+/*  if (!m_lviCurrent)
+    m_lviCurrent = QListView::currentItem();
 
   if (!m_lviCurrent) // If no selected item
-    return QString::null;
+    return QString::null;*/
 
   lvi = m_lviCurrent;
   while (lvi->parent())
@@ -327,92 +336,82 @@ QString KResultView::getCurrentItem()
   return strFilename;
 }
 
-// ===========================================================================================================================
+
 void KResultView::slotResultProperties()
 {
-  if (getCurrentItem().isEmpty())
-    return;
-
-  KURL url(getCurrentItem());
-
-  (void) new KPropertiesDialog(url);
-
-  m_lviCurrent = 0;
+  if (!currentItem().isEmpty())
+  {
+    KURL url(currentItem());
+    (void) new KPropertiesDialog(url);
+    m_lviCurrent = 0L;
+  }  
 }
 
-// ===========================================================================================================================
+
 void KResultView::slotResultOpen()
 {
-  if (getCurrentItem().isEmpty())
-    return;
-
-  (void) new KRun(KURL( getCurrentItem() ), 0, true, true);
-  m_lviCurrent = 0;
+  if (!currentItem().isEmpty())
+  {
+    (void) new KRun(currentItem(), 0, true, true);
+    m_lviCurrent = 0L;
+  }  
 }
 
-// ===========================================================================================================================
+
 void KResultView::slotResultOpenWith()
 {
-  if (getCurrentItem().isEmpty())
-    return;
-
-  KURL::List kurls;
-  kurls.append(KURL( getCurrentItem() ));
-
-  KRun::displayOpenWithDialog(kurls);
-
-  m_lviCurrent = 0;
+  if (!currentItem().isEmpty())
+  {
+    KURL::List kurls;
+    kurls.append(currentItem());
+    KRun::displayOpenWithDialog(kurls);
+    m_lviCurrent = 0L;
+  } 
 }
 
-// ===========================================================================================================================
+
 void KResultView::slotResultDirOpen()
 {
-  if (getCurrentItem().isEmpty())
-    return;
-
-  QFileInfo fiFile;
-  fiFile.setFile(getCurrentItem());
-
-  (void) new KRun (KURL::fromPathOrURL( fiFile.dirPath() ), 0, true, true);
-  m_lviCurrent = 0;
+  if (!currentItem().isEmpty())
+  {
+    QFileInfo fiFile;
+    fiFile.setFile(currentItem());
+    (void) new KRun (fiFile.dirPath(), 0, true, true);
+    m_lviCurrent = 0L;
+  }
 }
 
-// ===========================================================================================================================
 void KResultView::slotResultEdit()
 {
-  if (getCurrentItem().isEmpty())
-    return;
-
-  QString strCommand;
-  strCommand = QString("kate %1 &").arg(getCurrentItem());
-  KRun::runCommand(strCommand);
-  m_lviCurrent = 0;
+  if (!currentItem().isEmpty())
+  {
+    QString strCommand = QString("kate %1 &").arg(currentItem());
+    KRun::runCommand(strCommand);
+    m_lviCurrent = 0L;
+  }    
 }
 
-// ===========================================================================================================================
 void KResultView::slotResultDelete()
 {
-  QFile fiFile;
-  int nRes;
+  if (!currentItem().isEmpty())
+  {
+    QFile fiFile;
+    int nRes = KMessageBox::questionYesNo(this, i18n("<qt>Do you really want to delete <b>%1</b>?</qt>").arg(currentItem()));
 
-  if (getCurrentItem().isEmpty())
-    return;
-
-  nRes = KMessageBox::questionYesNo(this, i18n("<qt>Do you really want to delete <b>%1</b>?</qt>").arg(getCurrentItem()));
-
-  if (nRes == KMessageBox::Yes)
+    if (nRes == KMessageBox::Yes)
     {
-      fiFile.setName(getCurrentItem());
+      fiFile.setName(currentItem());
       fiFile.remove();
 
       // Remove item from list if file was deleted
       takeItem(m_lviCurrent); // Remove item from ListView
     }
 
-  m_lviCurrent = 0;
+   m_lviCurrent = 0L;
+  } 
 }
 
-// ===========================================================================================================================
+
 void KResultView::slotResultTreeExpand()
 {
   QListViewItem *lviRoot = firstChild();
@@ -421,7 +420,7 @@ void KResultView::slotResultTreeExpand()
     expand(lviRoot, true);
 }
 
-// ===========================================================================================================================
+
 void KResultView::slotResultTreeReduce()
 {
   QListViewItem *lviRoot = firstChild();
@@ -430,14 +429,14 @@ void KResultView::slotResultTreeReduce()
     expand(lviRoot, false);
 }
 
-// ===========================================================================================================================
+
 void KResultView::expand(QListViewItem *lviCurrent, bool bExpand)
 {
   // current item
   lviCurrent->setOpen(bExpand);
 
   // recursivity
-  while((lviCurrent = lviCurrent->nextSibling()) != NULL)
+  while((lviCurrent = lviCurrent->nextSibling()) != 0)
     {
       lviCurrent->setOpen(bExpand);
 
@@ -446,6 +445,4 @@ void KResultView::expand(QListViewItem *lviCurrent, bool bExpand)
     }
 }
 
-
 #include "kresultview.moc"
-

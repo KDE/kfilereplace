@@ -1,8 +1,9 @@
 /***************************************************************************
-                          kfilereplaceview.h  -  description
+                          kresultview.h  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
     copyright            : (C) 1999 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -29,7 +30,6 @@
 #include <kpopupmenu.h>
 
 class KFileReplaceApp;
-class KListViewString;
 
 // ================================================================
 class KResultView : public QListView
@@ -39,13 +39,13 @@ class KResultView : public QListView
 public:
         KResultView( QWidget *parent = 0, const char *name = 0);
         ~KResultView();
-        QString getCurrentItem();
+        QString currentItem();
 
 public:
-        KListViewString* addFullItem(bool bSuccess, const QString& szName, const QString& szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
+        QListViewItem* addFullItem(bool bSuccess, const QString& szName, const QString& szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
         int updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
         bool increaseStringCount(QListViewItem *lvi, QString strOld, QString strNew, QString strReplace, const char *szSearch, int nSearchLen, bool bShowDetails);
-        QPixmap getIconString() {return m_pmIconString;}
+        QPixmap iconString();
 
 public slots:
         void slotResultProperties();

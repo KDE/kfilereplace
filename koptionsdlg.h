@@ -1,8 +1,9 @@
 /***************************************************************************
-                          kpropertiesdlg.h  -  description
+                          koptionsdlg.h  -  description
                              -------------------
     begin                : Tue Dec 28 1999
     copyright            : (C) 1999 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -18,64 +19,38 @@
 #ifndef KOPTIONSDLG_H
 #define KOPTIONSDLG_H
 
-#include <kmessagebox.h>
 #include "apistruct.h"
 
-#include <qtabdialog.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
 #include <kseparator.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qdialog.h>
+
+class QLabel;
+class QLineEdit;
+class QCheckBox;
+
+#include "koptionsdlgs.h"
 
 /**
   *@author François Dupoux
   */
 
-class KOptionsDlg : public QTabDialog
+class KOptionsDlg : public KOptionsDlgS
 {
    Q_OBJECT
 public:
-        KOptionsDlg(QWidget *parent, const char *name, KSettings settings);
+        KOptionsDlg(QWidget *parent, const char *name, Settings settings);
         ~KOptionsDlg();
-        void initPage1();
-        void initPage2();
-        void initPage3();
-        void setValues();
-
-protected:
-        QLabel *m_label1;
-        KSeparator *m_sep1;
-        QLineEdit *m_editLetter;
-        QLineEdit *m_editWord;
-        QCheckBox *m_checkWildcardsInReplaceStr;
-        QLineEdit *m_editExpLength;
-
-        QCheckBox *m_checkCaseSensitive;
-        QCheckBox *m_checkRecursive;
-        QCheckBox *m_checkBackup;
-        QCheckBox *m_checkWildcards;
-        QCheckBox *m_checkVariables;
-        QCheckBox *m_checkConfirmDirs;
-        QCheckBox *m_checkConfirmFiles;
-        QCheckBox *m_checkConfirmStrings;
-        QCheckBox *m_checkHaltOnFirstOccur;
-        QCheckBox *m_checkIgnoreWhitespaces;
-        QCheckBox *m_checkFollowSymLinks;
-        QCheckBox *m_checkAllStringsMustBeFound;
-        QCheckBox *m_checkIgnoreHidden;
+        void whatsThisPage1();
+        void whatsThisPage2();
+        void whatsThisPage3();
+       // void setValues();
+        /** Functions of access to datas */
+        Settings settings();
 
 private: // Data of configuration
-        KSettings m_settings;
-
-
-public: // Functions of access to datas
-        KSettings getSettings() {return m_settings;}
+        Settings m_settings;
 
 protected slots:
-        void slotOk();
+        void slotOK();
         void slotDefaults();
 };
 

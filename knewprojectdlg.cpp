@@ -3,6 +3,7 @@
                              -------------------
     begin                : Tue Dec 28 1999
     copyright            : (C) 1999 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -18,18 +19,16 @@
 #include "knewprojectdlg.h"
 #include "resource.h"
 
-#include <qvbox.h>
-#include <qgroupbox.h>
-#include <qbuttongroup.h>
+//#include <qvbox.h>
+//#include <qbuttongroup.h>
 #include <qwhatsthis.h>
-#include <qlayout.h>
-#include <qwidget.h>
 #include <qpushbutton.h>
-#include <qlabel.h>
+//#include <qlabel.h>
 #include <qcheckbox.h>
-#include <qmultilineedit.h>
-#include <qdir.h>
-#include <qframe.h>
+//#include <qdir.h>
+//#include <qdatetime.h>
+//#include <qiconset.h>
+//#include <qpixmap.h>
 
 #include <kseparator.h>
 #include <kmessagebox.h>
@@ -38,81 +37,90 @@
 #include <kfiledialog.h>
 #include <klineedit.h>
 #include <klocale.h>
+#include <kstandarddirs.h>
+#include <kdeversion.h>
+#include <kdebug.h>
+#include <kiconloader.h>
 
 
-// ===========================================================================================================================
 KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *name/*=0*/) : KNewProjectDlgS(parent, name, true)
 {
    // copy data
-   m_config = config;
-
-   setWhatsThis();
-   loadComboValues();
-   connect(m_btnDir, SIGNAL(clicked()), this, SLOT(slotDir()));
+ m_config = config;  
+ QIconSet iconSet = SmallIconSet(QString::fromLatin1("fileopen"));
+ QPixmap pixMap = iconSet.pixmap( QIconSet::Small, QIconSet::Normal );
+ pbLocation->setIconSet(iconSet);
+ pbLocation->setFixedSize( pixMap.width()+8, pixMap.height()+8 );
+ setWhatsThis();
+ loadLocationsList();
+ loadFiltersList();
+ connect(pbLocation, SIGNAL(clicked()), this, SLOT(slotDir()));
+ connect(pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
+ connect(pbCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
-// ===========================================================================================================================
 KNewProjectDlg::~KNewProjectDlg()
 {
+ m_config = 0L;
 }
 
-// ===========================================================================================================================
-QString KNewProjectDlg::getDirectory()
+QString KNewProjectDlg::location()
 {
-  return m_comboDirectory -> currentText();
+  return cbLocation->currentText();
 }
 
-// ===========================================================================================================================
-QString KNewProjectDlg::getFilter()
+QString KNewProjectDlg::filter()
 {
-  return m_comboFilter -> currentText();
+  return cbFilter->currentText();
 }
 
 void KNewProjectDlg::slotDir()
 {
-   QString strDir;
+   QString directoryString;
 
-   strDir = KFileDialog::getExistingDirectory(QString::null, this, i18n("Project Directory"));
-   if (strDir.isEmpty())
-      return ;
-
-   m_comboDirectory -> setEditText(strDir);
+   directoryString = KFileDialog::getExistingDirectory(QString::null, this, i18n("Project Directory"));
+   if (!directoryString.isEmpty())
+    cbLocation->setEditText(directoryString);
 }
 
-// ===========================================================================================================================
-void KNewProjectDlg::slotOk()
+ 
+void KNewProjectDlg::slotOK()
 {
-   bool bMinSize, bMaxSize, bMinDate, bMaxDate;
-
+   bool minimumSize, 
+        maximumSize, 
+        minimumDate, 
+        maximumDate;
+   
    // Check the Search text and the Filter are not empty
-   if (getDirectory().isEmpty() || getFilter().isEmpty())
+   if (location().isEmpty() || filter().isEmpty())
    {
       KMessageBox::error(this, i18n("You must fill the combo boxes (directory and filter) before continuing."));
       return;
    }
 
    // Copy text into variables
-   addCurrentStringToCombo();
-   saveComboValues();
-
+   //addCurrentStringToCombo();
+   saveLocationsList();
+   saveFiltersList();
+  
    // ================== SIZE OPTIONS ========================
-   getMaxFilesSize(&bMaxSize, &m_nMaxSize);
-   getMinFilesSize(&bMinSize, &m_nMinSize);
+   maxFilesSize(maximumSize, m_MaximumSizeNumber);
+   minFilesSize(minimumSize, m_MinimumSizeNumber);
 
    // ================== DATE OPTIONS ========================
-   QString strMinDate, strMaxDate;
+   QString minimumDateString, maximumDateString;
 
-   bMinDate = m_checkDateMin -> isChecked();
-   bMaxDate = m_checkDateMax -> isChecked();
-   strMinDate = m_editDateMin -> text();
-   strMaxDate = m_editDateMax -> text();
+   minimumDate = chbDateMin->isChecked();
+   maximumDate = chbDateMax->isChecked();
+   minimumDateString = edDateMin->text();
+   maximumDateString = edDateMax->text();
 
    // ================== OWNER OPTIONS ========================
-   bool bOwnerUser, bOwnerGroup;
-   bOwnerUser = getBoolOwnerUser();
-   bOwnerGroup = getBoolOwnerGroup();
+   bool OwnerUser, OwnerGroup;
+   OwnerUser = isOwnerUser();
+   OwnerGroup = isOwnerGroup();
 
-   if ((bOwnerUser && m_editOwnerUser->text().isEmpty()) || (bOwnerGroup && m_editOwnerGroup->text().isEmpty()))
+   if ((OwnerUser && edOwnerUser->text().isEmpty()) || (OwnerGroup && edOwnerGroup->text().isEmpty()))
    {
       KMessageBox::error(this, i18n("Some edit boxes are empty in the <b>Owner</b> page."));
       return ;
@@ -121,17 +129,17 @@ void KNewProjectDlg::slotOk()
    // =========================================================
 
    // Check all the fields are filled
-   if (   (bMaxSize && m_editSizeMax -> text().isEmpty())
-          || (bMinSize && m_editSizeMin -> text().isEmpty())
-          || (bMinDate && m_editDateMin -> text().isEmpty())
-          || (bMaxDate && m_editDateMax -> text().isEmpty()) )
+   if (   (maximumSize && edSizeMax->text().isEmpty())
+          || (minimumSize && edSizeMin->text().isEmpty())
+          || (minimumDate && edDateMin->text().isEmpty())
+          || (maximumDate && edDateMax->text().isEmpty()) )
    {
       KMessageBox::error(this, i18n("Some edit boxes are empty"));
       return ;
    }
 
    // Check option "Size Min/Max": check MinSize is not greater than MaxSize
-   if (bMaxSize && bMinSize && (m_nMaxSize < m_nMinSize))
+   if (maximumSize && minimumSize && (m_MaximumSizeNumber < m_MinimumSizeNumber))
    {
       KMessageBox::error(this, i18n("The minimum size is greater than the maximum size."));
       return ;
@@ -142,9 +150,9 @@ void KNewProjectDlg::slotOk()
    //                 * QDate::isValid()
 
    // 1. Check the first Date: DateMin (After...)
-   if (bMinDate) // If "DateMin" option in checked
+   if (minimumDate) // If "DateMin" option in checked
    {
-      if ( !QDate::fromString(strMinDate, Qt::ISODate).isValid())
+      if ( !QDate::fromString(minimumDateString, Qt::ISODate).isValid())
       {
          KMessageBox::error(this, i18n("The dates must be in the YYYY-MM-DD format."));
          return ;
@@ -152,9 +160,9 @@ void KNewProjectDlg::slotOk()
    }
 
    // 2. Check the second Date: DateMax (Before...)
-   if (bMaxDate) // If "DateMax" option in checked
+   if (maximumDate) // If "DateMax" option in checked
    {
-      if ( !QDate::fromString(strMaxDate, Qt::ISODate).isValid())
+      if ( !QDate::fromString(maximumDateString, Qt::ISODate).isValid())
       {
          KMessageBox::error(this, i18n("The dates must be in the YYYY-MM-DD format."));
          return ;
@@ -162,18 +170,14 @@ void KNewProjectDlg::slotOk()
    }
 
    // 3. Convert Strings to QDate
-   if (bMinDate) // If "DateMin" option in checked
-   {
-      m_qdMinDate = QDate::fromString(strMinDate, Qt::ISODate);
-   }
+   if (minimumDate) // If "DateMin" option in checked
+     m_MinDate = QDate::fromString(minimumDateString, Qt::ISODate);
 
-   if (bMaxDate) // If "DateMax" option in checked
-   {
-      m_qdMaxDate = QDate::fromString(strMaxDate, Qt::ISODate);
-   }
-
+   if (maximumDate) // If "DateMax" option in checked
+    m_MaxDate = QDate::fromString(maximumDateString, Qt::ISODate);
+  
    // 4. Check DateMax is not before DateMin
-   if (bMinDate && bMaxDate && m_qdMinDate > m_qdMaxDate)
+   if (minimumDate && maximumDate && m_MinDate > m_MaxDate)
    {
       KMessageBox::error(this, i18n("<qt>The <i>accessed after</i> date is after the <i>accessed before</i> date."));
       return ;
@@ -182,253 +186,201 @@ void KNewProjectDlg::slotOk()
    accept();
 }
 
-
-// ===========================================================================================================================
-void KNewProjectDlg::loadComboValues()
+void KNewProjectDlg::loadLocationsList()
 {
-   ///////////////////////////////////////////////////////////////////
-   // read the m_config file entries
-   QString str, strTemp;
-   int i;
-   int nInserted;
+  m_config->setGroup("Directories");
+  #if KDE_IS_VERSION(3,1,3)
+  QStringList locationsEntryList = m_config->readPathListEntry("Directories list");
+  #else
+  QStringList locationsEntryList = m_config->readListEntry("Directories list");
+  #endif
 
-   // Combo box informations
+  bool flag = false;
+  QStringList::Iterator locationsIt;
+  for (locationsIt = locationsEntryList.begin(); locationsIt != locationsEntryList.end(); ++locationsIt)
+   {
+    cbLocation->insertItem((*locationsIt));
+    flag = true;
+   }
+
+  if(!flag)
+    cbLocation->insertItem(QDir::current().path());
+}
+
+void KNewProjectDlg::loadFiltersList()
+{
+  m_config->setGroup("Filters");
+  #if KDE_IS_VERSION(3,1,3)
+  QStringList filtersEntryList = m_config->readPathListEntry("Filters list");
+  #else
+  QStringList filtersEntryList = m_config->readListEntry("Filters list");
+  #endif
+  
+  bool flag = false;
+  QStringList::Iterator filtersIt;
+  for (filtersIt = filtersEntryList.begin(); filtersIt != filtersEntryList.end(); ++filtersIt)
+  {
+   cbFilter->insertItem((*filtersIt));
+   flag = true;
+  }
+  
+  if(!flag)
+    cbFilter->insertItem("*.htm;*.html;*.xml;*.xhtml;*.css;*.js;*.php");
+}
+
+void KNewProjectDlg::saveLocationsList()
+{
    m_config->setGroup("Directories");
-   nInserted = 0;
-   for(i = 0; i < MAX_STRINGSINCOMBO; i++)
-   {
-      strTemp.setNum(i+1);
-      str = m_config->readEntry(strTemp, "");
-      if (!str.isEmpty())
-      {
-         m_comboDirectory->insertItem(str);
-         nInserted++;
-      }
-   }
-   if (nInserted == 0) // If no string in m_config file
-      m_comboDirectory->insertItem(QDir::current().path());
-
-   m_config->setGroup("Filters");
-   nInserted = 0;
-   for(i = 0; i < MAX_STRINGSINCOMBO; i++)
-   {
-      strTemp.setNum(i+1);
-      str = m_config->readEntry(strTemp, "");
-      if (!str.isEmpty())
-      {
-         m_comboFilter -> insertItem(str);
-         nInserted++;
-      }
-
-   }
-   if (nInserted == 0) // If no string in m_config file
-      m_comboFilter -> insertItem("*.htm;*.html;*.xml");
-}
-
-// ===========================================================================================================================
-void KNewProjectDlg::saveComboValues()
-{
-   ///////////////////////////////////////////////////////////////////
-   // save the m_config file entries
-   QString str, strTemp;
+   QStringList locationsEntryList;
    int i;
+   for (i = 0; i <= cbLocation->maxCount() ; i++)
+    locationsEntryList.append(cbLocation-> text(i));
+   
+   m_config->writeEntry("Directories list",locationsEntryList.join(","));
+   m_config->sync();
+} 
 
-   // Combo box informations
-   m_config->setGroup("Directories");
-   for(i = 0; i < (int) m_comboDirectory-> count(); i++)
-   {
-      strTemp.setNum(i+1);
-      m_config->writeEntry(strTemp.ascii(), m_comboDirectory-> text(i));
-   }
-
-   m_config->setGroup("Filters");
-   for(i = 0; i < (int) m_comboFilter -> count(); i++)
-   {
-      strTemp.setNum(i+1);
-      m_config->writeEntry(strTemp.ascii(), m_comboFilter -> text(i));
-   }
-}
-
-// ===========================================================================================================================
-void KNewProjectDlg::addCurrentStringToCombo()
+void KNewProjectDlg::saveFiltersList()
 {
-   // Get strings from combo Boxes and Insert items to Combo boxes
-   bool bAlready;
-   KComboBox* combo[2] = {m_comboDirectory, m_comboFilter};
-   const char *szString[2] = {getDirectory().ascii(), getFilter().ascii()};
-
-   for (int i=0; i < 2; i++)
-   {
-      // Check string is not already in the combo
-      bAlready = false;
-      for (int j=0; j < combo[i] -> count(); j++)
-      {
-         if ( strcmp(szString[i], combo[i] -> text(j)) == 0 )
-            bAlready = true;
-      }
-
-      if (!bAlready) // Add it
-      {
-         if (combo[i] -> count() >= MAX_STRINGSINCOMBO) // If full
-            combo[i] -> removeItem(4);
-
-         combo[i] -> insertItem(szString[i], 0);
-      }
-   }
+   m_config->setGroup("Filters");
+   QStringList filtersEntryList;
+   int i;
+   for (i = 0; i <= cbFilter->maxCount(); i++)
+    filtersEntryList.append(cbFilter-> text(i));
+    
+   m_config->writeEntry("Filters list",filtersEntryList.join(","));
+   m_config->sync();
 }
 
-// ===========================================================================================================================
 void KNewProjectDlg::setWhatsThis()
 {
-   QWhatsThis::add(m_comboDirectory, i18n("This is the directory where the search or the replace operation will be done."));
-   QWhatsThis::add(m_comboFilter, i18n("Fix the filter of the files you want to search. For example, write \"*.htm\" to search or replace "
+   QWhatsThis::add(cbLocation, i18n("This is the directory where the search or the replace operation will be done."));
+   QWhatsThis::add(cbFilter, i18n("Fix the filter of the files you want to search. For example, write \"*.htm\" to search or replace "
                                        "all web pages. You can put more than an only filter, when using ';'. For example \"*.html;*.txt;*.xml\""));
 
-   QWhatsThis::add(m_editSizeMin, i18n("Minimal size of files. For example, if you put 1024 KB, all files which size is less than 1 MB will not be taken"));
-   QWhatsThis::add(m_editSizeMax, i18n("Maximal size of files. For example, if you put 2048 KB, all files which size is more than 2 MB will not be taken"));
-   QWhatsThis::add(m_editDateMin, i18n("Minimal date of files in YYYY/MM/DD format. For example, if you put 2000/01/31, all files which were "
+   QWhatsThis::add(edSizeMin, i18n("Minimal size of files. For example, if you put 1024 KB, all files which size is less than 1 MB will not be taken"));
+   QWhatsThis::add(edSizeMax, i18n("Maximal size of files. For example, if you put 2048 KB, all files which size is more than 2 MB will not be taken"));
+   QWhatsThis::add(edDateMin, i18n("Minimal date of files in YYYY/MM/DD format. For example, if you put 2000/01/31, all files which were "
                                        "(modified/read) before the 31 January 2000 will not be taken"));
-   QWhatsThis::add(m_editDateMax, i18n("Maximal date of files in YYYY/MM/DD format. For example, if you put 1999/12/31, all files which were "
+   QWhatsThis::add(edDateMax, i18n("Maximal date of files in YYYY/MM/DD format. For example, if you put 1999/12/31, all files which were "
                                        "(modified/read) after the 31 December 1999 will not be taken"));
-   QWhatsThis::add(m_comboDateRW, i18n("Select \"Writing\" if you want to use the date of the last modification, or \"reading\" to use the last "
+   QWhatsThis::add(cbDateValid, i18n("Select \"Writing\" if you want to use the date of the last modification, or \"reading\" to use the last "
                                        "read access to the file"));
 }
-
-
-// ===========================================================================================================================
-void KNewProjectDlg::getMaxFilesSize(bool *bChecked, long unsigned int *nMaxSize)
+ 
+void KNewProjectDlg::maxFilesSize(bool & bChecked, long unsigned int & nMaxSize)
 {
-  *bChecked = m_checkSizeMax -> isChecked();
+  bChecked = chbSizeMax->isChecked();
 
-  if (*bChecked) // If option activated
-    *nMaxSize = m_editSizeMax -> text().toULong() * 1024; // KB --> Bytes
+  if (bChecked) // If option activated
+    nMaxSize = edSizeMax->text().toULong() * 1024; // KB --> Bytes
   else
-    *nMaxSize = 0;
+    nMaxSize = 0;
 }
-
-// ===========================================================================================================================
-void KNewProjectDlg::getMinFilesSize(bool *bChecked, long unsigned int *nMinSize)
+ 
+void KNewProjectDlg::minFilesSize(bool & bChecked, long unsigned int & nMinSize)
 {
-  *bChecked = m_checkSizeMin -> isChecked();
+  bChecked = chbSizeMin->isChecked();
 
-  if (*bChecked) // If option activated
-    *nMinSize = m_editSizeMin -> text().toULong() * 1024; // KB --> Bytes
+  if (bChecked) // If option activated
+    nMinSize = edSizeMin->text().toULong() * 1024; // KB --> Bytes
   else
-    *nMinSize = 0;
+    nMinSize = 0;
 }
-
-// ===========================================================================================================================
-int KNewProjectDlg::getTypeOfAccess()
+ 
+int KNewProjectDlg::accessType()
 {
-  return m_comboDateRW -> currentItem();
+  return cbDateValid->currentItem();
 }
-
-// ===========================================================================================================================
-bool KNewProjectDlg::getBoolMinDate()
+ 
+bool KNewProjectDlg::isMinDate()
 {
-  return m_checkDateMin -> isChecked();
+  return chbDateMin->isChecked();
 }
-
-// ===========================================================================================================================
-bool KNewProjectDlg::getBoolMaxDate()
+ 
+bool KNewProjectDlg::isMaxDate()
 {
-  return m_checkDateMax -> isChecked();
+  return chbDateMax->isChecked();
 }
-
-// ===========================================================================================================================
-bool KNewProjectDlg::getBoolMinSize()
+ 
+bool KNewProjectDlg::isMinSize()
 {
-  return m_checkSizeMin -> isChecked();
+  return chbSizeMin->isChecked();
 }
-
-// ===========================================================================================================================
-bool KNewProjectDlg::getBoolMaxSize()
+ 
+bool KNewProjectDlg::isMaxSize()
 {
-  return m_checkSizeMax -> isChecked();
+  return chbSizeMax->isChecked();
 }
-
-// ===========================================================================================================================
-bool KNewProjectDlg::getBoolOwnerUser()
+ 
+bool KNewProjectDlg::isOwnerUser()
 {
-  return m_checkOwnerUser -> isChecked();
+  return chbOwnerUser->isChecked();
 }
-
-// ===========================================================================================================================
-bool KNewProjectDlg::getBoolOwnerGroup()
+ 
+bool KNewProjectDlg::isOwnerGroup()
 {
-  return m_checkOwnerGroup -> isChecked();
+  return chbOwnerGroup->isChecked();
 }
-
-// ===========================================================================================================================
-bool KNewProjectDlg::getOwnerUserMustBe()
+ 
+bool KNewProjectDlg::ownerUserMustBe()
 {
-  return (m_comboOwnerUserBool -> currentText() == i18n("must be"));
+  return (cbOwnerUserBool->currentText() == i18n("must be"));
 }
-
-// ===========================================================================================================================
-bool KNewProjectDlg::getOwnerGroupMustBe()
+ 
+bool KNewProjectDlg::ownerGroupMustBe()
 {
-  return (m_comboOwnerGroupBool -> currentText() == i18n("must be"));
+  return (cbOwnerGroupBool->currentText() == i18n("must be"));
 }
-
-// ===========================================================================================================================
-QString KNewProjectDlg::getOwnerUserValue()
+ 
+QString KNewProjectDlg::ownerUserValue()
 {
-  return m_editOwnerUser->text();
+  return edOwnerUser->text();
 }
-
-// ===========================================================================================================================
-QString KNewProjectDlg::getOwnerGroupValue()
+ 
+QString KNewProjectDlg::ownerGroupValue()
 {
-  return m_editOwnerGroup->text();
+  return edOwnerGroup->text();
 }
-
-// ===========================================================================================================================
-QString KNewProjectDlg::getOwnerUserType()
+ 
+QString KNewProjectDlg::ownerUserType()
 {
-  return m_comboOwnerUserType -> currentText();
+  return cbOwnerUserType->currentText();
 }
-
-// ===========================================================================================================================
-QString KNewProjectDlg::getOwnerGroupType()
+ 
+QString KNewProjectDlg::ownerGroupType()
 {
-  return m_comboOwnerGroupType -> currentText();
+  return cbOwnerGroupType->currentText();
 }
-
-// ===========================================================================================================================
-QDate KNewProjectDlg::getMinDate()
+ 
+QDate KNewProjectDlg::minDate()
 {
-  return m_qdMinDate;
+  return m_MinDate;
 }
-
-// ===========================================================================================================================
-QDate KNewProjectDlg::getMaxDate()
+ 
+QDate KNewProjectDlg::maxDate()
 {
-  return m_qdMaxDate;
+  return m_MaxDate;
 }
-
-// ===========================================================================================================================
-unsigned long int KNewProjectDlg::getMinSize()
+ 
+unsigned long int KNewProjectDlg::minSize()
 {
-  return m_nMinSize;
+  return m_MinimumSizeNumber;
 }
-
-// ===========================================================================================================================
-unsigned long int KNewProjectDlg::getMaxSize()
+ 
+unsigned long int KNewProjectDlg::maxSize()
 {
-  return m_nMaxSize;
+  return m_MaximumSizeNumber;
 }
-
-// ===========================================================================================================================
-void KNewProjectDlg::setDatas(const QString& strDir, const QString& strFilter)
+ 
+void KNewProjectDlg::setDatas(const QString& directoryString, const QString& FilterString)
 {
-  if (!strDir.isEmpty())
-    m_comboDirectory->setEditText(strDir);
+  if (!directoryString.isEmpty())
+    cbLocation->setEditText(directoryString);
 
-  if (!strFilter.isEmpty())
-    m_comboFilter->setEditText(strFilter);
+  if (!FilterString.isEmpty())
+    cbFilter->setEditText(FilterString);
 }
-
 
 #include "knewprojectdlg.moc"
 

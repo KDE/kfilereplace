@@ -8,7 +8,7 @@ INCLUDES  = $(all_includes)
 SUBDIRS = . pics toolbar
 
 # these are the headers for your project
-noinst_HEADERS = apistruct.h kaddstringdlg.h kexpression.h kfilereplaceiface.h klistviewstring.h kresultview.h \
+noinst_HEADERS = apistruct.h kaddstringdlg.h kexpression.h kfilereplaceiface.h  kresultview.h \
                  filelib.h kconfirmdlg.h kfilereplacedoc.h kfilereplacepref.h knewprojectdlg.h resource.h \
                  kaboutkfilereplace.h kernel.h kfilereplaceview.h koptionsdlg.h
 
@@ -17,7 +17,7 @@ noinst_HEADERS = apistruct.h kaddstringdlg.h kexpression.h kfilereplaceiface.h k
 METASOURCES = AUTO
 
 kde_module_LTLIBRARIES = libkfilereplacepart.la
-libkfilereplacepart_la_SOURCES = kfilereplacepart.cpp kfilereplacedoc.cpp kfilereplaceview.cpp kaboutkfilereplace.cpp kaddstringdlg.cpp kconfirmdlg.cpp kernel.cpp kexpression.cpp kfilereplacepref.cpp klistviewstring.cpp knewprojectdlg.cpp knewprojectdlgs.ui koptionsdlg.cpp kresultview.cpp filelib.cpp
+libkfilereplacepart_la_SOURCES = kfilereplacepart.cpp kfilereplacedoc.cpp kfilereplaceview.cpp kaboutkfilereplace.cpp kaddstringdlg.cpp kaddstringdlgs.ui kconfirmdlg.cpp kernel.cpp kexpression.cpp kfilereplacepref.cpp  knewprojectdlg.cpp knewprojectdlgs.ui koptionsdlg.cpp koptionsdlgs.ui kresultview.cpp filelib.cpp
 libkfilereplacepart_la_LDFLAGS = -module $(KDE_PLUGIN) $(all_libraries)
 libkfilereplacepart_la_LIBADD = $(LIB_KFILE) $(LIB_KPARTS) $(LIB_KHTML)
 

@@ -6,6 +6,7 @@
 //
 //
 // Author: Andras Mantia <amantia@kde.org>, (C) 2003
+// Maintainer: Emiliano Gulmini <emi_barbarossa@yahoo.it>, (C) 2004
 //
 // Copyright: GPL v2. See COPYING file that comes with this distribution
 //
@@ -13,12 +14,9 @@
 
 #undef APP
 
-// general unix includes
-#include <unistd.h>
-
 //qt includes
 #include <qdir.h>
-#include <qwidget.h>
+#include <qdatastream.h>
 
 //kde includes
 #include <kaboutkfilereplace.h>
@@ -42,7 +40,6 @@
 #include "kfilereplacepart.h"
 #include "kfilereplacedoc.h"
 #include "kfilereplaceview.h"
-#include "klistviewstring.h"
 #include "koptionsdlg.h"
 
 // Global Thread data
@@ -53,7 +50,6 @@ int g_nStringsRep = 0;
 int g_nOperation;
 RepDirArg g_argu;
 QString g_szErrMsg;
-
 
 // Factory code for KDE 3
 typedef KParts::GenericFactory<KFileReplacePart> KFileReplaceFactory;
@@ -88,6 +84,7 @@ KFileReplacePart::~KFileReplacePart()
 {
   saveOptions();
   slotFileStop();
+  delete m_config;
 }
 
 KAboutData* KFileReplacePart::createAboutData()
@@ -120,40 +117,40 @@ void KFileReplacePart::initGUI()
 
    // File
    (void)new KAction(i18n("New Search Project..."), "newproject", 0, this, SLOT(slotFileNew()), actionCollection(), "new_project");
-   (void)new KAction(i18n("&Search"), "filesearch", 0, this, SLOT(slotFileSearch()), actionCollection(), "search");
+   (void)new KAction(i18n("&Search"), "find", 0, this, SLOT(slotFileSearch()), actionCollection(), "search");
    (void)new KAction(i18n("&Simulate"), "filesimulate", 0, this, SLOT(slotFileSimulate()), actionCollection(), "file_simulate");
    (void)new KAction(i18n("&Replace"), "filereplace", 0, this, SLOT(slotFileReplace()), actionCollection(), "replace");
    (void)new KAction(i18n("Sto&p"), "filestop", 0, this, SLOT(slotFileStop()), actionCollection(), "stop");
    (void)new KAction(i18n("Save &Results As..."), "filesave", 0, this, SLOT(slotFileSave()), actionCollection(), "save_results");
 
    // Strings
-   (void)new KAction(i18n("&Add String..."), "stradd", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
-   (void)new KAction(i18n("&Delete String"), "strdel", 0, this, SLOT(slotStringsDel()), actionCollection(), "strings_del");
+   (void)new KAction(i18n("&Add String..."), "edit_add", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
+   (void)new KAction(i18n("&Delete String"), "edit_remove", 0, this, SLOT(slotStringsDel()), actionCollection(), "strings_del");
    (void)new KAction(i18n("&Empty Strings List"), "strempty", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
-   (void)new KAction(i18n("Edi&t Selected String..."), "stredit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
+   (void)new KAction(i18n("Edi&t Selected String..."), "lineedit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
    (void)new KAction(i18n("&Save Strings List to File..."), "filesave", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
-   (void)new KAction(i18n("&Load Strings List From File..."), "fileopen", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
+   (void)new KAction(i18n("&Load Strings List From File..."), "unsortedList", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
    (void)new KRecentFilesAction(i18n("&Load Recent Strings Files..."), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),
                                 "strings_load_recent");
-   (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "strinvert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
-   (void)new KAction(i18n("&Invert All Strings (search <--> replace)"), "strinvert", 0, this, SLOT(slotStringsInvertAll()), actionCollection(), "strings_invert_all");
+   (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
+   (void)new KAction(i18n("&Invert All Strings (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertAll()), actionCollection(), "strings_invert_all");
 
    // Options
-   (void)new KToggleAction(i18n("&Include Sub-Folders"), "optrecursive", 0, this, SLOT(slotOptionsRecursive()), actionCollection(), "options_recursive");
-   (void)new KToggleAction(i18n("Create &Backup"), "optbackup", 0, this, SLOT(slotOptionsBackup()), actionCollection(), "options_backup");
-   (void)new KToggleAction(i18n("Case &Sensitive"), "optcase", 0, this, SLOT(slotOptionsCaseSensitive()), actionCollection(), "options_case");
+   (void)new KToggleAction(i18n("&Include Sub-Folders"), "recursive", 0, this, SLOT(slotOptionsRecursive()), actionCollection(), "options_recursive");
+   (void)new KToggleAction(i18n("Create &Backup"), "backup", 0, this, SLOT(slotOptionsBackup()), actionCollection(), "options_backup");
+   (void)new KToggleAction(i18n("Case &Sensitive"), "casesensitive", 0, this, SLOT(slotOptionsCaseSensitive()), actionCollection(), "options_case");
    (void)new KToggleAction(i18n("Enable &Wildcards"), "optwildcards", 0, this, SLOT(slotOptionsWildcards()), actionCollection(), "options_wildcards");
    (void)new KToggleAction(i18n("Enable &Variables in Replace String: [$name:format$]"), "optvar", 0, this, SLOT(slotOptionsVariables()), actionCollection(), "options_var");
    (void) new KAction(i18n("Configure &KFileReplace..."), "configure", 0, this, SLOT(slotOptionsPreferences()), actionCollection(), "configure_kfilereplace");
 
    // Results
-   (void)new KAction(i18n("&Properties"), "resfileinfo", 0, getResultView(), SLOT(slotResultProperties()), actionCollection(), "results_infos");
-   (void)new KAction(i18n("&Open"), "resfileopen", 0, getResultView(), SLOT(slotResultOpen()), actionCollection(), "results_openfile");
-   (void)new KAction(i18n("&Edit with Kate"), "resfileedit", 0, getResultView(), SLOT(slotResultEdit()), actionCollection(), "results_editfile");
-   (void)new KAction(i18n("Open Parent &Folder"), "resdiropen", 0, getResultView(), SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
-   (void)new KAction(i18n("&Delete"), "resfiledel", 0, getResultView(), SLOT(slotResultDelete()), actionCollection(), "results_delete");
-   (void)new KAction(i18n("E&xpand Tree"), 0, getResultView(), SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
-   (void)new KAction(i18n("&Reduce Tree"), 0, getResultView(), SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
+   (void)new KAction(i18n("&Properties"), "resfileinfo", 0, resultView(), SLOT(slotResultProperties()), actionCollection(), "results_infos");
+   (void)new KAction(i18n("&Open"), "resfileopen", 0, resultView(), SLOT(slotResultOpen()), actionCollection(), "results_openfile");
+   (void)new KAction(i18n("&Edit with Kate"), "resfileedit", 0, resultView(), SLOT(slotResultEdit()), actionCollection(), "results_editfile");
+   (void)new KAction(i18n("Open Parent &Folder"), "resdiropen", 0, resultView(), SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
+   (void)new KAction(i18n("&Delete"), "resfiledel", 0, resultView(), SLOT(slotResultDelete()), actionCollection(), "results_delete");
+   (void)new KAction(i18n("E&xpand Tree"), 0, resultView(), SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
+   (void)new KAction(i18n("&Reduce Tree"), 0, resultView(), SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
 
    // Help menu
 //   setHelpMenuEnabled(false);
@@ -162,18 +159,14 @@ void KFileReplacePart::initGUI()
    (void)new KAction(i18n("&Report Bug..."), 0, 0, this, SLOT(reportBug()), actionCollection(), "report_bug");
 }
 
-
-
 void KFileReplacePart::initDocument()
 {
-  int nRes;
+  bool nRes;
 
   m_doc = new KFileReplaceDoc(m_parentWidget, this);
   nRes = m_doc->newDocument(QDir::homeDirPath(), "*", false);
 }
 
-
-// ===========================================================================================================================
 void KFileReplacePart::initView()
 {
   ////////////////////////////////////////////////////////////////////
@@ -185,25 +178,27 @@ void KFileReplacePart::initView()
   m_doc->addView(m_view);
   setWidget(m_view);
 
-  m_view -> init();
-  m_view -> setAcceptDrops(false);
+  m_view->init();
+  m_view->setAcceptDrops(false);
 
   //QString caption=kapp->caption();
   //setCaption(caption+": "+m_doc->getTitle());
 }
 
-// ===========================================================================================================================
-KFileReplaceDoc* KFileReplacePart::getDocument() const
+KFileReplaceDoc* KFileReplacePart::document() const
 {
   return m_doc;
 }
 
-// ===========================================================================================================================
-KResultView *KFileReplacePart::getResultView()
+KConfig *KFileReplacePart::config() 
 {
-  return m_view->getResultView();
+ return m_config;
 }
 
+KResultView *KFileReplacePart::resultView()
+{
+  return m_view->resultView();
+}
 
 void KFileReplacePart::updateCommands() // Gray or ungray commands
 {
@@ -211,19 +206,19 @@ void KFileReplacePart::updateCommands() // Gray or ungray commands
   actionCollection()->action("new_project")->setEnabled(!g_bThreadRunning);
   actionCollection()->action("search")->setEnabled(!g_bThreadRunning);
   actionCollection()->action("file_simulate")->setEnabled(!g_bThreadRunning);
-  actionCollection()->action("replace")->setEnabled(!g_bThreadRunning && m_view -> getStringView() -> childCount() > 0);
-  actionCollection()->action("save_results")->setEnabled(!g_bThreadRunning && m_view -> getResultView() -> childCount() > 0);
+  actionCollection()->action("replace")->setEnabled(!g_bThreadRunning && m_view->stringView()->childCount() > 0);
+  actionCollection()->action("save_results")->setEnabled(!g_bThreadRunning && m_view->resultView()->childCount() > 0);
   actionCollection()->action("stop")->setEnabled(g_bThreadRunning);
 
   // Strings
   actionCollection()->action("strings_add")->setEnabled(!g_bThreadRunning);
-  actionCollection()->action("strings_del")->setEnabled(!g_bThreadRunning && m_view -> getStringView() -> childCount() > 0);
-  actionCollection()->action("strings_empty")->setEnabled(!g_bThreadRunning && m_view -> getStringView() -> childCount() > 0);
-  actionCollection()->action("strings_edit")->setEnabled(!g_bThreadRunning && m_view -> getStringView() -> childCount() > 0);
-  actionCollection()->action("strings_save")->setEnabled(!g_bThreadRunning && m_view -> getStringView() -> childCount() > 0);
+  actionCollection()->action("strings_del")->setEnabled(!g_bThreadRunning && m_view->stringView()->childCount() > 0);
+  actionCollection()->action("strings_empty")->setEnabled(!g_bThreadRunning && m_view->stringView()->childCount() > 0);
+  actionCollection()->action("strings_edit")->setEnabled(!g_bThreadRunning && m_view->stringView()->childCount() > 0);
+  actionCollection()->action("strings_save")->setEnabled(!g_bThreadRunning && m_view->stringView()->childCount() > 0);
   actionCollection()->action("strings_load")->setEnabled(!g_bThreadRunning);
-  actionCollection()->action("strings_invert")->setEnabled(!g_bThreadRunning && m_view -> getStringView() -> childCount() > 0);
-  actionCollection()->action("strings_invert_all")->setEnabled(!g_bThreadRunning && m_view -> getStringView() -> childCount() > 0);
+  actionCollection()->action("strings_invert")->setEnabled(!g_bThreadRunning && m_view->stringView()->childCount() > 0);
+  actionCollection()->action("strings_invert_all")->setEnabled(!g_bThreadRunning && m_view->stringView()->childCount() > 0);
 
   // Options
   actionCollection()->action("options_recursive")->setEnabled(!g_bThreadRunning);
@@ -234,13 +229,13 @@ void KFileReplacePart::updateCommands() // Gray or ungray commands
   actionCollection()->action("configure_kfilereplace")->setEnabled(!g_bThreadRunning);
 
   // Results
-  actionCollection()->action("results_infos")->setEnabled(!g_bThreadRunning && m_view -> getResultView() -> childCount() > 0);
-  actionCollection()->action("results_openfile")->setEnabled(!g_bThreadRunning && m_view -> getResultView() -> childCount() > 0);
-  actionCollection()->action("results_editfile")->setEnabled(!g_bThreadRunning && m_view -> getResultView() -> childCount() > 0);
-  actionCollection()->action("results_opendir")->setEnabled(!g_bThreadRunning && m_view -> getResultView() -> childCount() > 0);
-  actionCollection()->action("results_delete")->setEnabled(!g_bThreadRunning && m_view -> getResultView() -> childCount() > 0);
-  actionCollection()->action("results_treeexpand")->setEnabled(!g_bThreadRunning && m_view -> getResultView() -> childCount() > 0);
-  actionCollection()->action("results_treereduce")->setEnabled(!g_bThreadRunning && m_view -> getResultView() -> childCount() > 0);
+  actionCollection()->action("results_infos")->setEnabled(!g_bThreadRunning && m_view->resultView()->childCount() > 0);
+  actionCollection()->action("results_openfile")->setEnabled(!g_bThreadRunning && m_view->resultView()->childCount() > 0);
+  actionCollection()->action("results_editfile")->setEnabled(!g_bThreadRunning && m_view->resultView()->childCount() > 0);
+  actionCollection()->action("results_opendir")->setEnabled(!g_bThreadRunning && m_view->resultView()->childCount() > 0);
+  actionCollection()->action("results_delete")->setEnabled(!g_bThreadRunning && m_view->resultView()->childCount() > 0);
+  actionCollection()->action("results_treeexpand")->setEnabled(!g_bThreadRunning && m_view->resultView()->childCount() > 0);
+  actionCollection()->action("results_treereduce")->setEnabled(!g_bThreadRunning && m_view->resultView()->childCount() > 0);
 
   // Update menus and toolbar
   ((KToggleAction *) actionCollection()->action("options_recursive"))->setChecked(m_settings.bRecursive);
@@ -250,8 +245,6 @@ void KFileReplacePart::updateCommands() // Gray or ungray commands
   ((KToggleAction *) actionCollection()->action("options_var"))->setChecked(m_settings.bVariables);
 }
 
-
-// ===========================================================================================================================
 int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
 {
   QString strMess;
@@ -271,7 +264,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
     }
 
   // Check there are strings to replace (not need in search operation)
-  if (nTypeOfOperation == OPERATION_REPLACE && m_view -> getStringView() -> childCount() == 0)
+  if (nTypeOfOperation == OPERATION_REPLACE && m_view->stringView()->childCount() == 0)
     {
       KMessageBox::error(w, i18n("There are no strings to search and replace."));
       return -1;
@@ -299,18 +292,18 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
     {
       // -- Check first and last char of Searched string is not a wildcard
 
-      lviCurItem = lviFirst = m_view -> getStringView() -> firstChild();
+      lviCurItem = lviFirst = m_view->stringView()->firstChild();
       if (lviCurItem)
             {
           do
             {
               // Get first char of the string
-              strString = lviCurItem -> text(0).left(1);
+              strString = lviCurItem->text(0).left(1);
               strncpy(szString, strString.ascii(), 255);
               cFirst = *szString;
 
               // Get last char of the string
-              strString = lviCurItem -> text(0).right(1);
+              strString = lviCurItem->text(0).right(1);
               strncpy(szString, strString.ascii(), 255);
               cLast = *szString;
 
@@ -319,7 +312,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
                 return -1;
                 }*/
 
-              lviCurItem = lviCurItem -> nextSibling();
+              lviCurItem = lviCurItem->nextSibling();
             } while(lviCurItem && lviCurItem != lviFirst);
         }
 
@@ -340,12 +333,12 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
       // -- If wildcards are enabled, check there are wildcards in the strings, else, desactivate them to optimize
       bWildcardsArePresent = false;
 
-      lviCurItem = lviFirst = m_view -> getStringView() -> firstChild();
+      lviCurItem = lviFirst = m_view->stringView()->firstChild();
       if (lviCurItem)
             {
           do
             {
-              QString szString = lviCurItem -> text(0);
+              QString szString = lviCurItem->text(0);
 
               if ( szString.contains(m_settings.cWildcardsLetters) || szString.contains(m_settings.cWildcardsWords))
                 {
@@ -353,7 +346,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
                   bWildcardsArePresent = true;
                 }
 
-              lviCurItem = lviCurItem -> nextSibling();
+              lviCurItem = lviCurItem->nextSibling();
             } while(lviCurItem && lviCurItem != lviFirst);
 
           /*if (bWildcardsArePresent == false) // Wildcards options is enabled, but there are no wildcards
@@ -363,31 +356,31 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
         }
     }
 
-  // ================== Prepare argument structure to pass to the ReplaceDirectory function ========================
+  /** Prepare argument structure to pass to the ReplaceDirectory function */
 
-  g_argu.szDir = m_doc -> m_strProjectDirectory;
-  g_argu.szFilter = m_doc -> m_strProjectFilter;
-  g_argu.qlvResult = m_view -> getResultView();
-  g_argu.qlvStrings = m_view -> getStringView();
+  g_argu.szDir = m_doc->m_strProjectDirectory;
+  g_argu.szFilter = m_doc->m_strProjectFilter;
+  g_argu.qlvResult = m_view->resultView();
+  g_argu.qlvStrings = m_view->stringView();
 
-  g_argu.bMinSize = m_doc -> m_bMinSize;
-  g_argu.bMaxSize = m_doc -> m_bMaxSize;
-  g_argu.nMinSize = m_doc -> m_nMinSize;
-  g_argu.nMaxSize = m_doc -> m_nMaxSize;
-  g_argu.nTypeOfAccess = m_doc -> m_nTypeOfAccess;
-  g_argu.bMinDate = m_doc -> m_bMinDate;
-  g_argu.bMaxDate = m_doc -> m_bMaxDate;
-  g_argu.qdMinDate = m_doc -> m_qdMinDate;
-  g_argu.qdMaxDate = m_doc -> m_qdMaxDate;
+  g_argu.bMinSize = m_doc->m_bMinSize;
+  g_argu.bMaxSize = m_doc->m_bMaxSize;
+  g_argu.nMinSize = m_doc->m_nMinSize;
+  g_argu.nMaxSize = m_doc->m_nMaxSize;
+  g_argu.nTypeOfAccess = m_doc->m_nTypeOfAccess;
+  g_argu.bMinDate = m_doc->m_bMinDate;
+  g_argu.bMaxDate = m_doc->m_bMaxDate;
+  g_argu.qdMinDate = m_doc->m_qdMinDate;
+  g_argu.qdMaxDate = m_doc->m_qdMaxDate;
 
-  g_argu.bOwnerUserBool = m_doc -> m_bOwnerUserBool;
-  g_argu.bOwnerGroupBool = m_doc -> m_bOwnerGroupBool;
-  g_argu.bOwnerUserMustBe = m_doc -> m_bOwnerUserMustBe;
-  g_argu.bOwnerGroupMustBe = m_doc -> m_bOwnerGroupMustBe;
-  g_argu.strOwnerUserType = m_doc -> m_strOwnerUserType;
-  g_argu.strOwnerGroupType = m_doc -> m_strOwnerGroupType;
-  g_argu.strOwnerUserValue = m_doc -> m_strOwnerUserValue;
-  g_argu.strOwnerGroupValue = m_doc -> m_strOwnerGroupValue;
+  g_argu.bOwnerUserBool = m_doc->m_bOwnerUserBool;
+  g_argu.bOwnerGroupBool = m_doc->m_bOwnerGroupBool;
+  g_argu.bOwnerUserMustBe = m_doc->m_bOwnerUserMustBe;
+  g_argu.bOwnerGroupMustBe = m_doc->m_bOwnerGroupMustBe;
+  g_argu.strOwnerUserType = m_doc->m_strOwnerUserType;
+  g_argu.strOwnerGroupType = m_doc->m_strOwnerGroupType;
+  g_argu.strOwnerUserValue = m_doc->m_strOwnerUserValue;
+  g_argu.strOwnerGroupValue = m_doc->m_strOwnerGroupValue;
 
   g_argu.bConfirmFiles = m_settings.bConfirmFiles;
   g_argu.bConfirmStrings = m_settings.bConfirmStrings;
@@ -411,12 +404,11 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
   g_argu.view = m_view;
 
   // Clear the list view
-  m_view -> getResultView() -> clear();
+  m_view->resultView()->clear();
 
   return 0; // Operation successfully prepared
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::readOptions()
 {
   m_config->setGroup("General Options");
@@ -467,19 +459,15 @@ void KFileReplacePart::readOptions()
   m_settings.nMaxExpressionLength = m_config->readNumEntry("MaximumExpressionLength", OPTIONS_DEFAULT_MAXIMUMWILDCARDEXPLENGTH);
 }
 
-
-// ===========================================================================================================================
 void KFileReplacePart::saveOptions()
 {
-
   m_config->setGroup("General Options");
-
   // Recent file list
   m_config->writeEntry("Recent files", m_recentStringFileList);
 
   // options seetings (recursivity, backup, case sensitive)
   m_config->setGroup("Options");
-
+ 
   m_config->writeEntry("Recursivity", m_settings.bRecursive);
   m_config->writeEntry("Backup", m_settings.bBackup);
   m_config->writeEntry("Case sensitive", m_settings.bCaseSensitive);
@@ -504,26 +492,22 @@ void KFileReplacePart::saveOptions()
   m_config->sync();
 }
 
-
-//===========================================================================================================================
 void KFileReplacePart::slotFileNew()
-{
-  int nRes;
+{  
   emit setStatusBarText(i18n("Creating new document..."));
-
-  nRes = m_doc->newDocument();
-  if (nRes == false)
-    return;
-
-  // Empty lists views
-  m_view -> getStringView() -> clear();
-  m_view -> getResultView() -> clear();
+  
+  if (m_doc->newDocument())
+  {
+   // Empty lists views
+ // m_view->stringView()->clear();
+  m_view->resultView()->clear();
 
   emit setStatusBarText(i18n("Ready."));
   updateCommands();
+  }
+    
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotFileSearch()
 {
    QString strMess;
@@ -580,7 +564,6 @@ void KFileReplacePart::slotFileSearch()
 
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotFileReplace()
 {
    QString strMess;
@@ -642,7 +625,6 @@ void KFileReplacePart::slotFileReplace()
      } */
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotFileSimulate()
 {
    QString strMess;
@@ -703,7 +685,6 @@ void KFileReplacePart::slotFileSimulate()
      } */
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotFileStop()
 {
    if (g_bThreadRunning == false) // If no thread running
@@ -717,17 +698,16 @@ void KFileReplacePart::slotFileStop()
    QApplication::restoreOverrideCursor();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotFileSave()
 {
   QString strFilename;
   QListView *lvResult;
   QWidget *w = widget();
 
-  lvResult = m_view -> getResultView();
+  lvResult = m_view->resultView();
 
   // Check there are results
-  if (lvResult -> childCount() == 0)
+  if (lvResult->childCount() == 0)
     {
       KMessageBox::error(w, i18n("There are no results to save: the result list is empty."));
       return ;
@@ -742,275 +722,166 @@ void KFileReplacePart::slotFileSave()
   strFilename = addFilenameExtension(strFilename, "html");
 
   // Save results to file
-
-  //TODO: Use QFile
-  // a) Open the file
-  FILE *fResults;
-  fResults = fopen(strFilename.ascii(),"w");
-
-  if (fResults == NULL) // Can't open file
-        {
-          KMessageBox::error(w, i18n("<qt>Cannot open the file <b>%1</b> for writing the save results.</qt>").arg(strFilename));
-          return ;
-        }
-
-  // b) Write header of the HTML file
-  fprintf(fResults, "<HTML><HEAD>\n");
-  fprintf(fResults, "<!DOCTYPE %s>\n", i18n("KFileReplace Results File").ascii());
-  fprintf(fResults, "<TITLE>%sKFileReplace Results File</TITLE></HEAD>\n", i18n("KFileReplace Results File").ascii());
-  fprintf(fResults, "<BODY><H1>%s</H1>\n", i18n("KFileReplace Results File").ascii());
-  fprintf(fResults, "<DL><p>\n");
-
+ // a) Open the file
+  QFile fResults(strFilename);
+    if ( !fResults.open( IO_WriteOnly ) ) 
+    {
+      KMessageBox::error(w, i18n("<qt>Cannot open the file <b>%1</b> for writing the save results.</qt>").arg(strFilename));
+      return ;
+     }
+    // b) Write header of the HTML file 
+   QTextStream oTStream( &fResults );
+   oTStream <<"<?xml version=\"1.0\" ?>\n"
+                     <<"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
+                     <<"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
+                     << "<head>\n"
+                     <<"<title>"<<i18n("KFileReplace Results File")<<"KFileReplace Results File</title></head>\n"
+                     <<"<body><h1>"<<i18n("KFileReplace Results File")<<"</h1>\n"
+                     <<"<dl><p>\n";
+    
   // c) Write the file list
   QListViewItem *lviCurItem;
   QListViewItem *lviFirst;
   QString strPath;
 
-  lviCurItem = lviFirst = lvResult -> firstChild();
-  if (lviCurItem == NULL)
-    {
-      return ;
-    }
+  lviCurItem = lviFirst = lvResult->firstChild();
+  if (lviCurItem == 0)
+    return ;
 
   do
     {
-      strPath = formatFullPath(lviCurItem -> text(1), lviCurItem -> text(0));
-      fprintf(fResults,"<DT><A HREF=\"file:%s\">file:%s</A><br>\n",        strPath.ascii(), strPath.ascii());
-      fprintf(fResults,i18n("Size: %s --> %s **** %.3ld strings replaced.<br><br>\n"), lviCurItem -> text(2).ascii(),
-              lviCurItem -> text(3).ascii(), lviCurItem -> text(2).toULong());
-
-      lviCurItem = lviCurItem -> nextSibling();
+      strPath = formatFullPath(lviCurItem->text(1), lviCurItem->text(0));
+      oTStream <<"<dt><a href=\"file:"<<strPath<<"\">file:"<<strPath<<"</a><br/>\n";
+      oTStream <<i18n("Size: "+ lviCurItem->text(2)+" --> "+lviCurItem->text(3)+" **** "+lviCurItem->text(2)+" strings replaced.<br/><br/>\n");
+                        
+      lviCurItem = lviCurItem->nextSibling();
     } while(lviCurItem && lviCurItem != lviFirst);
 
 
   // d) Write the end of the file
-  fprintf(fResults,"</DL><P></BODY></HTML>\n");
-  fclose(fResults);
-  updateCommands();
+   oTStream<<"</dl></p>\n</body>\n</html>\n";
+   fResults.close(); 
+   updateCommands();
 }
 
-
-// ===========================================================================================================================
 void KFileReplacePart::slotStringsAdd()
 {
-  m_view -> slotStringsAdd();
+  m_view->slotStringsAdd();
   updateCommands();
   return;
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotStringsDel()
 {
-  delete m_view -> getStringView() -> currentItem(); // Remove item from ListView
+  delete m_view->stringView()->currentItem(); // Remove item from ListView
   updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotStringsEmpty()
 {
-  m_view -> getStringView() -> clear();
+  m_view->stringView()->clear();
   updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotStringsEdit()
 {
-  m_view -> slotStringsEdit(NULL);
+  m_view->slotStringsEdit(NULL);
   updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotStringsSave()
 {
-  QString strFilename;
-  QListViewItem *lviCurItem;
-  QListViewItem *lviFirst;
-  int nItemPos;
   QWidget *w = widget();
 
   // Check there are strings in the list
-  if (m_view -> getStringView() -> childCount() == 0)
+  if (m_view->stringView()->childCount() == 0)
     {
       KMessageBox::error(w, i18n("There are no strings to save in the list."));
       return ;
     }
 
+   QString header("<?xml version=\"1.0\" ?>\n<kfr>"),
+                 footer("\n</kfr>"),
+                 body;
+   QListViewItem * lvi = m_view->stringView()->firstChild();
+        while( lvi ) 
+        {
+            body += "\n\t<replacement>\n\t\t<oldstring><![CDATA[";
+            body += lvi->text(0);
+            body += "]]></oldstring>\n\t\t";
+            body += "<newstring><![CDATA[";
+            body += lvi->text(1);
+            body += "]]></newstring>\n\t</replacement>";
+            lvi = lvi->nextSibling();
+        } 
+  
   // Select the file where strings will be saved
-  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.kfr|KFileReplace Strings (*.kfr)\n*|All Files (*)"), w, i18n("Save Strings to File"));
+  QString strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.kfr|KFileReplace Strings (*.kfr)\n*|All Files (*)"), w, i18n("Save Strings to File"));
   if (strFilename.isEmpty())
     return;
 
   // Force the extension to be "kfr" == KFileReplace extension
   strFilename = addFilenameExtension(strFilename, "kfr");
-
-//TODO: Use QFile
-  // a) Open the file
-  FILE *fStrings;
-  fStrings = fopen(strFilename.ascii(),"w");
-
-  if (fStrings == NULL) // Can't open file
+ 
+    QFile file( strFilename );
+    if(!file.open( IO_WriteOnly ))
     {
-      KMessageBox::error(w, i18n("<qt>Cannot open the file <b>%1</b> for writing to save the string list.</qt>").arg(strFilename));
+      KMessageBox::error(w, i18n("File %1 cannot be saved.").arg(strFilename));
       return ;
     }
-
-  // b) Write header of the KFR file
-  KFRHeader head;
-  memset(&head, 0, sizeof(KFRHeader));
-
-  sprintf(head.szPgm, "KFileReplace");
-  head.nStringsNb = m_view -> getStringView() -> childCount();
-
-  if (fwrite(&head, sizeof(KFRHeader), 1, fStrings) != 1)
-    {
-      KMessageBox::error(w, i18n("<qt>Cannot write data in file <b>%1</b>.</qt>").arg(strFilename));
-      fclose(fStrings);
-      return ;
-    }
-
-  // c) Write the file strings
-  int nOldTextSize, nNewTextSize;
-  int nErrors = 0;
-
-  nItemPos = 0;
-  lviCurItem = lviFirst = m_view -> getStringView() -> firstChild();
-  if (lviCurItem == NULL)
-    return ;
-
-  do
-    {
-      nOldTextSize = strlen(lviCurItem -> text(0));
-      nNewTextSize = strlen(lviCurItem -> text(1));
-      nErrors += (fwrite(&nOldTextSize, sizeof(int), 1, fStrings)) != 1;
-      nErrors += (fwrite(&nNewTextSize, sizeof(int), 1, fStrings)) != 1;
-      nErrors += (fwrite(lviCurItem -> text(0), nOldTextSize, 1, fStrings)) != 1;
-      if (nNewTextSize > 0)
-        nErrors += (fwrite(lviCurItem -> text(1), nNewTextSize, 1, fStrings)) != 1;
-      if (nErrors > 0)
-        {
-          KMessageBox::error(w, i18n("<qt>Cannot write data in file <b>%1</b>.</qt>").arg(strFilename));
-          fclose(fStrings);
-          return ;
-        }
-      lviCurItem = lviCurItem -> nextSibling();
-    } while(lviCurItem && lviCurItem != lviFirst);
-
-
-  // d) Close the file
-  fclose(fStrings);
+    QTextStream oTStream( &file ); 
+    oTStream << header
+                      << body
+                      << footer;   
+     file.close();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::loadStringFile(const QString& strFilename)
 {
-  KListViewString *lvi;
-  QWidget *w = widget();
-
-  if (strFilename.isEmpty())
-    return;
-
-//TODO: convert it to QFile and handle remote files!
-  // a) Open the file
-  FILE *fStrings;
-  fStrings = fopen(strFilename.ascii(),"r");
-
-  if (fStrings == NULL) // Can't open file
-    {
-      KMessageBox::error(w, i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(strFilename));
+  //load kfr file
+  QDomDocument doc( "mydocument" );
+  QFile file( strFilename );
+    if ( !file.open( IO_ReadOnly ) )
+     {
+       KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(strFilename));
       return ;
+     }
+    if ( !doc.setContent( &file ) ) {
+        file.close();
+        return;
     }
+    file.close();
+    
+    //clear view
+    m_view->stringView()->clear();
+    
+    QDomElement docElem = doc.documentElement();
 
-  // b) Read header of the KFR file
-  KFRHeader head;
-
-  if (fread(&head, sizeof(KFRHeader), 1, fStrings) != 1)
-    {
-      KMessageBox::error(w, i18n("<qt>Cannot read data from file <b>%1</b>.</qt>").arg(strFilename));
-      fclose(fStrings);
-      return ;
+    QDomNode n = docElem.firstChild();
+    while( !n.isNull() ) 
+    {    
+        QDomElement e = n.toElement(); // try to convert the node to an element.
+        if( !e.isNull() ) 
+        {
+          QListViewItem* lvi = new QListViewItem(m_view->stringView());
+          QString oldString = e.firstChild().toElement().text();
+          lvi->setText(0,oldString);
+          QString newString = e.lastChild().toElement().text();
+          lvi->setText(1,newString);
+          lvi->setPixmap(0, m_view->iconString());
+        }
+        n = n.nextSibling();
     }
-
-  // Check the file is a KFileReplace file
-  if (strcmp(head.szPgm, "KFileReplace") != 0)
-    {
-      KMessageBox::error(w, i18n("<qt><b>%1</b> is not a KFileReplace file. Cannot continue.</qt>").arg(strFilename));
-      fclose(fStrings);
-      return ;
-    }
-
-  // Add file to "load strings form file" menu
+    
+     // Add file to "load strings form file" menu
   if (!m_recentStringFileList.contains(strFilename))
     {
       m_recentStringFileList.append(strFilename);
       ((KRecentFilesAction *) actionCollection()->action("strings_load_recent"))->setItems(m_recentStringFileList);
     }
-
-  // c) Read the file strings
-  int nOldTextSize, nNewTextSize;
-  int nErrors = 0;
-  char *szString; // Dynamic memory alloc
-  int nStrSize;
-
-  // Empty the current list
-  m_view -> getStringView() -> clear();
-
-  for (int i=0; i < head.nStringsNb; i++)
-    {
-      nErrors += (fread(&nOldTextSize, sizeof(int), 1, fStrings)) != 1;
-      nErrors += (fread(&nNewTextSize, sizeof(int), 1, fStrings)) != 1;
-      if (nErrors > 0)
-        {
-          KMessageBox::error(w, i18n("<qt>Cannot read data from file <b>%1</b></qt>").arg(strFilename));
-          fclose(fStrings);
-          return ;
-        }
-
-      // Allocate new string
-      nStrSize = ((nOldTextSize > nNewTextSize) ? nOldTextSize : nNewTextSize) + 2;
-      szString = new char[nStrSize+10];
-      memset(szString, 0, nStrSize);
-      if (szString == 0)
-        {
-          KMessageBox::error(w, i18n("Out of memory."));
-          fclose(fStrings);
-          return ;
-        }
-
-      // Read "Search" text
-      if (fread(szString, nOldTextSize, 1, fStrings) != 1)
-        {
-          KMessageBox::error(w, i18n("<qt>Cannot read data from file <b>%1</b></qt>").arg(strFilename));
-          fclose(fStrings);
-          return ;
-        }
-
-      // Add item to list
-      lvi = new KListViewString(m_view -> getStringView(), szString);
-      Q_CHECK_PTR( lvi );
-      lvi -> setPixmap(0, m_view -> getIconString());
-
-      // Read "Replace" text
-      memset(szString, 0, nStrSize);
-      if (nNewTextSize > 0) // If there is a Replace text
-        {
-          if (fread(szString, nNewTextSize, 1, fStrings) != 1)
-            {
-              KMessageBox::error(w, i18n("<qt>Cannot read data from file <b>%1</b></qt>").arg(strFilename));
-              fclose(fStrings);
-              return ;
-            }
-          lvi -> setText(1, szString);
-        }
-
-      delete szString;
-    }
-
-  // d) Close the file
-  fclose(fStrings);
-  updateCommands();
+      updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotStringsLoad()
 {
   QString strFilename;
@@ -1022,17 +893,16 @@ void KFileReplacePart::slotStringsLoad()
   updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotStringsInvertCur()
 {
   QListViewItem *lviCurItem;
-  lviCurItem = m_view -> getStringView() -> currentItem();
+  lviCurItem = m_view->stringView()->currentItem();
   if (lviCurItem == 0)
     return;
 
   QString strSearch, strReplace;
-  strSearch = lviCurItem -> text(0);
-  strReplace = lviCurItem -> text(1);
+  strSearch = lviCurItem->text(0);
+  strReplace = lviCurItem->text(1);
 
   // Cannot invert the string if search string will be empty
   if (strReplace.isEmpty())
@@ -1041,12 +911,10 @@ void KFileReplacePart::slotStringsInvertCur()
       return;
     }
 
-  lviCurItem -> setText(0, strReplace);
-  lviCurItem -> setText(1, strSearch);
+  lviCurItem->setText(0, strReplace);
+  lviCurItem->setText(1, strSearch);
 }
 
-
-// ===========================================================================================================================
 void KFileReplacePart::slotStringsInvertAll()
 {
   QListViewItem *lviCurItem;
@@ -1056,14 +924,14 @@ void KFileReplacePart::slotStringsInvertAll()
   QString strMess;
 
   nItemPos = 0;
-  lviCurItem = lviFirst = m_view -> getStringView() -> firstChild();
-  if (lviCurItem == NULL)
+  lviCurItem = lviFirst = m_view->stringView()->firstChild();
+  if (lviCurItem == 0)
     return ;
 
   do
     {
-      strSearch = lviCurItem -> text(0);
-      strReplace = lviCurItem -> text(1);
+      strSearch = lviCurItem->text(0);
+      strReplace = lviCurItem->text(1);
 
       // Cannot invert the string if search string will be empty
       if (strReplace.isEmpty())
@@ -1072,14 +940,13 @@ void KFileReplacePart::slotStringsInvertAll()
           return;
         }
 
-      lviCurItem -> setText(0, strReplace);
-      lviCurItem -> setText(1, strSearch);
+      lviCurItem->setText(0, strReplace);
+      lviCurItem->setText(1, strSearch);
 
-      lviCurItem = lviCurItem -> nextSibling();
+      lviCurItem = lviCurItem->nextSibling();
     } while(lviCurItem && lviCurItem != lviFirst);
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
 {
   QString strFilename;
@@ -1104,54 +971,46 @@ void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
   updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotOptionsRecursive()
 {
   m_settings.bRecursive = !(m_settings.bRecursive);
   updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotOptionsBackup()
 {
   m_settings.bBackup = !(m_settings.bBackup);
   updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotOptionsCaseSensitive()
 {
   m_settings.bCaseSensitive = !(m_settings.bCaseSensitive);
   updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotOptionsVariables()
 {
   m_settings.bVariables = !(m_settings.bVariables);
   updateCommands();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::slotOptionsWildcards()
 {
   m_settings.bWildcards = !(m_settings.bWildcards);
   updateCommands();
 }
 
-
-// ===========================================================================================================================
 void KFileReplacePart::slotOptionsPreferences()
 {
   KOptionsDlg dlg(widget(), 0, m_settings);
 
-  if (dlg.exec() == QDialog::Rejected) // If Cancel
-    return ;
-
-  m_settings = dlg.getSettings();
-
-  saveOptions();
-  updateCommands();
+  if (dlg.exec() != QDialog::Rejected) // If Cancel
+  {
+    m_settings = dlg.settings();
+    saveOptions();
+    updateCommands();
+  }
 }
 
 void KFileReplacePart::setWhatsThis()
@@ -1176,16 +1035,12 @@ void KFileReplacePart::setWhatsThis()
                                                                      "when creating a new project at startup."));
 }
 
-
-
-// ===========================================================================================================================
 void KFileReplacePart::reportBug()
 {
   KBugReport dlg(widget(), true, createAboutData());
   dlg.exec();
 }
 
-// ===========================================================================================================================
 void KFileReplacePart::appHelpActivated()
 {
   kapp->invokeHelp(QString::null, "kfilereplace");
@@ -1193,32 +1048,30 @@ void KFileReplacePart::appHelpActivated()
 
 void KFileReplacePart::showAboutApplication()
 {
-  if(m_dlgAbout == NULL)
+  if(m_dlgAbout == 0)
     {
       m_dlgAbout = new KAboutKFileReplace(widget(), 0, false);
-      if(m_dlgAbout == NULL) { return; }
+      if(m_dlgAbout == 0) 
+        return; 
     }
 
-  if(m_dlgAbout->isVisible() == false)
-    {
-      m_dlgAbout->show();
-    }
+  if(!m_dlgAbout->isVisible())
+    m_dlgAbout->show();
   else
-    {
-      m_dlgAbout->raise();
-    }
+     m_dlgAbout->raise();
 
   // Update menu & toolbar commands
   updateCommands();
 }
+
 /*
-// ===========================================================================================================================
+
 void KFileReplacePart::dragEnterEvent(QDragEnterEvent *event)
 {
-        event -> accept(QUriDrag::canDecode(event));
+        event->accept(QUriDrag::canDecode(event));
 }
 
-// ===========================================================================================================================
+
 void KFileReplacePart::dropEvent(QDropEvent *event)
 {
   QStrList urls;

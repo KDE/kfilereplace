@@ -3,6 +3,7 @@
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
     copyright            : (C) 1999 by François Dupoux
+                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -29,10 +30,9 @@
 
 // include files for QT
 #include <qobject.h>
-#include <qdatetime.h>
+class QDateTime;
 #include <qptrlist.h>
-#include <qstring.h>
-
+class QString;
 
 // forward declaration of the KFileReplace classes
 class KFileReplaceView;
@@ -61,30 +61,30 @@ class KFileReplaceDoc : public QObject
   KFileReplaceDoc(QWidget* parentWidget, QObject* parent, const char *name=0);
   /** Destructor for the fileclass of the application */
   ~KFileReplaceDoc();
-        /** adds a view to the document which represents the document contents. Usually this is your main view. */
+  /** adds a view to the document which represents the document contents. Usually this is your main view. */
   void addView(KFileReplaceView* m_pView);
-        /** removes a view from the list of currently connected views */
-        void removeView(KFileReplaceView* m_pView);
+  /** removes a view from the list of currently connected views */
+  void removeView(KFileReplaceView* m_pView);
   /** sets the modified flag for the document after a modifying action on the view connected to the document.*/
-  void setModified(bool modified=true){ b_modified=modified; }
-        /** returns if the document is modified or not. Use this to determine if your document needs saving by the user on closing.*/
-  bool isModified(){ return b_modified;}
-        /** "save modified" - asks the user for saving if the document is modified */
-        bool saveModified();
-        /** deletes the document's contents */
-        void deleteContents();
-        /** initializes the document generally */
-        bool newDocument(const QString& strArguDir=QString::null, const QString& strArguFilter=QString::null, bool showNewProjectDlg = true);
-        /** closes the acutal document */
-        void closeDocument();
-        /** sets the path to the file connected with the document */
-        void pathName(const char* path_name);
-        /** returns the pathname of the current document file*/
-        const QString& getPathName() const;
-        /** sets the filename of the document */
-        void title(const char* title);
-        /** returns the title of the document */
-        const QString& getTitle() const;
+  void setModified(bool modified=true); 
+  /** returns if the document is modified or not. Use this to determine if your document needs saving by the user on closing.*/
+  bool isModified();
+  /** "save modified" - asks the user for saving if the document is modified */
+  bool saveModified();
+  /** deletes the document's contents */
+  void deleteContents();
+  /** initializes the document generally */
+  bool newDocument(const QString& strArguDir=QString::null, const QString& strArguFilter=QString::null, bool showNewProjectDlg = true);
+  /** closes the acutal document */
+  void closeDocument();
+  /** sets the path to the file connected with the document */
+  void setPathName(const char* path_name);
+  /** returns the pathname of the current document file*/
+  const QString& pathName() const;
+  /** sets the filename of the document */
+  void setTitle(const char* title);
+  /** returns the title of the document */
+  const QString& title() const;
 
  public slots:
          /** calls repaint() on all views connected to the document object and is called by the view by which the document has been changed.
