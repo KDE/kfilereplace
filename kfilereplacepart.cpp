@@ -624,7 +624,7 @@ void KFileReplacePart::slotFileReplace()
       if (!g_argu.bHaltOnFirstOccur)
          strMess = i18n("One string successfully replaced in one file", "%1 strings successfully replaced in %2 files").arg(g_nStringsRep).arg(g_nFilesRep);
       else
-         strMess = i18n("One file successfully replaced", "%1 files successfully replaced").arg(g_nFilesRep);
+         strMess = i18n("%n file successfully replaced", "%n files successfully replaced", arg(g_nFilesRep));
    }
 
    emit setStatusBarText(strMess); // Show message in status bar
@@ -685,7 +685,7 @@ void KFileReplacePart::slotFileSimulate()
       if (!g_argu.bHaltOnFirstOccur)
          strMess = i18n("One string successfully replaced in one file","%1 strings successfully replaced in %2 files").arg(g_nStringsRep).arg(g_nFilesRep);
       else
-         strMess = i18n("One file successfully replaced", "%1 files successfully replaced").arg(g_nFilesRep);
+         strMess = i18n("%n file successfully replaced", "%n files successfully replaced", arg(g_nFilesRep));
    }
 
    emit setStatusBarText(strMess); // Show message in status bar
