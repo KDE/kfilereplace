@@ -205,7 +205,7 @@ void KFileReplaceView::slotResultEdit()
 
   DCOPRef quanta(client->appId(),"WindowManagerIf");
 
-  bool success = quanta.send("openFile", filePath, 1, 1);
+  bool success = quanta.send("openFile", filePath, 0, 0);
 
   if(!success)
     {

@@ -695,7 +695,7 @@ void KFileReplacePart::searchExpression(const QString& currentDir, const QString
 
 void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& fileName)
 {
-  kdDebug(23000)<<"SEARCH_2\n\n\n\n\n";
+ // kdDebug(23000)<< "searchLiteral" << endl;
   QWidget* w = new QWidget();
 
   QFile file;
@@ -714,7 +714,7 @@ void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& f
 
   kapp->processEvents();
 
-  QListViewItem *item = new QListViewItem(m_view->resultView());
+  QListViewItem *item = 0L;
 
   bool caseSensitive = m_info.caseSensitive(),
        haltOnFirstOccur = m_info.haltOnFirstOccur();
@@ -744,6 +744,8 @@ void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& f
 	      int pos = line.find(rxKey, 0, caseSensitive);
               if(pos != -1)
                 {
+                  if (!item)
+                     item = new QListViewItem(m_view->resultView());
                   QListViewItem* tempItem = new QListViewItem(item);
 		  QString capturedText = line.mid(pos,rxKey.length()),
 		          msg = i18n(" first occurence of string \"%1\" found at line:%2, column:%3").arg(capturedText).arg(lineNumber).arg(pos+1);
@@ -765,6 +767,8 @@ void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& f
 	    {
               QString capturedText = line.mid(pos,rxKey.length()),
 	              msg = i18n(" string \"%1\" found at line:%2, column:%3 ").arg(capturedText).arg(lineNumber).arg(pos+1);
+              if (!item)
+                  item = new QListViewItem(m_view->resultView());
 	      QListViewItem* tempItem = new QListViewItem(item);
               tempItem->setText(0,msg);
 	      occur++;
@@ -778,15 +782,16 @@ void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& f
     }
   file.close();
 
-  item->setText(0,fileName);
-  item->setText(1,currentDir);
-  item->setText(2,KFileReplaceLib::formatFileSize(fi.size()));
-
+  if (item)
+  {
+      item->setText(0,fileName);
+      item->setText(1,currentDir);
+      item->setText(2,KFileReplaceLib::formatFileSize(fi.size()));
+      item->setText(4,QString::number(occur,10));
+      item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(fi.ownerId()));
+      item->setText(6,i18n("%1[%2]").arg(fi.group()).arg(fi.groupId()));
+  }
   m_view->resultView()->setColumnText(4,"Total number occurrences");
-
-  item->setText(4,QString::number(occur,10));
-  item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(fi.ownerId()));
-  item->setText(6,i18n("%1[%2]").arg(fi.group()).arg(fi.groupId()));
 }
 
 KAboutData* KFileReplacePart::createAboutData()
