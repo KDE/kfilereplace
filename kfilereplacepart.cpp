@@ -507,8 +507,7 @@ bool KFileReplacePart::openURL(const KURL &url)
     emit canceled("");
     return false;
   }
-  launchNewProjectDialog(url);
-  return true;
+  return launchNewProjectDialog(url);
 }
 
 void KFileReplacePart::initGUI()
@@ -880,14 +879,14 @@ void KFileReplacePart::whatsThis()
 }
 
 //PRIVATE METHODS
-void KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
+bool KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
 {
   KNewProjectDlg dlg(0, m_config);
 
   if (!startURL.isEmpty())
     dlg.m_cbLocation->setCurrentText(startURL.path());
   if(!dlg.exec())
-    return;
+    return false;
 
   m_info.setDirectory(dlg.currentDir());
   m_info.setFilter(dlg.currentFilter());
@@ -899,6 +898,7 @@ void KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
   slotQuickStringsAdd();
 
   resetActions();
+  return true;
 }
 
 void KFileReplacePart::setOptionMask()

@@ -49,7 +49,7 @@
 using namespace whatthisNameSpace;
 
 
-KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *name/*=0*/) : KNewProjectDlgS(parent, name, true)
+KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *name/*=0*/) : KNewProjectDlgS(parent, name)
 {
   m_config = config;
   m_searchNowFlag = "";
@@ -151,7 +151,7 @@ void KNewProjectDlg::slotReject()
   m_info.setQuickSearchString(m_searchNowFlag);
   m_info.setQuickReplaceString(m_searchNowFlag);
 
-  accept();
+  reject();
 }
 
 void KNewProjectDlg::slotSearchNow()

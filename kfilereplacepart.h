@@ -128,7 +128,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     /**
     Launches new project dialog
     */
-    void launchNewProjectDialog(const KURL& startURL);
+    bool launchNewProjectDialog(const KURL& startURL);
 
     void setOptionMask();
 
