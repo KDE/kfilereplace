@@ -188,12 +188,12 @@ void KOptionsDlg::initPage1()
   m_checkIgnoreWhitespaces = new QCheckBox(i18n("Ignore whitespaces (\\n,\\r,\\t,multi-spaces) (useful in HTML code)"),tab1, "m_checkIgnoreWhitespaces");
   m_checkFollowSymLinks = new QCheckBox(i18n("Follow symbolic links"),tab1, "m_checkFollowSymLinks");
   m_checkAllStringsMustBeFound = new QCheckBox(i18n("All strings must be found"),tab1, "m_checkAllStringsMustBeFound");
-  m_checkIgnoreHidden = new QCheckBox(i18n("Ignore hidden files and directories"),tab1, "m_bCheckIgnoreHidden");
+  m_checkIgnoreHidden = new QCheckBox(i18n("Ignore hidden files and folders"),tab1, "m_bCheckIgnoreHidden");
 
   // Create help QWhatsThis
   QWhatsThis::add(m_checkCaseSensitive, i18n("If enabled, lowers and uppers are differents. If you are "
                                              "searching for \"Linux\" and this option is on, \"LINUX\" won't be found."));
-  QWhatsThis::add(m_checkRecursive, i18n("Work in all sub-directories of the main directory of the project"));
+  QWhatsThis::add(m_checkRecursive, i18n("Work in all subfolders of the main folder of the project"));
   QWhatsThis::add(m_checkHaltOnFirstOccur, i18n("When searching, KFileReplace reads all the data of each "
                                                 "file to know how many times each strings appears in the files. If you needn't "
                                                 "to have this details, you can enable this options to make the search faster. "
@@ -203,9 +203,9 @@ void KOptionsDlg::initPage1()
                                                  "useful in HTML code, and with the end of the lines. For example, if you are searching for "
                                                  "\"Linux is fast\" in a file, and there is a line feed beetween "
                                                  "\"Linux\" and \"is\", then the string won't be found. This options can solve the problem."));
-  QWhatsThis::add(m_checkFollowSymLinks, i18n("If a directory symbolic link is found, it will be opened."));
+  QWhatsThis::add(m_checkFollowSymLinks, i18n("If a folder symbolic link is found, it will be opened."));
   QWhatsThis::add(m_checkAllStringsMustBeFound, i18n("The file will be found/replaced only if all strings from the list are found in the file."));
-  QWhatsThis::add(m_checkIgnoreHidden, i18n("If this option is enabled, hidden files and directories (files whose names begin with a "
+  QWhatsThis::add(m_checkIgnoreHidden, i18n("If this option is enabled, hidden files and folders (files whose names begin with a "
                                             "point as .kde) won't be found / replaced."));
 
   addTab(tab1, i18n("General"));
@@ -265,7 +265,7 @@ void KOptionsDlg::initPage3()
   m_checkVariables = new QCheckBox(i18n("Enable variables in replace strings"),bgGeneral,"m_checkVariables");
   m_checkBackup = new QCheckBox(i18n("Backup: Create a copy into a .OLD file before replacing strings"),bgGeneral,"m_checkBackup");
 
-  m_checkConfirmDirs = new QCheckBox(i18n("Confirm before replacing in a directory"),bgConfirm,"m_checkConfirmDir");
+  m_checkConfirmDirs = new QCheckBox(i18n("Confirm before replacing in a folder"),bgConfirm,"m_checkConfirmDir");
   m_checkConfirmFiles = new QCheckBox(i18n("Confirm before replacing in a file"),bgConfirm,"m_checkConfirmFiles");
   m_checkConfirmStrings = new QCheckBox(i18n("Confirm when replace each string"),bgConfirm,"m_checkConfirmStrings");
 

@@ -282,14 +282,14 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
 
   if (dir.exists() == false)
     {
-      strMess = i18n("<qt>The main directory of the project <b>%1</b> doesn't exists! Can't continue.</qt>").arg(m_doc->m_strProjectDirectory);
+      strMess = i18n("<qt>The main folder of the project <b>%1</b> doesn't exists! Can't continue.</qt>").arg(m_doc->m_strProjectDirectory);
       KMessageBox::error(w, strMess);
       return -1;
     }
 
   if (::access(m_doc->m_strProjectDirectory.local8Bit(), R_OK | X_OK) == -1)
     {
-      strMess = i18n("<qt>Access denied in the main directory of the project:<br><b>%1</b></qt>").arg(m_doc->m_strProjectDirectory);
+      strMess = i18n("<qt>Access denied in the main folder of the project:<br><b>%1</b></qt>").arg(m_doc->m_strProjectDirectory);
       KMessageBox::error(w, strMess);
       return -1;
     }
@@ -1093,7 +1093,7 @@ void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
   fi.setFile(strFilename);
   if (fi.isDir())
     {
-      KMessageBox::error(widget(), i18n("Can't open directories."));
+      KMessageBox::error(widget(), i18n("Can't open folders."));
       return;
     }
 
@@ -1169,7 +1169,7 @@ void KFileReplacePart::setWhatsThis()
                                                                "is written instead of the variable. If disabled, the replace string will be copied without "
                                                                "substitution. Please, read help for"
                                                                "more details on the variables names and formats."));
-  actionCollection()->action("options_recursive")->setWhatsThis(i18n("Search/Replace files in the sub-directories of the main directory selected "
+  actionCollection()->action("options_recursive")->setWhatsThis(i18n("Search/Replace files in the subfolders of the main folder selected "
                                                                      "when creating a new project at startup."));
 }
 

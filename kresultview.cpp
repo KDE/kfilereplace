@@ -58,7 +58,7 @@ KResultView::KResultView( QWidget *parent, const char *name): QListView( parent,
   addColumn(i18n("Name"), -1 );
   setColumnWidthMode( 0, QListView::Maximum );
   setColumnAlignment( 0, 1 );
-  addColumn(i18n("Directory"), -1 );
+  addColumn(i18n("Folder"), -1 );
   setColumnWidthMode( 1, QListView::Maximum );
   setColumnAlignment( 1, 1 );
   addColumn(i18n("Old Size"), -1 );

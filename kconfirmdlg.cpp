@@ -60,7 +60,7 @@ void KConfirmDlg::initDialog()
   gbox -> addMultiCellWidget (m_labelFile, 0, 0, 0, 4);
 
   m_labelDir = new QLabel(this,"m_labelDir");
-  m_labelDir->setText(i18n("Directory:"));
+  m_labelDir->setText(i18n("Folder:"));
   gbox -> addMultiCellWidget (m_labelDir, 1, 1, 0, 4);
 
   m_labelSearch = new QLabel(this,"m_labelSearch");
@@ -92,7 +92,7 @@ void KConfirmDlg::initDialog()
   gbox -> addWidget (m_btnSkipFile, 6, 2);
 
   m_btnSkipDir = new QPushButton(this,"m_btnSkipDir");
-  m_btnSkipDir->setText(i18n("Skip &Directory"));
+  m_btnSkipDir->setText(i18n("Skip &Folder"));
   gbox -> addWidget (m_btnSkipDir, 6, 3);
 
   m_btnCancel = new QPushButton(this,"m_btnCancel");
