@@ -389,7 +389,13 @@ bool Kernel::isFileGoodDateProperties(const QString& szFileName, int nTypeOfAcce
 
 int Kernel::replaceFile2(QListViewItem *lvi, const QString& folder, const QString& oldFile, const QString& newFile, int& replacementsNumber, RepDirArg* argu)
 {
-   
+ Q_UNUSED(lvi);
+ Q_UNUSED(folder);
+ Q_UNUSED(oldFile);
+ Q_UNUSED(newFile);
+ Q_UNUSED(replacementsNumber);
+ Q_UNUSED(argu);
+ return 0;  
 }
 
 int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFile, const QString& szNewFile, int& nNbReplacements, RepDirArg* argu)
@@ -676,16 +682,7 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int& nNbRep
   cBeginOldFile = (char *) vBeginOldFile;
   cOldPt = cBeginOldFile;
 
-  // Copy strings to search/remplace into strings in memory
-  nItemPos = 0;
-  lviCurItem = lviFirst = argu->qlvStrings->firstChild();
-  if (lviCurItem == NULL)
-    {
-      g_szErrMsg = i18n("Cannot list tree items.");
-      return -1;
-    }
-
-  // Copy strings to search/remplace into strings in memory
+  // Copy strings to search/replace into strings in memory
   nItemPos = 0;
   lviCurItem = lviFirst = argu->qlvStrings->firstChild();
   if (lviCurItem == NULL)
@@ -720,7 +717,10 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int& nNbRep
                   bool bAllPresent = true;
                   for (j=0; j < nNbStrings; j++)
                     if (!nReplaceCount[j])
-                      bAllPresent = false;
+                      { 
+                        bAllPresent = false;
+                        break;
+                      }
                   *bAllStringsFound = bAllPresent;
                 }
 
@@ -866,3 +866,4 @@ bool Kernel::hasFileGoodOwners(const QString &szFile, RepDirArg *argu)
 
   return true;
 }
+

@@ -2,9 +2,8 @@
                           kfilereplaceview.h  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by François Dupoux
-                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
-    email                : dupoux@dupoux.com
+    copyright            : (C) 1999 by François Dupoux <dupoux@dupoux.com>
+                           (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
  ***************************************************************************/
 
 /***************************************************************************
@@ -23,13 +22,17 @@
 #include <config.h>
 #endif
 
-// includes for the app
-class KAddStringDlg;
+
 class QPixMap;
 class QListView;
-class KFileReplaceDoc;
+
 class KConfig;
 class KPopupMenu;
+//class KProcess;
+
+class KAddStringDlg;
+class KFileReplaceDoc;
+
 
 #include <qpixmap.h>
 
@@ -44,9 +47,9 @@ public:
   /** Destructor for the main view */
   virtual ~KFileReplaceView();
   
-  QListView *stringView() const;
-  QListView *resultView() const;
-  QPixmap iconString() const;
+  QListView *stringView();
+  QListView *resultView();
+  QPixmap iconString();
   
   QString currentItem();
   bool addString(QListViewItem *lviCurrent);
@@ -55,6 +58,7 @@ public:
   QListViewItem* addFullItem(bool bSuccess, const QString& szName, const QString& szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
   int updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
   bool increaseStringCount(QListViewItem *lvi, QString strOld, QString strNew, QString strReplace, const char *szSearch, int nSearchLen, bool bShowDetails);
+  void execShellCommand(const QString& cmd);
 
 public slots:
   void slotStringsAdd();
@@ -68,7 +72,7 @@ public slots:
   void slotResultTreeExpand();
   void slotResultTreeReduce();
   void slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column);
-
+  
 private:
   void expand(QListViewItem *lviCurrent, bool bExpand);
 

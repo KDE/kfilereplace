@@ -40,42 +40,52 @@ KExpression::KExpression(bool bCaseSensitive, bool bWildcards, bool bIgnoreWhite
    m_bWildcards = bWildcards; 
    m_bIgnoreWhitespaces = bIgnoreWhitespaces;
  }
+ 
 void KExpression::setWordWildcard(char cWord) 
 {
   m_cWord = cWord;
  }
+ 
 void KExpression::setLetterWildcard(char cLetter)
  {
   m_cLetter = cLetter;
  }
+ 
 void KExpression::setCaseSensitive(bool bCaseSensitive)
  {
   m_bCaseSensitive = bCaseSensitive;
  }
+ 
 void KExpression::setIgnoreWhitespaces(bool bIgnoreWhitespaces) 
 {
  m_bIgnoreWhitespaces = bIgnoreWhitespaces;
 }
+
 char KExpression::wordWildcard() 
 {
  return m_cWord;
 }
+
 char KExpression::letterWildcard() 
 {
  return m_cLetter;
 }
+
 bool KExpression::isCaseSensitive() 
 {
  return m_bCaseSensitive;
 }
+
 bool KExpression::doesIgnoreWhitespaces() 
 {
  return m_bIgnoreWhitespaces;
 }
+
 bool KExpression::areWildcards()
 {
  return m_bWildcards;
 }
+
 // Says if a wildcard string can be found inside a text
 // Result: false = String not found
 //         true = String found

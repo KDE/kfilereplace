@@ -2,10 +2,9 @@
                           kfilereplaceview.cpp  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by Franï¿½is Dupoux
+    copyright            : (C) 1999 by François Dupoux <dupoux@dupoux.com>
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
-    email                : dupoux@dupoux.com
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -24,8 +23,11 @@
 #include <qfileinfo.h> 
 #include <qtextstream.h>
 #include <qlistview.h>
+#include <qcstring.h>
+#include <qdatastream.h>
+#include <qvaluelist.h> 
 
-
+// include files for KDE
 #include <kmessagebox.h>
 #include <kstandarddirs.h>
 #include <kdebug.h>
@@ -36,7 +38,9 @@
 #include <kurl.h>
 #include <kpropertiesdialog.h>
 #include <kiconloader.h>
-
+#include <kapplication.h> 
+#include <dcopclient.h> 
+#include <dcopref.h> 
 // application specific includes
 #include "kfilereplaceview.h"
 #include "kfilereplacedoc.h"
@@ -62,17 +66,30 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
   // Create popup menus
   m_kpmResult = new KPopupMenu(this, "ResultPopup");
  
-  m_kpmResult->insertItem(QPixmap("resfileopen"),i18n("&Open"), this, SLOT(slotResultOpen()));
-  m_kpmResult->insertItem(i18n("Open &With..."), this, SLOT(slotResultOpenWith()));
-  m_kpmResult->insertItem(QPixmap("resfileedit"),i18n("&Edit with Kate"), this, SLOT(slotResultEdit()));
-  m_kpmResult->insertItem(QPixmap("resdiropen"),i18n("Open Parent &Folder"), this, SLOT(slotResultDirOpen()));
+  m_kpmResult->insertItem(QPixmap("resfileopen"),
+                          i18n("&Open"), 
+                          this, 
+                          SLOT(slotResultOpen()));
+  m_kpmResult->insertItem(i18n("Open &With..."), 
+                          this, 
+                          SLOT(slotResultOpenWith()));
+  m_kpmResult->insertItem(QPixmap("resfileedit"),
+                          i18n("&Edit with Quanta"), 
+                          this, 
+                          SLOT(slotResultEdit()));
+  m_kpmResult->insertItem(QPixmap("resdiropen"),
+                          i18n("Open Parent &Folder"), 
+                          this, 
+                          SLOT(slotResultDirOpen()));
+  m_kpmResult->insertItem(QPixmap("resfiledel"),
+                          i18n("&Delete"), 
+                          this, 
+                          SLOT(slotResultDelete()));
   m_kpmResult->insertSeparator();
-  m_kpmResult->insertItem(QPixmap("resfiledel"),i18n("&Delete"), this, SLOT(slotResultDelete()));
-  m_kpmResult->insertSeparator();
-  m_kpmResult->insertItem(QPixmap("resfileinfo"),i18n("&Properties"), this, SLOT(slotResultProperties()));
-  
-
-  connect(lwResult, SIGNAL(mouseButtonClicked (int, QListViewItem *, const QPoint &, int)), this, SLOT(slotMouseButtonClicked (int, QListViewItem *, const QPoint &, int)));
+  m_kpmResult->insertItem(QPixmap("resfileinfo"),
+                          i18n("&Properties"), 
+                          this, 
+                          SLOT(slotResultProperties()));
   
   // Load icons
   m_pmIconString.load( locate("data", "kfilereplace/pics/string.png"));
@@ -81,7 +98,13 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
   m_pmIconSubString.load( locate("data", "kfilereplace/pics/substring.png"));
   
   // connect events
-  connect(lwStrings, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(slotStringsEdit(QListViewItem *)));
+  connect(lwResult, 
+          SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)), this, 
+          SLOT(slotMouseButtonClicked(int, QListViewItem *, const QPoint &, int)));
+  connect(lwStrings, 
+          SIGNAL(doubleClicked(QListViewItem *)), 
+          this, 
+          SLOT(slotStringsEdit(QListViewItem *)));
 
   dlg = new KAddStringDlg(parentWidget());
   
@@ -95,17 +118,17 @@ KFileReplaceView::~KFileReplaceView()
  delete dlg;
 }
 
-QListView* KFileReplaceView::stringView() const
+QListView* KFileReplaceView::stringView()
 {
  return lwStrings;
 }
 
-QListView* KFileReplaceView::resultView() const
+QListView* KFileReplaceView::resultView()
 {
  return lwResult;
 }
 
-QPixmap KFileReplaceView::iconString() const
+QPixmap KFileReplaceView::iconString()
 {
  return m_pmIconString;
 }
@@ -163,6 +186,7 @@ bool KFileReplaceView::addString( QListViewItem *lviCurrent)
 
   return true;
 }
+
 bool KFileReplaceView::editString(QListViewItem *lviCurrent)
 {
  QListViewItem *lviCurItem,
@@ -378,7 +402,6 @@ bool KFileReplaceView::increaseStringCount(QListViewItem *lvi, QString strTextOl
   return true;
 }
 
-
 QString KFileReplaceView::currentItem()
 {
   QString strFilename;
@@ -394,12 +417,12 @@ QString KFileReplaceView::currentItem()
 
   strFilename = QString("%1/%2").arg(lvi->text(1)).arg(lvi->text(0));
 
-  return strFilename;
-  
+  return strFilename; 
 }
 
 void KFileReplaceView::slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column)
 {
+  Q_UNUSED(column);
   // Don't look at events while working
   if (g_bThreadRunning)
     return;
@@ -459,12 +482,25 @@ void KFileReplaceView::slotResultDirOpen()
 
 void KFileReplaceView::slotResultEdit()
 {
-  if (!currentItem().isEmpty())
+  /*if (!currentItem().isEmpty())
   {
-    QString strCommand = QString("quanta_be %1 &").arg(currentItem());
+    QString strCommand = QString("kate %1 &").arg(currentItem());
     KRun::runCommand(strCommand);
     m_lviCurrent = 0L;
-  }
+  }*/
+
+  QString filePath = currentItem();
+  DCOPClient *client = kapp->dcopClient();
+ 
+  DCOPRef quanta(client->appId(),"WindowManagerIf");
+  
+  bool success = quanta.send("openFile",filePath,1,1);
+  
+  if(!success)
+    {
+      QString message = QString(i18n("<qt>File <b>%1</b> cannot be opened. Might be a DCOP problem.</qt>")).arg(filePath);
+      KMessageBox::error(parentWidget(), message);
+    }  
 }
 
 void KFileReplaceView::slotResultDelete()
@@ -488,7 +524,6 @@ void KFileReplaceView::slotResultDelete()
   }
 }
 
-
 void KFileReplaceView::slotResultTreeExpand()
 {
   QListViewItem *lviRoot = lwResult->firstChild();
@@ -497,7 +532,6 @@ void KFileReplaceView::slotResultTreeExpand()
     expand(lviRoot, true);
 }
 
-
 void KFileReplaceView::slotResultTreeReduce()
 {
   QListViewItem *lviRoot = lwResult->firstChild();
@@ -505,7 +539,6 @@ void KFileReplaceView::slotResultTreeReduce()
   if (lviRoot)
     expand(lviRoot, false);
 }
-
 
 void KFileReplaceView::expand(QListViewItem *lviCurrent, bool bExpand)
 {
@@ -521,7 +554,6 @@ void KFileReplaceView::expand(QListViewItem *lviCurrent, bool bExpand)
         expand(lviCurrent->firstChild(), bExpand);
     }
 }
-
 
 void KFileReplaceView::slotStringsAdd()
 {
@@ -556,4 +588,3 @@ void KFileReplaceView::slotStringsEdit(QListViewItem  *lvi)
 }
 
 #include "kfilereplaceview.moc"
-

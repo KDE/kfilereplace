@@ -37,7 +37,7 @@ class Kernel
    Kernel(const Kernel& k){}
 
  public:
-   static Kernel* instance() { return (new Kernel); }
+   static Kernel* instance() { return (new Kernel()); }
    void *replaceThread(RepDirArg* r);
    void *searchThread(RepDirArg* r);
    int replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace);

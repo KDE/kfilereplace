@@ -23,6 +23,7 @@
 
 class QStringList;
 class QDateTime;
+
 class KAboutData;
 class KConfig;
 

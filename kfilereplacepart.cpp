@@ -1072,6 +1072,7 @@ void KFileReplacePart::showAboutApplication()
 
 void KFileReplacePart::convertOldToNewKFRFormat(const QString& fileName, KFileReplaceView* view)
 {
+ //this method convert old format in new XML-based format
  //if is an old format file try to open it
  typedef struct
  {

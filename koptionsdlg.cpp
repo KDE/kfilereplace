@@ -29,7 +29,7 @@
 #include <qpushbutton.h>
 #include <klocale.h>
 #include <kmessagebox.h>
-#include <knumvalidator.h>
+
 #include "whatthis.h"
 
 using namespace whatthisNameSpace;
@@ -45,7 +45,7 @@ KOptionsDlg::KOptionsDlg(QWidget *parent, const char *name, Settings settings) :
   m_settings = settings;
 
   loadOptions();
-  edLength->setValidator(new KIntValidator(edLength));
+
   connect(pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
   connect(pbDefault, SIGNAL(clicked()),this,SLOT(slotDefaults()));
 }
@@ -154,7 +154,7 @@ void KOptionsDlg::saveOptions()
   // check expression wildcard and character wildcards are not the same
   if (strWildcardsLetters == strWildcardsWords)
     {
-      KMessageBox::error(this, i18n("<qt>You cannot use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>.</qt>"));
+      KMessageBox::error(this, i18n("You cannot use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>."));
       return ;
     }
 

@@ -1,3 +1,6 @@
+26-03-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- Added a feature. Now we can open a file from the result view of KFR in Quanta(thanks Andras).
+
 14-03-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
 - Replaced two QLineEdit with two QSpinbox in knewprojectdlg.ui
 - Fixed a bug in the new kfr (XML-based) file format.

@@ -30,7 +30,7 @@ KAddStringDlg::KAddStringDlg(QWidget *parent, const char *name) : KAddStringDlgS
   connect(pbOK,SIGNAL(clicked()),this,SLOT(slotOK()));
   connect(m_editSearch,SIGNAL(textChanged()), this, SLOT(changeSearchText()));
   connect(m_editReplace,SIGNAL(textChanged()), this, SLOT(changeReplaceText()));
-  pbOK->setEnabled( !m_strSearch.isEmpty());
+
 }
 
 KAddStringDlg::~KAddStringDlg()
@@ -57,7 +57,6 @@ void KAddStringDlg::slotOK()
 void KAddStringDlg::changeSearchText()
 {
  m_strSearch = m_editSearch->text();
- pbOK->setEnabled( !m_strSearch.isEmpty());
 }
 void KAddStringDlg::changeReplaceText()
 {
