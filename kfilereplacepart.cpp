@@ -178,10 +178,14 @@ void KFileReplacePart::initGUI()
 
    (void)new KToggleAction(i18n("Case &Sensitive"), "casesensitive", 0, this, SLOT(slotOptionsCaseSensitive()), actionCollection(), "options_case");
 
-   (void)new KToggleAction(i18n("Enable &Wildcards"), "optwildcards", 0, this, SLOT(slotOptionsWildcards()), actionCollection(), "options_wildcards");
-
-   (void)new KToggleAction(i18n("Enable &Variables in Replace String: [$name:format$]"), "optvar", 0, this, SLOT(slotOptionsVariables()), actionCollection(), "options_var");
-
+   KToggleAction* action=new KToggleAction(i18n("Enable &Wildcards"), "optwildcards", 0, this, SLOT(slotOptionsWildcards()), actionCollection(), "options_wildcards");
+#if KDE_IS_VERSION(3,2,90)
+   action->setCheckedState(i18n("Disable &Wildcards"));
+#endif
+   action=new KToggleAction(i18n("Enable &Variables in Replace String: [$name:format$]"), "optvar", 0, this, SLOT(slotOptionsVariables()), actionCollection(), "options_var");
+#if KDE_IS_VERSION(3,2,90)
+   action->setCheckedState(i18n("Disable &Variables in Replace String: [$name:format$]"));
+#endif
    (void) new KAction(i18n("Configure &KFileReplace..."), "configure", 0, this, SLOT(slotOptionsPreferences()), actionCollection(), "configure_kfilereplace");
 
    // Results
