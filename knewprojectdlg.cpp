@@ -2,7 +2,7 @@
                           knewprojectdlg.cpp  -  description
                              -------------------
     begin                : Tue Dec 28 1999
-    copyright            : (C) 1999 by François Dupoux
+    copyright            : (C) 1999 by Franï¿½is Dupoux
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
@@ -30,10 +30,12 @@
 //KDE
 #include <kseparator.h>
 #include <kmessagebox.h>
+#include <kcharsets.h>
 #include <kcombobox.h>
 #include <kconfig.h>
 #include <kfiledialog.h>
 #include <klineedit.h>
+#include <kglobal.h>
 #include <klocale.h>
 #include <kpushbutton.h>
 #include <kstandarddirs.h>
@@ -222,6 +224,27 @@ void KNewProjectDlg::initGUI()
 
 void KNewProjectDlg::loadOptions()
 {
+  QStringList availableEncodingNames(KGlobal::charsets()->availableEncodingNames());
+  m_cbEncoding->insertStringList(availableEncodingNames);
+  int idx = -1;
+  int utf8Idx = -1;
+  for (uint i = 0; i < availableEncodingNames.count(); i++)
+  {
+    if (availableEncodingNames[i] == m_option->m_encoding)
+    {
+      idx = i;
+      break;
+    }
+    if (availableEncodingNames[i] == "utf8")
+    {
+      utf8Idx = i;
+    }
+  }
+  if (idx != -1)
+    m_cbEncoding->setCurrentItem(idx);
+  else 
+    m_cbEncoding->setCurrentItem(utf8Idx);
+    
   m_chbIncludeSubfolders->setChecked(m_option->m_recursive);
   m_chbCaseSensitive->setChecked(m_option->m_caseSensitive);
   m_chbEnableVariables->setChecked(m_option->m_variables);
@@ -343,6 +366,7 @@ void KNewProjectDlg::loadBackupExtensionOptions()
 
 void KNewProjectDlg::saveOptions()
 {
+  m_option->m_encoding = m_cbEncoding->currentText();
   m_option->m_recursive = m_chbIncludeSubfolders->isChecked();
   m_option->m_caseSensitive = m_chbCaseSensitive->isChecked();
   m_option->m_variables = m_chbEnableVariables->isChecked();

@@ -30,6 +30,7 @@ const QString rcDirectoriesList = "Directories list";
 const QString rcFiltersList = "Filters list";
 const QString rcRecentFiles = "Recent files";
 const QString rcAllStringsMustBeFound = "All strings must be found";
+const QString rcEncoding = "Encoding";
 const QString rcCaseSensitive = "Case sensitive";
 const QString rcConfirmStrings = "Confirm strings";
 const QString rcConfirmFiles = "Confirm files";
@@ -54,6 +55,7 @@ const QString rcNotifyOnErrors = "NotifyOnErrors";
 const QString rcAskConfirmReplace = "Ask confirmation on replace";
 const QString rcDontAskAgain = "Dont ask again";
 // Default configuration options
+const QString EncodingOption = "utf8";
 const bool RecursiveOption = true;
 const bool CaseSensitiveOption = false;
 const bool FollowSymbolicLinksOption = false;
@@ -90,6 +92,8 @@ class RCOptions
     QString m_dateAccess,
             m_minDate,
             m_maxDate;
+            
+    QString m_encoding;
 
     bool m_caseSensitive,
          m_recursive,
