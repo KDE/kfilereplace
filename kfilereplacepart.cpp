@@ -426,7 +426,7 @@ void KFileReplacePart::slotOptionPreferences()
 
 void KFileReplacePart::showAboutApplication()
 {
-  m_aboutDlg = new KAboutApplication(createAboutData(), (const char *)0, false);
+  m_aboutDlg = new KAboutApplication(createAboutData(), (const QWidget *)0, (const char *)0, false);
   if(m_aboutDlg == 0)
     return;
 
