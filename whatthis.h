@@ -31,7 +31,7 @@ namespace whatthisNameSpace
   const QString lvStringsWhatthis = i18n("Show a list of searching strings (and replacing strings if there are). Use the \"add strings\" dialog to edit your string list.");
 
   //KNewProjectDlg messages
-  const QString cbLocationWhatthis = i18n("Base directory for operations of search/replace. Insert path string here by hand or use the search button.");
+  const QString cbLocationWhatthis = i18n("Base folder for operations of search/replace. Insert path string here by hand or use the search button.");
 
   const QString cbFilterWhatthis = i18n("Shell-like file searching filters. Example: \"*.html;*.txt;*.xml\".");
 
@@ -62,9 +62,9 @@ namespace whatthisNameSpace
 
   const QString chbIgnoreWhitespacesWhatthis = i18n("");
 
-  const QString chbFollowSymLinksWhatthis = i18n("If kfilereplace encounters a symbolic link treats it like a normal directory or file.");
+  const QString chbFollowSymLinksWhatthis = i18n("If kfilereplace encounters a symbolic link treats it like a normal folder or file.");
 
-  const QString chbIgnoreHiddenWhatthis = i18n("Enable this option to ignore hidden files or directories.");
+  const QString chbIgnoreHiddenWhatthis = i18n("Enable this option to ignore hidden files or folders.");
 
   const QString chbIgnoreFilesWhatthis = i18n("If this option is enabled, KFR will show even the names of the files in which no string has been found or replaced.");
 

@@ -112,7 +112,7 @@ void KNewProjectDlg::slotOK()
 
    if (m_info.directory().isEmpty() || m_info.filter().isEmpty())
      {
-       KMessageBox::error(this, i18n("You must fill the combo boxes (directory and filter) before continuing."));
+       KMessageBox::error(this, i18n("You must fill the combo boxes (location and filter) before continuing."));
        return;
      }
 

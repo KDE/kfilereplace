@@ -216,7 +216,7 @@ void KFileReplacePart::slotFileSave()
   QFileInfo fileInfo(docName);
   if(fileInfo.exists())
     {
-      KMessageBox::error(m_w, i18n("A directory or a file with this name already exists."));
+      KMessageBox::error(m_w, i18n("<qt>A folder or a file named <b>%1</b> already exists.</qt>").arg(docName));
       return ;
     }
 
@@ -224,7 +224,7 @@ void KFileReplacePart::slotFileSave()
 
   if(!dirName.mkdir(docName, true))
     {
-      KMessageBox::error(m_w, i18n("Cannot create %1 directory.").arg(docName));
+      KMessageBox::error(m_w, i18n("<qt>Cannot create the <b>%1</b> folder.</qt>").arg(docName));
       return ;
     }
 
