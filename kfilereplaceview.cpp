@@ -2,7 +2,7 @@
                           kfilereplaceview.cpp  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by François Dupoux <dupoux@dupoux.com>
+    copyright            : (C) 1999 by Franï¿½is Dupoux <dupoux@dupoux.com>
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
 ***************************************************************************/
 
@@ -20,7 +20,7 @@
 #include <qpainter.h>
 #include <qwhatsthis.h>
 #include <qfile.h>
-#include <qfileinfo.h> 
+#include <qfileinfo.h>
 #include <qtextstream.h>
 #include <qlistview.h>
 #include <qcstring.h>
@@ -57,12 +57,12 @@
 #include "resource.h"
 #include "whatthis.h"
 
-using namespace whatthisNameSpace; 
+using namespace whatthisNameSpace;
 
 KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplaceViewWdg(parent,name)
 {
   m_path = KGlobal::instance()->dirs()->saveLocation("data", "kfilereplace/");
-  
+
   // Create popup menus
   m_kpmResult = new KPopupMenu(this, "ResultPopup");
  
@@ -96,7 +96,7 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
   m_pmIconSuccess.load( locate("data", "kfilereplace/pics/success.png"));
   m_pmIconError.load( locate("data", "kfilereplace/pics/error.png"));
   m_pmIconSubString.load( locate("data", "kfilereplace/pics/substring.png"));
-  
+
   // connect events
   connect(lwResult, 
           SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)), this, 
@@ -107,7 +107,7 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
           SLOT(slotStringsEdit(QListViewItem *)));
 
   dlg = new KAddStringDlg(parentWidget());
-  
+
   QWhatsThis::add(lwResult, i18n(lwResultWhatthis));
   QWhatsThis::add(lwStrings, i18n(lwStringsWhatthis));
 }
@@ -410,7 +410,7 @@ QString KFileReplaceView::currentItem()
   if(!m_lviCurrent)
     if(!(m_lviCurrent = lwResult->currentItem()))
       return QString::null;
-  
+
   lvi = m_lviCurrent;
   while (lvi->parent())
     lvi = lvi->parent();
@@ -494,7 +494,7 @@ void KFileReplaceView::slotResultEdit()
  
   DCOPRef quanta(client->appId(),"WindowManagerIf");
   
-  bool success = quanta.send("openFile",filePath,1,1);
+  bool success = quanta.send("openFile",filePath, 0, 0);
   
   if(!success)
     {
