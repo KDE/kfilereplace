@@ -87,7 +87,7 @@ void KNewProjectDlg::slotOk()
    // Check the Search text and the Filter are not empty
    if (getDirectory().isEmpty() || getFilter().isEmpty())
    {
-      KMessageBox::error(this, i18n("You must fill the combo boxes (directory and filter) before continue"));
+      KMessageBox::error(this, i18n("You must fill the combo boxes (directory and filter) before continuing."));
       return;
    }
 

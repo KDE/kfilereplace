@@ -282,7 +282,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
 
   if (dir.exists() == false)
     {
-      strMess = i18n("<qt>The main folder of the project <b>%1</b> doesn't exists! Can't continue.</qt>").arg(m_doc->m_strProjectDirectory);
+      strMess = i18n("<qt>The main folder of the project <b>%1</b> doesn't exist.</qt>").arg(m_doc->m_strProjectDirectory);
       KMessageBox::error(w, strMess);
       return -1;
     }
@@ -326,14 +326,14 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
       // -- Check Maximum expression length is valid
       if ((m_settings.nMaxExpressionLength < 2) || (m_settings.nMaxExpressionLength > 10000))
             {
-          KMessageBox::error(w, i18n("The maximum expression wildcard length is not valid (between 2 and 10000)"));
+          KMessageBox::error(w, i18n("The maximum expression wildcard length is not valid (should be between 2 and 10000)"));
           return -1;
             }
 
       // check expression wildcard and character wildcards are not the same
       if (m_settings.cWildcardsWords == m_settings.cWildcardsLetters)
         {
-          KMessageBox::error(w, i18n("<qt>You can't use the same character for <b>expression wildcard</b> and for <b>character wildcard</b></qt>"));
+          KMessageBox::error(w, i18n("<qt>You can't use the same character for <b>expression wildcard</b> and for <b>character wildcard</b></qt>."));
           return -1;
         }
 
@@ -1167,7 +1167,7 @@ void KFileReplacePart::setWhatsThis()
   actionCollection()->action("options_case")->setWhatsThis(i18n("The lowers and uppers are different. For example, if you search for <b>Linux</b> and "
                                                                 "there is <b>linux</b>, then the string won't be found/replaced."));
   actionCollection()->action("options_var")->setWhatsThis(i18n("Enable use of the variables, as the date & time or the name of the current file. "
-                                                               "The variable must be in the replace string, with the format [$Name$]. When doing the replace, "
+                                                               "The variable must be in the replace string, with the format [$Name:  $]. When doing the replace, "
                                                                "the value of the variable "
                                                                "is written instead of the variable. If disabled, the replace string will be copied without "
                                                                "substitution. Please, read help for "
