@@ -8,12 +8,18 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>634</width>
-            <height>521</height>
+            <width>486</width>
+            <height>483</height>
         </rect>
     </property>
     <property name="caption">
         <string>Search &amp; Replace in Files</string>
+    </property>
+    <property name="sizeGripEnabled">
+        <bool>true</bool>
+    </property>
+    <property name="modal">
+        <bool>true</bool>
     </property>
     <grid>
         <property name="name">
@@ -21,7 +27,7 @@
         </property>
         <widget class="QLayoutWidget" row="1" column="0">
             <property name="name">
-                <cstring>layout7</cstring>
+                <cstring>layout28</cstring>
             </property>
             <hbox>
                 <property name="name">
@@ -29,7 +35,10 @@
                 </property>
                 <widget class="KPushButton">
                     <property name="name">
-                        <cstring>pbHelp</cstring>
+                        <cstring>m_pbHelp</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
@@ -70,14 +79,36 @@
                     </property>
                     <property name="sizeHint">
                         <size>
-                            <width>140</width>
+                            <width>150</width>
                             <height>20</height>
                         </size>
                     </property>
                 </spacer>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>m_pbSearchNow</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Search now</string>
+                    </property>
+                    <property name="accel">
+                        <string></string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>m_pbSearchLater</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Search later</string>
+                    </property>
+                    <property name="accel">
+                        <string></string>
+                    </property>
+                </widget>
                 <widget class="KPushButton">
                     <property name="name">
-                        <cstring>pbOK</cstring>
+                        <cstring>m_pbOK</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
@@ -111,7 +142,7 @@
                 </widget>
                 <widget class="KPushButton">
                     <property name="name">
-                        <cstring>pbCancel</cstring>
+                        <cstring>m_pbCancel</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
@@ -153,114 +184,130 @@
                     </property>
                     <widget class="QLayoutWidget" row="0" column="0">
                         <property name="name">
-                            <cstring>layout40</cstring>
+                            <cstring>layout26</cstring>
                         </property>
                         <vbox>
                             <property name="name">
                                 <cstring>unnamed</cstring>
                             </property>
-                            <widget class="QLayoutWidget">
+                            <widget class="QGroupBox">
                                 <property name="name">
-                                    <cstring>layout8</cstring>
+                                    <cstring>groupBox5</cstring>
+                                </property>
+                                <property name="title">
+                                    <string>Base folder options</string>
                                 </property>
                                 <grid>
                                     <property name="name">
                                         <cstring>unnamed</cstring>
                                     </property>
-                                    <widget class="QLabel" row="1" column="0">
+                                    <widget class="QLayoutWidget" row="0" column="0">
                                         <property name="name">
-                                            <cstring>tlFilter</cstring>
+                                            <cstring>layout8</cstring>
                                         </property>
-                                        <property name="text">
-                                            <string>&amp;Filter:</string>
-                                        </property>
-                                        <property name="buddy" stdset="0">
-                                            <cstring>cbFilter</cstring>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLabel" row="0" column="0">
-                                        <property name="name">
-                                            <cstring>tlLocation</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>&amp;Location:</string>
-                                        </property>
-                                        <property name="buddy" stdset="0">
-                                            <cstring>cbLocation</cstring>
-                                        </property>
-                                    </widget>
-                                    <widget class="KComboBox" row="0" column="1">
-                                        <property name="name">
-                                            <cstring>cbLocation</cstring>
-                                        </property>
-                                        <property name="sizePolicy">
-                                            <sizepolicy>
-                                                <hsizetype>3</hsizetype>
-                                                <vsizetype>0</vsizetype>
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="editable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="sizeLimit">
-                                            <number>20</number>
-                                        </property>
-                                        <property name="maxCount">
-                                            <number>10</number>
-                                        </property>
-                                        <property name="insertionPolicy">
-                                            <enum>AtTop</enum>
-                                        </property>
-                                        <property name="duplicatesEnabled">
-                                            <bool>false</bool>
-                                        </property>
-                                        <property name="whatsThis" stdset="0">
-                                            <string>Insert a search path here. You can use the search path button.</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QPushButton" row="0" column="2">
-                                        <property name="name">
-                                            <cstring>pbLocation</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string></string>
-                                        </property>
-                                        <property name="accel">
-                                            <string></string>
-                                        </property>
-                                    </widget>
-                                    <widget class="KComboBox" row="1" column="1" rowspan="1" colspan="2">
-                                        <property name="name">
-                                            <cstring>cbFilter</cstring>
-                                        </property>
-                                        <property name="sizePolicy">
-                                            <sizepolicy>
-                                                <hsizetype>3</hsizetype>
-                                                <vsizetype>0</vsizetype>
-                                                <horstretch>0</horstretch>
-                                                <verstretch>0</verstretch>
-                                            </sizepolicy>
-                                        </property>
-                                        <property name="editable">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="sizeLimit">
-                                            <number>20</number>
-                                        </property>
-                                        <property name="maxCount">
-                                            <number>10</number>
-                                        </property>
-                                        <property name="insertionPolicy">
-                                            <enum>AtTop</enum>
-                                        </property>
-                                        <property name="duplicatesEnabled">
-                                            <bool>false</bool>
-                                        </property>
-                                        <property name="whatsThis" stdset="0">
-                                            <string></string>
-                                        </property>
+                                        <grid>
+                                            <property name="name">
+                                                <cstring>unnamed</cstring>
+                                            </property>
+                                            <widget class="QLabel" row="1" column="0">
+                                                <property name="name">
+                                                    <cstring>m_tlFilter</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>Filter:</string>
+                                                </property>
+                                                <property name="buddy" stdset="0">
+                                                    <cstring>cbFilter</cstring>
+                                                </property>
+                                            </widget>
+                                            <widget class="QLabel" row="0" column="0">
+                                                <property name="name">
+                                                    <cstring>m_tlLocation</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>Location:</string>
+                                                </property>
+                                                <property name="textFormat">
+                                                    <enum>AutoText</enum>
+                                                </property>
+                                                <property name="buddy" stdset="0">
+                                                    <cstring>cbLocation</cstring>
+                                                </property>
+                                            </widget>
+                                            <widget class="KComboBox" row="0" column="1">
+                                                <property name="name">
+                                                    <cstring>m_cbLocation</cstring>
+                                                </property>
+                                                <property name="sizePolicy">
+                                                    <sizepolicy>
+                                                        <hsizetype>3</hsizetype>
+                                                        <vsizetype>0</vsizetype>
+                                                        <horstretch>0</horstretch>
+                                                        <verstretch>0</verstretch>
+                                                    </sizepolicy>
+                                                </property>
+                                                <property name="editable">
+                                                    <bool>true</bool>
+                                                </property>
+                                                <property name="sizeLimit">
+                                                    <number>20</number>
+                                                </property>
+                                                <property name="maxCount">
+                                                    <number>10</number>
+                                                </property>
+                                                <property name="insertionPolicy">
+                                                    <enum>AtTop</enum>
+                                                </property>
+                                                <property name="duplicatesEnabled">
+                                                    <bool>false</bool>
+                                                </property>
+                                                <property name="whatsThis" stdset="0">
+                                                    <string>Insert a search path here. You can use the search path button.</string>
+                                                </property>
+                                            </widget>
+                                            <widget class="QPushButton" row="0" column="2">
+                                                <property name="name">
+                                                    <cstring>m_pbLocation</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string></string>
+                                                </property>
+                                                <property name="accel">
+                                                    <string></string>
+                                                </property>
+                                            </widget>
+                                            <widget class="KComboBox" row="1" column="1" rowspan="1" colspan="2">
+                                                <property name="name">
+                                                    <cstring>m_cbFilter</cstring>
+                                                </property>
+                                                <property name="sizePolicy">
+                                                    <sizepolicy>
+                                                        <hsizetype>3</hsizetype>
+                                                        <vsizetype>0</vsizetype>
+                                                        <horstretch>0</horstretch>
+                                                        <verstretch>0</verstretch>
+                                                    </sizepolicy>
+                                                </property>
+                                                <property name="editable">
+                                                    <bool>true</bool>
+                                                </property>
+                                                <property name="sizeLimit">
+                                                    <number>20</number>
+                                                </property>
+                                                <property name="maxCount">
+                                                    <number>10</number>
+                                                </property>
+                                                <property name="insertionPolicy">
+                                                    <enum>AtTop</enum>
+                                                </property>
+                                                <property name="duplicatesEnabled">
+                                                    <bool>false</bool>
+                                                </property>
+                                                <property name="whatsThis" stdset="0">
+                                                    <string></string>
+                                                </property>
+                                            </widget>
+                                        </grid>
                                     </widget>
                                 </grid>
                             </widget>
@@ -269,7 +316,7 @@
                                     <cstring>groupBox4</cstring>
                                 </property>
                                 <property name="title">
-                                    <string></string>
+                                    <string>General options</string>
                                 </property>
                                 <grid>
                                     <property name="name">
@@ -285,7 +332,7 @@
                                             </property>
                                             <widget class="QCheckBox">
                                                 <property name="name">
-                                                    <cstring>chbIncludeSubfolders</cstring>
+                                                    <cstring>m_chbIncludeSubfolders</cstring>
                                                 </property>
                                                 <property name="text">
                                                     <string>&amp;Include subfolders</string>
@@ -299,7 +346,7 @@
                                             </widget>
                                             <widget class="QCheckBox">
                                                 <property name="name">
-                                                    <cstring>chbCaseSensitive</cstring>
+                                                    <cstring>m_chbCaseSensitive</cstring>
                                                 </property>
                                                 <property name="text">
                                                     <string>&amp;Case sensitive</string>
@@ -310,21 +357,21 @@
                                             </widget>
                                             <widget class="QCheckBox">
                                                 <property name="name">
-                                                    <cstring>chbWildcards</cstring>
+                                                    <cstring>m_chbRegularExpressions</cstring>
                                                 </property>
                                                 <property name="enabled">
                                                     <bool>true</bool>
                                                 </property>
                                                 <property name="text">
-                                                    <string>Enable &amp;wildcards</string>
+                                                    <string>Enable &amp;regular expressions</string>
                                                 </property>
                                                 <property name="accel">
-                                                    <string>Alt+W</string>
+                                                    <string>Alt+R</string>
                                                 </property>
                                             </widget>
                                             <widget class="QCheckBox">
                                                 <property name="name">
-                                                    <cstring>chbEnableVariables</cstring>
+                                                    <cstring>m_chbEnableVariables</cstring>
                                                 </property>
                                                 <property name="text">
                                                     <string>Enable &amp;variables in the replace string</string>
@@ -343,7 +390,7 @@
                                                     </property>
                                                     <widget class="QCheckBox">
                                                         <property name="name">
-                                                            <cstring>chbBackup</cstring>
+                                                            <cstring>m_chbBackup</cstring>
                                                         </property>
                                                         <property name="text">
                                                             <string>Do &amp;backup copy instead of overwrite</string>
@@ -362,7 +409,7 @@
                                                             </property>
                                                             <widget class="QLabel">
                                                                 <property name="name">
-                                                                    <cstring>tlBackup</cstring>
+                                                                    <cstring>m_tlBackup</cstring>
                                                                 </property>
                                                                 <property name="text">
                                                                     <string>Backup copy suffix:</string>
@@ -370,7 +417,7 @@
                                                             </widget>
                                                             <widget class="QLineEdit">
                                                                 <property name="name">
-                                                                    <cstring>leBackup</cstring>
+                                                                    <cstring>m_leBackup</cstring>
                                                                 </property>
                                                                 <property name="text">
                                                                     <string></string>
@@ -384,23 +431,75 @@
                                     </widget>
                                 </grid>
                             </widget>
-                            <spacer>
+                            <widget class="QGroupBox">
                                 <property name="name">
-                                    <cstring>spacer8</cstring>
+                                    <cstring>groupBox6</cstring>
                                 </property>
-                                <property name="orientation">
-                                    <enum>Vertical</enum>
+                                <property name="title">
+                                    <string>Quick search/replace</string>
                                 </property>
-                                <property name="sizeType">
-                                    <enum>Expanding</enum>
-                                </property>
-                                <property name="sizeHint">
-                                    <size>
-                                        <width>20</width>
-                                        <height>176</height>
-                                    </size>
-                                </property>
-                            </spacer>
+                                <grid>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QLayoutWidget" row="0" column="0">
+                                        <property name="name">
+                                            <cstring>layout25</cstring>
+                                        </property>
+                                        <hbox>
+                                            <property name="name">
+                                                <cstring>unnamed</cstring>
+                                            </property>
+                                            <widget class="QLayoutWidget">
+                                                <property name="name">
+                                                    <cstring>layout24</cstring>
+                                                </property>
+                                                <vbox>
+                                                    <property name="name">
+                                                        <cstring>unnamed</cstring>
+                                                    </property>
+                                                    <widget class="QLabel">
+                                                        <property name="name">
+                                                            <cstring>m_tlSearch</cstring>
+                                                        </property>
+                                                        <property name="text">
+                                                            <string>Search:</string>
+                                                        </property>
+                                                    </widget>
+                                                    <widget class="QLabel">
+                                                        <property name="name">
+                                                            <cstring>m_tlReplace</cstring>
+                                                        </property>
+                                                        <property name="text">
+                                                            <string>Replace:</string>
+                                                        </property>
+                                                    </widget>
+                                                </vbox>
+                                            </widget>
+                                            <widget class="QLayoutWidget">
+                                                <property name="name">
+                                                    <cstring>layout23</cstring>
+                                                </property>
+                                                <vbox>
+                                                    <property name="name">
+                                                        <cstring>unnamed</cstring>
+                                                    </property>
+                                                    <widget class="QLineEdit">
+                                                        <property name="name">
+                                                            <cstring>m_leSearch</cstring>
+                                                        </property>
+                                                    </widget>
+                                                    <widget class="QLineEdit">
+                                                        <property name="name">
+                                                            <cstring>m_leReplace</cstring>
+                                                        </property>
+                                                    </widget>
+                                                </vbox>
+                                            </widget>
+                                        </hbox>
+                                    </widget>
+                                </grid>
+                            </widget>
                         </vbox>
                     </widget>
                 </grid>
@@ -429,7 +528,7 @@
                             </property>
                             <widget class="QCheckBox" row="0" column="0">
                                 <property name="name">
-                                    <cstring>chbOwnerUser</cstring>
+                                    <cstring>m_chbOwnerUser</cstring>
                                 </property>
                                 <property name="text">
                                     <string>User: </string>
@@ -447,7 +546,7 @@
                                     </property>
                                 </item>
                                 <property name="name">
-                                    <cstring>cbOwnerUserType</cstring>
+                                    <cstring>m_cbOwnerUserType</cstring>
                                 </property>
                                 <property name="enabled">
                                     <bool>false</bool>
@@ -474,7 +573,7 @@
                                     </property>
                                 </item>
                                 <property name="name">
-                                    <cstring>cbOwnerUserBool</cstring>
+                                    <cstring>m_cbOwnerUserBool</cstring>
                                 </property>
                                 <property name="enabled">
                                     <bool>false</bool>
@@ -501,7 +600,7 @@
                                     </property>
                                 </item>
                                 <property name="name">
-                                    <cstring>cbOwnerGroupBool</cstring>
+                                    <cstring>m_cbOwnerGroupBool</cstring>
                                 </property>
                                 <property name="enabled">
                                     <bool>false</bool>
@@ -528,7 +627,7 @@
                                     </property>
                                 </item>
                                 <property name="name">
-                                    <cstring>cbOwnerGroupType</cstring>
+                                    <cstring>m_cbOwnerGroupType</cstring>
                                 </property>
                                 <property name="enabled">
                                     <bool>false</bool>
@@ -545,7 +644,7 @@
                             </widget>
                             <widget class="QCheckBox" row="1" column="0">
                                 <property name="name">
-                                    <cstring>chbOwnerGroup</cstring>
+                                    <cstring>m_chbOwnerGroup</cstring>
                                 </property>
                                 <property name="text">
                                     <string>Group:</string>
@@ -553,7 +652,7 @@
                             </widget>
                             <widget class="KLineEdit" row="0" column="3">
                                 <property name="name">
-                                    <cstring>edOwnerUser</cstring>
+                                    <cstring>m_edOwnerUser</cstring>
                                 </property>
                                 <property name="enabled">
                                     <bool>false</bool>
@@ -561,7 +660,7 @@
                             </widget>
                             <widget class="KLineEdit" row="1" column="3">
                                 <property name="name">
-                                    <cstring>edOwnerGroup</cstring>
+                                    <cstring>m_edOwnerGroup</cstring>
                                 </property>
                                 <property name="enabled">
                                     <bool>false</bool>
@@ -598,7 +697,7 @@
                                             </property>
                                             <widget class="QLabel">
                                                 <property name="name">
-                                                    <cstring>tlDateValid</cstring>
+                                                    <cstring>m_tlDateValid</cstring>
                                                 </property>
                                                 <property name="text">
                                                     <string>Dates valid for:</string>
@@ -606,7 +705,7 @@
                                             </widget>
                                             <widget class="QCheckBox">
                                                 <property name="name">
-                                                    <cstring>chbDateMin</cstring>
+                                                    <cstring>m_chbDateMin</cstring>
                                                 </property>
                                                 <property name="text">
                                                     <string>Accessed after:</string>
@@ -614,7 +713,7 @@
                                             </widget>
                                             <widget class="QCheckBox">
                                                 <property name="name">
-                                                    <cstring>chbDateMax</cstring>
+                                                    <cstring>m_chbDateMax</cstring>
                                                 </property>
                                                 <property name="text">
                                                     <string>Accessed before: </string>
@@ -642,7 +741,7 @@
                                                     </property>
                                                 </item>
                                                 <property name="name">
-                                                    <cstring>cbDateValid</cstring>
+                                                    <cstring>m_cbDateValid</cstring>
                                                 </property>
                                                 <property name="sizeLimit">
                                                     <number>2</number>
@@ -656,7 +755,7 @@
                                             </widget>
                                             <widget class="QDateEdit">
                                                 <property name="name">
-                                                    <cstring>dedDateMin</cstring>
+                                                    <cstring>m_dedDateMin</cstring>
                                                 </property>
                                                 <property name="enabled">
                                                     <bool>false</bool>
@@ -688,7 +787,7 @@
                                             </widget>
                                             <widget class="QDateEdit">
                                                 <property name="name">
-                                                    <cstring>dedDateMax</cstring>
+                                                    <cstring>m_dedDateMax</cstring>
                                                 </property>
                                                 <property name="enabled">
                                                     <bool>false</bool>
@@ -754,7 +853,7 @@
                             </property>
                             <widget class="QLayoutWidget" row="0" column="0">
                                 <property name="name">
-                                    <cstring>layout36</cstring>
+                                    <cstring>layout32</cstring>
                                 </property>
                                 <hbox>
                                     <property name="name">
@@ -762,107 +861,87 @@
                                     </property>
                                     <widget class="QLayoutWidget">
                                         <property name="name">
-                                            <cstring>layout35</cstring>
+                                            <cstring>layout31</cstring>
                                         </property>
-                                        <hbox>
+                                        <vbox>
                                             <property name="name">
                                                 <cstring>unnamed</cstring>
                                             </property>
-                                            <widget class="QLayoutWidget">
+                                            <widget class="QCheckBox">
                                                 <property name="name">
-                                                    <cstring>layout31</cstring>
+                                                    <cstring>m_chbSizeMin</cstring>
                                                 </property>
-                                                <vbox>
-                                                    <property name="name">
-                                                        <cstring>unnamed</cstring>
-                                                    </property>
-                                                    <widget class="QCheckBox">
-                                                        <property name="name">
-                                                            <cstring>chbSizeMin</cstring>
-                                                        </property>
-                                                        <property name="text">
-                                                            <string>Minimum size:</string>
-                                                        </property>
-                                                    </widget>
-                                                    <widget class="QCheckBox">
-                                                        <property name="name">
-                                                            <cstring>chbSizeMax</cstring>
-                                                        </property>
-                                                        <property name="text">
-                                                            <string>Maximum size:</string>
-                                                        </property>
-                                                    </widget>
-                                                </vbox>
+                                                <property name="text">
+                                                    <string>Minimum size:</string>
+                                                </property>
                                             </widget>
-                                            <widget class="QLayoutWidget">
+                                            <widget class="QCheckBox">
                                                 <property name="name">
-                                                    <cstring>layout34</cstring>
+                                                    <cstring>m_chbSizeMax</cstring>
                                                 </property>
-                                                <vbox>
-                                                    <property name="name">
-                                                        <cstring>unnamed</cstring>
-                                                    </property>
-                                                    <widget class="QLayoutWidget">
-                                                        <property name="name">
-                                                            <cstring>layout32</cstring>
-                                                        </property>
-                                                        <hbox>
-                                                            <property name="name">
-                                                                <cstring>unnamed</cstring>
-                                                            </property>
-                                                            <widget class="QSpinBox">
-                                                                <property name="name">
-                                                                    <cstring>spbSizeMin</cstring>
-                                                                </property>
-                                                                <property name="maxValue">
-                                                                    <number>4000000</number>
-                                                                </property>
-                                                                <property name="minValue">
-                                                                    <number>0</number>
-                                                                </property>
-                                                            </widget>
-                                                            <widget class="QLabel">
-                                                                <property name="name">
-                                                                    <cstring>tlSizeMin</cstring>
-                                                                </property>
-                                                                <property name="text">
-                                                                    <string>KB</string>
-                                                                </property>
-                                                            </widget>
-                                                        </hbox>
-                                                    </widget>
-                                                    <widget class="QLayoutWidget">
-                                                        <property name="name">
-                                                            <cstring>layout33</cstring>
-                                                        </property>
-                                                        <hbox>
-                                                            <property name="name">
-                                                                <cstring>unnamed</cstring>
-                                                            </property>
-                                                            <widget class="QSpinBox">
-                                                                <property name="name">
-                                                                    <cstring>spbSizeMax</cstring>
-                                                                </property>
-                                                                <property name="maxValue">
-                                                                    <number>4000000</number>
-                                                                </property>
-                                                                <property name="minValue">
-                                                                    <number>0</number>
-                                                                </property>
-                                                            </widget>
-                                                            <widget class="QLabel">
-                                                                <property name="name">
-                                                                    <cstring>tlSizeMax</cstring>
-                                                                </property>
-                                                                <property name="text">
-                                                                    <string>KB</string>
-                                                                </property>
-                                                            </widget>
-                                                        </hbox>
-                                                    </widget>
-                                                </vbox>
+                                                <property name="text">
+                                                    <string>Maximum size:</string>
+                                                </property>
                                             </widget>
-                                        </hbox>
+                                        </vbox>
+                                    </widget>
+                                    <widget class="QLayoutWidget">
+                                        <property name="name">
+                                            <cstring>layout30</cstring>
+                                        </property>
+                                        <vbox>
+                                            <property name="name">
+                                                <cstring>unnamed</cstring>
+                                            </property>
+                                            <widget class="QSpinBox">
+                                                <property name="name">
+                                                    <cstring>m_spbSizeMin</cstring>
+                                                </property>
+                                                <property name="maxValue">
+                                                    <number>4000000</number>
+                                                </property>
+                                                <property name="minValue">
+                                                    <number>0</number>
+                                                </property>
+                                            </widget>
+                                            <widget class="QSpinBox">
+                                                <property name="name">
+                                                    <cstring>m_spbSizeMax</cstring>
+                                                </property>
+                                                <property name="maxValue">
+                                                    <number>4000000</number>
+                                                </property>
+                                                <property name="minValue">
+                                                    <number>0</number>
+                                                </property>
+                                            </widget>
+                                        </vbox>
+                                    </widget>
+                                    <widget class="QLayoutWidget">
+                                        <property name="name">
+                                            <cstring>layout31</cstring>
+                                        </property>
+                                        <vbox>
+                                            <property name="name">
+                                                <cstring>unnamed</cstring>
+                                            </property>
+                                            <widget class="QLabel">
+                                                <property name="name">
+                                                    <cstring>m_tlSizeMin</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>KB</string>
+                                                </property>
+                                            </widget>
+                                            <widget class="QLabel">
+                                                <property name="name">
+                                                    <cstring>m_tlSizeMax</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>KB</string>
+                                                </property>
+                                            </widget>
+                                        </vbox>
                                     </widget>
                                     <spacer>
                                         <property name="name">
@@ -876,7 +955,7 @@
                                         </property>
                                         <property name="sizeHint">
                                             <size>
-                                                <width>345</width>
+                                                <width>330</width>
                                                 <height>16</height>
                                             </size>
                                         </property>
@@ -887,292 +966,52 @@
                     </widget>
                 </grid>
             </widget>
-            <widget class="QWidget">
-                <property name="name">
-                    <cstring>TabPage</cstring>
-                </property>
-                <attribute name="title">
-                    <string>Add &amp;strings</string>
-                </attribute>
-                <grid>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <widget class="QLayoutWidget" row="0" column="0">
-                        <property name="name">
-                            <cstring>layout26</cstring>
-                        </property>
-                        <vbox>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <widget class="QButtonGroup">
-                                <property name="name">
-                                    <cstring>bgChoose</cstring>
-                                </property>
-                                <property name="title">
-                                    <string>Choose string adding mode</string>
-                                </property>
-                                <property name="exclusive">
-                                    <bool>true</bool>
-                                </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <widget class="QRadioButton" row="1" column="0">
-                                        <property name="name">
-                                            <cstring>rbSearchReplace</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>Search and replace mode</string>
-                                        </property>
-                                    </widget>
-                                    <widget class="QRadioButton" row="0" column="0">
-                                        <property name="name">
-                                            <cstring>rbSearchOnly</cstring>
-                                        </property>
-                                        <property name="text">
-                                            <string>Search only mode</string>
-                                        </property>
-                                        <property name="checked">
-                                            <bool>true</bool>
-                                        </property>
-                                    </widget>
-                                </grid>
-                            </widget>
-                            <widget class="QFrame">
-                                <property name="name">
-                                    <cstring>frame4</cstring>
-                                </property>
-                                <property name="frameShape">
-                                    <enum>StyledPanel</enum>
-                                </property>
-                                <property name="frameShadow">
-                                    <enum>Raised</enum>
-                                </property>
-                                <grid>
-                                    <property name="name">
-                                        <cstring>unnamed</cstring>
-                                    </property>
-                                    <widget class="QListView" row="0" column="2" rowspan="2" colspan="1">
-                                        <column>
-                                            <property name="text">
-                                                <string>Search for:</string>
-                                            </property>
-                                            <property name="clickable">
-                                                <bool>true</bool>
-                                            </property>
-                                            <property name="resizable">
-                                                <bool>true</bool>
-                                            </property>
-                                        </column>
-                                        <column>
-                                            <property name="text">
-                                                <string>Replace with:</string>
-                                            </property>
-                                            <property name="clickable">
-                                                <bool>true</bool>
-                                            </property>
-                                            <property name="resizable">
-                                                <bool>true</bool>
-                                            </property>
-                                        </column>
-                                        <property name="name">
-                                            <cstring>stringView</cstring>
-                                        </property>
-                                        <property name="allColumnsShowFocus">
-                                            <bool>true</bool>
-                                        </property>
-                                        <property name="showSortIndicator">
-                                            <bool>false</bool>
-                                        </property>
-                                        <property name="resizeMode">
-                                            <enum>AllColumns</enum>
-                                        </property>
-                                    </widget>
-                                    <widget class="QLayoutWidget" row="0" column="1" rowspan="2" colspan="1">
-                                        <property name="name">
-                                            <cstring>layout16</cstring>
-                                        </property>
-                                        <vbox>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <spacer>
-                                                <property name="name">
-                                                    <cstring>spacer8_2</cstring>
-                                                </property>
-                                                <property name="orientation">
-                                                    <enum>Vertical</enum>
-                                                </property>
-                                                <property name="sizeType">
-                                                    <enum>Expanding</enum>
-                                                </property>
-                                                <property name="sizeHint">
-                                                    <size>
-                                                        <width>20</width>
-                                                        <height>90</height>
-                                                    </size>
-                                                </property>
-                                            </spacer>
-                                            <widget class="QLayoutWidget">
-                                                <property name="name">
-                                                    <cstring>layout15</cstring>
-                                                </property>
-                                                <hbox>
-                                                    <property name="name">
-                                                        <cstring>unnamed</cstring>
-                                                    </property>
-                                                    <widget class="QPushButton">
-                                                        <property name="name">
-                                                            <cstring>pbDel</cstring>
-                                                        </property>
-                                                        <property name="maximumSize">
-                                                            <size>
-                                                                <width>30</width>
-                                                                <height>32767</height>
-                                                            </size>
-                                                        </property>
-                                                        <property name="text">
-                                                            <string></string>
-                                                        </property>
-                                                    </widget>
-                                                    <widget class="QPushButton">
-                                                        <property name="name">
-                                                            <cstring>pbAdd</cstring>
-                                                        </property>
-                                                        <property name="maximumSize">
-                                                            <size>
-                                                                <width>30</width>
-                                                                <height>32767</height>
-                                                            </size>
-                                                        </property>
-                                                        <property name="text">
-                                                            <string></string>
-                                                        </property>
-                                                        <property name="flat">
-                                                            <bool>false</bool>
-                                                        </property>
-                                                    </widget>
-                                                </hbox>
-                                            </widget>
-                                            <spacer>
-                                                <property name="name">
-                                                    <cstring>spacer9</cstring>
-                                                </property>
-                                                <property name="orientation">
-                                                    <enum>Vertical</enum>
-                                                </property>
-                                                <property name="sizeType">
-                                                    <enum>Expanding</enum>
-                                                </property>
-                                                <property name="sizeHint">
-                                                    <size>
-                                                        <width>20</width>
-                                                        <height>90</height>
-                                                    </size>
-                                                </property>
-                                            </spacer>
-                                        </vbox>
-                                    </widget>
-                                    <widget class="QLayoutWidget" row="0" column="0">
-                                        <property name="name">
-                                            <cstring>layout13</cstring>
-                                        </property>
-                                        <vbox>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <widget class="QLabel">
-                                                <property name="name">
-                                                    <cstring>m_labelSearch</cstring>
-                                                </property>
-                                                <property name="text">
-                                                    <string>Search for:</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QTextEdit">
-                                                <property name="name">
-                                                    <cstring>m_editSearch</cstring>
-                                                </property>
-                                                <property name="textFormat">
-                                                    <enum>PlainText</enum>
-                                                </property>
-                                            </widget>
-                                        </vbox>
-                                    </widget>
-                                    <widget class="QLayoutWidget" row="1" column="0">
-                                        <property name="name">
-                                            <cstring>layout14</cstring>
-                                        </property>
-                                        <vbox>
-                                            <property name="name">
-                                                <cstring>unnamed</cstring>
-                                            </property>
-                                            <widget class="QLabel">
-                                                <property name="name">
-                                                    <cstring>m_labelReplace</cstring>
-                                                </property>
-                                                <property name="enabled">
-                                                    <bool>false</bool>
-                                                </property>
-                                                <property name="text">
-                                                    <string>Replace with:</string>
-                                                </property>
-                                            </widget>
-                                            <widget class="QTextEdit">
-                                                <property name="name">
-                                                    <cstring>m_editReplace</cstring>
-                                                </property>
-                                                <property name="enabled">
-                                                    <bool>false</bool>
-                                                </property>
-                                                <property name="textFormat">
-                                                    <enum>PlainText</enum>
-                                                </property>
-                                                <property name="autoFormatting">
-                                                    <set>AutoAll</set>
-                                                </property>
-                                            </widget>
-                                        </vbox>
-                                    </widget>
-                                </grid>
-                            </widget>
-                        </vbox>
-                    </widget>
-                </grid>
-            </widget>
         </widget>
     </grid>
 </widget>
 <tabstops>
     <tabstop>tabWidget2</tabstop>
-    <tabstop>cbLocation</tabstop>
-    <tabstop>pbLocation</tabstop>
-    <tabstop>cbFilter</tabstop>
-    <tabstop>chbIncludeSubfolders</tabstop>
-    <tabstop>chbCaseSensitive</tabstop>
-    <tabstop>chbWildcards</tabstop>
-    <tabstop>chbEnableVariables</tabstop>
-    <tabstop>chbSizeMin</tabstop>
-    <tabstop>spbSizeMin</tabstop>
-    <tabstop>chbSizeMax</tabstop>
-    <tabstop>spbSizeMax</tabstop>
-    <tabstop>cbDateValid</tabstop>
-    <tabstop>chbDateMin</tabstop>
-    <tabstop>chbDateMax</tabstop>
-    <tabstop>chbOwnerUser</tabstop>
-    <tabstop>cbOwnerUserType</tabstop>
-    <tabstop>cbOwnerUserBool</tabstop>
-    <tabstop>edOwnerUser</tabstop>
-    <tabstop>chbOwnerGroup</tabstop>
-    <tabstop>cbOwnerGroupType</tabstop>
-    <tabstop>cbOwnerGroupBool</tabstop>
-    <tabstop>edOwnerGroup</tabstop>
-    <tabstop>pbHelp</tabstop>
-    <tabstop>pbOK</tabstop>
-    <tabstop>pbCancel</tabstop>
+    <tabstop>m_cbLocation</tabstop>
+    <tabstop>m_pbLocation</tabstop>
+    <tabstop>m_cbFilter</tabstop>
+    <tabstop>m_chbIncludeSubfolders</tabstop>
+    <tabstop>m_chbCaseSensitive</tabstop>
+    <tabstop>m_chbRegularExpressions</tabstop>
+    <tabstop>m_chbEnableVariables</tabstop>
+    <tabstop>m_chbSizeMin</tabstop>
+    <tabstop>m_spbSizeMin</tabstop>
+    <tabstop>m_chbSizeMax</tabstop>
+    <tabstop>m_spbSizeMax</tabstop>
+    <tabstop>m_cbDateValid</tabstop>
+    <tabstop>m_chbDateMin</tabstop>
+    <tabstop>m_chbDateMax</tabstop>
+    <tabstop>m_chbOwnerUser</tabstop>
+    <tabstop>m_cbOwnerUserType</tabstop>
+    <tabstop>m_cbOwnerUserBool</tabstop>
+    <tabstop>m_edOwnerUser</tabstop>
+    <tabstop>m_chbOwnerGroup</tabstop>
+    <tabstop>m_cbOwnerGroupType</tabstop>
+    <tabstop>m_cbOwnerGroupBool</tabstop>
+    <tabstop>m_edOwnerGroup</tabstop>
+    <tabstop>m_pbHelp</tabstop>
+    <tabstop>m_pbOK</tabstop>
+    <tabstop>m_pbCancel</tabstop>
 </tabstops>
 <layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>kcombobox.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>klineedit.h</includehint>
+    <includehint>kcombobox.h</includehint>
+</includehints>
 </UI>

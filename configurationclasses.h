@@ -17,26 +17,30 @@
 #ifndef CONFIGURATIONCLASSES_H
 #define CONFIGURATIONCLASSES_H 
 
+// QT
 #include <qstring.h>
 #include <qstringlist.h> 
 #include <qdatetime.h>
+#include <qmap.h>
+#include <qregexp.h>
 
+typedef QMap<QString,QString> KeyValueMap;
 // entry strings in the kfilereplacerc file
 const QString rcDirectoriesList="Directories list";
 const QString rcFiltersList="Filters list";
 const QString rcRecentFiles="Recent files";
 const QString rcAllStringsMustBeFound="All strings must be found";
 const QString rcCaseSensitive="Case sensitive";
-const QString rcConfirmDirs="Confirm directories";
-const QString rcConfirmFiles="Confirm files";
 const QString rcConfirmStrings="Confirm strings";
+const QString rcConfirmFiles="Confirm files";
+const QString rcConfirmDirs="Confirm directories";
 const QString rcFollowSymLinks="Follow symbolic links";
 const QString rcHaltOnFirstOccur="Halt on first occurrence";
 const QString rcIgnoreHidden="Ignore hidden files";
 const QString rcIgnoreWhitespaces="Ignore special characters";
 const QString rcRecursive="Search/replace in sub folders";
 const QString rcVariables="Enable variables";
-const QString rcWildcards="Enable wildcards";
+const QString rcRegularExpressions="Enable regular expressions";
 const QString rcMinFileSize="Minimum file size";
 const QString rcMaxFileSize="Maximum file size";
 const QString rcValidAccessDate="Access mode";
@@ -46,15 +50,16 @@ const QString rcOwnerUser="Owner user filters";
 const QString rcOwnerGroup="Owner group filters";
 const QString rcSearchMode="Search only mode";
 const QString rcBackupExtension="Backup file extension";
+const QString rcIgnoreFiles="Ignore files if there is no match";
 
 // Default configuration options
 const bool RecursiveOption = true;
 const bool CaseSensitiveOption = false;
 const bool FollowSymbolicLinksOption = false;
-const bool WildcardsOption = false;
+const bool RegularExpressionsOption = false;
 const bool VariablesOption = false;
-const bool ConfirmFilesOption = false;
 const bool ConfirmStringsOption = false;
+const bool ConfirmFilesOption = false;
 const bool ConfirmDirectoriesOption = false;
 const bool StopWhenFirstOccurenceOption = false;
 const bool IgnoreWhiteSpacesOption = false;
@@ -64,7 +69,8 @@ const QString AccessDateOption="unknown";
 const QString ValidAccessDateOption="unknown";
 const QString OwnerOption="false,Name,Equals To,???";
 const bool SearchMode=true;
-const QString BackupExtension="false,~";
+const QString BackupExtensionOption="false,~";
+const bool IgnoreFilesOption = true;
 
 // This class store configuration informations
 class ConfigurationInformation
@@ -76,84 +82,48 @@ class ConfigurationInformation
     int m_minSize,
         m_maxSize;
        
-   QString m_dateAccess,
-           m_minDate,
-           m_maxDate;
+    QString m_dateAccess,
+            m_minDate,
+            m_maxDate;
         
     bool m_caseSensitive,
          m_recursive,
          m_followSymLinks,
          m_allStringsMustBeFound,
          m_backup,
-         m_wildcards;
+         m_regularExpressions;
        
     bool m_variables,
-         m_confirmFiles,
          m_confirmStrings,
+         m_confirmFiles,         
          m_confirmDirs,
          m_haltOnFirstOccur,
          m_ignoreWhitespaces,
          m_ignoreHidden,
          m_simulation,
-	 m_searchMode;
-	 
+         m_searchMode;
+ 
     bool m_ownerUserIsChecked,
          m_ownerGroupIsChecked;   
-	 
+ 
     QString m_ownerUserType,
             m_ownerGroupType,
             m_ownerUserValue,
             m_ownerGroupValue,
-	    m_ownerUserBool,
+            m_ownerUserBool,
             m_ownerGroupBool;
    
     QString m_backupExtension;
-
+    
+    bool m_ignoreFiles;
+    
+    KeyValueMap m_mapStringsView;
+    
+    QString m_quickSearchString,
+            m_quickReplaceString;
+    
   public:
-    ConfigurationInformation& operator=(const ConfigurationInformation& ci) 
-    {
-      m_directory = ci.m_directory;
-      m_filter = ci.m_filter;
-           
-      m_minSize = ci.m_minSize;
-      m_maxSize = ci.m_maxSize;
-        
-      m_dateAccess = ci.m_dateAccess;
-      m_minDate = ci.m_minDate;
-      m_maxDate = ci.m_maxDate;
-        
-      m_caseSensitive = ci.m_caseSensitive;
-      m_recursive = ci.m_recursive;
-      m_followSymLinks = ci.m_followSymLinks;
-      m_allStringsMustBeFound = ci.m_allStringsMustBeFound;
-      m_backup = ci.m_backup;
-      m_backupExtension = ci.m_backupExtension;
-      m_wildcards = ci.m_wildcards;
-       
-      m_variables = ci.m_variables;
-      m_confirmFiles = ci.m_confirmFiles;
-      m_confirmStrings = ci.m_confirmStrings;
-      m_confirmDirs = ci.m_confirmDirs;
-      m_haltOnFirstOccur = ci.m_haltOnFirstOccur;
-      m_ignoreWhitespaces = ci.m_ignoreWhitespaces;
-      m_ignoreHidden = ci.m_ignoreHidden;
-      m_simulation = ci.m_simulation;
-      m_searchMode = ci.m_searchMode;
-      
-      m_ownerUserIsChecked = ci.m_ownerUserIsChecked;
-      m_ownerGroupIsChecked = ci.m_ownerGroupIsChecked;
-      
-      m_ownerUserBool = ci.m_ownerUserBool;
-      m_ownerGroupBool = ci.m_ownerGroupBool;
-             
-      m_ownerUserType = ci.m_ownerUserType;
-      m_ownerGroupType = ci.m_ownerGroupType;
-      
-      m_ownerUserValue = ci.m_ownerUserValue;
-      m_ownerGroupValue = ci.m_ownerGroupValue;
-     
-      return (*this);
-    }
+    ConfigurationInformation& operator=(const ConfigurationInformation& ci);
     
   public:
     void setDirectory(const QString ndir) { m_directory = ndir; }
@@ -179,8 +149,8 @@ class ConfigurationInformation
     bool recursive() const { return m_recursive; }
     void setFollowSymLinks(bool sl) { m_followSymLinks = sl; }
     bool followSymLinks() const { return m_followSymLinks; }
-    void setWildcards(bool wc) { m_wildcards = wc; }
-    bool wildcards() const { return m_wildcards; }
+    void setRegularExpressions(bool rx) { m_regularExpressions = rx; }
+    bool regularExpressions() const { return m_regularExpressions; }
     void setBackup(bool backup) { m_backup = backup; }
     bool backup() const { return m_backup; }
     void setVariables(bool v) { m_variables = v; }
@@ -223,7 +193,44 @@ class ConfigurationInformation
     
     void setBackupExtension(const QString& bkext) { m_backupExtension = bkext; }
     QString backupExtension() const { return m_backupExtension; }
-        
+    
+    void setIgnoreFiles(bool ifs) { m_ignoreFiles = ifs; }
+    bool ignoreFiles() const { return m_ignoreFiles; }
+    
+    void setMapStringsView(const KeyValueMap& map) { m_mapStringsView = map; }
+    KeyValueMap mapStringsView() const { return m_mapStringsView; }
+    
+    void setQuickSearchString(const QString& quickSearch) { m_quickSearchString = quickSearch; }
+    QString quickSearchString() const { return m_quickSearchString; }
+    void setQuickReplaceString(const QString& quickReplace) { m_quickReplaceString = quickReplace; }
+    QString quickReplaceString() const { return m_quickReplaceString; } 
+       
 };
 
+class ResultViewEntry
+{
+  private:
+    QString m_key;
+    QString m_data;
+    QRegExp m_rxKey;
+    bool m_regexp;
+    bool m_caseSensitive;
+    int m_pos;
+    int m_matchedStringsOccurrence;
+  
+  public:
+    ResultViewEntry(QString nkey, QString ndata, bool regexp, bool caseSensitive);
+    int lineNumber(const QString& line) const ;
+    int columnNumber(const QString& line) const ;
+    void incOccurrences();
+    int occurrences() const ;
+    bool regexp()const ;
+    int pos(const QString& line) ;
+    void incPos();
+    QString capturedText(const QString& line)  ;
+    QString message(const QString& capturedText, int x, int y) const;
+    int keyLength() const;
+    int dataLength() const;
+    void updateLine(QString& line);
+};
 #endif

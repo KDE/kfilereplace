@@ -29,7 +29,7 @@
             <property name="orientation">
                 <enum>Vertical</enum>
             </property>
-            <widget class="QListView">
+            <widget class="KListView">
                 <column>
                     <property name="text">
                         <string>Name</string>
@@ -108,7 +108,7 @@
                     </property>
                 </column>
                 <property name="name">
-                    <cstring>lwResult</cstring>
+                    <cstring>m_lvResults</cstring>
                 </property>
                 <property name="allColumnsShowFocus">
                     <bool>true</bool>
@@ -122,8 +122,18 @@
                 <property name="resizeMode">
                     <enum>LastColumn</enum>
                 </property>
+                <property name="itemsMovable">
+                    <bool>false</bool>
+                </property>
+                <property name="alternateBackground">
+                    <color>
+                        <red>255</red>
+                        <green>240</green>
+                        <blue>240</blue>
+                    </color>
+                </property>
             </widget>
-            <widget class="QListView">
+            <widget class="KListView">
                 <column>
                     <property name="text">
                         <string>Search for</string>
@@ -147,13 +157,19 @@
                     </property>
                 </column>
                 <property name="name">
-                    <cstring>lwStrings</cstring>
+                    <cstring>m_lvStrings</cstring>
                 </property>
                 <property name="allColumnsShowFocus">
                     <bool>true</bool>
                 </property>
+                <property name="rootIsDecorated">
+                    <bool>false</bool>
+                </property>
                 <property name="resizeMode">
                     <enum>AllColumns</enum>
+                </property>
+                <property name="itemsMovable">
+                    <bool>false</bool>
                 </property>
             </widget>
         </widget>

@@ -22,15 +22,15 @@
 #include <config.h>
 #endif
 
+//QT
 class QPixMap;
-class QListView;
+class KListView;
 
+//KDE
 class KConfig;
 class KPopupMenu;
 
-#include <kconfig.h>
-#include <qmap.h>
-
+//local
 #include "kaddstringdlg.h"
 #include "kfilereplaceviewwdg.h"
 #include "configurationclasses.h"
@@ -40,14 +40,10 @@ class KFileReplaceView : public KFileReplaceViewWdg
   Q_OBJECT
   private:
     QString m_path;
-    KPopupMenu *m_kpmResult;
-    QMap<QString,QString> m_map;
-    QListViewItem *m_lviCurrent;
-    QPixmap m_pmIconSuccess,
-            m_pmIconError,
-	    m_pmIconString,
-	    m_pmIconSubString;
-    KAddStringDlg dlg;
+    KPopupMenu* m_menuResult;
+    ConfigurationInformation m_info;
+    KListViewItem* m_lviCurrent;
+    KAddStringDlg m_addStringdlg;
     KConfig* m_config;
         
   public:
@@ -55,19 +51,21 @@ class KFileReplaceView : public KFileReplaceViewWdg
     ~KFileReplaceView();
     
   public:
-    QListView *stringView();
-    QListView *resultView();
-    QPixmap iconString();
+    KListView *stringView();
+    KListView *resultView();
     QString currentItem();
     void setConfig(KConfig* c) { m_config = c;}
-      
+    void loadMap(KeyValueMap extMap);
+    KeyValueMap stringsViewMap()const { return m_info.mapStringsView();}
+    void currentStringsViewMap(){ setMap();}
+    bool searchOnly()const { return m_info.searchMode();}
+          
   public slots:
     void slotStringsAdd();
-    void slotStringsAddFromProjectDlg(const QMap<QString,QString>& replacementMap);
-    void slotStringsDel();
-    void slotStringsClear();
+    void slotQuickStringsAdd(const QString& quickSearch, const QString& quickReplace);
+    void slotStringsDeleteItem();
+    void slotStringsEmpty();
     void slotStringsEdit(QListViewItem* lv);
-    //void slotStringsEditFromProjectDlg(const QMap<QString,QString>& replacementMap);
     void slotResultProperties();
     void slotResultOpen();
     void slotResultOpenWith();
@@ -76,13 +74,13 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void slotResultDelete();
     void slotResultTreeExpand();
     void slotResultTreeReduce();
-    void slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column);
+    void slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos, int column);
   
   private:
-    void expand(QListViewItem *lviCurrent, bool bExpand);
+    void expand(QListViewItem *lviCurrent, bool b);
     void setMap();
-  
-  
+    void loadMapIntoView(KeyValueMap map);
+    void whatsThis();
 };
 
 #endif // KFILEREPLACEVIEW_H

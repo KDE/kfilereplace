@@ -9,15 +9,21 @@ SUBDIRS = . pics toolbar
 
 # these are the headers for your project
 noinst_HEADERS = kaddstringdlg.h kfilereplaceiface.h \
-                 kfilereplacelib.h kconfirmdlg.h knewprojectdlg.h resource.h \
-                  kfilereplaceview.h koptionsdlg.h
-
-
+                 kfilereplacelib.h knewprojectdlg.h \
+                 kfilereplaceview.h koptionsdlg.h \
+                 report.h commandengine.h configurationclasses.h
+		 
 # let automoc handle all of the meta source files (moc)
 METASOURCES = AUTO
 
 kde_module_LTLIBRARIES = libkfilereplacepart.la
-libkfilereplacepart_la_SOURCES = kfilereplacepart.cpp kfilereplaceview.cpp kfilereplaceviewwdg.ui kaddstringdlg.cpp kaddstringdlgs.ui kconfirmdlg.cpp kconfirmdlgs.ui knewprojectdlg.cpp knewprojectdlgs.ui koptionsdlg.cpp koptionsdlgs.ui kfilereplacelib.cpp
+libkfilereplacepart_la_SOURCES = kfilereplacepart.cpp kfilereplaceview.cpp \
+                                 kfilereplaceviewwdg.ui \
+				 kaddstringdlg.cpp kaddstringdlgs.ui \
+				 knewprojectdlg.cpp knewprojectdlgs.ui \
+				 koptionsdlg.cpp koptionsdlgs.ui kfilereplacelib.cpp \
+                                 report.cpp commandengine.cpp configurationclasses.cpp       
+				  
 libkfilereplacepart_la_LDFLAGS = -module $(KDE_PLUGIN) $(all_libraries)
 libkfilereplacepart_la_LIBADD = $(LIB_KFILE) $(LIB_KPARTS) $(LIB_KHTML)
 
@@ -28,6 +34,8 @@ messages: rc.cpp
 	$(XGETTEXT) *.cpp -o $(podir)/kfilereplace.pot
 
 KDE_ICON = AUTO
+apps_DATA = kfilereplacepart.desktop
+appsdir = $(kde_appsdir)/Utilities
 
 # this is where the XML-GUI resource file goes
 rcdir = $(kde_datadir)/kfilereplacepart

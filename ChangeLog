@@ -1,3 +1,71 @@
+11-09-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- I added the class ResultViewEntry in configurationclasses.(h,cpp) to make the replace algorithm
+  more clean.
+- I make multiline text searching more useable.
+- Now the file entries in the result view are shown with descriptive icons. 
+- I'm trying to write some documentation, in the meanwhile a tutorial is present.
+
+13-08-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- I added CommandEngine class and Report class.
+  In fact I moved the code that do the report document and the 
+  code that do commands feature from KFileREplaceLib to these two classes.
+  
+09-08-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- I fixed a bug that affected the method "void KFileReplaceView::slotStringsClear()" in kfilereplaceview.cpp file.
+  This bug caused the list of strings not to be correctly erased.
+
+07-08-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- I modified the save-results system(thanks Luciano for the idea of using xml/css tecnology). 
+  Now KFR creates a directory with name "NAME" that contains a xml file "NAME.xml" 
+  and a css file "NAME.css". These two files are the new "report document" 
+  that substitutes the xhtml file. To try it choose "Search/Replace|Results|Create Report File" menu option.
+- I fixed a bug that causes Quanta to crash when we push Cancel button in new project
+  dialog.
+- I finished the tutorial.
+  
+01-08-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- The line "if(::access(directory.local8Bit(), R_OK | X_OK) == -1)"has been removed, 
+  and subtitued with "QFileInfo dirInfo(directory);                          "
+                     "if(not(dirInfo.isReadable() and dirInfo.isExecutable())" 
+                     "   or                                                  "
+                     "   not(dirInfo.isWritable()))                          " 
+  in kfilereplacepart.cpp
+    
+30-07-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- The icons have been fixed!!! What a miracle!!!
+
+24-07-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- I added a little feature. When KFR matches a string, it shows the row and the column
+  where that match is, by using a message like this:
+  /my/path/file
+    |
+    |__ string "xyz" found at line:40, column:2
+    |__ string "xyz" found at line:18, column:57
+    |__.............
+  Now if you use "Edit with Quanta" popup menu option, say, on the line:
+                              "string "xyz" found at line:40, column:2"
+  of the result view, Quanta will open the file /my/path/file  at row 40, column 2.
+   
+20-07-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- I fixed a bug that affects the generation of extension of 
+  the backup files.
+   
+17-07-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- I fixed the bug that causes quanta to crash when KFR is active.
+- I fixed (I hope!) the simulation feature.
+- I reorganize the KOptionsDlg UI.
+- I Added some tool tips.
+- I' m tired and I go on bed ;-)
+
+16-07-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- The KNewProjectDlg was modified, adding quick search/replace line edit objects
+- A option in KOptionDlg was added, so that the files that don't
+  contain the strings we are searching for, will not be shown.
+- Some code clean-up
+- A bug with KAddStringDlg was fixed.
+- I found a bug that makes quanta to crash when we close quanta with the x button... 
+  I'm trying to fix it.
+  
 30-05-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
 - Well, KFR has been entirely (more or less :-)) rewrote.
   . the files:       
@@ -38,7 +106,8 @@ Note: there some bugs to fix and some feature to implement, in particular:
 - Fixed a bug in the new kfr (XML-based) file format.
 
 12-03-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
-- Removed KresultView(.h,.cpp). Now KFileReplaceView is a QWidget that contains results and strings view.
+- Removed KresultView(.h,.cpp). Now KFileReplaceView is a QWidget that contains results and 
+  strings view.
 - Added whatthis.h that contains the "what's this" strings.
 - Fixed a bug that generate a wrong XHTML result file.
 
@@ -67,9 +136,11 @@ Note: there some bugs to fix and some feature to implement, in particular:
 18-02-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
 - The icons in toolbar directory were redrawn.
 - Deleted the KFRHeader struct from  apistruct.h.
-- The mechanism of saving the string rules has been modified: now we can save the rules in a file like
+- The mechanism of saving the string rules has been modified: now we can save the rules in a
+  file like
   this "a_file_name.kfr" that is an XML file.
 - The file containing the results of the operations  is now a XHTML file.
-- Two new files UI added: now KOptionDlg inherits from KOptionDlgS and KAddstringDlg inherits from KAddstringDlgS.
+- Two new files UI added: now KOptionDlg inherits from KOptionDlgS and KAddstringDlg inherits  
+  from KAddstringDlgS.
 - The klistviewstring.(h,cpp) were removed.
 - A lot of clean up has been made in all files.

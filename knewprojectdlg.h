@@ -19,10 +19,12 @@
 #ifndef KNEWPROJECTDLG_H
 #define KNEWPROJECTDLG_H
 
+//KDE 
+class KConfig;
+
+//local
 #include "knewprojectdlgs.h"
 #include "configurationclasses.h"
-
-class KConfig;
 
 class KNewProjectDlg : public KNewProjectDlgS
 {
@@ -33,11 +35,11 @@ class KNewProjectDlg : public KNewProjectDlgS
     
   private:
     KConfig *m_config;
-    QMap<QString,QString> m_map;
-  
+    QString m_searchNowFlag;
+      
   public:
     KNewProjectDlg(QWidget *parent, KConfig *config, const char *name=0);
-    virtual ~KNewProjectDlg();
+    ~KNewProjectDlg();
     
   public:
     void loadOptions();
@@ -49,7 +51,8 @@ class KNewProjectDlg : public KNewProjectDlgS
     void loadBackupExtensionFilter();
     QString currentDir() const; 
     QString currentFilter() const;
-    QMap<QString,QString> stringsMap() const; 
+    QString quickSearchString() const;
+    QString quickReplaceString() const;
     void saveOptions();
     void saveFileSizeFilter();
     void saveDateAccessFilter();
@@ -58,24 +61,25 @@ class KNewProjectDlg : public KNewProjectDlgS
     void saveFiltersList();
     void saveBackupExtensionFilter();
     void setDatas(const QString& directoryString, const QString& filterString);
-    void setWhatsThis();
+    void whatsThis();
      
   protected slots:
     void slotDir();
     void slotOK();
-    void slotAdd();
-    void slotDel();
-    void slotSearchOnly(bool b);
-    void slotSearchReplace(bool b);
+    void slotReject();
+    void slotSearchNow();
+    void slotSearchLater();
+    void slotSearchLineEdit(const QString& t);
     void slotEnableSpinboxSizeMin(bool b);
     void slotEnableSpinboxSizeMax(bool b);
     void slotEnableCbValidDate(bool b);
     void slotEnableChbUser(bool b);
     void slotEnableChbGroup(bool b); 
     void slotEnableChbBackup(bool b);
+    void slotHelp();
+    
   private:
     bool contains(QListView* lv,const QString& s, int column);
-    void setMap();  
 };
 
 #endif  // KNewProjectDlg

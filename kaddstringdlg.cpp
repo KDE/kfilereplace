@@ -15,31 +15,42 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// qt
+// QT
 #include <qtextedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qlistview.h>
-#include <qiconset.h>
-#include <qpixmap.h>
-// kde
+#include <qwhatsthis.h>
+
+// KDE
 #include <kmessagebox.h>
-#include <klocale.h>
 #include <kiconloader.h>
 #include <kdebug.h>
+#include <kconfig.h>
+#include <kapplication.h>
+
 // local
 #include "kaddstringdlg.h"
+#include "whatthis.h"
+
+using namespace whatthisNameSpace;
 
 KAddStringDlg::KAddStringDlg(QWidget *parent, const char *name) : KAddStringDlgS(parent,name,true)
-{
-  connect(pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
-  connect(rbSearchOnly, SIGNAL(toggled(bool)), this, SLOT(slotSearchOnly(bool)));
-  connect(rbSearchReplace, SIGNAL(toggled(bool)), this, SLOT(slotSearchReplace(bool)));
-  connect(pbAdd, SIGNAL(clicked()), this, SLOT(slotAdd()));
-  connect(pbDel, SIGNAL(clicked()), this, SLOT(slotDel()));
-  pbAdd->setIconSet(QIconSet(SmallIconSet(QString::fromLatin1("next"))));
-  pbDel->setIconSet(QIconSet(SmallIconSet(QString::fromLatin1("back"))));
+{ 
+  m_pbAdd->setIconSet(SmallIconSet(QString::fromLatin1("next"))); 
+  m_pbDel->setIconSet(SmallIconSet(QString::fromLatin1("back")));
+  
+  connect(m_pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
+  connect(m_rbSearchOnly, SIGNAL(toggled(bool)), this, SLOT(slotSearchOnly(bool)));
+  connect(m_rbSearchReplace, SIGNAL(toggled(bool)), this, SLOT(slotSearchReplace(bool)));
+  connect(m_pbAdd, SIGNAL(clicked()), this, SLOT(slotAdd())); 
+  connect(m_pbDel, SIGNAL(clicked()), this, SLOT(slotDel())); 
+  
+  whatsThis(); 
+  
+  connect( m_pbHelp, SIGNAL(clicked()), this ,SLOT(slotHelp()));
+  
 }
 
 KAddStringDlg::~KAddStringDlg()
@@ -52,7 +63,7 @@ bool KAddStringDlg::contains(QListView* lv,const QString& s, int column)
   QListViewItem* i = lv->firstChild();
   while (i != 0)
     {
-      if(i->text(column) == s)
+      if(i->text(column) == s) 
         return true;
       i = i->nextSibling();
     }
@@ -61,139 +72,162 @@ bool KAddStringDlg::contains(QListView* lv,const QString& s, int column)
 
 void KAddStringDlg::setMap()
 {
-  m_map.clear();
-  QListViewItem* i = stringView->firstChild();
-  while (i != 0)
+  KeyValueMap map;
+  QListViewItem* i = m_stringView->firstChild();
+  while(i != 0)
     {
-      m_map[i->text(0)] = i->text(1);
+      map[i->text(0)] = i->text(1);
       i = i->nextSibling();
     }
+  m_info.setMapStringsView(map);
+}
+
+void KAddStringDlg::setMap(KeyValueMap map)
+{
+  m_info.setMapStringsView(map);
 }
 
 void KAddStringDlg::slotOK()
 {
   m_config->setGroup("General Options");
-  if(rbSearchOnly->isChecked())
-    m_config->writeEntry(rcSearchMode,true);
-  else
-    m_config->writeEntry(rcSearchMode,false);
+    
+  m_config->writeEntry(rcSearchMode,m_info.searchMode());
   m_config->sync();
-
+  
   accept();
 }
 
 void KAddStringDlg::slotSearchOnly(bool b)
 {
-  m_editSearch->setEnabled(b);
-  m_editReplace->setEnabled(false);
-  m_labelSearch->setEnabled(b);
-  m_labelReplace->setEnabled(false);
-
-  stringView->clear();
+  m_edSearch->setEnabled(b);
+  m_edReplace->clear();
+  m_edReplace->setEnabled(false);
+  m_tlSearch->setEnabled(b);
+  m_tlReplace->setEnabled(false);
+  
+  m_stringView->clear();  
 }
 
 void KAddStringDlg::slotSearchReplace(bool b)
 {
-  m_editSearch->setEnabled(b);
-  m_editReplace->setEnabled(b);
-  m_labelSearch->setEnabled(b);
-  m_labelReplace->setEnabled(b);
-
-  stringView->clear();
+  m_edSearch->setEnabled(b);
+  m_edReplace->setEnabled(b);
+  m_tlSearch->setEnabled(b);
+  m_tlReplace->setEnabled(b);
+  
+  m_stringView->clear();
 }
 
 void KAddStringDlg::slotAdd()
 {
-  if(rbSearchOnly->isChecked())
+  bool searchOnly = m_rbSearchOnly->isChecked();
+  if(searchOnly)
     {
-      QString text = m_editSearch->text();
-      if(!text.isEmpty() and !contains(stringView,text,0))
+      QString text = m_edSearch->text();
+      if(not text.isEmpty() and not contains(m_stringView,text,0))
         {
-	  QListViewItem* lvi = new QListViewItem(stringView);
-	  lvi->setText(0,text);
-          m_editSearch->clear();
-	}
+          QListViewItem* lvi = new QListViewItem(m_stringView);
+          lvi->setMultiLinesEnabled(true);
+          lvi->setText(0,text);
+          m_edSearch->clear();
+        }     
     }
   else
-    {
-      QString searchText = m_editSearch->text(),
-              replaceText = m_editReplace->text();
-
-      if(!searchText.isEmpty() and
-         !replaceText.isEmpty() and
-         !contains(stringView,searchText,0) and
-	 !contains(stringView,replaceText,1))
+    { 
+      QString searchText = m_edSearch->text(),
+              replaceText = m_edReplace->text();
+      
+      if(not searchText.isEmpty() and 
+         not replaceText.isEmpty() and
+         not contains(m_stringView,searchText,0) and 
+         not contains(m_stringView,replaceText,1))
         {
-	  QListViewItem* lvi = new QListViewItem(stringView);
-	  lvi->setText(0,searchText);
-	  m_editSearch->clear();
-	  lvi->setText(1,replaceText);
-	  m_editReplace->clear();
-	}
+          QListViewItem* lvi = new QListViewItem(m_stringView);
+          lvi->setMultiLinesEnabled(true);
+          lvi->setText(0,searchText);
+          m_edSearch->clear();
+          lvi->setText(1,replaceText);
+          m_edReplace->clear();
+        }    
     }
-  setMap();
+  m_info.setSearchMode(searchOnly);
+  setMap(); 
 }
 
 void KAddStringDlg::slotDel()
 {
   // Choose current item or selected item
-  QListViewItem* currItem = stringView->currentItem();
-
+  QListViewItem* currentItem = m_stringView->currentItem();
+  
   // Do nothing if list is empty
-  if(currItem == 0)
+  if(currentItem == 0)
     return;
-
-  if(rbSearchOnly->isChecked())
+  bool searchOnly =  m_rbSearchOnly->isChecked();   
+  if(searchOnly)
     {
-      m_editSearch->setText(currItem->text(0));
-      delete currItem;
+      m_edSearch->setText(currentItem->text(0));
+      m_edReplace->clear();
+      currentItem->setText(1,m_edReplace->text());
     }
   else
     {
-      m_editSearch->setText(currItem->text(0));
-      m_editReplace->setText(currItem->text(1));
-      delete currItem;
+      m_edSearch->setText(currentItem->text(0));
+      m_edReplace->setText(currentItem->text(1));
     }
+  delete currentItem;
+  currentItem = 0;
+  m_info.setSearchMode(searchOnly);
   setMap();
 }
 
-QMap<QString,QString> KAddStringDlg::stringList()
+void KAddStringDlg::slotHelp()
 {
-  return m_map;
+  kapp->invokeHelp(QString::null, "kfilereplace");
 }
 
-void KAddStringDlg::loadDataFromStringsView(QMap<QString,QString> map)
+KeyValueMap KAddStringDlg::stringsMap()
 {
-  stringView->clear();
+  KeyValueMap m = m_info.mapStringsView(),
+              emptyMap;
+  m_info.setMapStringsView(emptyMap);
+  return m;
+}
 
-  QMap<QString,QString>::Iterator itMap;
-
+void KAddStringDlg::loadViewContent(KeyValueMap map)
+{ 
+  m_stringView->clear();
+  
+  KeyValueMap::Iterator itMap;
+  bool searchOnly = true;
   for (itMap = map.begin(); itMap != map.end(); ++itMap)
-    {
-      QListViewItem* i = new QListViewItem(stringView);
+    {  
+      QListViewItem* i = new QListViewItem(m_stringView);
       i->setText(0,itMap.key());
       i->setText(1,itMap.data());
+      
+      if(not itMap.data().isEmpty())
+        searchOnly = false;    
     }
-
-   QListViewItem* p=stringView->firstChild();
-
-  if(p && p->text(1).isEmpty())
-    {
-      m_editSearch->setEnabled(true);
-      m_editReplace->setEnabled(false);
-      m_labelSearch->setEnabled(true);
-      m_labelReplace->setEnabled(false);
-    }
-  else
-    {
-      m_editSearch->setEnabled(true);
-      m_editReplace->setEnabled(true);
-      m_labelSearch->setEnabled(true);
-      m_labelReplace->setEnabled(true);
-    }
-
+  
+  m_rbSearchOnly->setChecked(searchOnly);
+  m_rbSearchReplace->setChecked(not searchOnly); 
+  
+  m_edSearch->setEnabled(true);
+  m_edReplace->setEnabled(not searchOnly);
+  m_tlSearch->setEnabled(true);
+  m_tlReplace->setEnabled(not searchOnly);  
+  
+  m_info.setSearchMode(searchOnly);
+   
   setMap();
 }
 
+void KAddStringDlg::whatsThis()
+{
+  QWhatsThis::add(m_rbSearchOnly, rbSearchOnlyWhatthis);
+  QWhatsThis::add(m_rbSearchReplace, rbSearchReplaceWhatthis);
+  QWhatsThis::add(m_edSearch, edSearchWhatthis);
+  QWhatsThis::add(m_edReplace, edReplaceWhatthis);
+}
 #include "kaddstringdlg.moc"
 

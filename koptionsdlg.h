@@ -19,6 +19,10 @@
 #ifndef KOPTIONSDLG_H
 #define KOPTIONSDLG_H
 
+// KDE
+class KConfig;
+
+//local
 #include "configurationclasses.h"
 #include "koptionsdlgs.h"
 
@@ -40,11 +44,12 @@ class KOptionsDlg : public KOptionsDlgS
     void slotOK();
     void slotDefaults();
     void slotChbBackup(bool b);
-    
+    void slotHelp();
+           
   private:
     void loadOptions();
     void saveOptions();
-    void whatsThisPage();
+    void whatsThis();
 };
 
 #endif // KOPTIONSDLG_H

@@ -8,12 +8,15 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>630</width>
-            <height>377</height>
+            <width>700</width>
+            <height>357</height>
         </rect>
     </property>
     <property name="caption">
         <string>Insert searching/replacing strings</string>
+    </property>
+    <property name="sizeGripEnabled">
+        <bool>true</bool>
     </property>
     <grid>
         <property name="name">
@@ -43,15 +46,18 @@
                         </property>
                         <widget class="QRadioButton" row="1" column="0">
                             <property name="name">
-                                <cstring>rbSearchReplace</cstring>
+                                <cstring>m_rbSearchReplace</cstring>
                             </property>
                             <property name="text">
                                 <string>Search and replace mode</string>
                             </property>
+                            <property name="accel">
+                                <string></string>
+                            </property>
                         </widget>
                         <widget class="QRadioButton" row="0" column="0">
                             <property name="name">
-                                <cstring>rbSearchOnly</cstring>
+                                <cstring>m_rbSearchOnly</cstring>
                             </property>
                             <property name="text">
                                 <string>Search only mode</string>
@@ -102,7 +108,7 @@
                                                 </property>
                                                 <widget class="QLabel">
                                                     <property name="name">
-                                                        <cstring>m_labelSearch</cstring>
+                                                        <cstring>m_tlSearch</cstring>
                                                     </property>
                                                     <property name="text">
                                                         <string>Search for:</string>
@@ -110,7 +116,7 @@
                                                 </widget>
                                                 <widget class="QTextEdit">
                                                     <property name="name">
-                                                        <cstring>m_editSearch</cstring>
+                                                        <cstring>m_edSearch</cstring>
                                                     </property>
                                                     <property name="textFormat">
                                                         <enum>PlainText</enum>
@@ -128,7 +134,7 @@
                                                 </property>
                                                 <widget class="QLabel">
                                                     <property name="name">
-                                                        <cstring>m_labelReplace</cstring>
+                                                        <cstring>m_tlReplace</cstring>
                                                     </property>
                                                     <property name="enabled">
                                                         <bool>false</bool>
@@ -139,7 +145,7 @@
                                                 </widget>
                                                 <widget class="QTextEdit">
                                                     <property name="name">
-                                                        <cstring>m_editReplace</cstring>
+                                                        <cstring>m_edReplace</cstring>
                                                     </property>
                                                     <property name="enabled">
                                                         <bool>false</bool>
@@ -179,7 +185,7 @@
                                         </property>
                                     </column>
                                     <property name="name">
-                                        <cstring>stringView</cstring>
+                                        <cstring>m_stringView</cstring>
                                     </property>
                                     <property name="allColumnsShowFocus">
                                         <bool>true</bool>
@@ -226,7 +232,7 @@
                                                 </property>
                                                 <widget class="QPushButton">
                                                     <property name="name">
-                                                        <cstring>pbDel</cstring>
+                                                        <cstring>m_pbDel</cstring>
                                                     </property>
                                                     <property name="maximumSize">
                                                         <size>
@@ -240,7 +246,7 @@
                                                 </widget>
                                                 <widget class="QPushButton">
                                                     <property name="name">
-                                                        <cstring>pbAdd</cstring>
+                                                        <cstring>m_pbAdd</cstring>
                                                     </property>
                                                     <property name="maximumSize">
                                                         <size>
@@ -288,7 +294,10 @@
                                 </property>
                                 <widget class="QPushButton">
                                     <property name="name">
-                                        <cstring>pbHelp</cstring>
+                                        <cstring>m_pbHelp</cstring>
+                                    </property>
+                                    <property name="enabled">
+                                        <bool>true</bool>
                                     </property>
                                     <property name="text">
                                         <string>&amp;Help</string>
@@ -324,7 +333,7 @@
                                         </property>
                                         <widget class="QPushButton">
                                             <property name="name">
-                                                <cstring>pbOK</cstring>
+                                                <cstring>m_pbOK</cstring>
                                             </property>
                                             <property name="text">
                                                 <string>&amp;OK</string>
@@ -335,7 +344,7 @@
                                         </widget>
                                         <widget class="QPushButton">
                                             <property name="name">
-                                                <cstring>pbCancel</cstring>
+                                                <cstring>m_pbCancel</cstring>
                                             </property>
                                             <property name="text">
                                                 <string>&amp;Cancel</string>
@@ -356,7 +365,7 @@
 </widget>
 <connections>
     <connection>
-        <sender>pbCancel</sender>
+        <sender>m_pbCancel</sender>
         <signal>clicked()</signal>
         <receiver>KAddStringDlgS</receiver>
         <slot>reject()</slot>
