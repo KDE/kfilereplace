@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string>Insert searching/replacing strings</string>
+        <string>Insert Searching/Replacing Strings</string>
     </property>
     <property name="sizeGripEnabled">
         <bool>true</bool>
@@ -103,7 +103,7 @@
                                                 <cstring>m_tlSearch</cstring>
                                             </property>
                                             <property name="text">
-                                                <string>Search for:</string>
+                                                <string>Search For</string>
                                             </property>
                                         </widget>
                                         <widget class="QTextEdit">
@@ -132,7 +132,7 @@
                                                 <bool>false</bool>
                                             </property>
                                             <property name="text">
-                                                <string>Replace with:</string>
+                                                <string>Replace With</string>
                                             </property>
                                         </widget>
                                         <widget class="QTextEdit">
