@@ -28,14 +28,14 @@ static const char version[] = "0.1";
 
 static KCmdLineOptions options[] =
     {
-        { "[PATH]", I18N_NOOP( "Starting folder" ), 0 },
+        { "+[PATH]", I18N_NOOP( "Starting folder" ), 0 },
         KCmdLineLastOption
     };
 
 int main(int argc, char *argv[])
 {
     KAboutData about("kfilereplace", I18N_NOOP("KFileReplace"), version, description,
-                     KAboutData::License_GPL_V2, "(C) 2004 Andras Mantia\n(C) 2004 Emiliano Gulmini\n(C) 1999-2002 Francois Dupoux", I18N_NOOP("Part of the KDEWebDev module."),
+                     KAboutData::License_GPL_V2, "(C) 2004-2005 Andras Mantia\n(C) 2004-2005 Emiliano Gulmini\n(C) 1999-2002 Francois Dupoux", I18N_NOOP("Part of the KDEWebDev module."),
                      "http://www.kdewebdev.org");
 
     about.addAuthor("Andras Mantia", I18N_NOOP("Shell author, KPart creator, co-maintainer"), "amantia@kde.org");

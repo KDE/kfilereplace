@@ -1568,11 +1568,11 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 
 bool KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
 {
-  /* This dlg reads options from m_option, then execs, finally returns options.*/
-  KNewProjectDlg dlg(m_option);
-
   if(!startURL.isEmpty())
     m_option->m_directories = QString(startURL.path()+","+m_option->m_directories);
+  
+  /* This dlg reads options from m_option, then execs, finally returns options.*/
+  KNewProjectDlg dlg(m_option);
 
   if(!dlg.exec())
     return false;
