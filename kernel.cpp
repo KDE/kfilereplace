@@ -269,7 +269,7 @@ int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
 
                         if ((argu -> bConfirmFiles == false || nConfirm == KMessageBox::Yes) || (argu->bSimulation == true)) // if we must replace in this file
                           {
-                            // Check there is enought free disk space
+                            // Check there is enough free disk space
                             if (argu->bSimulation == false) // if not a simulation
                               {
                                 nRes = GetDiskFreeSpaceForFile(&nDiskFreeSpace, strFileReadpath);
@@ -283,7 +283,7 @@ int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
                             // Add the item in the list, but without details
                             strTemp = formatSize(fiOld.size());
                             lvi = new KListViewString(argu -> qlvResult, dir[i], szDir, strTemp);
-                            if (lvi == 0) // Not enought memory
+                            if (lvi == 0) // Not enough memory
                               return -1;
 
                             // Run the replace operation
