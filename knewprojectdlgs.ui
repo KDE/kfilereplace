@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.2" stdsetdef="1">
 <class>KNewProjectDlgS</class>
 <widget class="QDialog">
     <property name="name">
@@ -63,9 +63,6 @@
                     <property name="text">
                         <string>&amp;Help</string>
                     </property>
-                    <property name="accel">
-                        <string>Alt+H</string>
-                    </property>
                 </widget>
                 <spacer>
                     <property name="name">
@@ -129,9 +126,6 @@
                     </property>
                     <property name="text">
                         <string>&amp;Cancel</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+C</string>
                     </property>
                 </widget>
             </hbox>
@@ -306,9 +300,6 @@
                                                 <property name="text">
                                                     <string>&amp;Include subfolders</string>
                                                 </property>
-                                                <property name="accel">
-                                                    <string>Alt+I</string>
-                                                </property>
                                                 <property name="checked">
                                                     <bool>true</bool>
                                                 </property>
@@ -319,9 +310,6 @@
                                                 </property>
                                                 <property name="text">
                                                     <string>&amp;Case sensitive</string>
-                                                </property>
-                                                <property name="accel">
-                                                    <string>Alt+C</string>
                                                 </property>
                                             </widget>
                                             <widget class="QCheckBox">
@@ -334,9 +322,6 @@
                                                 <property name="text">
                                                     <string>Enable &amp;regular expressions</string>
                                                 </property>
-                                                <property name="accel">
-                                                    <string>Alt+R</string>
-                                                </property>
                                             </widget>
                                             <widget class="QCheckBox">
                                                 <property name="name">
@@ -344,9 +329,6 @@
                                                 </property>
                                                 <property name="text">
                                                     <string>Enable &amp;variables in the replace string</string>
-                                                </property>
-                                                <property name="accel">
-                                                    <string>Alt+V</string>
                                                 </property>
                                             </widget>
                                             <widget class="QLayoutWidget">
@@ -363,9 +345,6 @@
                                                         </property>
                                                         <property name="text">
                                                             <string>Do &amp;backup copy instead of overwrite</string>
-                                                        </property>
-                                                        <property name="accel">
-                                                            <string>Alt+B</string>
                                                         </property>
                                                     </widget>
                                                     <widget class="QLayoutWidget">
