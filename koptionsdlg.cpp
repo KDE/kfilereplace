@@ -55,21 +55,21 @@ void KOptionsDlg::slotOK()
   int nMaxExpressionLength;
 
   // ************************ PAGE 1 ****************************
-  m_settings.bCaseSensitive = chbCaseSensitive -> isChecked();
-  m_settings.bRecursive = chbRecursive -> isChecked();
-  m_settings.bHaltOnFirstOccur = chbHaltOnFirstOccurrence -> isChecked();
-  m_settings.bIgnoreWhitespaces = chbIgnoreWhitespaces -> isChecked();
-  m_settings.bFollowSymLinks = chbFollowSymLinks -> isChecked();
-  m_settings.bAllStringsMustBeFound = chbAllStringsMustBeFound -> isChecked();
-  m_settings.bIgnoreHidden = chbIgnoreHidden -> isChecked();
+  m_settings.bCaseSensitive = chbCaseSensitive->isChecked();
+  m_settings.bRecursive = chbRecursive->isChecked();
+  m_settings.bHaltOnFirstOccur = chbHaltOnFirstOccurrence->isChecked();
+  m_settings.bIgnoreWhitespaces = chbIgnoreWhitespaces->isChecked();
+  m_settings.bFollowSymLinks = chbFollowSymLinks->isChecked();
+  m_settings.bAllStringsMustBeFound = chbAllStringsMustBeFound->isChecked();
+  m_settings.bIgnoreHidden = chbIgnoreHidden->isChecked();
 
   // ************************ PAGE 2 ****************************
-  m_settings.bWildcards = chbWildcards -> isChecked();
+  m_settings.bWildcards = chbWildcards->isChecked();
 
   // Get informations
-  strWildcardsLetters = edLetter -> text();
-  strWildcardsWords = edWord -> text();
-  nMaxExpressionLength = edLength -> text().toInt();
+  strWildcardsLetters = edLetter->text();
+  strWildcardsWords = edWord->text();
+  nMaxExpressionLength = edLength->text().toInt();
 
   // Check the Search text is not empty
   if (strWildcardsLetters.isEmpty() || strWildcardsWords.isEmpty())
@@ -95,15 +95,15 @@ void KOptionsDlg::slotOK()
   // Copy informations into variables
   m_settings.cWildcardsLetters = *(strWildcardsLetters.ascii());
   m_settings.cWildcardsWords = *(strWildcardsWords.ascii());
-  m_settings.bWildcardsInReplaceStrings = chbWildcardsInReplaceStr -> isChecked();
+  m_settings.bWildcardsInReplaceStrings = chbWildcardsInReplaceStr->isChecked();
   m_settings.nMaxExpressionLength = nMaxExpressionLength;
 
   // ************************ PAGE 3 ****************************
-  m_settings.bBackup = chbBackup -> isChecked();
-  m_settings.bVariables = chbVariables -> isChecked();
-  m_settings.bConfirmDirs = chbConfirmDirs -> isChecked();
-  m_settings.bConfirmFiles = chbConfirmFiles -> isChecked();
-  m_settings.bConfirmStrings = chbConfirmStrings -> isChecked();
+  m_settings.bBackup = chbBackup->isChecked();
+  m_settings.bVariables = chbVariables->isChecked();
+  m_settings.bConfirmDirs = chbConfirmDirs->isChecked();
+  m_settings.bConfirmFiles = chbConfirmFiles->isChecked();
+  m_settings.bConfirmStrings = chbConfirmStrings->isChecked();
 
   accept();
 }
@@ -111,27 +111,27 @@ void KOptionsDlg::slotOK()
 void KOptionsDlg::slotDefaults() // Set defaults values for all options of the dialog
 {
   // -------------------- PAGE 1 ---------------------
-  chbCaseSensitive -> setChecked(OPTIONS_DEFAULT_CASESENSITIVE);
-  chbRecursive -> setChecked(OPTIONS_DEFAULT_RECURSIVE);
-  chbHaltOnFirstOccurrence -> setChecked(OPTIONS_DEFAULT_HALTONFIRSTOCCUR);
-  chbIgnoreWhitespaces -> setChecked(OPTIONS_DEFAULT_IGNOREWHITESPACES);
-  chbFollowSymLinks -> setChecked(OPTIONS_DEFAULT_FOLLOWSYMLINKS);
-  chbAllStringsMustBeFound -> setChecked(OPTIONS_DEFAULT_ALLSTRINGSMUSTBEFOUND);
-  chbIgnoreHidden -> setChecked(OPTIONS_DEFAULT_IGNOREHIDDEN);
+  chbCaseSensitive->setChecked(OPTIONS_DEFAULT_CASESENSITIVE);
+  chbRecursive->setChecked(OPTIONS_DEFAULT_RECURSIVE);
+  chbHaltOnFirstOccurrence->setChecked(OPTIONS_DEFAULT_HALTONFIRSTOCCUR);
+  chbIgnoreWhitespaces->setChecked(OPTIONS_DEFAULT_IGNOREWHITESPACES);
+  chbFollowSymLinks->setChecked(OPTIONS_DEFAULT_FOLLOWSYMLINKS);
+  chbAllStringsMustBeFound->setChecked(OPTIONS_DEFAULT_ALLSTRINGSMUSTBEFOUND);
+  chbIgnoreHidden->setChecked(OPTIONS_DEFAULT_IGNOREHIDDEN);
 
   // -------------------- PAGE 2 ---------------------
-  chbWildcards -> setChecked(OPTIONS_DEFAULT_WILDCARDS);
-  edLetter -> setText("?");
-  edWord -> setText("*");
-  chbWildcardsInReplaceStr -> setChecked(false);
-  edLength -> setText("100");
+  chbWildcards->setChecked(OPTIONS_DEFAULT_WILDCARDS);
+  edLetter->setText("?");
+  edWord->setText("*");
+  chbWildcardsInReplaceStr->setChecked(false);
+  edLength->setText("100");
 
   // -------------------- PAGE 3 ---------------------
-  chbBackup -> setChecked(OPTIONS_DEFAULT_BACKUP);
-  chbVariables -> setChecked(OPTIONS_DEFAULT_VARIABLES);
-  chbConfirmDirs -> setChecked(OPTIONS_DEFAULT_CONFIRMDIRS);
-  chbConfirmFiles -> setChecked(OPTIONS_DEFAULT_CONFIRMFILES);
-  chbConfirmStrings -> setChecked(OPTIONS_DEFAULT_CONFIRMSTRINGS);
+  chbBackup->setChecked(OPTIONS_DEFAULT_BACKUP);
+  chbVariables->setChecked(OPTIONS_DEFAULT_VARIABLES);
+  chbConfirmDirs->setChecked(OPTIONS_DEFAULT_CONFIRMDIRS);
+  chbConfirmFiles->setChecked(OPTIONS_DEFAULT_CONFIRMFILES);
+  chbConfirmStrings->setChecked(OPTIONS_DEFAULT_CONFIRMSTRINGS);
 }
 
 /*void KOptionsDlg::setValues() // Copy current values to widgets
@@ -139,32 +139,32 @@ void KOptionsDlg::slotDefaults() // Set defaults values for all options of the d
   QString strTemp;
 
   // -------------------- PAGE 1 ---------------------
-  chbCaseSensitive -> setChecked( m_settings.bCaseSensitive );
-  chbRecursive -> setChecked( m_settings.bRecursive );
-  chbHaltOnFirstOccurrence -> setChecked( m_settings.bHaltOnFirstOccur );
-  chbIgnoreWhitespaces -> setChecked( m_settings.bIgnoreWhitespaces );
-  chbFollowSymLinks -> setChecked( m_settings.bFollowSymLinks );
-  chbAllStringsMustBeFound -> setChecked( m_settings.bAllStringsMustBeFound );
-  chbIgnoreHidden -> setChecked( m_settings.bIgnoreHidden );
+  chbCaseSensitive->setChecked( m_settings.bCaseSensitive );
+  chbRecursive->setChecked( m_settings.bRecursive );
+  chbHaltOnFirstOccurrence->setChecked( m_settings.bHaltOnFirstOccur );
+  chbIgnoreWhitespaces->setChecked( m_settings.bIgnoreWhitespaces );
+  chbFollowSymLinks->setChecked( m_settings.bFollowSymLinks );
+  chbAllStringsMustBeFound->setChecked( m_settings.bAllStringsMustBeFound );
+  chbIgnoreHidden->setChecked( m_settings.bIgnoreHidden );
 
   // -------------------- PAGE 2 ---------------------
-  chbWildcards -> setChecked( m_settings.bWildcards );
+  chbWildcards->setChecked( m_settings.bWildcards );
   //strTemp.sprintf("%c", m_settings.cWildcardsLetters);
   strTemp = QString("%1").arg(m_settings.cWildcardsLetters);
-  edLetter -> setText(strTemp);
+  edLetter->setText(strTemp);
   //strTemp.sprintf("%c", m_settings.cWildcardsWords);
   strTemp = QString("%1").arg(m_settings.cWildcardsWords);
-  edWord -> setText(strTemp);
-  chbWildcardsInReplaceStr -> setChecked(m_settings.bWildcardsInReplaceStrings);
+  edWord->setText(strTemp);
+  chbWildcardsInReplaceStr->setChecked(m_settings.bWildcardsInReplaceStrings);
   strTemp.setNum(m_settings.nMaxExpressionLength);
-  edLength -> setText(strTemp);
+  edLength->setText(strTemp);
 
   // -------------------- PAGE 3 ---------------------
-  chbBackup -> setChecked( m_settings.bBackup );
-  chbVariables -> setChecked( m_settings.bVariables );
-  chbConfirmFiles -> setChecked( m_settings.bConfirmFiles );
-  chbConfirmStrings -> setChecked( m_settings.bConfirmStrings );
-  chbConfirmDirs -> setChecked( m_settings.bConfirmDirs );
+  chbBackup->setChecked( m_settings.bBackup );
+  chbVariables->setChecked( m_settings.bVariables );
+  chbConfirmFiles->setChecked( m_settings.bConfirmFiles );
+  chbConfirmStrings->setChecked( m_settings.bConfirmStrings );
+  chbConfirmDirs->setChecked( m_settings.bConfirmDirs );
 
 }*/
 

@@ -18,13 +18,14 @@
 
 #include "kexpression.h"
 #include "resource.h"
-#include "filelib.h"
+#include "kfilereplacelib.h"
 
 #include <kdebug.h>
 #include <klocale.h>
 
 #include <qfileinfo.h>
 #include <qstringlist.h>
+#include <qdatetime.h>
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -54,11 +55,11 @@ void KExpression::setIgnoreWhitespaces(bool bIgnoreWhitespaces)
 {
  m_bIgnoreWhitespaces = bIgnoreWhitespaces;
 }
-char KExpression::getWordWildcard() 
+char KExpression::wordWildcard() 
 {
  return m_cWord;
 }
-char KExpression::getLetterWildcard() 
+char KExpression::letterWildcard() 
 {
  return m_cLetter;
 }
@@ -228,7 +229,7 @@ int KExpression::extractWildcardsContentsFromFullString(const char *szText, int 
   if (szString[0] == m_cLetter)
     {
       sprintf(szTemp, "%c", szText[0]);
-      strlResult -> append(szTemp);
+      strlResult->append(szTemp);
       //printf ("APPEND CHAR (%c)\n", szText[0]);
 
       // if this is the end of the string
@@ -373,7 +374,7 @@ QString KExpression::substVariablesWithValues(const QString &strOriginal, const 
           strVarName = strList[0];
           strVarFormat = strList[1];
 
-          strTemp = getVariableValue(strVarName, strVarFormat, szFilepath);
+          strTemp = variableValue(strVarName, strVarFormat, szFilepath);
           kdDebug(23000) << QString("VAR: (%1, %2) ---> (%3)").arg(strVarName).arg(strVarFormat).arg(strTemp) << endl;
           if (strTemp == QString::null) // If error
             {
@@ -402,7 +403,7 @@ QString KExpression::substVariablesWithValues(const QString &strOriginal, const 
 }
 
 
-QString KExpression::getVariableValue(const QString &strVarName, const QString &strVarFormat, const char *szFilepath)
+QString KExpression::variableValue(const QString &strVarName, const QString &strVarFormat, const char *szFilepath)
 {
   QFileInfo fi;
   fi.setFile(szFilepath);
@@ -411,7 +412,7 @@ QString KExpression::getVariableValue(const QString &strVarName, const QString &
 
   //kDebugInfo("VARIABLES: [%s]: (%s)(%s)\n", szFilepath, strVarName.ascii(), strVarFormat.ascii());
 
-  // ******************************* FILENAME ******************************************************************
+  /**  FILENAME */
   if (strVarName == "filename") // Ex: "/home/fdupoux/kfilereplace.htm"
     {
       if (strVarFormat == "fullpath") // Must copy "/home/fdupoux/kfilereplace.htm"
@@ -435,12 +436,12 @@ QString KExpression::getVariableValue(const QString &strVarName, const QString &
           return QString::null;
         }
     }
-  // ******************************* FILE-LAST-WRITE-TIME *******************************************************
+  /**  FILE-LAST-WRITE-TIME */
   else if (strVarName == "filelwtime")
     {
       return formatDateTime(fi.lastModified(), strVarFormat);
     }
-  // ** FILE-LAST-READ-TIME */
+  /** FILE-LAST-READ-TIME */
   else if (strVarName == "filelrtime")
     {
       return formatDateTime(fi.lastRead(), strVarFormat);
@@ -455,7 +456,7 @@ QString KExpression::getVariableValue(const QString &strVarName, const QString &
         }
       if (strVarFormat == "best") // ex: 125 MB
         {
-          return formatSize(fi.size());
+          return KFileReplaceLib::instance()->formatSize(fi.size());
         }
       else // invalid format
         {

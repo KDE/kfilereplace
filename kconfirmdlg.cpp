@@ -53,52 +53,52 @@ void KConfirmDlg::initDialog()
 
   QGridLayout *gbox;
   gbox = new QGridLayout (this, 7, 5, 0, 10);
-  gbox -> setMargin(15);
+  gbox->setMargin(15);
 
   // widgets
   m_labelFile = new QLabel(this,"m_labelFile");
   m_labelFile->setText(i18n("File:"));
-  gbox -> addMultiCellWidget (m_labelFile, 0, 0, 0, 4);
+  gbox->addMultiCellWidget (m_labelFile, 0, 0, 0, 4);
 
   m_labelDir = new QLabel(this,"m_labelDir");
   m_labelDir->setText(i18n("Folder:"));
-  gbox -> addMultiCellWidget (m_labelDir, 1, 1, 0, 4);
+  gbox->addMultiCellWidget (m_labelDir, 1, 1, 0, 4);
 
   m_labelSearch = new QLabel(this,"m_labelSearch");
   m_labelSearch->setText(i18n("Search for:"));
-  gbox -> addMultiCellWidget (m_labelSearch, 2, 2, 0, 4);
+  gbox->addMultiCellWidget (m_labelSearch, 2, 2, 0, 4);
 
   m_editSearch = new QMultiLineEdit(this,"m_editSearch");
-  m_editSearch -> setReadOnly(true);
-  gbox -> addMultiCellWidget (m_editSearch, 3, 3, 0, 4);
+  m_editSearch->setReadOnly(true);
+  gbox->addMultiCellWidget (m_editSearch, 3, 3, 0, 4);
 
   m_labelReplace = new QLabel(this,"m_labelReplace");
   m_labelReplace->setText(i18n("Replace with:"));
-  gbox -> addMultiCellWidget (m_labelReplace, 4, 4, 0, 4);
+  gbox->addMultiCellWidget (m_labelReplace, 4, 4, 0, 4);
 
   m_editReplace = new QMultiLineEdit(this,"m_editReplace");
-  gbox -> addMultiCellWidget (m_editReplace, 5, 5, 0, 4);
+  gbox->addMultiCellWidget (m_editReplace, 5, 5, 0, 4);
 
   // buttons
   m_btnYes = new QPushButton(this,"m_btnYes");
   m_btnYes->setText(i18n("&Yes"));
-  gbox -> addWidget (m_btnYes, 6, 0);
+  gbox->addWidget (m_btnYes, 6, 0);
 
   m_btnNo = new QPushButton(this,"m_btnNo");
   m_btnNo->setText(i18n("&No"));
-  gbox -> addWidget (m_btnNo, 6, 1);
+  gbox->addWidget (m_btnNo, 6, 1);
 
   m_btnSkipFile = new QPushButton(this,"m_btnSkipFile");
   m_btnSkipFile->setText(i18n("Skip &File"));
-  gbox -> addWidget (m_btnSkipFile, 6, 2);
+  gbox->addWidget (m_btnSkipFile, 6, 2);
 
   m_btnSkipDir = new QPushButton(this,"m_btnSkipDir");
   m_btnSkipDir->setText(i18n("Skip &Folder"));
-  gbox -> addWidget (m_btnSkipDir, 6, 3);
+  gbox->addWidget (m_btnSkipDir, 6, 3);
 
   m_btnCancel = new QPushButton(this,"m_btnCancel");
   m_btnCancel->setText(i18n("Cancel"));
-  gbox -> addWidget (m_btnCancel, 6, 4);
+  gbox->addWidget (m_btnCancel, 6, 4);
 
 }
 
@@ -110,13 +110,13 @@ void KConfirmDlg::setData(const QString& strFile, const QString& strDir, const Q
   m_strSearch = strSearch;
   m_strReplace = strReplace;
 
-  m_labelFile -> setText(i18n("<qt>File: <b>%1</b></qt>").arg(strFile));
+  m_labelFile->setText(i18n("<qt>File: <b>%1</b></qt>").arg(strFile));
 
-  m_labelDir -> setText(i18n("<qt>Directory: <b>%1</b></qt>").arg(strDir));
+  m_labelDir->setText(i18n("<qt>Directory: <b>%1</b></qt>").arg(strDir));
 
-  m_editSearch -> setText(strSearch);
+  m_editSearch->setText(strSearch);
 
-  m_editReplace -> setText(strReplace);
+  m_editReplace->setText(strReplace);
 }
 
 

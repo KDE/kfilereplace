@@ -53,7 +53,7 @@ private:
   KResultView *m_resultView;
   QListView *m_stringView;
   QPixmap m_pmIconString;
-  QString path;
+  QString m_path;
     
 public:
   QListView *stringView();
@@ -61,8 +61,6 @@ public:
   QPixmap iconString();
   /** Initialize lists */
   void init();
-  /** contains the implementation for printing functionality */
-  void print(QPrinter* m_pPrinter);
   bool addString(const QString &strSearch, const QString &strReplace, QListViewItem *lviCurrent);
   /** returns a pointer to the document connected to the view instance. Mind that this method requires a KFileReplaceApp instance as a parent
     * widget to get to the window document pointer by calling the KFileReplaceApp::getDocument() method.

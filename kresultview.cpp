@@ -29,24 +29,20 @@
 #include <kdebug.h>
 #include <kiconloader.h>
 
-// linux includes
-//#include <stdlib.h>
-
 // application specific includes
 #include "kfilereplacepart.h"
 #include "kresultview.h"
 #include "kaddstringdlg.h"
-//#include "klistviewstring.h"
 #include "kpropertiesdialog.h"
 #include "resource.h"
-#include "filelib.h"
+#include "kfilereplacelib.h"
 
 KResultView::KResultView( QWidget *parent, const char *name): QListView( parent, name )
 {
   int nRes;
 
   // Main application class
-  m_app = (KFileReplaceApp *) parentWidget() -> parentWidget();
+  m_app = (KFileReplaceApp *) parentWidget()->parentWidget();
 
   m_lviCurrent = 0L;
 
@@ -114,16 +110,16 @@ KResultView::~KResultView()
 
 QListViewItem* KResultView::addFullItem(bool bSuccess, const QString &szName, const QString &szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString &szErrMsg)
 {
-  QString strOldSize;
-  QString strNewSize;
-  QString strNbRepl;
+  QString strOldSize,
+          strNewSize,
+          strNbRepl,
+          strTemp;
   QListViewItem *lvi;
-  QFileInfo fi;
-  QString strTemp;
+  QFileInfo fi; 
 
   // Prepare text to add
-  strOldSize = formatSize(nOldSize);
-  strNewSize = formatSize(nNewSize);
+  strOldSize = KFileReplaceLib::instance()->formatSize(nOldSize);
+  strNewSize = KFileReplaceLib::instance()->formatSize(nNewSize);
   if (nNbRepl > 0)
     strNbRepl.setNum(nNbRepl);
 
@@ -134,22 +130,22 @@ QListViewItem* KResultView::addFullItem(bool bSuccess, const QString &szName, co
   strTemp = szDirectory + "/" + szDirectory, szName;
   fi.setFile(strTemp);
   strTemp = QString("%1 (%2)").arg(fi.owner()).arg(fi.ownerId());
-  lvi -> setText(6, strTemp);
+  lvi->setText(6, strTemp);
   strTemp = QString("%1 (%2)").arg(fi.group()).arg(fi.groupId());
-  lvi -> setText(7, strTemp);
+  lvi->setText(7, strTemp);
 
   if (bSuccess) // Success
     {
-      lvi -> setPixmap(0, m_pmIconSuccess);
-      lvi -> setText(3, strNewSize);
-      lvi -> setText(4, strNbRepl);
-      lvi -> setText(5, i18n("Success"));
+      lvi->setPixmap(0, m_pmIconSuccess);
+      lvi->setText(3, strNewSize);
+      lvi->setText(4, strNbRepl);
+      lvi->setText(5, i18n("Success"));
     }
   else // Error
     {
-      lvi -> setPixmap(0, m_pmIconError);
+      lvi->setPixmap(0, m_pmIconError);
       if (szErrMsg)
-        lvi -> setText(5, szErrMsg);
+        lvi->setText(5, szErrMsg);
     }
 
   return lvi;
@@ -165,7 +161,7 @@ int KResultView::updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, in
   QFileInfo fi;
 
   // Prepare text to add
-  strNewSize = formatSize(nNewSize);
+  strNewSize = KFileReplaceLib::instance()->formatSize(nNewSize);
   if (nNbRepl > 0)
     strNbRepl.setNum(nNbRepl);
 
@@ -173,22 +169,22 @@ int KResultView::updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, in
   strTemp = QString("%1/%2").arg(lvi->text(1)).arg(lvi->text(0));
   fi.setFile(strTemp);
   strTemp = QString("%1 (%2)").arg(fi.owner()).arg(fi.ownerId());
-  lvi -> setText(6, strTemp);
+  lvi->setText(6, strTemp);
   strTemp = QString("%1 (%2)").arg(fi.group()).arg(fi.groupId());
-  lvi -> setText(7, strTemp);
+  lvi->setText(7, strTemp);
 
   if (bSuccess) // Success
     {
-      lvi -> setPixmap(0, m_pmIconSuccess);
-      lvi -> setText(3, strNewSize);
-      lvi -> setText(4, strNbRepl);
-      lvi -> setText(5, i18n("Success"));
+      lvi->setPixmap(0, m_pmIconSuccess);
+      lvi->setText(3, strNewSize);
+      lvi->setText(4, strNbRepl);
+      lvi->setText(5, i18n("Success"));
     }
   else // Error
     {
-      lvi -> setPixmap(0, m_pmIconError);
+      lvi->setPixmap(0, m_pmIconError);
       if (szErrMsg)
-        lvi -> setText(5, szErrMsg);
+        lvi->setText(5, szErrMsg);
     }
 
   return 0;
@@ -200,9 +196,9 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
   // Add item to list
   QString strNum;
   QListViewItem *lviCurItem,
-                            *lviFirst;
+                *lviFirst;
   QListViewItem *lviNew,
-                             *lviParent = 0L;
+                *lviParent = 0L;
   bool bPresent = false;
   QString strTextSearch;
   char szTemp[8192];
@@ -213,12 +209,12 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
 
   // 1. ---------- Add the parent string in list view if not already present
   bPresent = false;
-  lviCurItem = lviFirst = lvi -> firstChild();
+  lviCurItem = lviFirst = lvi->firstChild();
   if (lviCurItem != 0)
     {
       do
         {
-          if (lviCurItem -> text(0) == strTextOld)
+          if (lviCurItem->text(0) == strTextOld)
             {
               bPresent = true;
               lviParent = lviCurItem;
@@ -226,13 +222,13 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
                                 // Increase number of strings found
               if (bShowDetails) // if need to show how many strings
                 {
-                  strNum = lviCurItem -> text(4);
+                  strNum = lviCurItem->text(4);
                   strNum.setNum( strNum.toInt()+1 );
-                  lviCurItem -> setText(4, strNum);
+                  lviCurItem->setText(4, strNum);
                 }
             }
 
-          lviCurItem        = lviCurItem -> nextSibling();
+          lviCurItem        = lviCurItem->nextSibling();
         } while(lviCurItem && lviCurItem != lviFirst);
     }
 
@@ -242,34 +238,34 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
       lviParent = new QListViewItem(lvi, strTextOld, strTextNew, "", "", (bShowDetails ? QString("1") : QString("")));
       if (!lviParent)
         return false;
-      lviParent -> setPixmap(0, m_pmIconString);
+      lviParent->setPixmap(0, m_pmIconString);
     }
 
   // 2. ----------- Add the detailed string to list view
 
   // Check if the string is already in the list --> look for all child items
   bPresent = false;
-  lviCurItem = lviFirst = lviParent -> firstChild();
+  lviCurItem = lviFirst = lviParent->firstChild();
 
   if (lviCurItem != 0)
     {
       do
         {
-          if (lviCurItem -> text(0) == strTextSearch)
+          if (lviCurItem->text(0) == strTextSearch)
             {
               bPresent = true;
 
               if (bShowDetails) // if need to show how many strings
                 {
                   // Increase number
-                  strNum = lviCurItem -> text(4);
+                  strNum = lviCurItem->text(4);
                   strNum.setNum( strNum.toInt()+1 );
-                  lviCurItem -> setText(4, strNum);
+                  lviCurItem->setText(4, strNum);
                 }
               return true;
             }
 
-          lviCurItem        = lviCurItem -> nextSibling();
+          lviCurItem        = lviCurItem->nextSibling();
         } while(lviCurItem && lviCurItem != lviFirst);
     }
 
@@ -279,7 +275,7 @@ bool KResultView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QS
       lviNew = new QListViewItem(lviParent, strTextSearch, strTextReplace, "", "", (bShowDetails ? QString("1") : QString("")));
       if (lviNew == 0)
         return false;
-      lviNew -> setPixmap(0, m_pmIconSubString);
+      lviNew->setPixmap(0, m_pmIconSubString);
     }
 
   return true;

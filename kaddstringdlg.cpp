@@ -37,26 +37,26 @@ KAddStringDlg::~KAddStringDlg()
 void KAddStringDlg::slotOK()
 {
   // Check the Search text is not empty
-  if (m_editSearch -> text().isEmpty())
+  if (m_editSearch->text().isEmpty())
     {
       KMessageBox::error(this, i18n("You must fill the text to find (and Replace) before clicking on 'OK'."));
       return;
     }
 
   // Copy text into variables
-  m_strSearch = m_editSearch -> text();
-  m_strReplace = m_editReplace -> text();
+  m_strSearch = m_editSearch->text();
+  m_strReplace = m_editReplace->text();
 
   accept();
 }
 
 void KAddStringDlg::setSearchText(const QString &strText) 
 {
- m_editSearch -> setText(strText);
+ m_editSearch->setText(strText);
 }
 void KAddStringDlg::setReplaceText(const QString &strText) 
 {
- m_editReplace -> setText(strText);
+ m_editReplace->setText(strText);
  }
  QString KAddStringDlg::searchText() const
  {

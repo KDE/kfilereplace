@@ -32,7 +32,6 @@
 // application specific includes
 #include "kfilereplaceview.h"
 #include "kfilereplacedoc.h"
-//#include "klistviewstring.h"
 
 #ifdef APP
 #include "kfilereplace.h"
@@ -48,11 +47,11 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):QSplitter(V
 {
   m_resultView = new KResultView(this, "ResultView");
   m_stringView = new QListView(this, "StringView");
-
-  // Load icons
-  int nRes = m_pmIconString.load( locate("data", "kfilereplace/pics/string.png"));
   
-  path = KGlobal::instance()->dirs()->saveLocation("data", "kfilereplace/");
+  m_path = KGlobal::instance()->dirs()->saveLocation("data", "kfilereplace/");
+  //QString picspath = KGlobal::instance()->dirs()->saveLocation("data", "kfilereplace/pics/");
+  // Load icons
+  int nRes = m_pmIconString.load( locate("data", "kfilereplace/pics/string.png")/*picspath+"string.png"*/);
     
    // connect events
   connect(m_stringView, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(slotStringsEdit(QListViewItem *)));
@@ -90,17 +89,6 @@ KFileReplaceDoc* KFileReplaceView::document() const
 #endif
 }
 
-void KFileReplaceView::print(QPrinter* m_pPrinter)
-{
-  QPainter printpainter;
-  printpainter.begin(m_pPrinter);
-
-  // TODO: add your printing code here
-
-  printpainter.end();
-
-}
-
 void KFileReplaceView::init()
 {
   // activate(m_StringsList, m_ResultList); // TopView = Strings, Bottom = Result
@@ -132,26 +120,25 @@ void KFileReplaceView::init()
                                      "strings. You can use wildcards and variables options in the strings. Please, read help for more details."));
 
 //restore the rules
- QFile qfile(path+"tmp");
+/* QFile qfile(path+"tmp");
  if ( qfile.open( IO_ReadOnly ) ) 
  {
   QTextStream iTStream(&qfile);
   while ( !iTStream.atEnd() ) 
   {
-   QListViewItem* item = new QListViewItem(m_stringView);
-   
+   QListViewItem* item = new QListViewItem(m_stringView); 
    item->setText(0,iTStream.readLine()); 
    item->setText(1,iTStream.readLine());  
   }
   qfile.close();
- }
+ }*/
 }
 
 bool KFileReplaceView::addString(const QString &strSearch, const QString &strReplace, QListViewItem *lviCurrent)
 {
-  QListViewItem *lvi;
-  QListViewItem *lviCurItem;
-  QListViewItem *lviFirst;
+  QListViewItem *lvi,
+                *lviCurItem,
+                *lviFirst;
   QString strMess;
 
   // Check item is not already in the TextList
@@ -160,7 +147,7 @@ bool KFileReplaceView::addString(const QString &strSearch, const QString &strRep
     {
       do // For all strings there are in the TextList
         {
-          if ((lviCurrent != lviCurItem) && (strSearch == lviCurItem -> text(0))) // Item is already in the TextList
+          if ((lviCurrent != lviCurItem) && (strSearch == lviCurItem->text(0))) // Item is already in the TextList
             {
             //  strMess.sprintf(i18n("The <b>%s</b> item is already present in the list."), strSearch.ascii());
               strMess = QString(i18n("The <b>%1</b> item is already present in the list.")).arg(strSearch);
@@ -168,7 +155,7 @@ bool KFileReplaceView::addString(const QString &strSearch, const QString &strRep
               return false;
             }
 
-          lviCurItem = lviCurItem -> nextSibling();
+          lviCurItem = lviCurItem->nextSibling();
         } while(lviCurItem && lviCurItem != lviFirst);
     }
 
@@ -184,11 +171,11 @@ bool KFileReplaceView::addString(const QString &strSearch, const QString &strRep
   // Add string to string list
   lvi = new QListViewItem(m_stringView);
   Q_CHECK_PTR( lvi );
-  lvi -> setPixmap(0, m_pmIconString);
-  lvi -> setText(0, strSearch); 
-  lvi -> setText(1, strReplace);
+  lvi->setPixmap(0, m_pmIconString);
+  lvi->setText(0, strSearch); 
+  lvi->setText(1, strReplace);
     
-  lvi -> setup();
+  lvi->setup();
 
   return true;
 }
@@ -196,20 +183,20 @@ bool KFileReplaceView::addString(const QString &strSearch, const QString &strRep
 void KFileReplaceView::slotStringsAdd()
 {
   KAddStringDlg dlg(parentWidget());
-  QFile qfile(path+"tmp");
+ /* QFile qfile(path+"tmp");
   if(qfile.open(IO_WriteOnly | IO_Append))
   {
-   QTextStream oTStream(&qfile);
+   QTextStream oTStream(&qfile);*/
    do
    {
     if (!dlg.exec()) // If Cancel
      return ;
     //saving rules 
-    oTStream <<dlg.searchText()<<"\n"<<dlg.replaceText()<<"\n";
+  /*  oTStream <<dlg.searchText()<<"\n"<<dlg.replaceText()<<"\n";*/
    }
    while(!addString(dlg.searchText(), dlg.replaceText(), 0L));
-   qfile.close();
-  }  
+  /* qfile.close();
+  }  */
 }
 
 void KFileReplaceView::slotStringsEdit(QListViewItem  */*lviCurrent*/)
@@ -223,21 +210,21 @@ void KFileReplaceView::slotStringsEdit(QListViewItem  */*lviCurrent*/)
    dlg.setSearchText( lviCurItem->text(0) );
    dlg.setReplaceText( lviCurItem->text(1) );
    
-   QFile qfile(path+"tmp");
+/*   QFile qfile(path+"tmp");
    
    if(qfile.open(IO_WriteOnly | IO_Append))
    {
-    QTextStream oTStream(&qfile);
+    QTextStream oTStream(&qfile);*/
     do
     {
      if (!dlg.exec()) // If Cancel
       return ;
      //saving rules 
-     oTStream <<dlg.searchText()<<"\n"<<dlg.replaceText()<<"\n";
+   /*  oTStream <<dlg.searchText()<<"\n"<<dlg.replaceText()<<"\n";*/
     }
     while(!addString(dlg.searchText(), dlg.replaceText(), lviCurItem));
-    qfile.close();
-   }
+   /* qfile.close();
+   }*/
   }
 }
 

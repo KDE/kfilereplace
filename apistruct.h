@@ -22,7 +22,7 @@
 
 #include <qdatetime.h>
 
-#include <sys/param.h>
+//#include <sys/param.h>
 
 class QWidget;
 class QListView;
@@ -33,45 +33,43 @@ struct RepDirArg
 {
   KResultView *qlvResult;
   QListView *qlvStrings;
-  QString szDir;
-  QString szFilter;
-  bool bMinSize;
-  bool bMaxSize;
-  uint nMinSize;
-  uint nMaxSize;
+  QString szDir,
+          szFilter;
+  bool bMinSize,
+       bMaxSize;
+  uint nMinSize,
+       nMaxSize;
   int nTypeOfAccess;
-  bool bMinDate;
-  bool bMaxDate;
-  QDate qdMinDate;
-  QDate qdMaxDate;
-  bool bCaseSensitive;
-  bool bRecursive;
-  bool bFollowSymLinks;
-  bool bAllStringsMustBeFound;
-  bool bBackup;
-  bool bWildcards;
-  char cWildcardsLetters;
-  char cWildcardsWords;
+  bool bMinDate,
+       bMaxDate;
+  QDate qdMinDate,
+        qdMaxDate;
+  bool bCaseSensitive,
+       bRecursive,
+       bFollowSymLinks,
+       bAllStringsMustBeFound,
+       bBackup,
+       bWildcards;
+  char cWildcardsLetters,
+       cWildcardsWords;
   bool bWildcardsInReplaceStrings;
   int nMaxExpressionLength;
-  bool bVariables;
-  bool bConfirmFiles;
-  bool bConfirmStrings;
-  bool bConfirmDirs;
-  bool bHaltOnFirstOccur;
-  bool bIgnoreWhitespaces;
-  bool bIgnoreHidden;
-
-  bool bSimulation;
-
-  bool bOwnerUserBool;
-  bool bOwnerGroupBool;
-  bool bOwnerUserMustBe;
-  bool bOwnerGroupMustBe;
-  QString strOwnerUserType;
-  QString strOwnerGroupType;
-  QString strOwnerUserValue;
-  QString strOwnerGroupValue;
+  bool bVariables,
+       bConfirmFiles,
+       bConfirmStrings,
+       bConfirmDirs,
+       bHaltOnFirstOccur,
+       bIgnoreWhitespaces,
+       bIgnoreHidden,
+       bSimulation,
+       bOwnerUserBool,
+       bOwnerGroupBool,
+       bOwnerUserMustBe,
+       bOwnerGroupMustBe;
+  QString strOwnerUserType,
+          strOwnerGroupType,
+          strOwnerUserValue,
+          strOwnerGroupValue;
 
   QWidget *mainwnd;
   KFileReplaceView *view;

@@ -1,3 +1,13 @@
+24-02-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- kfilereplacepref.(h,cpp) were removed.
+- kernel.(h,cpp) now are a singleton class.
+- Some macros in kernel.h were replaced with integer constants.
+- Methods in kernel.h file were renamed.
+- Some superflous #include lines were removed.
+- The filelib.(h,cpp) were subtituted with KFilereplaceLib singleton class.
+- Now kfilereplace logo and icons in the result view appear.
+
+ 
 18-02-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
 - The icons in toolbar directory were redrawn.
 - Deleted the KFRHeader struct from  apistruct.h.

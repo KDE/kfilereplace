@@ -34,7 +34,7 @@
 
 //own includes
 #include "apistruct.h"
-#include "filelib.h"
+#include "kfilereplacelib.h"
 #include "kernel.h"
 #include "resource.h"
 #include "kfilereplacepart.h"
@@ -273,7 +273,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
   // Check the main directory can be accessed
   QDir dir(m_doc->m_strProjectDirectory);
 
-  if (dir.exists() == false)
+  if (!dir.exists())
     {
       strMess = i18n("<qt>The main folder of the project <b>%1</b> does not exist.</qt>").arg(m_doc->m_strProjectDirectory);
       KMessageBox::error(w, strMess);
@@ -293,8 +293,8 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
       // -- Check first and last char of Searched string is not a wildcard
 
       lviCurItem = lviFirst = m_view->stringView()->firstChild();
-      if (lviCurItem)
-            {
+    /*  if (lviCurItem)
+        {
           do
             {
               // Get first char of the string
@@ -305,23 +305,23 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
               // Get last char of the string
               strString = lviCurItem->text(0).right(1);
               strncpy(szString, strString.ascii(), 255);
-              cLast = *szString;
+              cLast = *szString;*/
 
               /*if ((cFirst == m_settings.cWildcardsWords) || (cLast == m_settings.cWildcardsWords) || (cFirst == m_settings.cWildcardsLetters) || (cLast == m_settings.cWildcardsLetters))
                 {        KMessageBox::error(this, i18n("First and last characters of the searched string cannot be a wildcard."));
                 return -1;
                 }*/
 
-              lviCurItem = lviCurItem->nextSibling();
+          /*    lviCurItem = lviCurItem->nextSibling();
             } while(lviCurItem && lviCurItem != lviFirst);
-        }
+        }*/
 
       // -- Check Maximum expression length is valid
       if ((m_settings.nMaxExpressionLength < 2) || (m_settings.nMaxExpressionLength > 10000))
-            {
-          KMessageBox::error(w, i18n("The maximum expression wildcard length is not valid (should be between 2 and 10000)"));
-          return -1;
-            }
+        {
+         KMessageBox::error(w, i18n("The maximum expression wildcard length is not valid (should be between 2 and 10000)"));
+         return -1;
+         }
 
       // check expression wildcard and character wildcards are not the same
       if (m_settings.cWildcardsWords == m_settings.cWildcardsLetters)
@@ -356,7 +356,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
         }
     }
 
-  /** Prepare argument structure to pass to the ReplaceDirectory function */
+  /** Prepare argument structure to pass to the replaceDirectory function */
 
   g_argu.szDir = m_doc->m_strProjectDirectory;
   g_argu.szFilter = m_doc->m_strProjectFilter;
@@ -532,9 +532,9 @@ void KFileReplacePart::slotFileSearch()
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
 
-   //nRes = pthread_create(&g_threadReplace, NULL, SearchThread, (void *) &g_argu);
+   //nRes = pthread_create(&g_threadReplace, NULL, searchThread, (void *) &g_argu);
    //startTimer(100);
-   SearchThread( (void *) &g_argu );
+   Kernel::instance()->searchThread( (void *) &g_argu );
 
    // restore cursor
    QApplication::restoreOverrideCursor();
@@ -593,9 +593,9 @@ void KFileReplacePart::slotFileReplace()
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
 
-   //nRes = pthread_create(&g_threadReplace, NULL, ReplaceThread, (void *) &g_argu);
+   //nRes = pthread_create(&g_threadReplace, NULL, replaceThread, (void *) &g_argu);
    //startTimer(100);
-   ReplaceThread((void *) &g_argu);
+   Kernel::instance()->replaceThread((void *) &g_argu);
 
    // restore cursor
    QApplication::restoreOverrideCursor();
@@ -654,9 +654,9 @@ void KFileReplacePart::slotFileSimulate()
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
 
-   //nRes = pthread_create(&g_threadReplace, NULL, ReplaceThread, (void *) &g_argu);
+   //nRes = pthread_create(&g_threadReplace, NULL, replaceThread, (void *) &g_argu);
    //startTimer(100);
-   ReplaceThread((void *) &g_argu);
+   Kernel::instance()->replaceThread((void *) &g_argu);
 
    // restore cursor
    QApplication::restoreOverrideCursor();
@@ -719,7 +719,7 @@ void KFileReplacePart::slotFileSave()
     return ;
 
   // Force the extension to be "html"
-  strFilename = addFilenameExtension(strFilename, "html");
+  strFilename = KFileReplaceLib::instance()->addFilenameExtension(strFilename, "html");
 
   // Save results to file
  // a) Open the file
@@ -750,7 +750,7 @@ void KFileReplacePart::slotFileSave()
 
   do
     {
-      strPath = formatFullPath(lviCurItem->text(1), lviCurItem->text(0));
+      strPath = KFileReplaceLib::instance()->formatFullPath(lviCurItem->text(1), lviCurItem->text(0));
       oTStream <<"<dt><a href=\"file:"<<strPath<<"\">file:"<<strPath<<"</a><br/>\n";
       oTStream <<i18n("Size: "+ lviCurItem->text(2)+" --> "+lviCurItem->text(3)+" **** "+lviCurItem->text(2)+" strings replaced.<br/><br/>\n");
                         
@@ -785,7 +785,7 @@ void KFileReplacePart::slotStringsEmpty()
 
 void KFileReplacePart::slotStringsEdit()
 {
-  m_view->slotStringsEdit(NULL);
+  m_view->slotStringsEdit(0L);
   updateCommands();
 }
 
@@ -821,7 +821,7 @@ void KFileReplacePart::slotStringsSave()
     return;
 
   // Force the extension to be "kfr" == KFileReplace extension
-  strFilename = addFilenameExtension(strFilename, "kfr");
+  strFilename = KFileReplaceLib::instance()->addFilenameExtension(strFilename, "kfr");
  
     QFile file( strFilename );
     if(!file.open( IO_WriteOnly ))
@@ -888,8 +888,9 @@ void KFileReplacePart::slotStringsLoad()
 
   // Select the file to load from
   strFilename = KFileDialog::getOpenFileName(QString::null, i18n("*.kfr|KFileReplace strings (*.kfr)\n*|All Files (*)"), widget(), i18n("Load Strings From File"));
-
-  loadStringFile(strFilename);
+  
+  if(!strFilename.isEmpty())
+    loadStringFile(strFilename);
   updateCommands();
 }
 
@@ -952,7 +953,7 @@ void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
   QString strFilename;
   QFileInfo fi;
 
-  if (g_bThreadRunning == true) // Thread running: it has not finished since the last call of this function
+  if (g_bThreadRunning) // Thread running: it has not finished since the last call of this function
     return ;
 
   // Download file if need (if url is "http://...")

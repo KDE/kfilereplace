@@ -1,11 +1,11 @@
 /***************************************************************************
-                           filelib.cpp  -  File library
+                           kfilereplacelib.cpp  -  File library, derived from filelib.cpp
                                       -------------------
     begin                : lun mai  3 20:19:52 CEST 1999
 
     copyright            : (C) 1999 by François Dupoux
-                                  (C) 2003 Andras Mantia <amantia@kde.org>
-                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+                                (C) 2003 Andras Mantia <amantia@kde.org>
+                                (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
                                
  ***************************************************************************/
@@ -30,14 +30,14 @@
 #endif
 #include <errno.h>
 
-#include "filelib.h"
+#include "kfilereplacelib.h"
 
 /**
  Create the text with a size in Bytes, KiloBytes, MegaBytes, GigaBytes, TeraBytes from a 64 bits number
  Parameters::.....* qwSize: 64 bits number of the size in bytes
  Return values:...* formatted text size
 */
-QString formatSize(QWORD qwSize)
+QString KFileReplaceLib::formatSize(QWORD qwSize)
 {
   QString strSize;
   double dSize;
@@ -74,13 +74,14 @@ QString formatSize(QWORD qwSize)
 
   return strSize;
 }
+
 /**
  Format a path, from a path and a filename, or another sub-path (avoid double '/' risks)
  Parameters::.....* szBasePath: fist path (can be "/" if root, or "/usr/bin/" or "/usr/bin" for example)
  .................* szFilename: second path (can be "/doc/html/", or "doc/html/" or "doc/html/index.html" for example)
  Return values:...* Full valid path (without double "/")
 */
-QString formatFullPath(const QString& szBasePath, const QString &szFilename)
+QString KFileReplaceLib::formatFullPath(const QString& szBasePath, const QString &szFilename)
 {
   QString strFullPath = szBasePath;
   QString fileName = szFilename;
@@ -95,13 +96,14 @@ QString formatFullPath(const QString& szBasePath, const QString &szFilename)
   
   return strFullPath;
 }
+
 /**
  Add an extension to a filename, or a filepath
  Parameters::.....* strFilename: filename or filepath (it can have already the extension)
  .................* szExtension: extension to add without "." (ex: "html", "kfr")
  Return values:...* Filename / Filepath with the extension
 */
-QString addFilenameExtension(const QString& strFilename, const QString& szExtension)
+QString KFileReplaceLib::addFilenameExtension(const QString& strFilename, const QString& szExtension)
 {
   QString strFullExtension;
   QString fileName = strFilename;
@@ -111,9 +113,7 @@ QString addFilenameExtension(const QString& strFilename, const QString& szExtens
 
   // filename cannot contain ".ext" ==> Add it
   if(fileName.length() <= strFullExtension.length())
-  {
    fileName.append(strFullExtension);
-  }
   else // filename can contain ".ext"
   {
    if (fileName.right(strFullExtension.length()) != strFullExtension)
