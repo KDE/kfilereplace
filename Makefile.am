@@ -17,7 +17,7 @@ noinst_HEADERS = apistruct.h kaddstringdlg.h kexpression.h kfilereplaceiface.h k
 METASOURCES = AUTO
 
 kde_module_LTLIBRARIES = libkfilereplacepart.la
-libkfilereplacepart_la_SOURCES = kfilereplacepart.cpp kfilereplacepart.h kfilereplacedoc.cpp kfilereplaceview.cpp kaboutkfilereplace.cpp kaddstringdlg.cpp kconfirmdlg.cpp kernel.cpp kexpression.cpp kfilereplacepref.cpp klistviewstring.cpp knewprojectdlg.cpp knewprojectdlgs.ui koptionsdlg.cpp kresultview.cpp filelib.cpp
+libkfilereplacepart_la_SOURCES = kfilereplacepart.cpp kfilereplacedoc.cpp kfilereplaceview.cpp kaboutkfilereplace.cpp kaddstringdlg.cpp kconfirmdlg.cpp kernel.cpp kexpression.cpp kfilereplacepref.cpp klistviewstring.cpp knewprojectdlg.cpp knewprojectdlgs.ui koptionsdlg.cpp kresultview.cpp filelib.cpp
 libkfilereplacepart_la_LDFLAGS = -module -no-undefined $(all_libraries) -version-info 1:0:0
 libkfilereplacepart_la_LIBADD = $(LIB_KFILE) $(LIB_KPARTS) $(LIB_KHTML)
 
