@@ -86,7 +86,7 @@
                         <cstring>m_pbSearchNow</cstring>
                     </property>
                     <property name="text">
-                        <string>Search now</string>
+                        <string>Search Now</string>
                     </property>
                     <property name="accel">
                         <string></string>
@@ -100,7 +100,7 @@
                         <cstring>m_pbSearchLater</cstring>
                     </property>
                     <property name="text">
-                        <string>Search later</string>
+                        <string>Search Later</string>
                     </property>
                     <property name="accel">
                         <string></string>
@@ -158,7 +158,7 @@
                                     <cstring>groupBox5</cstring>
                                 </property>
                                 <property name="title">
-                                    <string>Base folder options</string>
+                                    <string>Base Folder Options</string>
                                 </property>
                                 <grid>
                                     <property name="name">
@@ -279,7 +279,7 @@
                                     <cstring>groupBox4</cstring>
                                 </property>
                                 <property name="title">
-                                    <string>General options</string>
+                                    <string>General Options</string>
                                 </property>
                                 <grid>
                                     <property name="name">
@@ -384,7 +384,7 @@
                                     <cstring>groupBox6</cstring>
                                 </property>
                                 <property name="title">
-                                    <string>Quick search/replace</string>
+                                    <string>Quick Search/Replace</string>
                                 </property>
                                 <grid>
                                     <property name="name">

@@ -133,7 +133,7 @@
             <widget class="KListView">
                 <column>
                     <property name="text">
-                        <string>Search for</string>
+                        <string>Search For</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -144,7 +144,7 @@
                 </column>
                 <column>
                     <property name="text">
-                        <string>Replace with</string>
+                        <string>Replace With</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -293,7 +293,7 @@
                                 <cstring>m_tlFilesNumber</cstring>
                             </property>
                             <property name="text">
-                                <string>Scanned files</string>
+                                <string>Scanned files:</string>
                             </property>
                         </widget>
                         <widget class="QLCDNumber">

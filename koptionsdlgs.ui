@@ -71,7 +71,7 @@
                                 <cstring>m_pbDefault</cstring>
                             </property>
                             <property name="text">
-                                <string>&amp;Default values</string>
+                                <string>&amp;Default Values</string>
                             </property>
                         </widget>
                         <widget class="QPushButton">
