@@ -35,6 +35,10 @@
 #include <kdebug.h>
 #include <kiconloader.h>
 
+#include "whatthis.h"
+
+using namespace whatthisNameSpace;
+
 
 KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *name/*=0*/) : KNewProjectDlgS(parent, name, true)
 {
@@ -243,18 +247,14 @@ void KNewProjectDlg::saveFiltersList()
 
 void KNewProjectDlg::setWhatsThis()
 {
-   QWhatsThis::add(cbLocation, i18n("This is the directory where the search or the replace operation will be done."));
-   QWhatsThis::add(cbFilter, i18n("Fix the filter of the files you want to search. For example, write \"*.htm\" to search or replace "
-                                  "all web pages. You can put more than an only filter, when using ';'. For example \"*.html;*.txt;*.xml\""));
+   QWhatsThis::add(cbLocation, i18n(cbLocationWhatthis));
+   QWhatsThis::add(cbFilter, i18n(cbFilterWhatthis));
 
-   QWhatsThis::add(edSizeMin, i18n("Minimal size of files. For example, if you put 1024 KB, all files which size is less than 1 MB will not be taken"));
-   QWhatsThis::add(edSizeMax, i18n("Maximal size of files. For example, if you put 2048 KB, all files which size is more than 2 MB will not be taken"));
-   QWhatsThis::add(edDateMin, i18n("Minimal date of files in YYYY/MM/DD format. For example, if you put 2000/01/31, all files which were "
-                                   "(modified/read) before the 31 January 2000 will not be taken"));
-   QWhatsThis::add(edDateMax, i18n("Maximal date of files in YYYY/MM/DD format. For example, if you put 1999/12/31, all files which were "
-                                   "(modified/read) after the 31 December 1999 will not be taken"));
-   QWhatsThis::add(cbDateValid, i18n("Select \"Writing\" if you want to use the date of the last modification, or \"reading\" to use the last "
-                                     "read access to the file"));
+   QWhatsThis::add(edSizeMin, i18n(edSizeMinWhatthis));
+   QWhatsThis::add(edSizeMax, i18n(edSizeMaxWhatthis));
+   QWhatsThis::add(edDateMin, i18n(edDateMinWhatthis));
+   QWhatsThis::add(edDateMax, i18n(edDateMaxWhatthis));
+   QWhatsThis::add(cbDateValid, i18n(cbDateValidWhatthis));
 }
 
 void KNewProjectDlg::maxFilesSize(bool & bChecked, long unsigned int & nMaxSize)

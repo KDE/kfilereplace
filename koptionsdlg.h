@@ -37,21 +37,24 @@ class KOptionsDlg : public KOptionsDlgS
 {
    Q_OBJECT
 public:
-        KOptionsDlg(QWidget *parent, const char *name, Settings settings);
-        ~KOptionsDlg();
-        void whatsThisPage1();
-        void whatsThisPage2();
-        void whatsThisPage3();
-       // void setValues();
-        /** Functions of access to datas */
-        Settings settings();
+  KOptionsDlg(QWidget *parent, const char *name, Settings settings);
+  ~KOptionsDlg();
+  void whatsThisPage1();
+  void whatsThisPage2();
+  void whatsThisPage3();
+  /** Functions of access to datas */
+  Settings settings();
 
 private: // Data of configuration
-        Settings m_settings;
-
+  Settings m_settings;
+ 
 protected slots:
-        void slotOK();
-        void slotDefaults();
+  void slotOK();
+  void slotDefaults();
+  
+private:
+  void loadOptions();
+  void saveOptions();
 };
 
 #endif //KOPTIONSDLG_H

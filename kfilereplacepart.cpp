@@ -18,6 +18,7 @@
 #include <qdir.h>
 #include <qdatastream.h>
 #include <qdatetime.h>
+#include <qlistview.h>
 
 //kde includes
 #include <kaboutkfilereplace.h>
@@ -147,13 +148,13 @@ void KFileReplacePart::initGUI()
    (void) new KAction(i18n("Configure &KFileReplace..."), "configure", 0, this, SLOT(slotOptionsPreferences()), actionCollection(), "configure_kfilereplace");
 
    // Results
-   (void)new KAction(i18n("&Properties"), "resfileinfo", 0, resultView(), SLOT(slotResultProperties()), actionCollection(), "results_infos");
-   (void)new KAction(i18n("&Open"), "resfileopen", 0, resultView(), SLOT(slotResultOpen()), actionCollection(), "results_openfile");
-   (void)new KAction(i18n("&Edit with Kate"), "resfileedit", 0, resultView(), SLOT(slotResultEdit()), actionCollection(), "results_editfile");
-   (void)new KAction(i18n("Open Parent &Folder"), "resdiropen", 0, resultView(), SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
-   (void)new KAction(i18n("&Delete"), "resfiledel", 0, resultView(), SLOT(slotResultDelete()), actionCollection(), "results_delete");
-   (void)new KAction(i18n("E&xpand Tree"), 0, resultView(), SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
-   (void)new KAction(i18n("&Reduce Tree"), 0, resultView(), SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
+   (void)new KAction(i18n("&Properties"), "resfileinfo", 0, m_view->resultView(), SLOT(slotResultProperties()), actionCollection(), "results_infos");
+   (void)new KAction(i18n("&Open"), "resfileopen", 0, m_view->resultView(), SLOT(slotResultOpen()), actionCollection(), "results_openfile");
+   (void)new KAction(i18n("&Edit with Kate"), "resfileedit", 0, m_view->resultView(), SLOT(slotResultEdit()), actionCollection(), "results_editfile");
+   (void)new KAction(i18n("Open Parent &Folder"), "resdiropen", 0, m_view->resultView(), SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
+   (void)new KAction(i18n("&Delete"), "resfiledel", 0, m_view->resultView(), SLOT(slotResultDelete()), actionCollection(), "results_delete");
+   (void)new KAction(i18n("E&xpand Tree"), 0, m_view->resultView(), SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
+   (void)new KAction(i18n("&Reduce Tree"), 0, m_view->resultView(), SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
 
    // Help menu
 //   setHelpMenuEnabled(false);
@@ -181,7 +182,6 @@ void KFileReplacePart::initView()
   m_doc->addView(m_view);
   setWidget(m_view);
 
-  m_view->init();
   m_view->setAcceptDrops(false);
 
 }
@@ -194,11 +194,6 @@ KFileReplaceDoc* KFileReplacePart::document() const
 KConfig* KFileReplacePart::config()
 {
   return m_config;
-}
-
-KResultView* KFileReplacePart::resultView()
-{
-  return m_view->resultView();
 }
 
 void KFileReplacePart::updateCommands() // Gray or ungray commands
@@ -696,28 +691,28 @@ void KFileReplacePart::slotFileSave()
    QString XHTML = "<?xml version=\"1.0\" ?>\n"
                    "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
                    "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
-                   "  <head>\n"
-                   "    <title>";
+                   "\t<head>\n"
+                   "\t\t<title>";
            XHTML += i18n("KFileReplace Results File")+ "</title>\n"
-                    "     <style type=\"text/css\">\n"
-                    "      .a {background-color : lightblue;}\n"
-                    "      .b {background-color : paleturquoise;}\n"
-                    "      body { border: solid teal;}\n"
-                    "      .date { text-align:right; color:darkcyan;}\n"
-                    "     </style>\n"
-                    "  </head>\n"
-                    "  <body>\n"
-                    "   <div style=\"background-color:ivory;padding :10px;\">\n"
-                    "    <table width=\"100%\">\n"
-                    "     <tr>\n"
-                    "      <td><h1>";
+                    "\t\t\t<style type=\"text/css\">\n"
+                    "\t\t\t\t.a {background-color : lightblue;}\n"
+                    "\t\t\t\t.b {background-color : paleturquoise;}\n"
+                    "\t\t\t\tbody { border: solid teal;}\n"
+                    "\t\t\t\t.date { text-align:right; color:darkcyan;}\n"
+                    "\t\t\t</style>\n"
+                    "\t</head>\n"
+                    "\t<body>\n"
+                    "\t\t<div style=\"background-color:ivory;padding :10px;\">\n"
+                    "\t\t\t<table width=\"100%\">\n"
+                    "\t\t\t\t<tr>\n"
+                    "\t\t\t\t\t<td><h1>";
            XHTML += i18n("KFileReplace Results File")+"</h1></td>\n"
-                    "      <td><div class=\"date\">";
+                    "\t\t\t\t\t<td><div class=\"date\">";
            XHTML += i18n("Creation date : ")+dateString+"</div></td>\n"
-                    "     </tr>\n"
-                    "    </table>\n"
-                    "   <div>\n"
-                    "    <dl>\n";
+                    "\t\t\t\t</tr>\n"
+                    "\t\t\t</table>\n"
+                    "\t\t<div>\n"
+                    "\t\t\t<dl>\n";
    QTextStream oTStream( &fResults );
    oTStream << XHTML;
 
@@ -734,16 +729,23 @@ void KFileReplacePart::slotFileSave()
   do
     {
       strPath = KFileReplaceLib::instance()->formatFullPath(lviCurItem->text(1), lviCurItem->text(0));
-      QString divclassString ="     <div class=\""+classValue+"\">\n"
-                              "      <dt><a href=\"file:"+strPath+"\">file:"+strPath+"</a>\n"
-                              "      </dt>\n";
-              divclassString += "      <dd>"
-                             + i18n("Old size: "
-                             + lviCurItem->text(2)+" --> New size:"+ lviCurItem->text(3)
-                             + " **** "
-                             + lviCurItem->text(4)+
-                             " strings replaced.</dd>\n"
-                             "     </div>\n");
+      QString divclassString ="\t\t\t\t<div class=\""+classValue+"\">\n"
+                              "\t\t\t\t\t<dt><a href=\"file:"+strPath+"\">file:"+strPath+"</a>\n"
+                              "\t\t\t\t\t</dt>\n";
+              divclassString += "\t\t\t\t\t<dd>"
+                             + i18n("Old size:")
+                             +" "
+                             + lviCurItem->text(2)
+                             +" "
+                             +i18n("--> New size:")
+                             + " "
+                             + lviCurItem->text(3)
+                             +" "
+                             +i18n("--> Replaced strings:")
+                             +" "
+                             + lviCurItem->text(4)
+                             +"</dd>\n"
+                             "\t\t\t\t</div>\n";
       oTStream << divclassString;
 
       if(classValue == "a")
@@ -751,7 +753,7 @@ void KFileReplacePart::slotFileSave()
       else
         classValue = "a";
 
-      replacedFileNumber ++;
+      replacedFileNumber += lviCurItem->text(4).toInt();
 
       lviCurItem = lviCurItem->nextSibling();
     } while(lviCurItem && lviCurItem != lviFirst);
@@ -759,14 +761,14 @@ void KFileReplacePart::slotFileSave()
 
   // d) Write the end of the file
 
-   oTStream<<"     </dl>\n"
-             "    </div>\n"
-             "    <div style=\"text-align:right;color:darkcyan\">"
-           <<"Number of replaced files: "
+   oTStream<<"\t\t\t\t</dl>\n"
+             "\t\t\t</div>\n"
+             "\t\t\t<div style=\"text-align:right;color:darkcyan\">"
+           <<i18n("Number of replaced strings: ")
            <<replacedFileNumber
            <<"</div>\n"
-             "   </div>\n"
-             "  </body>\n"
+             "\t\t</div>\n"
+             "\t</body>\n"
              "</html>\n";
    fResults.close();
    updateCommands();

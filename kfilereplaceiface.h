@@ -2,7 +2,7 @@
                           kfilereplaceif.h  -  description
                              -------------------
     copyright            : (C) 1999 by François Dupoux
-                                  (C) 2003 Andras Mantia
+                           (C) 2003 Andras Mantia
     email                : dupoux@dupoux.com, amantia@kde.org
  ***************************************************************************/
 

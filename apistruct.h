@@ -25,11 +25,11 @@
 class QWidget;
 class QListView;
 class KFileReplaceView;
-class KResultView;
+//class KResultView;
 
 struct RepDirArg
 {
-  KResultView *qlvResult;
+  QListView *qlvResult;
   QListView *qlvStrings;
   QString szDir,
           szFilter;

@@ -29,7 +29,6 @@ class KConfig;
 class KAboutKFileReplace;
 class KFileReplaceDoc;
 class KFileReplaceView;
-class KResultView;
 
 // Global Thread data
 extern bool g_bThreadRunning;
@@ -52,8 +51,7 @@ public:
   static KAboutData* createAboutData();
   KFileReplaceDoc* document() const;
   KConfig *config();
-  KResultView *resultView();
-
+  
 public slots:
   void slotFileNew();
   void slotFileSearch();

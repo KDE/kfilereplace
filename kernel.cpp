@@ -42,13 +42,6 @@
 #include <qlistview.h>
 
 // Standard includes
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <unistd.h>
-//#include <fcntl.h>
-//#include <sys/types.h>
-//#include <sys/mman.h>
-//#include <sys/param.h>
 #ifdef HAVE_SYS_MOUNT_H
 #include <sys/mount.h>
 #endif
@@ -62,8 +55,6 @@
 #define STATFS statfs
 #endif
 #include <sys/stat.h>
-/*#include <errno.h>
-#include <ctype.h>*/
 
 void *Kernel::replaceThread(void *param)
 {
@@ -168,11 +159,11 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
   // 1. -*-*-*-*-*-*-*-*-*- First, list all files -*-*-*-*-*-*-*-*-*-
 
   // If directory doesn't exists
-  if (!dir.exists())
+  /*if (!dir.exists())
     {
       //sprintf (g_szErrMsg, i18n("Directory %s doesn't exists"), szDir);
       return -1;
-    }
+    }*/
 
   for (i=0; i < (int)dir.count(); i++)
     {
@@ -199,7 +190,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
           QFileInfo fi(strFileReadpath);
           if (!fi.exists() || !fi.isReadable()) // We don't have access to the file
           {
-            argu->qlvResult->addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
+            argu->view->addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
           } else
           {
                               // ***** IF SEARCHNIG *******
@@ -229,7 +220,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                                 {
                                   nNbRepFiles++;
                                   // nNbReplacements must be 0 if options "Stop at first occurrence" is enabled
-                                  argu->qlvResult->updateItem(lvi, true, fiOld.size(), nNbReplacements*(argu->bHaltOnFirstOccur==false));
+                                  argu->view->updateItem(lvi, true, fiOld.size(), nNbReplacements*(argu->bHaltOnFirstOccur==false));
                                 }
                               else // No strings found
                                 argu->qlvResult->takeItem(lvi); // Remove lvi from the list
@@ -240,16 +231,16 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                         {
                           // Update Result ListView        if found
                           nNbRepFiles++;
-                          lvi = argu->qlvResult->addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
-                          argu->qlvResult->updateItem(lvi, true, fiOld.size(), 0);
+                          lvi = argu->view->addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
+                          argu->view->updateItem(lvi, true, fiOld.size(), 0);
                         }
 
                     }
                   else // if there are no strigns to search
                     {
                       nNbRepFiles++;
-                      lvi = argu->qlvResult->addFullItem(true, dir[i], szDir, fiOld.size(), fiOld.size(), 0);
-                      argu->qlvResult->updateItem(lvi, true, fiOld.size(), 0);
+                      lvi = argu->view->addFullItem(true, dir[i], szDir, fiOld.size(), fiOld.size(), 0);
+                      argu->view->updateItem(lvi, true, fiOld.size(), 0);
                     }
 
                 }
@@ -260,7 +251,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                   if (!fInfo.exists() || !fInfo.isReadable() || !fInfo.isWritable()) // We don't have access to the file
                   {
                     g_szErrMsg = i18n("<qt>Cannot access file <b>%1</b> for writing.</qt>").arg(strFileReadpath);
-                    argu->qlvResult->addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
+                    argu->view->addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
                   } else
                   {
                     kdDebug(23000) << QString("In (searchFile) to check the file need replace (%1)").arg( strFileReadpath) << endl;
@@ -307,7 +298,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
 
                                 // Update Result ListView
                                 fiNew.setFile(strFileWritepath);
-                                argu->qlvResult->updateItem(lvi, true, fiNew.size(), nNbReplacements);
+                                argu->view->updateItem(lvi, true, fiNew.size(), nNbReplacements);
 
 
                                 if (!argu->bSimulation )
@@ -335,7 +326,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                                   ::unlink(strFileWritepath.local8Bit());
 
                                 // update Result ListView
-                                argu->qlvResult->updateItem(lvi, false, 0, 0, g_szErrMsg);
+                                argu->view->updateItem(lvi, false, 0, 0, g_szErrMsg);
 
                                 if (nRes == replaceError) // error in the file, but continue in current directory
                                   {
@@ -452,8 +443,8 @@ int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString&
   QString strMess;
   int nConfirm=0;
 
-  KFileReplaceApp *app;
-  app = (KFileReplaceApp *) (argu->mainwnd);
+  /*KFileReplaceApp *app;
+  app = (KFileReplaceApp *) (argu->mainwnd);*/
 
   // Items of the string list
   int nReplaceCount[MaxStringToSearch];
@@ -616,7 +607,7 @@ int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString&
               if (!argu->bConfirmStrings  || nConfirm == KConfirmDlg::Yes)
                 {
                   // Add detailed result in result list
-                  argu->qlvResult->increaseStringCount(lvi, strOld[i], strNew[i], strReplace, cOldPt, nRecursiveLength, true);
+                  argu->view->increaseStringCount(lvi, strOld[i], strNew[i], strReplace, cOldPt, nRecursiveLength, true);
 
                   // Write the new replace string
                   if (!argu->bSimulation )
@@ -686,8 +677,8 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbRep
   int nNbStrings;
   int i, j; // for(;;)
 
-  KFileReplaceApp *app;
-  app = (KFileReplaceApp *) (argu->mainwnd);
+  /*KFileReplaceApp *app;
+  app = (KFileReplaceApp *) (argu->mainwnd);*/
 
   // Items of the string list
   int nReplaceCount[MaxStringToSearch];
@@ -789,7 +780,7 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbRep
 
               // Add detailed result in result list
               if (lvi)
-                argu->qlvResult->increaseStringCount(lvi, strOld[i], "", "", cOldPt, nRecursiveLength, !bHaltOnFirstOccur);
+                argu->view->increaseStringCount(lvi, strOld[i], "", "", cOldPt, nRecursiveLength, !bHaltOnFirstOccur);
 
               cOldPt += nRecursiveLength;
               goto end_search; // Do not make other search on this byte

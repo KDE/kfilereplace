@@ -19,12 +19,9 @@
 #ifndef KCONFIRMDLG_H
 #define KCONFIRMDLG_H
 
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qmultilineedit.h>
-#include <qdialog.h>
+#include "kconfirmdlgs.h"
 
-class KConfirmDlg : public QDialog
+class KConfirmDlg : public KConfirmDlgS
 {
    Q_OBJECT
 
@@ -46,26 +43,13 @@ class KConfirmDlg : public QDialog
     void slotYes();
     void slotNo();
     void slotSkipFile();
-    void slotSkipDir();
+    void slotSkipFolder();
     void slotCancel();
 
   public:
     void setData(const QString& strFile, const QString& strDir, const QString& strSearch, const QString& strReplace);
     QString getReplaceString() {return m_strReplace;}
 
-  private:
-    QLabel *m_labelFile;
-    QLabel *m_labelDir;
-    QLabel *m_labelSearch;
-    QMultiLineEdit *m_editSearch;
-    QLabel *m_labelReplace;
-    QMultiLineEdit *m_editReplace;
-    QButton *m_btnYes;
-    QButton *m_btnNo;
-    QButton *m_btnSkipFile;
-    QButton *m_btnSkipDir;
-    QButton *m_btnCancel;
-
-};
+ };
 
 #endif
