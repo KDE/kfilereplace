@@ -486,7 +486,7 @@ void KFileReplaceView::slotResultDirOpen()
   {
     QFileInfo fiFile;
     fiFile.setFile(currentItem());
-    (void) new KRun (KURL(fiFile.dirPath()), 0, true, true);
+    (void) new KRun (KURL::fromPathOrURL(fiFile.dirPath()), 0, true, true);
     m_lviCurrent = 0L;
   }
 }
