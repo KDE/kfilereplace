@@ -2,7 +2,7 @@
                           kfilereplaceview.cpp  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by François Dupoux
+    copyright            : (C) 1999 by Franï¿½is Dupoux
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
@@ -34,7 +34,7 @@
 #include <kpopupmenu.h>
 #include <krun.h>
 #include <kurl.h>
-#include <kpropsdlg.h>
+#include <kpropertiesdialog.h>
 #include <kiconloader.h>
 
 // application specific includes
