@@ -1583,7 +1583,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
     {
       file.close();
 
-      KMessageBox::information(m_w, i18n("<qt>File <b>%1</b> seems not to be written in new kfr format. Remember that old kfr format will be soon abandoned! You can convert your old rules files by simply saving them with kfilereplace.</qt>").arg(fileName),i18n("Warning"));
+      KMessageBox::information(m_w, i18n("<qt>File <b>%1</b> seems not to be written in new kfr format. Remember that the old kfr format will be soon abandoned. You can convert your old rules files by simply saving them with kfilereplace.</qt>").arg(fileName),i18n("Warning"));
 
       KFileReplaceLib::convertOldToNewKFRFormat(fileName, sv);
 
@@ -1603,7 +1603,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 
   if(searchAttribute.isNull() || searchAttribute.isEmpty())
     {
-      int answer = KMessageBox::warningYesNo(m_w, i18n("<qt>The format of kfr file has been changed. I will try load <b>%1</b>. See KFilereplace manual for details. Please, tell me do you want to load a search-and-replace list of strings?</qt>").arg(fileName),i18n("Warning"));
+      int answer = KMessageBox::warningYesNo(m_w, i18n("<qt>The format of kfr files has been changed; attempting to load <b>%1</b>. Please see the KFilereplace manual for details. Do you want to load a search-and-replace list of strings?</qt>").arg(fileName),i18n("Warning"));
 
       if(answer == KMessageBox::Yes)
         searchAttribute = "false";
