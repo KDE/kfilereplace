@@ -964,7 +964,7 @@ void KFileReplacePart::slotStringsLoad()
   QString fileName;
 
   // Select the file to load from
-  fileName = KFileDialog::getOpenFileName(QString::null, i18n("*.kfr|KFileReplace strings (*.kfr)\n*|All Files (*)"), widget(), i18n("Load Strings From File"));
+  fileName = KFileDialog::getOpenFileName(QString::null, i18n("*.kfr|KFileReplace Strings (*.kfr)\n*|All Files (*)"), widget(), i18n("Load Strings From File"));
 
   if(!fileName.isEmpty())
     loadStringFile(fileName);
