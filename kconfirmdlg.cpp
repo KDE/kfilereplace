@@ -18,6 +18,8 @@
 #include "kconfirmdlg.h"
 #include <kapplication.h>
 #include <klocale.h>
+#include <kpushbutton.h>
+#include <kstdguiitem.h>
 
 #include <qlayout.h>
 
@@ -79,24 +81,19 @@ void KConfirmDlg::initDialog()
   gbox -> addMultiCellWidget (m_editReplace, 5, 5, 0, 4);
 
   // buttons
-  m_btnYes = new QPushButton(this,"m_btnYes");
-  m_btnYes->setText(i18n("&Yes"));
+  m_btnYes = new KPushButton(KStdGuiItem::yes(),this,"m_btnYes");
   gbox -> addWidget (m_btnYes, 6, 0);
 
-  m_btnNo = new QPushButton(this,"m_btnNo");
-  m_btnNo->setText(i18n("&No"));
+  m_btnNo = new KPushButton(KStdGuiItem::no(),this,"m_btnNo");
   gbox -> addWidget (m_btnNo, 6, 1);
 
-  m_btnSkipFile = new QPushButton(this,"m_btnSkipFile");
-  m_btnSkipFile->setText(i18n("Skip &File"));
+  m_btnSkipFile = new QPushButton(i18n("Skip &File"),this,"m_btnSkipFile");
   gbox -> addWidget (m_btnSkipFile, 6, 2);
 
-  m_btnSkipDir = new QPushButton(this,"m_btnSkipDir");
-  m_btnSkipDir->setText(i18n("Skip &Folder"));
+  m_btnSkipDir = new QPushButton(i18n("Skip &Folder"),this,"m_btnSkipDir");
   gbox -> addWidget (m_btnSkipDir, 6, 3);
 
-  m_btnCancel = new QPushButton(this,"m_btnCancel");
-  m_btnCancel->setText(i18n("Cancel"));
+  m_btnCancel = new KPushButton(KStdGuiItem::cancel(),this,"m_btnCancel");
   gbox -> addWidget (m_btnCancel, 6, 4);
 
 }
