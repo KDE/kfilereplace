@@ -26,6 +26,7 @@
 #include <qfileinfo.h>
 #include <qstringlist.h>
 #include <qdatetime.h>
+#include <qstring.h>
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -98,7 +99,7 @@ bool KExpression::doesStringMatch(const char *szText, int nTxtLen, const char *s
   bool bRes;
 
   // Do the current char matches ?
-  if (m_bCaseSensitive == true)
+  if (m_bCaseSensitive/* == true*/)
     {
       bCharMatches = (szString[0] == szText[0]);
     }
