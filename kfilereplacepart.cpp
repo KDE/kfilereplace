@@ -512,8 +512,8 @@ KAboutData* KFileReplacePart::createAboutData()
                                           KFR_VERSION,
                                           I18N_NOOP( "Batch search and replace tool."),
                                           KAboutData::License_GPL_V2,
-                                          "(C) 1999-2002 François Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini", I18N_NOOP("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
-  aboutData->addAuthor("François Dupoux",
+                                          "(C) 1999-2002 Franï¿½is Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini", I18N_NOOP("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
+  aboutData->addAuthor("Franï¿½is Dupoux",
                        I18N_NOOP("Original author of the KFileReplace tool"),
                        "dupoux@dupoux.com");
   aboutData->addAuthor("Emiliano Gulmini",
@@ -565,21 +565,21 @@ void KFileReplacePart::initGUI()
         }
     }
   // File
-  (void)new KAction(i18n("Customize Search/Replace Session"), "projectopen", 0, this, SLOT(slotSetNewParameters()), actionCollection(), "new_project");
+  (void)new KAction(i18n("Customize Search/Replace Session..."), "projectopen", 0, this, SLOT(slotSetNewParameters()), actionCollection(), "new_project");
   (void)new KAction(i18n("&Search"), "filesearch", 0, this, SLOT(slotSearchingOperation()), actionCollection(), "search");
   (void)new KAction(i18n("S&imulate"), "filesimulate", 0, this, SLOT(slotSimulatingOperation()), actionCollection(), "file_simulate");
   (void)new KAction(i18n("&Replace"),  "filereplace", 0, this, SLOT(slotReplacingOperation()), actionCollection(), "replace");
   (void)new KAction(i18n("Sto&p"), "stop", 0, this, SLOT(slotStop()), actionCollection(), "stop");
-  (void)new KAction(i18n("Cre&ate Report File"), "filesave", 0, this, SLOT(slotCreateReport()), actionCollection(), "save_results");
+  (void)new KAction(i18n("Cre&ate Report File..."), "filesave", 0, this, SLOT(slotCreateReport()), actionCollection(), "save_results");
 
   // Strings
-  (void)new KAction(i18n("&Add String"), "editadd", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
+  (void)new KAction(i18n("&Add String..."), "editadd", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
 
   (void)new KAction(i18n("&Delete String"), "editremove", 0, this, SLOT(slotStringsDeleteItem()), actionCollection(), "strings_del");
   (void)new KAction(i18n("&Empty Strings List"), "eraser", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
-  (void)new KAction(i18n("Edit Selected String"), "edit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
-  (void)new KAction(i18n("&Save Strings List to File"), "filesave", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
-  (void)new KAction(i18n("&Load Strings List From File"), "unsortedList", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
+  (void)new KAction(i18n("Edit Selected String..."), "edit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
+  (void)new KAction(i18n("&Save Strings List to File..."), "filesave", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
+  (void)new KAction(i18n("&Load Strings List From File..."), "unsortedList", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
   (void)new KRecentFilesAction(i18n("&Load Recent Strings Files"), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),"strings_load_recent");
   (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
   (void)new KAction(i18n("&Invert All Strings (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertAll()), actionCollection(), "strings_invert_all");
@@ -590,7 +590,7 @@ void KFileReplacePart::initGUI()
   (void)new KToggleAction(i18n("Case &Sensitive"), "casesensitive_option", 0, this, SLOT(slotOptionCaseSensitive()), actionCollection(), "options_case");
   (void)new KToggleAction(i18n("Enable Commands &in Replace String: [$command:option$]"), "command_option", 0, this, SLOT(slotOptionVariables()), actionCollection(), "options_var");
   (void)new KToggleAction(i18n("Enable &Regular Expressions"), "regularexpression_option", 0, this, SLOT(slotOptionRegularExpressions()), actionCollection(), "options_regularexpressions");
-  (void)new KAction(i18n("Configure &KFileReplace"), "configure", 0, this, SLOT(slotOptionPreferences()), actionCollection(), "configure_kfilereplace");
+  (void)new KAction(i18n("Configure &KFileReplace..."), "configure", 0, this, SLOT(slotOptionPreferences()), actionCollection(), "configure_kfilereplace");
 
   // Results
   (void)new KAction(i18n("&Properties"), "informations", 0, m_view, SLOT(slotResultProperties()), actionCollection(), "results_infos");
