@@ -123,8 +123,7 @@ void KFileReplacePart::slotSearchingOperation()
   QString currentDirectory = QStringList::split(",",m_option->m_directories)[0],
           currentFilter = QStringList::split(",",m_option->m_filters)[0];
 
-  m_view->m_ledGo->setState(KLed::Off);
-  m_view->m_ledStop->setState(KLed::On);
+  showSemaphore("red");
 
   uint filesNumber = 0;
 
@@ -133,7 +132,7 @@ void KFileReplacePart::slotSearchingOperation()
   else
     fileSearch(currentDirectory, currentFilter);
 
-  m_view->m_ledWait->setState(KLed::On);
+  showSemaphore("yellow");
 
   kapp->processEvents();
 
@@ -155,9 +154,7 @@ void KFileReplacePart::slotSearchingOperation()
 
   m_searchingOperation = true;
 
-  m_view->m_ledGo->setState(KLed::On);
-  m_view->m_ledWait->setState(KLed::Off);
-  m_view->m_ledStop->setState(KLed::Off);
+  showSemaphore("green");
 }
 
 void KFileReplacePart::slotReplacingOperation()
@@ -186,13 +183,11 @@ void KFileReplacePart::slotReplacingOperation()
 
   rv->setSorting(-1);
 
-  m_view->m_ledGo->setState(KLed::On);
-  m_view->m_ledStop->setState(KLed::Off);
+  showSemaphore("green");
 
   QString currentDirectory = QStringList::split(",",m_option->m_directories)[0];
 
-  m_view->m_ledGo->setState(KLed::Off);
-  m_view->m_ledStop->setState(KLed::On);
+  showSemaphore("red");
 
   if(m_option->m_recursive)
     {
@@ -219,8 +214,7 @@ void KFileReplacePart::slotReplacingOperation()
 
   m_searchingOperation = false;
 
-  m_view->m_ledGo->setState(KLed::On);
-  m_view->m_ledStop->setState(KLed::Off);
+  showSemaphore("green");
 }
 
 void KFileReplacePart::slotSimulatingOperation()
@@ -238,7 +232,7 @@ void KFileReplacePart::slotStop()
   resetActions();
 }
 
-void KFileReplacePart::slotSave()
+void KFileReplacePart::slotCreateReport()
 {
   // Check there are results
   KListView* rv = m_view->getResultsView(),
@@ -385,6 +379,7 @@ void KFileReplacePart::slotStringsSave()
        return ;
      }
    QTextStream oTStream( &file );
+   oTStream.setEncoding(QTextStream::UnicodeUTF8);
    oTStream << header
             << body
             << footer;
@@ -472,8 +467,8 @@ void KFileReplacePart::slotOptionPreferences()
 
   if(!dlg.exec())
     return;
-
-  dlg.saveRCOptions();
+  qWarning("ASK=%d",dontAskAgain());
+  qWarning("M_OPTION=%d",m_option->m_askConfirmReplace);
   //updating m_view
   m_view->updateOptions(m_option);
 
@@ -610,13 +605,25 @@ void KFileReplacePart::initGUI()
   setXMLFile("kfilereplacepartui.rc");
 
   actionCollection()->setHighlightingEnabled(true);
+  
+  DCOPClient *client = kapp->dcopClient();
+  QCStringList appList = client->registeredApplications();
+  bool quantaFound = false;
+  for(QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
+  {
+    if((*it).left(6) == "quanta")
+    {
+      quantaFound = true;
+      break;
+    }
+  }
   // File
   (void)new KAction(i18n("Customize Search/Replace Session"), "projectopen", 0, this, SLOT(slotSetNewParameters()), actionCollection(), "new_project");
   (void)new KAction(i18n("&Search"), "filesearch", 0, this, SLOT(slotSearchingOperation()), actionCollection(), "search");
   (void)new KAction(i18n("S&imulate"), "filesimulate", 0, this, SLOT(slotSimulatingOperation()), actionCollection(), "file_simulate");
   (void)new KAction(i18n("&Replace"),  "filereplace", 0, this, SLOT(slotReplacingOperation()), actionCollection(), "replace");
   (void)new KAction(i18n("Sto&p"), "stop", 0, this, SLOT(slotStop()), actionCollection(), "stop");
-  (void)new KAction(i18n("Cre&ate Report File"), "filesave", 0, this, SLOT(slotSave()), actionCollection(), "save_results");
+  (void)new KAction(i18n("Cre&ate Report File"), "filesave", 0, this, SLOT(slotCreateReport()), actionCollection(), "save_results");
 
   // Strings
   (void)new KAction(i18n("&Add String"), "edit_add", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
@@ -634,24 +641,14 @@ void KFileReplacePart::initGUI()
   (void)new KToggleAction(i18n("&Include Sub-Folders"), "recursive_option", 0, this, SLOT(slotOptionRecursive()), actionCollection(), "options_recursive");
   (void)new KToggleAction(i18n("Create &Backup Files"), "backup_option", 0, this, SLOT(slotOptionBackup()), actionCollection(), "options_backup");
   (void)new KToggleAction(i18n("Case &Sensitive"), "casesensitive_option", 0, this, SLOT(slotOptionCaseSensitive()), actionCollection(), "options_case");
-  (void)new KToggleAction(i18n("Enable &Variables in Replace String: [$command:option$]"), "command_option", 0, this, SLOT(slotOptionVariables()), actionCollection(), "options_var");
+  (void)new KToggleAction(i18n("Enable &Commands in Replace String: [$command:option$]"), "command_option", 0, this, SLOT(slotOptionVariables()), actionCollection(), "options_var");
   (void)new KToggleAction(i18n("Enable &Regular Expressions"), "regularexpression_option", 0, this, SLOT(slotOptionRegularExpressions()), actionCollection(), "options_regularexpressions");
   (void)new KAction(i18n("Configure &KFileReplace"), "configure", 0, this, SLOT(slotOptionPreferences()), actionCollection(), "configure_kfilereplace");
 
   // Results
   (void)new KAction(i18n("&Properties"), "informations", 0, m_view, SLOT(slotResultProperties()), actionCollection(), "results_infos");
   (void)new KAction(i18n("&Open"), "filenew", 0, m_view, SLOT(slotResultOpen()), actionCollection(), "results_openfile");
-  DCOPClient *client = kapp->dcopClient();
-  QCStringList appList = client->registeredApplications();
-  bool quantaFound = false;
-  for(QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
-    {
-      if((*it).left(6) == "quanta")
-        {
-          quantaFound = true;
-          break;
-        }
-    }
+
   if(quantaFound)
     {
       (void)new KAction(i18n("&Edit in Quanta"), "quanta", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
@@ -674,9 +671,7 @@ void KFileReplacePart::initView()
 
   m_view->setAcceptDrops(false);
 
-  m_view->m_ledGo->setState(KLed::On);
-  m_view->m_ledWait->setState(KLed::Off);
-  m_view->m_ledStop->setState(KLed::Off);
+  showSemaphore("green");
 }
 
 void KFileReplacePart::freezeActions()
@@ -755,6 +750,13 @@ void KFileReplacePart::loadOptions()
   m_config->setGroup("Notification Messages");
 
   m_option->m_notifyOnErrors  = m_config->readBoolEntry(rcNotifyOnErrors, true);
+
+  m_option->m_askConfirmReplace = m_config->readBoolEntry(rcAskConfirmReplace, AskConfirmReplaceOption);
+
+  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, "no");
+
+  if(dontAskAgain == "yes")
+    m_option->m_askConfirmReplace = false;
 }
 
 void KFileReplacePart::loadFileSizeOptions()
@@ -824,8 +826,28 @@ void KFileReplacePart::loadFiltersList()
   QString filtersEntryList = m_config->readEntry(rcFiltersList);
   #endif
 
-  if(filtersEntryList.isEmpty())
-    filtersEntryList = "*.htm;*.html;*.xml;*.xhtml;*.css;*.js;*.php";
+  DCOPClient *client = kapp->dcopClient();
+  QCStringList appList = client->registeredApplications();
+  bool quantaFound = false;
+
+  for(QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
+    {
+      if((*it).left(6) == "quanta")
+        {
+          quantaFound = true;
+          break;
+        }
+    }
+  if(quantaFound)
+    {
+      if(filtersEntryList.isEmpty())
+	filtersEntryList = "*.htm;*.html;*.xml;*.xhtml;*.css;*.js;*.php";
+    }
+  else
+    {
+      if(filtersEntryList.isEmpty())
+	filtersEntryList = "*.c*;*.h*;*.sh;*.txt*;*.p*;*.java;*.log";
+    }
 
   m_option->m_filters = filtersEntryList;
 }
@@ -877,6 +899,10 @@ void KFileReplacePart::saveOptions()
 
   m_config->setGroup("Notification Messages");
   m_config->writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
+  if(m_config->readEntry(rcDontAskAgain,"no") == "yes")
+    m_config->writeEntry(rcAskConfirmReplace, false);
+  else
+    m_config->writeEntry(rcAskConfirmReplace, m_option->m_askConfirmReplace);
 
   m_config->sync();
 }
@@ -1061,12 +1087,15 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
       return ;
     }
   QTextStream currentStream(&currentFile);
-  QString line = currentStream.read();
-  QString origLine = line;
+  currentStream.setEncoding(QTextStream::UnicodeUTF8);
+  QString line = currentStream.read(),
+          backupLine = line;
 
   QString backupSize = KFileReplaceLib::formatFileSize(currentFile.size());
 
   currentFile.close();
+
+  QString backupExtension = m_option->m_backupExtension;
 
   kapp->processEvents();
 
@@ -1074,33 +1103,42 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   KListViewItem *item = 0;
   int occurrence = 0;
 
-  replacingLoop(line, &item, atLeastOneStringFound, occurrence, m_option->m_regularExpressions);
+  replacingLoop(line, &item, atLeastOneStringFound, occurrence, m_option->m_regularExpressions, m_option->m_askConfirmReplace);
 
-  if(!m_option->m_simulation && atLeastOneStringFound)
-  {
   //If we are not performing a simulation creates a backup file
-    QString backupExtension = m_option->m_backupExtension;
-    QFile backupFile(oldPathString + backupExtension);
-    if(!backupFile.open(IO_WriteOnly))
+  if(!m_option->m_simulation)
     {
-      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(backupFile.name()),QString::null, rcNotifyOnErrors);
-      return ;
+      if(atLeastOneStringFound)
+        {
+          QFile backupFile(oldPathString + backupExtension);
+          if(!backupFile.open(IO_WriteOnly))
+            {
+              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(backupFile.name()),QString::null, rcNotifyOnErrors);
+              return ;
+            }
+          QTextStream backupStream(&backupFile);
+	  backupStream.setEncoding(QTextStream::UnicodeUTF8);
+          backupStream << backupLine;
+          backupFile.close();
+	}
     }
-    QTextStream backupStream(&backupFile);
-    backupStream << origLine;
-    backupFile.close();
-    
-    QFile newFile(oldPathString);
-    if(!newFile.open(IO_WriteOnly))
-      {
-        if (QFileInfo(oldPathString).isFile())   
-          KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(oldFileName),QString::null, rcNotifyOnErrors);
-        return ;
-      }
-    QTextStream newStream(&newFile);
-    newStream << line;
-    newFile.close();
-   }
+
+  if(!m_option->m_simulation)
+    {
+      if(atLeastOneStringFound)
+        {
+          QFile newFile(oldPathString);
+          if(!newFile.open(IO_WriteOnly))
+            {
+              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(oldFileName),QString::null, rcNotifyOnErrors);
+              return ;
+            }
+          QTextStream newStream(&newFile);
+	  newStream.setEncoding(QTextStream::UnicodeUTF8);
+          newStream << line;
+          newFile.close();
+        }
+     }
 
    if(!m_option->m_ignoreFiles)
      atLeastOneStringFound = true;
@@ -1109,7 +1147,6 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
 
    if(atLeastOneStringFound && item/* && atLeastOneStringConfirmed*/)
      {
-
        KFileReplaceLib::setIconForFileEntry(item,currentDir+"/"+oldFileName);
        item->setText(0,oldFileName);
        item->setText(1,currentDir);
@@ -1149,26 +1186,34 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   KListViewItem *item = 0;
 
   QTextStream oldStream( &oldFile );
+  oldStream.setEncoding(QTextStream::UnicodeUTF8);
   QString line = oldStream.read();
+
   oldFile.close();
 
   bool atLeastOneStringFound = false;
   int occurrence = 0;
 
-  replacingLoop(line, &item, atLeastOneStringFound, occurrence, m_option->m_regularExpressions);
+  replacingLoop(line, &item, atLeastOneStringFound, occurrence, m_option->m_regularExpressions, m_option->m_askConfirmReplace);
+
 
   if(!m_option->m_simulation)
-  {
-    QFile newFile(oldPathString);
-    if(!newFile.open(IO_WriteOnly))
-    {      
-        KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(newFile.name()),QString::null, rcNotifyOnErrors);
-      return ;
-    }
-    QTextStream newStream( &newFile );
-    newStream << line;
-    newFile.close();
-  }
+    {
+      if(atLeastOneStringFound)
+        {
+	  QFile newFile(oldPathString);
+          if(!newFile.open(IO_WriteOnly))
+            {
+              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(newFile.name()),QString::null, rcNotifyOnErrors);
+              return ;
+            }
+          QTextStream newStream( &newFile );
+	  newStream.setEncoding(QTextStream::UnicodeUTF8);
+          newStream << line;
+          newFile.close();
+	}
+     }
+
   QFileInfo nf(oldPathString);
   QString fileSizeAfterReplacing = KFileReplaceLib::formatFileSize(nf.size());
 
@@ -1196,11 +1241,12 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
     }
 }
 
-void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regularExpression)
+void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regularExpression, bool& askConfirmReplace)
 {
   KeyValueMap tempMap = m_replacementMap;
   KeyValueMap::Iterator it;
   bool caseSensitive = m_option->m_caseSensitive;
+  KListView* rv = m_view->getResultsView();
 
   for(it = tempMap.begin(); it != tempMap.end(); ++it)
     {
@@ -1209,22 +1255,57 @@ void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& 
 
       ResultViewEntry entry(it.key(), it.data(), regularExpression, caseSensitive);
       while(entry.pos(line) != -1)
-      {
+        {
           if(m_stop)
            break;
-          atLeastOneStringFound = true;
-          QString msg = entry.message(entry.capturedText(line),
-                                      entry.lineNumber(line),
-                                      entry.columnNumber(line));
+	  //qWarning("prima=askConfirmReplace=%d",askConfirmReplace);
+	  if(askConfirmReplace)
+	  {//qWarning("dopo=askConfirmReplace=%d",askConfirmReplace);
+	      int answer = KMessageBox::questionYesNo(0,
+		                                      i18n("<qt>Do you want to replace the string <b>%1</b> with the string <b>%2</b>?</qt>").arg(it.key()).arg(it.data()),
+                                          i18n("Confirm Replace"),
+						      KStdGuiItem::yes(),
+						      KStdGuiItem::no(),
+						      "Dont ask again");
+	      if(answer == KMessageBox::Yes)
+	        {
+		  atLeastOneStringFound = true;
+		  QString msg = entry.message(entry.capturedText(line),
+					      entry.lineNumber(line),
+					      entry.columnNumber(line));
 
-          if(!*item)
-            *item =  new KListViewItem(m_view->getResultsView());
-          KListViewItem* tempItem = new KListViewItem(*item);
-          tempItem->setMultiLinesEnabled(true);
-          tempItem->setText(0,msg);
-          occur ++;
-          entry.updateLine(line);
-          entry.incPos();
+		  if(!*item)
+		    *item =  new KListViewItem(rv);
+		  KListViewItem* tempItem = new KListViewItem(*item);
+		  tempItem->setMultiLinesEnabled(true);
+		  tempItem->setText(0,msg);
+		  occur ++;
+		  entry.updateLine(line);
+		  entry.incPos();
+		}
+              else
+	        {
+		  entry.incPos();
+		}
+              if(dontAskAgain()) askConfirmReplace = false;
+	     }
+	   else
+	     {
+	       atLeastOneStringFound = true;
+	       QString msg = entry.message(entry.capturedText(line),
+					   entry.lineNumber(line),
+					   entry.columnNumber(line));
+
+	       if(!*item)
+		 *item =  new KListViewItem(rv);
+	       KListViewItem* tempItem = new KListViewItem(*item);
+	       tempItem->setMultiLinesEnabled(true);
+	       tempItem->setText(0,msg);
+	       occur ++;
+	       entry.updateLine(line);
+	       entry.incPos();
+	     }
+
         }
     }
 }
@@ -1323,6 +1404,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
     }
   // Creates a stream with the file
   QTextStream stream( &file );
+  stream.setEncoding(QTextStream::UnicodeUTF8);
   QString line = stream.read();
   file.close();
 
@@ -1358,8 +1440,8 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
         rxKey = QRegExp("("+key+")", caseSensitive, false);
       else
         strKey = key;
-      //If this option is true then for any string in
-      //the map we search for the first match
+      /* If this option is true then for any string in
+      *  the map we search for the first match*/
       if(haltOnFirstOccur)
         {
           int pos;
@@ -1383,21 +1465,20 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
                       capturedText;
 
               if(m_option->m_regularExpressions)
-                capturedText = rxKey.cap(1);//.replace('\n',"\\n");
+                capturedText = rxKey.cap(1);
               else
-                capturedText = line.mid(pos,strKey.length());//.replace('\n',"\\n");
+                capturedText = line.mid(pos,strKey.length());
 
               msg = i18n(" first captured text \"%1\" at line: %2, column: %3").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
               tempItem->setMultiLinesEnabled(true);
               tempItem->setText(0,msg);
               occurrence = 1;
             }
-          //continue;
         }// ends haltOnFirstOccur if-block
       else
         {
-          //This point of the code is reached when we must search for all
-          //occurrences of all the strings
+          /* This point of the code is reached when we must search for all
+	  *  occurrences of all the strings*/
 
           int pos = 0;
           if(m_option->m_regularExpressions)
@@ -1419,12 +1500,12 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 
               if(m_option->m_regularExpressions)
                 {
-                  capturedText = rxKey.cap(1);//.replace('\n',"\\n");
+                  capturedText = rxKey.cap(1);
                   pos = rxKey.search(line, pos+rxKey.matchedLength());
                 }
               else
                 {
-                  capturedText = line.mid(pos,strKey.length());//.replace('\n',"\\n");
+                  capturedText = line.mid(pos,strKey.length());
                   pos = line.find(strKey,pos+strKey.length());
                 }
 
@@ -1441,7 +1522,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
                 break;
             }
         }
-      //Advances of one position in the map of the strings
+      //Advances of one position in the strings map
       ++it;
 
       //we push stop button
@@ -1467,7 +1548,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 
 void KFileReplacePart::loadViewContent()
 {
-        //Maps content of the strings view to a QMap
+  /* Maps the content of the strings view to a QMap */
   KeyValueMap tempMap;
   CommandEngine command;
 
@@ -1486,7 +1567,8 @@ void KFileReplacePart::loadViewContent()
 
 void KFileReplacePart::loadRulesFile(const QString& fileName)
 {
-  //loads kfr file
+  /* Loads a file with kfr extension.
+  *  creates a xml document and browses it*/
   QDomDocument doc("mydocument");
   QFile file(fileName);
   KListView* sv = m_view->getStringsView();
@@ -1534,10 +1616,11 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
   else
     m_option->m_searchingOnlyMode = false;
 
+  //Refreshes the view appearances
   m_view->changeView(m_option->m_searchingOnlyMode);
   //Goes to next tag
   n = n.nextSibling();
-
+  //Reads the string list
   while(!n.isNull())
     {
       QDomElement e = n.toElement(); // tries to convert the node to an element.
@@ -1550,7 +1633,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
       n = n.nextSibling();
     }
 
-     // Adds file to "load strings form file" menu
+  // Adds file to "load strings form file" menu
   QStringList fileList = m_option->m_recentStringFileList;
   if(!fileList.contains(fileName))
     {
@@ -1560,6 +1643,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
     }
 
   m_view->changeView(m_option->m_searchingOnlyMode);
+
   m_view->loadMap(docMap);
 
   resetActions();
@@ -1567,7 +1651,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 
 bool KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
 {
-  //dlg reads options from m_option, then execs, finally returns options.
+  /* This dlg reads options from m_option, then execs, finally returns options.*/
   KNewProjectDlg dlg(m_option);
 
   if(!startURL.isEmpty())
@@ -1591,13 +1675,13 @@ bool KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
 
 void KFileReplacePart::setOptionMask()
 {
-        m_optionMask |= QDir::Dirs;
+  m_optionMask |= QDir::Dirs;
 
-        if(!m_option->m_ignoreHidden)
-          m_optionMask |= QDir::Hidden;
+  if(!m_option->m_ignoreHidden)
+    m_optionMask |= QDir::Hidden;
 
-        if(!m_option->m_followSymLinks)
-           m_optionMask |= QDir::NoSymLinks;
+  if(!m_option->m_followSymLinks)
+    m_optionMask |= QDir::NoSymLinks;
 }
 
 void KFileReplacePart::stringsInvert(bool invertAll)
@@ -1673,6 +1757,40 @@ bool KFileReplacePart::checkBeforeOperation()
   m_view->getResultsView()->clear();
 
   return true;
+}
+
+void KFileReplacePart::showSemaphore(QString s)
+{
+  if(s == "green")
+    {
+      m_view->m_ledGo->setState(KLed::On);
+      m_view->m_ledWait->setState(KLed::Off);
+      m_view->m_ledStop->setState(KLed::Off);
+    }
+  else
+  if(s == "yellow")
+    {
+      m_view->m_ledGo->setState(KLed::Off);
+      m_view->m_ledWait->setState(KLed::On);
+      m_view->m_ledStop->setState(KLed::Off);
+    }
+  else
+  if(s == "red")
+    {
+      m_view->m_ledGo->setState(KLed::Off);
+      m_view->m_ledWait->setState(KLed::Off);
+      m_view->m_ledStop->setState(KLed::On);
+    }
+}
+
+bool KFileReplacePart::dontAskAgain()
+{
+  m_config->setGroup("Notification Messages");
+  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, "no");
+  if(dontAskAgain == "yes")
+    return true;
+  else
+    return false;
 }
 
 void KFileReplacePart::whatsThis()

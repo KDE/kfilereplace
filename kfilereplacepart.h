@@ -60,7 +60,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void slotReplacingOperation();
     void slotSimulatingOperation();
     void slotStop();
-    void slotSave();
+    void slotCreateReport();
     void slotStringsAdd();
     void slotQuickStringsAdd();
     void slotStringsDeleteItem();
@@ -135,7 +135,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void recursiveFileReplace(const QString& dirName, int& filesNumber);
     void replaceAndBackup(const QString& currentDir, const QString& oldFileName);
     void replaceAndOverwrite(const QString& currentDir, const QString& oldFileName);
-    void replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regularExpression);
+    void replacingLoop(QString& line, KListViewItem** item, bool& atLeastOneStringFound, int& occur, bool regularExpression, bool& askConfirmReplace);
 
     /**
      * Searching methods
@@ -158,6 +158,10 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void stringsInvert(bool invertAll);
 
     bool checkBeforeOperation();
+
+    void showSemaphore(QString s);
+
+    bool dontAskAgain();
 
     void whatsThis();
 };

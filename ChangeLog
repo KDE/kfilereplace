@@ -1,3 +1,9 @@
+2005-01-17 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+  *  Now it should be possible to handle other characters encoding, like japanese.
+  *  Added, but still buggy, a "replace confirmation" option.
+  *  Now when open KFilereplace as standalone application it uses 
+     this "*.c*;*.h*;*.sh;*.txt*;*.p*;*.java;*.log" string as default filter.
+
 2005-01-14 Andras Mantia <amantia@kde.org>
   *  Don't show the cannot open file dialogs for directories
   *  Don't create a backup for every scanned file, only for those that were modified

@@ -36,7 +36,6 @@ class KOptionsDlg : public KOptionsDlgS
   public:
     KOptionsDlg(RCOptions* info, QWidget *parent, const char *name);
     ~KOptionsDlg();
-    void saveRCOptions();
 
   private:
     RCOptions* m_option;
@@ -46,10 +45,13 @@ class KOptionsDlg : public KOptionsDlgS
     void slotOK();
     void slotDefaults();
     void slotChbBackup(bool b);
+    void slotChbConfirmStrings(bool b);
+    void slotChbShowConfirmDialog(bool b);
     void slotHelp(){ kapp->invokeHelp(QString::null, "kfilereplace"); }
 
   private:
     void initGUI();
+    void saveRCOptions();
     void whatsThis();
 };
 

@@ -26,32 +26,33 @@
 
 typedef QMap<QString,QString> KeyValueMap;
 // entry strings in the kfilereplacerc file
-const QString rcDirectoriesList="Directories list";
-const QString rcFiltersList="Filters list";
-const QString rcRecentFiles="Recent files";
-const QString rcAllStringsMustBeFound="All strings must be found";
-const QString rcCaseSensitive="Case sensitive";
-const QString rcConfirmStrings="Confirm strings";
-const QString rcConfirmFiles="Confirm files";
-const QString rcConfirmDirs="Confirm directories";
-const QString rcFollowSymLinks="Follow symbolic links";
-const QString rcHaltOnFirstOccur="Halt on first occurrence";
-const QString rcIgnoreHidden="Ignore hidden files";
-const QString rcRecursive="Search/replace in sub folders";
-const QString rcVariables="Enable variables";
-const QString rcRegularExpressions="Enable regular expressions";
-const QString rcMinFileSize="Minimum file size";
-const QString rcMaxFileSize="Maximum file size";
-const QString rcValidAccessDate="Access mode";
-const QString rcMinDate="Minimum access date";
-const QString rcMaxDate="Maximum access date";
-const QString rcOwnerUser="Owner user filters";
-const QString rcOwnerGroup="Owner group filters";
-const QString rcSearchMode="Search only mode";
-const QString rcBackupExtension="Backup file extension";
-const QString rcIgnoreFiles="Ignore files if there is no match";
-const QString rcNotifyOnErrors="NotifyOnErrors";
-
+const QString rcDirectoriesList = "Directories list";
+const QString rcFiltersList = "Filters list";
+const QString rcRecentFiles = "Recent files";
+const QString rcAllStringsMustBeFound = "All strings must be found";
+const QString rcCaseSensitive = "Case sensitive";
+const QString rcConfirmStrings = "Confirm strings";
+const QString rcConfirmFiles = "Confirm files";
+const QString rcConfirmDirs = "Confirm directories";
+const QString rcFollowSymLinks = "Follow symbolic links";
+const QString rcHaltOnFirstOccur = "Halt on first occurrence";
+const QString rcIgnoreHidden = "Ignore hidden files";
+const QString rcRecursive = "Search/replace in sub folders";
+const QString rcVariables = "Enable variables";
+const QString rcRegularExpressions = "Enable regular expressions";
+const QString rcMinFileSize = "Minimum file size";
+const QString rcMaxFileSize = "Maximum file size";
+const QString rcValidAccessDate = "Access mode";
+const QString rcMinDate = "Minimum access date";
+const QString rcMaxDate = "Maximum access date";
+const QString rcOwnerUser = "Owner user filters";
+const QString rcOwnerGroup = "Owner group filters";
+const QString rcSearchMode = "Search only mode";
+const QString rcBackupExtension = "Backup file extension";
+const QString rcIgnoreFiles = "Ignore files if there is no match";
+const QString rcNotifyOnErrors = "NotifyOnErrors";
+const QString rcAskConfirmReplace = "Ask confirmation on replace";
+const QString rcDontAskAgain = "Dont ask again";
 // Default configuration options
 const bool RecursiveOption = true;
 const bool CaseSensitiveOption = false;
@@ -68,12 +69,16 @@ const bool SearchModeOption=true;
 const QString BackupExtensionOption="false,~";
 const bool IgnoreFilesOption = true;
 const bool NotifyOnErrorsOption = false;
+const bool AskConfirmReplaceOption = false;
 
 // This class store configuration informations
 class RCOptions
 {
   public:
     bool m_callResetActions;
+
+    bool m_askConfirmReplace,
+         m_dontAskAgain;
 
     QString m_directories,
             m_filters;

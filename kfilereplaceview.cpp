@@ -241,36 +241,42 @@ void KFileReplaceView::initGUI()
   m_stackStrings->addWidget(m_lvStrings);
   m_stackStrings->addWidget(m_lvStrings_2);
 
+  DCOPClient *client = kapp->dcopClient();
+  QCStringList appList = client->registeredApplications();
+  bool quantaFound = false;
+
+
+  for(QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
+    {
+      if((*it).left(6) == "quanta")
+        {
+          quantaFound = true;
+          break;
+        }
+    }
+
   m_menuResult = new KPopupMenu(this, "ResultPopup");
+
+
 
   m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("fileopen")),
                            i18n("&Open"),
                            this,
                            SLOT(slotResultOpen()));
-  m_menuResult->insertItem(i18n("Open &With..."),
-                           this,
-                           SLOT(slotResultOpenWith()));
-
-  DCOPClient *client = kapp->dcopClient();
-  QCStringList appList = client->registeredApplications();
-  bool quantaFound = false;
-
-  for (QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
-  {
-    if ((*it).left(6) == "quanta")
+  if(!quantaFound)
     {
-      quantaFound = true;
-      break;
+      m_menuResult->insertItem(i18n("Open &With..."),
+                               this,
+                               SLOT(slotResultOpenWith()));
     }
-  }
 
-  if (quantaFound)
-  {
-    m_menuResult->insertItem(SmallIconSet("quanta"),
-                             i18n("&Edit in Quanta"),
-                             this,
-                             SLOT(slotResultsEdit()));
-  }
+  if(quantaFound)
+    {
+      m_menuResult->insertItem(SmallIconSet("quanta"),
+                               i18n("&Edit in Quanta"),
+                               this,
+                               SLOT(slotResultsEdit()));
+    }
 
   m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("up")),
                            i18n("Open Parent &Folder"),

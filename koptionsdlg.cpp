@@ -50,6 +50,8 @@ KOptionsDlg::KOptionsDlg(RCOptions* info, QWidget *parent, const char *name) : K
   connect(m_pbDefault, SIGNAL(clicked()),this,SLOT(slotDefaults()));
   connect(m_chbBackup, SIGNAL(toggled(bool)), this, SLOT(slotChbBackup(bool)));
   connect(m_pbHelp, SIGNAL(clicked()), this, SLOT(slotHelp()));
+  connect(m_chbConfirmStrings, SIGNAL(toggled(bool)), this, SLOT(slotChbConfirmStrings(bool)));
+  connect(m_chbShowConfirmDialog, SIGNAL(toggled(bool)), this, SLOT(slotChbShowConfirmDialog(bool)));
 
   whatsThis();
 }
@@ -60,6 +62,7 @@ KOptionsDlg::~KOptionsDlg()
 
 void KOptionsDlg::slotOK()
 {
+  saveRCOptions();
   accept();
 }
 
@@ -68,6 +71,18 @@ void KOptionsDlg::initGUI()
   m_config->sync();
   m_config->setGroup("Notification Messages");
   m_option->m_notifyOnErrors = m_config->readBoolEntry(rcNotifyOnErrors, true);
+
+  QString dontAskAgain = m_config->readEntry(rcDontAskAgain,"no");
+
+  m_chbConfirmStrings->setChecked(m_option->m_askConfirmReplace);
+
+  if(m_chbConfirmStrings->isChecked())
+  {
+    if(dontAskAgain == "yes")
+      m_chbShowConfirmDialog->setChecked(false);
+    else
+      m_chbShowConfirmDialog->setChecked(true);
+  }
 
   m_chbCaseSensitive->setChecked(m_option->m_caseSensitive);
   m_chbRecursive->setChecked(m_option->m_recursive);
@@ -86,6 +101,7 @@ void KOptionsDlg::initGUI()
   m_chbFollowSymLinks->setChecked(m_option->m_followSymLinks);
   m_chbIgnoreHidden->setChecked(m_option->m_ignoreHidden);
   m_chbIgnoreFiles->setChecked(m_option->m_ignoreFiles);
+
   m_chbNotifyOnErrors->setChecked(m_option->m_notifyOnErrors);
 }
 
@@ -102,10 +118,12 @@ void KOptionsDlg::saveRCOptions()
   m_option->m_followSymLinks = m_chbFollowSymLinks->isChecked();
   m_option->m_ignoreHidden = m_chbIgnoreHidden->isChecked();
   m_option->m_ignoreFiles = m_chbIgnoreFiles->isChecked();
+  m_option->m_askConfirmReplace = m_chbConfirmStrings->isChecked();
   m_option->m_notifyOnErrors = m_chbNotifyOnErrors->isChecked();
 
   m_config->setGroup("Notification Messages");
   m_config->writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
+
   m_config->sync();
 }
 
@@ -120,6 +138,7 @@ void KOptionsDlg::slotDefaults()
   m_chbIgnoreHidden->setChecked(IgnoreHiddenOption);
   m_chbRegularExpressions->setChecked(RegularExpressionsOption);
   m_chbIgnoreFiles->setChecked(IgnoreFilesOption);
+  m_chbConfirmStrings->setChecked(AskConfirmReplaceOption);
 
   QStringList bkList = QStringList::split(",",BackupExtensionOption,true);
 
@@ -140,6 +159,37 @@ void KOptionsDlg::slotChbBackup(bool b)
 {
   m_leBackup->setEnabled(b);
   m_tlBackup->setEnabled(b);
+}
+
+void KOptionsDlg::slotChbConfirmStrings(bool b)
+{
+  if(b)
+    {
+      m_chbShowConfirmDialog->setEnabled(true);
+      m_chbShowConfirmDialog->setChecked(true);
+      m_config->setGroup("Notification Messages");
+      m_config->writeEntry(rcDontAskAgain,"no");
+    }
+  else
+    {
+      m_chbShowConfirmDialog->setEnabled(false);
+      m_chbShowConfirmDialog->setChecked(false);
+      m_config->setGroup("Notification Messages");
+      m_config->writeEntry(rcDontAskAgain,"yes");
+    }
+}
+
+void KOptionsDlg::slotChbShowConfirmDialog(bool b)
+{
+  m_config->setGroup("Notification Messages");
+  if(b)
+    {
+      m_config->writeEntry(rcDontAskAgain,"no");
+    }
+  else
+    {
+      m_config->writeEntry(rcDontAskAgain,"yes");
+    }
 }
 
 void KOptionsDlg::whatsThis()

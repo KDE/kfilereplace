@@ -82,20 +82,20 @@ QString CommandEngine::empty(const QString& opt, const QString& arg)
   return "";
 }
 
-QString CommandEngine::mathexp(const QString& _opt, const QString& arg)
+QString CommandEngine::mathexp(const QString& opt, const QString& arg)
 {
   /* We will use bc 1.06 by Philip A. Nelson <philnelson@acm.org> */
   //Q_UNUSED(opt);
   Q_UNUSED(arg);
 
-  QString opt = _opt;
-  opt.replace("ln","l");
-  opt.replace("sin","s");
-  opt.replace("cos","c");
-  opt.replace("arctan","a");
-  opt.replace("exp","e");
+  QString tempOpt = opt;
+  tempOpt.replace("ln","l");
+  tempOpt.replace("sin","s");
+  tempOpt.replace("cos","c");
+  tempOpt.replace("arctan","a");
+  tempOpt.replace("exp","e");
   
-  QString program = "var=("+opt+");print var";
+  QString program = "var=("+tempOpt+");print var";
   QString script = "echo '"+program+"' | bc -l;";
 
   KProcess* proc = new KProcess();

@@ -312,6 +312,7 @@ void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
   extensionMap["cc"] = "source_cpp";
   extensionMap["cpp"] = "source_cpp";
   extensionMap["eml"] = "message";
+  extensionMap["exe"] = "exec_wine";
   extensionMap["gz"] = "zip";
   extensionMap["h"] = "source_h";
   extensionMap["htm"] = "html";
@@ -319,6 +320,8 @@ void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
   extensionMap["in"] = "shellscript";
   extensionMap["java"] = "source_java";
   extensionMap["jpg"] = "image";
+  extensionMap["kfr"] = "html";
+  extensionMap["kmdr"] = "widget_doc";
   extensionMap["kwd"] = "kword_kwd";
   extensionMap["log"] = "log";
   extensionMap["moc"] = "source_moc";
@@ -338,12 +341,11 @@ void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
   extensionMap["tex"] = "tex";
   extensionMap["tgz"] = "tgz";
   extensionMap["txt"] = "txt";
+  extensionMap["ui"] = "widget_doc";
   extensionMap["uml"] = "umbrellofile";
   extensionMap["wav"] = "sound";
   extensionMap["xml"] = "html";
-  extensionMap["kfr"] = "html";
   extensionMap["xpm"] = "image";
-  extensionMap["exe"] = "exec_wine";
 
   KeyValueMap::Iterator itExtensionMap;
 
