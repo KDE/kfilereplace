@@ -29,14 +29,14 @@
 class KListViewString : public QListViewItem
 {
 public:
-	KListViewString(QListViewItem *lvi);
-	KListViewString(QListView *parent);
-	KListViewString(QListView *parent, QString, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null);
-	KListViewString(QListViewItem *lvi, QString, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null);
-	~KListViewString();
-	
-	void setup();
-	
+        KListViewString(QListViewItem *lvi);
+        KListViewString(QListView *parent);
+        KListViewString(QListView *parent, QString, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null);
+        KListViewString(QListViewItem *lvi, QString, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null, QString = QString::null);
+        ~KListViewString();
+
+        void setup();
+
 };
 
 #endif

@@ -57,9 +57,6 @@ class KNewProjectDlg : public KNewProjectDlgS
   void slotDir();
   void slotOk();
 
- private:
-  bool isDateValid(const char *szDate);
-
  public: // retrun results
   QString getDirectory();
   QString getFilter();

@@ -132,7 +132,7 @@
                         <cstring>m_checkDateMin</cstring>
                     </property>
                     <property name="text">
-                        <string>Accessed before: </string>
+                        <string>Accessed after:</string>
                     </property>
                 </widget>
                 <widget class="QCheckBox" row="2" column="0">
@@ -140,7 +140,7 @@
                         <cstring>m_checkDateMax</cstring>
                     </property>
                     <property name="text">
-                        <string>Accessed after:</string>
+                        <string>Accessed before: </string>
                     </property>
                 </widget>
                 <widget class="KLineEdit" row="1" column="1">

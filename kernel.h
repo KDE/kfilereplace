@@ -30,12 +30,12 @@ class QListViewItem;
 void *ReplaceThread(void *param);
 void *SearchThread(void *param);
 int ReplaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace);
-bool IsFileGoodSizeProperties(const char *szFileName, bool bMinSize, bool bMaxSize, uint nMinSize, uint nMaxSize);
-bool IsFileGoodDateProperties(const char *szFileName, int nTypeOfAccess, bool bMinDate, bool bMaxDate, QDate qdMinDate, QDate qdMaxDate);
+bool IsFileGoodSizeProperties(const QString& szFileName, bool bMinSize, bool bMaxSize, uint nMinSize, uint nMaxSize);
+bool IsFileGoodDateProperties(const QString& szFileName, int nTypeOfAccess, bool bMinDate, bool bMaxDate, QDate qdMinDate, QDate qdMaxDate);
 int ReplaceFile(QListViewItem *lvi, const QString& szDir, const QString& szOldFile, const QString& szNewFile, int *nNbReplacements, RepDirArg* argu);
-int GetDiskFreeSpaceForFile(uint *nAvailDiskSpace, const char *szFilename);
-int SearchFile(QListViewItem *lvi, const char *szOldFile, int *nNbReplacements, bool *bAllStringsFound, RepDirArg* argu, bool bHaltOnFirstOccur);
-bool HasFileGoodOwners(const char *szFile, RepDirArg *argu);
+int GetDiskFreeSpaceForFile(uint *nAvailDiskSpace, const QString &szFilename);
+int SearchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacements, bool *bAllStringsFound, RepDirArg* argu, bool bHaltOnFirstOccur);
+bool HasFileGoodOwners(const QString &szFile, RepDirArg *argu);
 
 #endif // WORKING_H
 

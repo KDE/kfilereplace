@@ -67,10 +67,10 @@ KResultView::KResultView( QWidget *parent, const char *name): QListView( parent,
   addColumn(i18n("New Size"), -1 );
   setColumnWidthMode( 3, QListView::Maximum );
   setColumnAlignment( 3, 2 );
-  addColumn(i18n("Nb replaced"), -1 );
+  addColumn(i18n("Replaced items"), -1 );
   setColumnWidthMode( 4, QListView::Maximum );
   setColumnAlignment( 4, 2 );
-  addColumn(i18n("Error"), -1 );
+  addColumn(i18n("Result"), -1 );
   setColumnWidthMode( 5, QListView::Maximum );
   setColumnAlignment( 5, 1 );
   addColumn(i18n("Owner user"), -1 );
@@ -109,7 +109,7 @@ KResultView::~KResultView()
 }
 
 // ===========================================================================================================================
-int KResultView::addFullItem(bool bSuccess, const QString &szName, const QString &szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString &szErrMsg)
+KListViewString* KResultView::addFullItem(bool bSuccess, const QString &szName, const QString &szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString &szErrMsg)
 {
   QString strOldSize;
   QString strNewSize;
@@ -126,8 +126,6 @@ int KResultView::addFullItem(bool bSuccess, const QString &szName, const QString
 
   // Add item to list
   lvi = new KListViewString(this, szName, szDirectory, strOldSize);
-  if (lvi == 0)
-    return -1;
 
   // set owners infos
   strTemp = szDirectory + "/" + szDirectory, szName;
@@ -151,7 +149,7 @@ int KResultView::addFullItem(bool bSuccess, const QString &szName, const QString
         lvi -> setText(5, szErrMsg);
     }
 
-  return 0;
+  return lvi;
 }
 
 // ===========================================================================================================================
@@ -324,7 +322,7 @@ QString KResultView::getCurrentItem()
   while (lvi->parent())
     lvi = lvi->parent();
 
-  strFilename.sprintf("%s/%s", lvi->text(1).ascii(), lvi->text(0).ascii());
+  strFilename = QString("%1/%2").arg(lvi->text(1)).arg(lvi->text(0));
 
   return strFilename;
 }
@@ -386,8 +384,8 @@ void KResultView::slotResultEdit()
     return;
 
   QString strCommand;
-  strCommand.sprintf("kate %s &", getCurrentItem().ascii());
-  system(strCommand.ascii());
+  strCommand = QString("kate %1 &").arg(getCurrentItem());
+  KRun::runCommand(strCommand);
   m_lviCurrent = 0;
 }
 
@@ -396,13 +394,11 @@ void KResultView::slotResultDelete()
 {
   QFile fiFile;
   int nRes;
-  QString strMess;
 
   if (getCurrentItem().isEmpty())
     return;
 
-  strMess.sprintf(i18n("Do you really want to delete <b>%s</b> ?"), getCurrentItem().ascii());
-  nRes = KMessageBox::questionYesNo(this, strMess);
+  nRes = KMessageBox::questionYesNo(this, i18n("<qt>Do you really want to delete <b>%1</b>?</qt>").arg(getCurrentItem()));
 
   if (nRes == KMessageBox::Yes)
     {

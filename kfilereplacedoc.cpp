@@ -176,7 +176,7 @@ bool KFileReplaceDoc::newDocument(const QString& strArguDir, const QString& strA
   m_strProjectDirectory = dir.absPath();
 
   b_modified=false;
-  m_title.sprintf("[%s, %s]", m_strProjectDirectory.ascii(), m_strProjectFilter.ascii());
+  m_title = QString("[%1, %2]").arg(m_strProjectDirectory).arg(m_strProjectFilter);
   m_path=QDir::homeDirPath();
   return true;
 }

@@ -58,7 +58,7 @@ bool KExpression::doesStringMatch(const char *szText, int nTxtLen, const char *s
       bCharMatches = (szString[0] == szText[0]);
     }
   else // case insensitive
-    {        bCharMatches = (tolower(szString[0]) == tolower(szText[0]));
+    {        bCharMatches = (::tolower(szString[0]) == ::tolower(szText[0]));
     }
 
   // CASE 3: IGNORE WHITESPACES (\t, \n, \r, double-spaces) OPTIONS IS ACTIVATED, AND THERE IS ONE HERE
@@ -318,18 +318,18 @@ QString KExpression::substVariablesWithValues(QString strOriginal, const char *s
   while (i < (int)strOriginal.length())
     {
       nLenMatchingStr = 0;
-      bRes = doesStringMatch(strOriginal.ascii()+i, strOriginal.length()-i, strFormat.ascii(), strFormat.length(), true, &nLenMatchingStr);
+      bRes = doesStringMatch(strOriginal.ascii()+i, strOriginal.length()-i, strFormat.utf8(), strFormat.length(), true, &nLenMatchingStr);
 
       if (bRes == true) // If a variable was found
         {
           // Get the variable name, and the variable format: "[$VarName:VarFormat$]"
-          extractWildcardsContentsFromFullString(strOriginal.ascii()+i, strOriginal.length()-i, strFormat.ascii(), strFormat.length(), &strList);
+          extractWildcardsContentsFromFullString(strOriginal.ascii()+i, strOriginal.length()-i, strFormat.utf8(), strFormat.length(), &strList);
 
           strVarName = strList[0];
           strVarFormat = strList[1];
 
           strTemp = getVariableValue(strVarName, strVarFormat, szFilepath);
-          printf("VAR: (%s, %s) ---> (%s)\n", strVarName.ascii(), strVarFormat.ascii(), strTemp.ascii());
+          kdDebug(23000) << QString("VAR: (%1, %2) ---> (%3)").arg(strVarName).arg(strVarFormat).arg(strTemp) << endl;
           if (strTemp == QString::null) // If error
             {
               m_bIgnoreWhitespaces = bIgnoreWhitespaces;
@@ -344,7 +344,7 @@ QString KExpression::substVariablesWithValues(QString strOriginal, const char *s
         }
       else // If no variable was found
         {
-          strResult.append( (strOriginal.ascii())[i] );
+          strResult.append( strOriginal[i] );
           i++;
         }
     }
@@ -478,7 +478,7 @@ QString KExpression::formatDateTime(QDateTime dt, QString strVarFormat)
     }
   else if (strVarFormat == "string") // Ex: "Say May 20 1995"
     {
-      strTemp.sprintf ("%s", dt.date().toString().ascii());
+      strTemp = dt.date().toString();
       return strTemp;
     }
   else if ((strVarFormat == "yyyy/dd/mm hh:mm:ss") || (strVarFormat == "date&time")) // Ex: "1999/31/12 15:26:46"

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Service
-MimeType=
+MimeType=inode/directory
 Icon=kfilereplace.png
 MiniIcon=kfilereplace.png
 ServiceTypes=KParts/ReadOnlyPart

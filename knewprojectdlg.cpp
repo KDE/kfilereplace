@@ -101,7 +101,6 @@ void KNewProjectDlg::slotOk()
 
    // ================== DATE OPTIONS ========================
    QString strMinDate, strMaxDate;
-   int nDay, nMonth, nYear;
 
    bMinDate = m_checkDateMin -> isChecked();
    bMaxDate = m_checkDateMax -> isChecked();
@@ -134,7 +133,7 @@ void KNewProjectDlg::slotOk()
    // Check option "Size Min/Max": check MinSize is not greater than MaxSize
    if (bMaxSize && bMinSize && (m_nMaxSize < m_nMinSize))
    {
-      KMessageBox::error(this, i18n("The MINimal size is greater than the MAXimal size."));
+      KMessageBox::error(this, i18n("The minimum size is greater than the maximum size."));
       return ;
    }
 
@@ -145,9 +144,9 @@ void KNewProjectDlg::slotOk()
    // 1. Check the first Date: DateMin (After...)
    if (bMinDate) // If "DateMin" option in checked
    {
-      if ( !isDateValid(strMinDate.ascii()))
+      if ( !QDate::fromString(strMinDate, Qt::ISODate).isValid())
       {
-         KMessageBox::error(this, i18n("The dates must be in the YYYY/MM/DD format."));
+         KMessageBox::error(this, i18n("The dates must be in the YYYY-MM-DD format."));
          return ;
       }
    }
@@ -155,9 +154,9 @@ void KNewProjectDlg::slotOk()
    // 2. Check the second Date: DateMax (Before...)
    if (bMaxDate) // If "DateMax" option in checked
    {
-      if ( !isDateValid(strMaxDate.ascii()))
+      if ( !QDate::fromString(strMaxDate, Qt::ISODate).isValid())
       {
-         KMessageBox::error(this, i18n("The dates must be in the YYYY/MM/DD format."));
+         KMessageBox::error(this, i18n("The dates must be in the YYYY-MM-DD format."));
          return ;
       }
    }
@@ -165,20 +164,18 @@ void KNewProjectDlg::slotOk()
    // 3. Convert Strings to QDate
    if (bMinDate) // If "DateMin" option in checked
    {
-      sscanf(strMinDate.ascii(),"%4d/%2d/%2d",&nYear, &nMonth, &nDay);
-      m_qdMinDate.setYMD(nYear, nMonth, nDay);
+      m_qdMinDate = QDate::fromString(strMinDate, Qt::ISODate);
    }
 
    if (bMaxDate) // If "DateMax" option in checked
    {
-      sscanf(strMaxDate.ascii(),"%4d/%2d/%2d",&nYear, &nMonth, &nDay);
-      m_qdMaxDate.setYMD(nYear, nMonth, nDay);
+      m_qdMaxDate = QDate::fromString(strMaxDate, Qt::ISODate);
    }
 
    // 4. Check DateMax is not before DateMin
    if (bMinDate && bMaxDate && m_qdMinDate > m_qdMaxDate)
    {
-      KMessageBox::error(this, i18n("The MINimal Date is after the MAXimal Date."));
+      KMessageBox::error(this, i18n("<qt>The <i>accessed after</i> date is after the <i>accessed before</i> date."));
       return ;
    }
 
@@ -318,33 +315,6 @@ void KNewProjectDlg::getMinFilesSize(bool *bChecked, long unsigned int *nMinSize
     *nMinSize = m_editSizeMin -> text().toULong() * 1024; // KB --> Bytes
   else
     *nMinSize = 0;
-}
-
-
-// ===========================================================================================================================
-bool KNewProjectDlg::isDateValid(const char *szDate)
-{
-  QRegExp qreDate("[0-9][0-9][0-9][0-9][/][0-9][0-9][/][0-9][0-9]");
-  int nDay, nMonth, nYear;
-  QDate qdDate;
-
-  // a. Check the string is not empty, and the lenght is 4+1+2+1+2 = 10
-  if (strlen(szDate) != 10)
-    return false;
-
-  // b. Check the format of the string: YYYY/MM/DD
-  if (qreDate.exactMatch(szDate) != 0)
-    return false;
-
-  // c. Check the date is valid (ex: 1999/12/32 is not valid)
-
-  // Convert String to QDate
-  sscanf(szDate, "%4d/%2d/%2d", &nYear, &nMonth, &nDay);
-  qdDate.setYMD(nYear, nMonth, nDay);
-  if (! qdDate.isValid() )
-    return false;
-
-  return true;
 }
 
 // ===========================================================================================================================

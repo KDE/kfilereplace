@@ -284,7 +284,7 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
       return -1;
     }
 
-  if (::access(m_doc->m_strProjectDirectory.ascii(), R_OK | X_OK) == -1)
+  if (::access(m_doc->m_strProjectDirectory.local8Bit(), R_OK | X_OK) == -1)
     {
       strMess = i18n("<qt>Access denied in the main directory of the project:<br><b>%1</b></qt>").arg(m_doc->m_strProjectDirectory);
       KMessageBox::error(w, strMess);
@@ -342,9 +342,9 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
             {
           do
             {
-              const char *szString = lviCurItem -> text(0).ascii();
+              QString szString = lviCurItem -> text(0);
 
-              if ((strchr(szString, m_settings.cWildcardsLetters)) || (strchr(szString, m_settings.cWildcardsWords)))
+              if ( szString.contains(m_settings.cWildcardsLetters) || szString.contains(m_settings.cWildcardsWords))
                 {
                   // Wildcards are present in at less a string
                   bWildcardsArePresent = true;
@@ -362,8 +362,8 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
 
   // ================== Prepare argument structure to pass to the ReplaceDirectory function ========================
 
-  sprintf (g_argu.szDir, "%s", m_doc -> m_strProjectDirectory.ascii());
-  sprintf (g_argu.szFilter, "%s", m_doc -> m_strProjectFilter.ascii());
+  g_argu.szDir = m_doc -> m_strProjectDirectory;
+  g_argu.szFilter = m_doc -> m_strProjectFilter;
   g_argu.qlvResult = m_view -> getResultView();
   g_argu.qlvStrings = m_view -> getStringView();
 

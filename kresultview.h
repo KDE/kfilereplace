@@ -29,6 +29,7 @@
 #include <kpopupmenu.h>
 
 class KFileReplaceApp;
+class KListViewString;
 
 // ================================================================
 class KResultView : public QListView
@@ -41,7 +42,7 @@ public:
         QString getCurrentItem();
 
 public:
-        int addFullItem(bool bSuccess, const QString& szName, const QString& szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
+        KListViewString* addFullItem(bool bSuccess, const QString& szName, const QString& szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
         int updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
         bool increaseStringCount(QListViewItem *lvi, QString strOld, QString strNew, QString strReplace, const char *szSearch, int nSearchLen, bool bShowDetails);
         QPixmap getIconString() {return m_pmIconString;}
