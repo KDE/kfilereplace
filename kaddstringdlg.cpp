@@ -44,7 +44,7 @@ void KAddStringDlg::slotOk()
   // Check the Search text is not empty
   if (m_editSearch -> text().isEmpty())
     {
-      KMessageBox::error(this, i18n("You must fill the text to find (and Replace) before clicking on Ok"));
+      KMessageBox::error(this, i18n("You must fill the text to find (and Replace) before clicking on 'OK'."));
       return;
     }
 
@@ -83,11 +83,11 @@ void KAddStringDlg::initDialog()
 
   // ok / cancel
   m_btnOk = new QPushButton(this,"m_btnOk");
-  m_btnOk->setText(i18n("Ok"));
+  m_btnOk->setText(i18n("&OK"));
   gbox -> addWidget (m_btnOk, 6, 0);
 
   m_btnCancel = new QPushButton(this,"m_btnCancel");
-  m_btnCancel->setText(i18n("Cancel"));
+  m_btnCancel->setText(i18n("&Cancel"));
   gbox -> addWidget (m_btnCancel, 6, 1);
 }
 #include "kaddstringdlg.moc"

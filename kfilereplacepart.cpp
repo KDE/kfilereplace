@@ -107,7 +107,7 @@ bool KFileReplacePart::openURL(const KURL &url)
 {
   if (url.protocol() != "file")
   {
-    KMessageBox::sorry(0, i18n("Sorry, currently the KFileReplace part works only for local files!"), i18n("Non local file"));
+    KMessageBox::sorry(0, i18n("Sorry, currently the KFileReplace part works only for local files!"), i18n("Non Local File"));
     emit canceled("");
     return false;
   }
@@ -119,41 +119,41 @@ void KFileReplacePart::initGUI()
    setXMLFile("kfilereplacepartui.rc");
 
    // File
-   (void)new KAction(i18n("New Search Project"), "newproject", 0, this, SLOT(slotFileNew()), actionCollection(), "new_project");
+   (void)new KAction(i18n("New Search Project..."), "newproject", 0, this, SLOT(slotFileNew()), actionCollection(), "new_project");
    (void)new KAction(i18n("&Search"), "filesearch", 0, this, SLOT(slotFileSearch()), actionCollection(), "search");
    (void)new KAction(i18n("&Simulate"), "filesimulate", 0, this, SLOT(slotFileSimulate()), actionCollection(), "file_simulate");
    (void)new KAction(i18n("&Replace"), "filereplace", 0, this, SLOT(slotFileReplace()), actionCollection(), "replace");
    (void)new KAction(i18n("Sto&p"), "filestop", 0, this, SLOT(slotFileStop()), actionCollection(), "stop");
-   (void)new KAction(i18n("Save &results as..."), "filesave", 0, this, SLOT(slotFileSave()), actionCollection(), "save_results");
+   (void)new KAction(i18n("Save &Results As..."), "filesave", 0, this, SLOT(slotFileSave()), actionCollection(), "save_results");
 
    // Strings
-   (void)new KAction(i18n("&Add string"), "stradd", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
-   (void)new KAction(i18n("&Delete string"), "strdel", 0, this, SLOT(slotStringsDel()), actionCollection(), "strings_del");
-   (void)new KAction(i18n("&Empty strings list"), "strempty", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
-   (void)new KAction(i18n("Edi&t selected string"), "stredit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
-   (void)new KAction(i18n("&Save strings list to file..."), "filesave", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
-   (void)new KAction(i18n("&Load strings list from file..."), "fileopen", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
-   (void)new KRecentFilesAction(i18n("&Load recent strings files..."), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),
+   (void)new KAction(i18n("&Add String..."), "stradd", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
+   (void)new KAction(i18n("&Delete String"), "strdel", 0, this, SLOT(slotStringsDel()), actionCollection(), "strings_del");
+   (void)new KAction(i18n("&Empty Strings List"), "strempty", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
+   (void)new KAction(i18n("Edi&t Selected String..."), "stredit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
+   (void)new KAction(i18n("&Save Strings List to File..."), "filesave", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
+   (void)new KAction(i18n("&Load Strings List From File..."), "fileopen", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
+   (void)new KRecentFilesAction(i18n("&Load Recent Strings Files..."), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),
                                 "strings_load_recent");
-   (void)new KAction(i18n("&Invert current string (search <--> replace)"), "strinvert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
-   (void)new KAction(i18n("&Invert all strings (search <--> replace)"), "strinvert", 0, this, SLOT(slotStringsInvertAll()), actionCollection(), "strings_invert_all");
+   (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "strinvert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
+   (void)new KAction(i18n("&Invert All Strings (search <--> replace)"), "strinvert", 0, this, SLOT(slotStringsInvertAll()), actionCollection(), "strings_invert_all");
 
    // Options
-   (void)new KToggleAction(i18n("&Include sub-folders"), "optrecursive", 0, this, SLOT(slotOptionsRecursive()), actionCollection(), "options_recursive");
-   (void)new KToggleAction(i18n("Create &backup"), "optbackup", 0, this, SLOT(slotOptionsBackup()), actionCollection(), "options_backup");
-   (void)new KToggleAction(i18n("Case &sensitive"), "optcase", 0, this, SLOT(slotOptionsCaseSensitive()), actionCollection(), "options_case");
+   (void)new KToggleAction(i18n("&Include Sub-Folders"), "optrecursive", 0, this, SLOT(slotOptionsRecursive()), actionCollection(), "options_recursive");
+   (void)new KToggleAction(i18n("Create &Backup"), "optbackup", 0, this, SLOT(slotOptionsBackup()), actionCollection(), "options_backup");
+   (void)new KToggleAction(i18n("Case &Sensitive"), "optcase", 0, this, SLOT(slotOptionsCaseSensitive()), actionCollection(), "options_case");
    (void)new KToggleAction(i18n("Enable &Wildcards"), "optwildcards", 0, this, SLOT(slotOptionsWildcards()), actionCollection(), "options_wildcards");
-   (void)new KToggleAction(i18n("Enable &Variables in replace string: [$name:format$]"), "optvar", 0, this, SLOT(slotOptionsVariables()), actionCollection(), "options_var");
-   (void) new KAction(i18n("Configure &KFileReplace"), "configure", 0, this, SLOT(slotOptionsPreferences()), actionCollection(), "configure_kfilereplace");
+   (void)new KToggleAction(i18n("Enable &Variables in Replace String: [$name:format$]"), "optvar", 0, this, SLOT(slotOptionsVariables()), actionCollection(), "options_var");
+   (void) new KAction(i18n("Configure &KFileReplace..."), "configure", 0, this, SLOT(slotOptionsPreferences()), actionCollection(), "configure_kfilereplace");
 
    // Results
    (void)new KAction(i18n("&Properties"), "resfileinfo", 0, getResultView(), SLOT(slotResultProperties()), actionCollection(), "results_infos");
    (void)new KAction(i18n("&Open"), "resfileopen", 0, getResultView(), SLOT(slotResultOpen()), actionCollection(), "results_openfile");
-   (void)new KAction(i18n("&Edit with kate"), "resfileedit", 0, getResultView(), SLOT(slotResultEdit()), actionCollection(), "results_editfile");
-   (void)new KAction(i18n("Open parent &folder"), "resdiropen", 0, getResultView(), SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
+   (void)new KAction(i18n("&Edit with Kate"), "resfileedit", 0, getResultView(), SLOT(slotResultEdit()), actionCollection(), "results_editfile");
+   (void)new KAction(i18n("Open Parent &Folder"), "resdiropen", 0, getResultView(), SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
    (void)new KAction(i18n("&Delete"), "resfiledel", 0, getResultView(), SLOT(slotResultDelete()), actionCollection(), "results_delete");
-   (void)new KAction(i18n("E&xpand tree"), 0, getResultView(), SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
-   (void)new KAction(i18n("&Reduce tree"), 0, getResultView(), SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
+   (void)new KAction(i18n("E&xpand Tree"), 0, getResultView(), SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
+   (void)new KAction(i18n("&Reduce Tree"), 0, getResultView(), SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
 
    // Help menu
 //   setHelpMenuEnabled(false);
@@ -731,7 +731,7 @@ void KFileReplacePart::slotFileSave()
     }
 
   // Select the file where results will be saved
-  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.html|HTML files (*.html)\n*|All Files (*)"), w, i18n("Save results ..."));
+  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.html|HTML files (*.html)\n*|All Files (*)"), w, i18n("Save Results"));
   if (strFilename.isEmpty())
     return ;
 
@@ -833,7 +833,7 @@ void KFileReplacePart::slotStringsSave()
     }
 
   // Select the file where strings will be saved
-  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.kfr|KFileReplace strings (*.kfr)\n*|All Files (*)"), w, i18n("Save strings to file ..."));
+  strFilename = KFileDialog::getSaveFileName(QString::null, i18n("*.kfr|KFileReplace strings (*.kfr)\n*|All Files (*)"), w, i18n("Save Strings to File"));
   if (strFilename.isEmpty())
     return;
 
@@ -1013,7 +1013,7 @@ void KFileReplacePart::slotStringsLoad()
   QString strFilename;
 
   // Select the file to load from
-  strFilename = KFileDialog::getOpenFileName(QString::null, i18n("*.kfr|KFileReplace strings (*.kfr)\n*|All Files (*)"), widget(), i18n("Load strings from file ..."));
+  strFilename = KFileDialog::getOpenFileName(QString::null, i18n("*.kfr|KFileReplace strings (*.kfr)\n*|All Files (*)"), widget(), i18n("Load Strings From File"));
 
   loadStringFile(strFilename);
   updateCommands();

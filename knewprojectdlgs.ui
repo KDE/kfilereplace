@@ -9,11 +9,11 @@
             <x>0</x>
             <y>0</y>
             <width>575</width>
-            <height>456</height>
+            <height>510</height>
         </rect>
     </property>
     <property name="caption">
-        <string>New search &amp; replace project</string>
+        <string>New Search &amp; Replace Project</string>
     </property>
     <property name="sizeGripEnabled">
         <bool>true</bool>
@@ -113,7 +113,7 @@
                 <cstring>groupBox2</cstring>
             </property>
             <property name="title">
-                <string>Access date filtering</string>
+                <string>Access Date Filtering</string>
             </property>
             <grid>
                 <property name="name">
@@ -154,12 +154,12 @@
                 <widget class="KComboBox" row="0" column="1">
                     <item>
                         <property name="text">
-                            <string>last writing access</string>
+                            <string>Last Writing Access</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>last reading access</string>
+                            <string>Last Reading Access</string>
                         </property>
                     </item>
                     <property name="name">
@@ -198,7 +198,7 @@
                 <cstring>groupBox3</cstring>
             </property>
             <property name="title">
-                <string>Ownership filtering</string>
+                <string>Ownership Filtering</string>
             </property>
             <grid>
                 <property name="name">
@@ -233,12 +233,12 @@
                 <widget class="KComboBox" row="0" column="2">
                     <item>
                         <property name="text">
-                            <string>equals to</string>
+                            <string>Equals To</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>is not</string>
+                            <string>Is Not</string>
                         </property>
                     </item>
                     <property name="name">
@@ -251,12 +251,12 @@
                 <widget class="KComboBox" row="1" column="2">
                     <item>
                         <property name="text">
-                            <string>equals to</string>
+                            <string>Equals To</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>is not</string>
+                            <string>Is Not</string>
                         </property>
                     </item>
                     <property name="name">
@@ -345,7 +345,7 @@
                 <cstring>groupBox1</cstring>
             </property>
             <property name="title">
-                <string>Size filtering</string>
+                <string>Size Filtering</string>
             </property>
             <grid>
                 <property name="name">

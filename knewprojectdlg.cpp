@@ -72,7 +72,7 @@ void KNewProjectDlg::slotDir()
 {
    QString strDir;
 
-   strDir = KFileDialog::getExistingDirectory(QString::null, this, i18n("Project directory"));
+   strDir = KFileDialog::getExistingDirectory(QString::null, this, i18n("Project Directory"));
    if (strDir.isEmpty())
       return ;
 

@@ -100,10 +100,10 @@ void KFileReplaceView::init()
                                      "wildcards or variables, you can see the real text which was found from a string with wildcards"));
 
   // Initialize StringsList
-  m_StringView->addColumn(i18n("Search for"), -1 );
+  m_StringView->addColumn(i18n("Search For"), -1 );
   m_StringView->setColumnWidthMode( 0, QListView::Maximum );
   m_StringView->setColumnAlignment( 0, 1 );
-  m_StringView->addColumn(i18n("Replace with"), -1 );
+  m_StringView->addColumn(i18n("Replace With"), -1 );
   m_StringView->setColumnWidthMode( 1, QListView::Maximum );
   m_StringView->setColumnAlignment( 1, 1 );
   m_StringView->setFrameStyle(QFrame::Panel | QFrame::Sunken);

@@ -61,22 +61,22 @@ KResultView::KResultView( QWidget *parent, const char *name): QListView( parent,
   addColumn(i18n("Directory"), -1 );
   setColumnWidthMode( 1, QListView::Maximum );
   setColumnAlignment( 1, 1 );
-  addColumn(i18n("Old size"), -1 );
+  addColumn(i18n("Old Size"), -1 );
   setColumnWidthMode( 2, QListView::Maximum );
   setColumnAlignment( 2, 2 );
   addColumn(i18n("New Size"), -1 );
   setColumnWidthMode( 3, QListView::Maximum );
   setColumnAlignment( 3, 2 );
-  addColumn(i18n("Replaced items"), -1 );
+  addColumn(i18n("Replaced Items"), -1 );
   setColumnWidthMode( 4, QListView::Maximum );
   setColumnAlignment( 4, 2 );
   addColumn(i18n("Result"), -1 );
   setColumnWidthMode( 5, QListView::Maximum );
   setColumnAlignment( 5, 1 );
-  addColumn(i18n("Owner user"), -1 );
+  addColumn(i18n("Owner User"), -1 );
   setColumnWidthMode( 6, QListView::Maximum );
   setColumnAlignment( 6, 1 );
-  addColumn(i18n("Owner group"), -1 );
+  addColumn(i18n("Owner Group"), -1 );
   setColumnWidthMode( 7, QListView::Maximum );
   setColumnAlignment( 7, 1 );
   setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -86,13 +86,13 @@ KResultView::KResultView( QWidget *parent, const char *name): QListView( parent,
   // Create popup menus
   m_kpmResult = new KPopupMenu(this, "ResultPopup");
   m_kpmResult->insertItem(SmallIcon("resfileopen"),i18n("&Open"), this, SLOT(slotResultOpen()));
-  m_kpmResult->insertItem(i18n("Open &with..."), this, SLOT(slotResultOpenWith()));
-  m_kpmResult->insertItem(SmallIcon("resfileedit"),i18n("&Edit with kate"), this, SLOT(slotResultEdit()));
-  m_kpmResult->insertItem(SmallIcon("resdiropen"),i18n("Open parent &folder"), this, SLOT(slotResultDirOpen()));
+  m_kpmResult->insertItem(i18n("Open &With..."), this, SLOT(slotResultOpenWith()));
+  m_kpmResult->insertItem(SmallIcon("resfileedit"),i18n("&Edit with Kate"), this, SLOT(slotResultEdit()));
+  m_kpmResult->insertItem(SmallIcon("resdiropen"),i18n("Open Parent &Folder"), this, SLOT(slotResultDirOpen()));
   m_kpmResult->insertSeparator();
   m_kpmResult->insertItem(SmallIcon("resfiledel"),i18n("&Delete"), this, SLOT(slotResultDelete()));
   m_kpmResult->insertSeparator();
-  m_kpmResult->insertItem(SmallIcon("resfileinfo"),i18n("&Properties ..."), this, SLOT(slotResultProperties()));
+  m_kpmResult->insertItem(SmallIcon("resfileinfo"),i18n("&Properties"), this, SLOT(slotResultProperties()));
 
   // Load icons
   nRes = m_pmIconSuccess.load( locate("data", "kfilereplace/pics/success.png"));

@@ -29,13 +29,13 @@
 // ===========================================================================================================================
 KOptionsDlg::KOptionsDlg(QWidget *parent, const char *name, KSettings settings) : QTabDialog(parent,name,true)
 {
-  setCaption(i18n("KFileReplace options"));
+  setCaption(i18n("KFileReplace Options"));
   setMinimumSize(450,350);
   resize(500,500);
   setOkButton(QString::null);
-  setDefaultButton(i18n("OK"));
-  setHelpButton(i18n("Default values"));
-  setCancelButton(i18n("Cancel"));
+  setDefaultButton(i18n("&OK"));
+  setHelpButton(i18n("&Default Values"));
+  setCancelButton(i18n("&Cancel"));
 
   // Create pages
   initPage1();
@@ -81,21 +81,21 @@ void KOptionsDlg::slotOk()
   // Check the Search text is not empty
   if (strWildcardsLetters.isEmpty() || strWildcardsWords.isEmpty())
     {
-      KMessageBox::error(this, i18n("You must type the symbols for expressions and for characters before clicking on Ok"));
+      KMessageBox::error(this, i18n("You must type the symbols for expressions and for characters before clicking on 'Ok'."));
       return;
     }
 
   // check expression wildcard and character wildcards are not the same
   if (strWildcardsLetters == strWildcardsWords)
     {
-      KMessageBox::error(this, i18n("You can't use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>"));
+      KMessageBox::error(this, i18n("You can't use the same character for <b>expression wildcard</b> and for <b>character wildcard</b>."));
       return ;
     }
 
   // Check the maximum expression length is a valid integer
   if (nMaxExpressionLength < 2 || nMaxExpressionLength > 10000)
     {
-      KMessageBox::error(this, i18n("The maximum wildcard expression length must be a valid number (beetween 2 and 10000)"));
+      KMessageBox::error(this, i18n("The maximum wildcard expression length must be a valid number (beetween 2 and 10000)."));
       return;
     }
 
@@ -183,7 +183,7 @@ void KOptionsDlg::initPage1()
 
   // Create check boxes
   m_checkCaseSensitive = new QCheckBox(i18n("Case sensitive"), tab1,"m_checkCaseSensitive");
-  m_checkRecursive = new QCheckBox(i18n("Recursivity: Search/Replace in all sub folders"),tab1,"m_checkRecursive");
+  m_checkRecursive = new QCheckBox(i18n("Recursivity: Search/replace in all sub folders"),tab1,"m_checkRecursive");
   m_checkHaltOnFirstOccur = new QCheckBox(i18n("When searching, stop on first string found (faster but no details)"),tab1, "m_checkHaltOnFirstOccur");
   m_checkIgnoreWhitespaces = new QCheckBox(i18n("Ignore whitespaces (\\n,\\r,\\t,multi-spaces) (useful in HTML code)"),tab1, "m_checkIgnoreWhitespaces");
   m_checkFollowSymLinks = new QCheckBox(i18n("Follow symbolic links"),tab1, "m_checkFollowSymLinks");
@@ -225,17 +225,17 @@ void KOptionsDlg::initPage2()
   QButtonGroup *bgOptions = new QButtonGroup(2, QGroupBox::Horizontal, i18n("Options"), tab2);
 
   QLabel *label1 = new QLabel(bgSymbols,"m_labelTitle1");
-  label1 -> setText(i18n("for a sigle char (default: ?)"));
+  label1 -> setText(i18n("For a single char (default='?'):"));
   m_editLetter= new QLineEdit(bgSymbols,"m_editLetter");
   m_editLetter -> setMaxLength(1);
 
   QLabel *label2 = new QLabel(bgSymbols,"m_labelTitle2");
-  label2->setText(i18n("for an expression (default: *)"));
+  label2->setText(i18n("For an expression (default:'*'):"));
   m_editWord= new QLineEdit(bgSymbols,"m_editWord");
   m_editWord -> setMaxLength(1);
 
   QLabel *labelLength = new QLabel(bgOptions,"m_labelLength");
-  labelLength->setText(i18n("maximum length of a wildcard expression:"));
+  labelLength->setText(i18n("Maximum length of a wildcard expression:"));
   m_editExpLength = new QLineEdit(bgOptions,"m_editExpLength");
 
   m_checkWildcardsInReplaceStr = new QCheckBox(bgOptions,"m_checkWildcardsInReplaceStr");
@@ -261,7 +261,7 @@ void KOptionsDlg::initPage3()
 
   // Create check boxes
   QButtonGroup *bgGeneral = new QButtonGroup(1, QGroupBox::Horizontal, i18n("General"), tab3);
-  QButtonGroup *bgConfirm = new QButtonGroup(1, QGroupBox::Horizontal, i18n("Confirmation before replacing"), tab3);
+  QButtonGroup *bgConfirm = new QButtonGroup(1, QGroupBox::Horizontal, i18n("Confirmation Before Replacing"), tab3);
 
   m_checkVariables = new QCheckBox(i18n("Enable variables in replace strings"),bgGeneral,"m_checkVariables");
   m_checkBackup = new QCheckBox(i18n("Backup: Create a copy into a .OLD file before replacing strings"),bgGeneral,"m_checkBackup");
@@ -274,7 +274,7 @@ void KOptionsDlg::initPage3()
   QWhatsThis::add(m_checkVariables, i18n("If enabled, KFileReplace will replace variables with their values in the replace string. For example "
                                          "if the replace string is \"The current time is [$datetime:mm/dd/yyyy$]\", then the date will be written."));
   QWhatsThis::add(m_checkBackup, i18n("If enabled, create backup of replaced files before any modifications. Then you can restore the old datas "
-                                      "if there is an error durring the replace operation. A copy of the original files will be created, with the .OLD extension"));
+                                      "if there is an error durring the replace operation. A copy of the original files will be created, with the .OLD extension."));
 
 
   addTab(tab3, i18n("Replace"));

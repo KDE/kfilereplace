@@ -26,7 +26,7 @@ KConfirmDlg::KConfirmDlg(QWidget *parent, const char *name) : QDialog(parent,nam
 {
   initDialog();
 
-  setCaption(i18n("Do you want to replace the first string with the second ?"));
+  setCaption(i18n("Replace First String with Second?"));
 
   connect(m_btnYes,SIGNAL(clicked()),this,SLOT(slotYes()));
   connect(m_btnNo,SIGNAL(clicked()),this,SLOT(slotNo()));
