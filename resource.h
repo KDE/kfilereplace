@@ -24,6 +24,9 @@
 #include <config.h>
 #endif
 
+#include <qstring.h>
+#include <klocale.h>
+
 ///////////////////////////////////////////////////////////////////
 // General application values
 #define ID_STATUS_MSG 1001
@@ -39,32 +42,12 @@
 #define MAX_MESSAGE 128
 #define MAX_TEXTLEN 256
 
-const int MaxStringToSearch = 256;
-const bool RecursiveOption = true;
-const bool BackupOption = true;
-const bool CaseSensitiveOption = false;
-const bool FollowSymbolicLinksOption = false;
-const bool WildcardsOption = false;
-const bool VariablesOption = false;
-const bool AllStringsMustBeFoundOption = false;
-const bool ConfirmFilesOption = false;
-const bool ConfirmStringsOption = false;
-const bool ConfirmDirectoriesOption = false;
-const bool WildcardsInReplaceStringOption = false;
-const char WildcardsLetterOption = '?';
-const char WildcardsWordOption = '*';
-const unsigned int WildcardsExpressionLengthOption = 100;
-const bool StopWhenFirstOccurenceOption = false;
-const bool IgnoreWhiteSpacesOption = false;
-const bool IgnoreHiddenOption = false;
 
-///////////////////////////////////////////////////////////////////
-// Create cases for entries and connect them with their functions
+/**  Create cases for entries and connect them with their functions */
 #define ON_CMD(id, cmd_class_function) case id:cmd_class_function ;break;
 #define ON_STATUS_MSG(id, message) case id:slotStatusHelpMsg(message);break;
 
-///////////////////////////////////////////////////////////////////
-//
+
 #if !defined(MIN)
 #define MIN(X,Y) (X) < (Y) ? (X) : (Y)
 #endif

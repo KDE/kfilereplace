@@ -1,3 +1,35 @@
+30-05-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- Well, KFR has been entirely (more or less :-)) rewrote.
+  . the files:       
+    apistruct.h
+    kernel.(cpp,h)
+    kexpression.(cpp,h)
+    kfilereplacedoc.(cpp,h)
+    kfilereplacepref.(cpp,h)
+    
+    were removed and these files are added:
+    
+    configurationclasses.h
+    
+  . the internal architecture was redesigned, to use QT/KDE tecnologies in particular:
+    . C-like code were removed (where possible).
+    . some system dependent functions were substituted with more portable code.
+    . the apistructs.h file were substituted with one class in configurationclasses.h.
+  . the UIs were modified in particular:
+    . new "add string" dialog were added.
+    . project dialog were modified. 
+  . some new features were added in particular:
+    . the variable replace mechanism were modified.
+    . the result view shows the line and column where the string has been found.
+    . now the mechanism of search/replace with wildcards inherits from QT regular expression engine.
+  
+I wrote a little tutorial(TUTOR.txt), but a more exhaustive tutorial will be released soon.
+Note: there some bugs to fix and some feature to implement, in particular:
+      . Simulation is not yet implemented.
+      . Some options are presents but disabled.
+      . I want to add more KFR variable commands.
+
+
 26-03-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
 - Added a feature. Now we can open a file from the result view of KFR in Quanta(thanks Andras).
 

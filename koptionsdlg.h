@@ -19,14 +19,7 @@
 #ifndef KOPTIONSDLG_H
 #define KOPTIONSDLG_H
 
-#include "apistruct.h"
-
-#include <kseparator.h>
-
-class QLabel;
-class QLineEdit;
-class QCheckBox;
-
+#include "configurationclasses.h"
 #include "koptionsdlgs.h"
 
 /**
@@ -35,26 +28,23 @@ class QCheckBox;
 
 class KOptionsDlg : public KOptionsDlgS
 {
-   Q_OBJECT
-public:
-  KOptionsDlg(QWidget *parent, const char *name, Settings settings);
-  ~KOptionsDlg();
-  void whatsThisPage1();
-  void whatsThisPage2();
-  void whatsThisPage3();
-  /** Functions of access to datas */
-  Settings settings();
-
-private: // Data of configuration
-  Settings m_settings;
- 
-protected slots:
-  void slotOK();
-  void slotDefaults();
-  
-private:
-  void loadOptions();
-  void saveOptions();
+  Q_OBJECT
+  public:
+    KOptionsDlg(QWidget *parent, const char *name);
+    ~KOptionsDlg();
+      
+  private: 
+    KConfig* m_config;   
+      
+  protected slots:
+    void slotOK();
+    void slotDefaults();
+    void slotChbBackup(bool b);
+    
+  private:
+    void loadOptions();
+    void saveOptions();
+    void whatsThisPage();
 };
 
-#endif //KOPTIONSDLG_H
+#endif // KOPTIONSDLG_H

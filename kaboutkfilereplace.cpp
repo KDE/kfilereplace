@@ -3,7 +3,7 @@
                              -------------------
     begin                : Sat Jul 22 2000
     copyright            : (C) 2000 by François Dupoux
-                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+                           (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -26,7 +26,7 @@
 KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool modal)
   :KAboutDialog(AbtKDEStandard | AbtProduct, "KFileReplace", KDialogBase::Close, KDialogBase::Close, parent, name, modal)
 {
-  setTitle(i18n( "KFileReplace for KDE 3" ));
+  setTitle("KFileReplace for KDE 3");
   setImage(locate("data", "kfilereplace/pics/about.png"));
   setImageFrame(false);
   setProduct(QString(PACKAGE), QString(VERSION), QString("François Dupoux"), QString("2002"));
@@ -45,8 +45,8 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
                                  "<p>There are very powerful options in the new version: the wildcards and the variables "
                                  "support.</p>"
                                  "<p>The wildcards (* for an expression, and ? for a single character) can be used in the "
-                                 "search and in the replace strings.</p>"
-                                 "<p>The variables can be the date, or the current filename, in the format you want.</p>");
+                                 "search and in the replace strings!</p>"
+                                 "<p>The variables, can be the date, or the currently filename, in the format you want.</p>");
 
   const QString strContribute = i18n("<p><b>Everyone is welcome to contribute</b> to this project. "
                                      "You do not have to be a developer to do it. You can do many things:<br>"
@@ -76,7 +76,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
     }
 
   // Text pages
-  addTextPage(i18n("&What KFileReplace Does"), strUseful, true);
+  addTextPage(i18n("&What KFileReplace does"), strUseful, true);
   addTextPage(i18n("&Contribute"), strContribute, true);
 
   // Authors page
@@ -85,7 +85,7 @@ KAboutKFileReplace::KAboutKFileReplace(QWidget *parent, const char *name, bool m
     {
       cAuthors->addPerson(QString("François Dupoux"), QString("dupoux@dupoux.com"), QString::null, i18n("Main author and French translator"), true);
       cAuthors->addPerson(QString("Andras Mantia"), QString("amantia@kde.org"), QString::null, i18n("KPartification, integration with Quanta Plus"), true);
-      cAuthors->addPerson(QString("Heiko Goller"), QString("heiko.goller@tuebingen.mpg.de"), QString::null, i18n("German translator"), true);
+      cAuthors->addPerson(QString("Heiko Goller"), QString("heiko.goller@tuebingen.mpg.de"), QString::null, QString("German translator"), true);
     }
 
   // GPL license text

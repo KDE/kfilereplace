@@ -8,16 +8,16 @@ INCLUDES  = $(all_includes)
 SUBDIRS = . pics toolbar
 
 # these are the headers for your project
-noinst_HEADERS = apistruct.h kaddstringdlg.h kexpression.h kfilereplaceiface.h \
-                 kfilereplacelib.h kconfirmdlg.h kfilereplacedoc.h  knewprojectdlg.h resource.h \
-                 kaboutkfilereplace.h kernel.h kfilereplaceview.h koptionsdlg.h
+noinst_HEADERS = kaddstringdlg.h kfilereplaceiface.h \
+                 kfilereplacelib.h kconfirmdlg.h knewprojectdlg.h resource.h \
+                 kaboutkfilereplace.h kfilereplaceview.h koptionsdlg.h
 
 
 # let automoc handle all of the meta source files (moc)
 METASOURCES = AUTO
 
 kde_module_LTLIBRARIES = libkfilereplacepart.la
-libkfilereplacepart_la_SOURCES = kfilereplacepart.cpp kfilereplacedoc.cpp  kfilereplaceview.cpp kfilereplaceviewWdg.ui kaboutkfilereplace.cpp kaddstringdlg.cpp kaddstringdlgs.ui kconfirmdlg.cpp kconfirmdlgs.ui kernel.cpp kexpression.cpp  knewprojectdlg.cpp knewprojectdlgs.ui koptionsdlg.cpp koptionsdlgs.ui kfilereplacelib.cpp
+libkfilereplacepart_la_SOURCES = kfilereplacepart.cpp kfilereplaceview.cpp kfilereplaceviewwdg.ui kaboutkfilereplace.cpp kaddstringdlg.cpp kaddstringdlgs.ui kconfirmdlg.cpp kconfirmdlgs.ui knewprojectdlg.cpp knewprojectdlgs.ui koptionsdlg.cpp koptionsdlgs.ui kfilereplacelib.cpp
 libkfilereplacepart_la_LDFLAGS = -module $(KDE_PLUGIN) $(all_libraries)
 libkfilereplacepart_la_LIBADD = $(LIB_KFILE) $(LIB_KPARTS) $(LIB_KHTML)
 
@@ -25,10 +25,9 @@ kde_services_DATA = kfilereplacepart.desktop
 
 
 messages: rc.cpp
-	$(XGETTEXT) *.cpp *.h -o $(podir)/kfilereplace.pot
+	$(XGETTEXT) *.cpp -o $(podir)/kfilereplace.pot
 
 KDE_ICON = AUTO
-xdg_apps_DATA = kfilereplacepart.desktop
 
 # this is where the XML-GUI resource file goes
 rcdir = $(kde_datadir)/kfilereplacepart

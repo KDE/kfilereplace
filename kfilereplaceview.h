@@ -2,7 +2,7 @@
                           kfilereplaceview.h  -  description
                              -------------------
     begin                : sam oct 16 15:28:00 CEST 1999
-    copyright            : (C) 1999 by Franï¿½is Dupoux <dupoux@dupoux.com>
+    copyright            : (C) 1999 by François Dupoux <dupoux@dupoux.com>
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
  ***************************************************************************/
 
@@ -22,72 +22,67 @@
 #include <config.h>
 #endif
 
-
 class QPixMap;
 class QListView;
 
 class KConfig;
 class KPopupMenu;
-//class KProcess;
 
-class KAddStringDlg;
-class KFileReplaceDoc;
+#include <kconfig.h>
+#include <qmap.h>
 
+#include "kaddstringdlg.h"
+#include "kfilereplaceviewwdg.h"
+#include "configurationclasses.h"
 
-#include <qpixmap.h>
-
-#include "kfilereplaceviewWdg.h"
 class KFileReplaceView : public KFileReplaceViewWdg
 {
   Q_OBJECT
-
-public:
-  /** Constructor for the main view */
-  KFileReplaceView(QWidget *parent,const char *name);
-  /** Destructor for the main view */
-  virtual ~KFileReplaceView();
-
-  QListView *stringView();
-  QListView *resultView();
-  QPixmap iconString();
-
-  QString currentItem();
-  bool addString(QListViewItem *lviCurrent, const QString &searchStr = QString::null, const QString &replaceStr = QString::null);
-  bool editString(QListViewItem *lviCurrent);
-  KFileReplaceDoc* document() const;
-  QListViewItem* addFullItem(bool bSuccess, const QString& szName, const QString& szDirectory, uint nOldSize, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
-  int updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSize, int nNbRepl, const QString& szErrMsg=QString::null);
-  bool increaseStringCount(QListViewItem *lvi, QString strOld, QString strNew, QString strReplace, const char *szSearch, int nSearchLen, bool bShowDetails);
-  void execShellCommand(const QString& cmd);
-
-public slots:
-  void slotStringsAdd();
-  void slotStringsEdit(QListViewItem*);
-  void slotResultProperties();
-  void slotResultOpen();
-  void slotResultOpenWith();
-  void slotResultEdit();
-  void slotResultDirOpen();
-  void slotResultDelete();
-  void slotResultTreeExpand();
-  void slotResultTreeReduce();
-  void slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column);
-
-private:
-  void expand(QListViewItem *lviCurrent, bool bExpand);
-
-private:
-  KConfig* m_config;
-  QListView *m_stringView;
-  QString m_path;
-  KAddStringDlg* dlg;
-  //KFileReplaceApp *m_app;
-  KPopupMenu *m_kpmResult;
-  QListViewItem *m_lviCurrent;
-  QPixmap m_pmIconSuccess;
-  QPixmap m_pmIconError;
-  QPixmap m_pmIconString;
-  QPixmap m_pmIconSubString;
+  private:
+    QString m_path;
+    KPopupMenu *m_kpmResult;
+    QMap<QString,QString> m_map;
+    QListViewItem *m_lviCurrent;
+    QPixmap m_pmIconSuccess,
+            m_pmIconError,
+	    m_pmIconString,
+	    m_pmIconSubString;
+    KAddStringDlg dlg;
+    KConfig* m_config;
+        
+  public:
+    KFileReplaceView(QWidget *parent,const char *name);
+    ~KFileReplaceView();
+    
+  public:
+    QListView *stringView();
+    QListView *resultView();
+    QPixmap iconString();
+    QString currentItem();
+    void setConfig(KConfig* c) { m_config = c;}
+      
+  public slots:
+    void slotStringsAdd();
+    void slotStringsAddFromProjectDlg(const QMap<QString,QString>& replacementMap);
+    void slotStringsDel();
+    void slotStringsClear();
+    void slotStringsEdit(QListViewItem* lv);
+    //void slotStringsEditFromProjectDlg(const QMap<QString,QString>& replacementMap);
+    void slotResultProperties();
+    void slotResultOpen();
+    void slotResultOpenWith();
+    void slotResultEdit();
+    void slotResultDirOpen();
+    void slotResultDelete();
+    void slotResultTreeExpand();
+    void slotResultTreeReduce();
+    void slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column);
+  
+  private:
+    void expand(QListViewItem *lviCurrent, bool bExpand);
+    void setMap();
+  
+  
 };
 
 #endif // KFILEREPLACEVIEW_H

@@ -3,7 +3,7 @@
                              -------------------
     begin                : Fri Jun 23 2000
     copyright            : (C) 2000 by François Dupoux
-                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+                           (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -20,12 +20,11 @@
 #include <qlabel.h>
 #include <qtextedit.h>
 #include <qpushbutton.h>
-#include "kconfirmdlg.h"
+
 #include <kapplication.h>
 #include <klocale.h>
 
-
-
+#include "kconfirmdlg.h"
 
 KConfirmDlg::KConfirmDlg(QWidget *parent, const char *name) : KConfirmDlgS(parent,name,true)
 {
@@ -43,13 +42,11 @@ KConfirmDlg::~KConfirmDlg()
 {
 }
 
-
 void KConfirmDlg::initDialog()
 {
   // set normal cursor
   QApplication::setOverrideCursor(Qt::arrowCursor);
 }
-
 
 void KConfirmDlg::setData(const QString& strFile, const QString& strDir, const QString& strSearch, const QString& strReplace)
 {
@@ -67,7 +64,6 @@ void KConfirmDlg::setData(const QString& strFile, const QString& strDir, const Q
   txtedReplace->setText(strReplace);
 }
 
-
 void KConfirmDlg::slotYes()
 {
   // get new replace string if edited
@@ -78,13 +74,11 @@ void KConfirmDlg::slotYes()
   done(Yes);
 }
 
-
 void KConfirmDlg::slotNo()
 {
   QApplication::restoreOverrideCursor();
   done(No);
 }
-
 
 void KConfirmDlg::slotSkipFile()
 {
@@ -92,13 +86,11 @@ void KConfirmDlg::slotSkipFile()
   done(SkipFile);
 }
 
-
 void KConfirmDlg::slotSkipFolder()
 {
   QApplication::restoreOverrideCursor();
   done(SkipDir);
 }
-
 
 void KConfirmDlg::slotCancel()
 {

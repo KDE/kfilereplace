@@ -2,8 +2,8 @@
                           knewprojectdlg.h  -  description
                              -------------------
     begin                : Tue Dec 28 1999
-    copyright            : (C) 1999 by Franï¿½is Dupoux
-                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+    copyright            : (C) 1999 by François Dupoux
+                           (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -20,81 +20,62 @@
 #define KNEWPROJECTDLG_H
 
 #include "knewprojectdlgs.h"
-#include "apistruct.h"
+#include "configurationclasses.h"
 
-class QDate;
 class KConfig;
 
 class KNewProjectDlg : public KNewProjectDlgS
 {
   Q_OBJECT
-
- public:
-  KNewProjectDlg(QWidget *parent, KConfig *config, const char *name=0);
-  virtual ~KNewProjectDlg();
-
- private:
-  bool m_searchLater;
-  KConfig *m_config;
-  QDate m_MinDate;
-  QDate m_MaxDate;
-  unsigned long int m_MinimumSizeNumber;
-  unsigned long int m_MaximumSizeNumber;
-
- protected slots:
-  void slotDir();
-  void slotLater();
-  void slotOK();
-  void slotEnableSpinboxSizeMin(bool b);
-  void slotEnableSpinboxSizeMax(bool b);
- public:
-  QString location();
-  QString filter();
-  QString searchFor();
-  QString replaceWith();
-
-  bool includeSubfolders();
-  bool caseSensitive();
-  bool enableWildcards();
-  bool enableVariables();
-
-  int accessType();
-  bool isMinDate();
-  bool isMaxDate();
-  QDate minDate();
-  QDate maxDate();
-
-  bool isMinSize();
-  bool isMaxSize();
-  unsigned long int minSize();
-  unsigned long int maxSize();
-
-  bool isOwnerUser();
-  bool isOwnerGroup();
-
-  bool ownerUserMustBe();
-  bool ownerGroupMustBe();
-
-  QString ownerUserType();
-  QString ownerGroupType();
-
-  QString ownerUserValue();
-  QString ownerGroupValue();
-
-  void loadLocationsList();
-  void loadFiltersList();
-
-  void saveLocationsList();
-  void saveFiltersList();
-
- // void addCurrentStringToCombo();
-  void setDatas(const QString& strDir, const QString& strFilter);
-  void setWhatsThis();
-
-  void maxFilesSize(bool & bChecked, long unsigned int & nMaxSize);
-  void minFilesSize(bool & bChecked, long unsigned int & nMinSize);
-
-  bool searchLater() {return m_searchLater;}
+  
+  public:
+    ConfigurationInformation m_info;
+    
+  private:
+    KConfig *m_config;
+    QMap<QString,QString> m_map;
+  
+  public:
+    KNewProjectDlg(QWidget *parent, KConfig *config, const char *name=0);
+    virtual ~KNewProjectDlg();
+    
+  public:
+    void loadOptions();
+    void loadFileSizeFilter();
+    void loadDateAccessFilter();
+    void loadOwnerFilter();
+    void loadLocationsList();
+    void loadFiltersList();
+    void loadBackupExtensionFilter();
+    QString currentDir() const; 
+    QString currentFilter() const;
+    QMap<QString,QString> stringsMap() const; 
+    void saveOptions();
+    void saveFileSizeFilter();
+    void saveDateAccessFilter();
+    void saveOwnerFilter();
+    void saveLocationsList();
+    void saveFiltersList();
+    void saveBackupExtensionFilter();
+    void setDatas(const QString& directoryString, const QString& filterString);
+    void setWhatsThis();
+     
+  protected slots:
+    void slotDir();
+    void slotOK();
+    void slotAdd();
+    void slotDel();
+    void slotSearchOnly(bool b);
+    void slotSearchReplace(bool b);
+    void slotEnableSpinboxSizeMin(bool b);
+    void slotEnableSpinboxSizeMax(bool b);
+    void slotEnableCbValidDate(bool b);
+    void slotEnableChbUser(bool b);
+    void slotEnableChbGroup(bool b); 
+    void slotEnableChbBackup(bool b);
+  private:
+    bool contains(QListView* lv,const QString& s, int column);
+    void setMap();  
 };
 
-#endif
+#endif  // KNewProjectDlg

@@ -3,7 +3,7 @@
                              -------------------
     begin                : Fri Jun 23 2000
     copyright            : (C) 2000 by François Dupoux
-                                  (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
+                           (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
 
@@ -48,7 +48,7 @@ class KConfirmDlg : public KConfirmDlgS
 
   public:
     void setData(const QString& strFile, const QString& strDir, const QString& strSearch, const QString& strReplace);
-    QString getReplaceString() {return m_strReplace;}
+    QString replaceString() const { return m_strReplace; }
 
  };
 

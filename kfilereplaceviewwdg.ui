@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>KFileReplaceViewWdg</class>
 <widget class="QWidget">
     <property name="name">
@@ -11,6 +11,9 @@
             <width>600</width>
             <height>325</height>
         </rect>
+    </property>
+    <property name="caption">
+        <string>Form1</string>
     </property>
     <grid>
         <property name="name">
@@ -73,18 +76,7 @@
                 </column>
                 <column>
                     <property name="text">
-                        <string>Replaced Items</string>
-                    </property>
-                    <property name="clickable">
-                        <bool>true</bool>
-                    </property>
-                    <property name="resizable">
-                        <bool>true</bool>
-                    </property>
-                </column>
-                <column>
-                    <property name="text">
-                        <string>Result</string>
+                        <string>Replaced Strings</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -118,6 +110,12 @@
                 <property name="name">
                     <cstring>lwResult</cstring>
                 </property>
+                <property name="allColumnsShowFocus">
+                    <bool>true</bool>
+                </property>
+                <property name="showSortIndicator">
+                    <bool>true</bool>
+                </property>
                 <property name="rootIsDecorated">
                     <bool>true</bool>
                 </property>
@@ -128,7 +126,7 @@
             <widget class="QListView">
                 <column>
                     <property name="text">
-                        <string>Search For</string>
+                        <string>Search for</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -139,7 +137,7 @@
                 </column>
                 <column>
                     <property name="text">
-                        <string>Replace With</string>
+                        <string>Replace with</string>
                     </property>
                     <property name="clickable">
                         <bool>true</bool>
@@ -155,7 +153,7 @@
                     <bool>true</bool>
                 </property>
                 <property name="resizeMode">
-                    <enum>LastColumn</enum>
+                    <enum>AllColumns</enum>
                 </property>
             </widget>
         </widget>

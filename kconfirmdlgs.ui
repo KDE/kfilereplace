@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>KConfirmDlgS</class>
 <widget class="QDialog">
     <property name="name">
@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string>Replace First String with Second?</string>
+        <string>Replace first string with second?</string>
     </property>
     <grid>
         <property name="name">
@@ -106,6 +106,9 @@
                     <property name="text">
                         <string>&amp;Help</string>
                     </property>
+                    <property name="accel">
+                        <string>Alt+H</string>
+                    </property>
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
@@ -114,6 +117,9 @@
                     <property name="text">
                         <string>&amp;Yes</string>
                     </property>
+                    <property name="accel">
+                        <string>Alt+Y</string>
+                    </property>
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
@@ -121,6 +127,9 @@
                     </property>
                     <property name="text">
                         <string>&amp;No</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+N</string>
                     </property>
                 </widget>
                 <widget class="QPushButton">
@@ -144,7 +153,7 @@
                         <cstring>pbCancel</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;Cancel</string>
+                        <string>Cancel</string>
                     </property>
                 </widget>
             </hbox>

@@ -37,8 +37,8 @@
             <Action name="options_recursive"/>
             <Action name="options_backup"/>
             <Action name="options_case"/>
-            <Action name="options_wildcards"/>
             <Action name="options_var"/>
+	    <Action name="options_wildcards"/>
         </Menu>
     </Menu>
     <Menu name="settings"><text>&amp;Settings</text>
@@ -67,8 +67,8 @@
 	<Action name="options_recursive"/>
 	<Action name="options_backup"/>
 	<Action name="options_case"/>
-	<Action name="options_wildcards"/>
 	<Action name="options_var"/>
+	<Action name="options_wildcards"/>
 	<Separator/>
 	<Action name="settings_preferences"/>
 	<Separator/>
