@@ -117,8 +117,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
 
     void normalFileSearch(const QString& dirName, const QString& filters);
     void recursiveFileSearch(const QString& dirName, const QString& filters);
-    void searchExpression(const QString& currentDir, const QString& oldFileName);
-    void searchLiteral(const QString& currentDir, const QString& oldFileName);
+    void searchFile(const QString& currentDir, const QString& oldFileName, bool expressionSearch);
     void loadInformationFromView();
     void launchNewProjectDialog(const KURL &startURL);
     void setOptionMask();

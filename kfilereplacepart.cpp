@@ -546,10 +546,7 @@ void KFileReplacePart::normalFileSearch(const QString& dirName, const QString& f
       QFileInfo fi(filePath+"/"+fileName);
       if(fi.isDir())
         continue;
-      if(m_info.wildcards())
-        searchExpression(filePath,fileName);
-      else
-        searchLiteral(filePath,fileName);
+      searchFile(filePath,fileName, m_info.wildcards());
     }
 }
 
@@ -582,12 +579,9 @@ void KFileReplacePart::recursiveFileSearch(const QString& dirName, const QString
           if(fi.isDir())
             recursiveFileSearch(filePath+"/"+fileName,filters);
           else
-            {
-	      if(m_info.wildcards())
-	        searchExpression(filePath,fileName);
-	      else
-	        searchLiteral(filePath,fileName);
-	    }
+          {
+             searchFile(filePath, fileName, m_info.wildcards());
+	  }
               // avoid unnecessary for-loop if we want to stop
               if(m_stop)
                 break;
@@ -595,105 +589,9 @@ void KFileReplacePart::recursiveFileSearch(const QString& dirName, const QString
    }
 }
 
-void KFileReplacePart::searchExpression(const QString& currentDir, const QString& fileName)
+void KFileReplacePart::searchFile(const QString& currentDir, const QString& fileName, bool expressionSearch)
 {
- // kdDebug(23000)<<"searchExpression" << end;;
-  QWidget* w = new QWidget();
-
-  QFile file(currentDir+"/"+fileName);
-
-  if(!file.open(IO_ReadOnly))
-    {
-      KMessageBox::error(w,i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(fileName));
-      return ;
-    }
-  // Create a stream with the file
-  QTextStream stream( &file );
-  QFileInfo fi(currentDir+"/"+fileName);
-
-  kapp->processEvents();
-
-  QListViewItem *item = 0L;
-  bool caseSensitive = m_info.caseSensitive(),
-       haltOnFirstOccur = m_info.haltOnFirstOccur();
-  //Count the line number
-  int lineNumber = 1;
-  //Count occurrences
-  int occur = 0;
-
-  //This map contains search strings
-  QMap<QString,QString> tempMap = m_replacementMap;
-  while (!stream.atEnd())
-    {
-      QString line = stream.readLine()+"\n";
-      QMap<QString,QString>::Iterator it = tempMap.begin();
-
-      while(it != tempMap.end())
-        {
-	  QString key = it.key(),
-	          data = it.data();
-          //QString tmp = line;
-          QRegExp rxKey("("+key+")", caseSensitive, false);
-          //If this option is true then for any string in
-	  //the map we search for the first occurrence of that string
-          if(haltOnFirstOccur)
-            {
-	      int pos = line.find(rxKey);
-              if(pos != -1)
-                {
-                  QString msg = i18n(" first captured text \"%1\" at line:%2, column:%3").arg(rxKey.cap(1)).arg(lineNumber).arg(pos+1);
-                  if (!item)
-                    item = new QListViewItem(m_view->resultView());
-                  QListViewItem* tempItem = new QListViewItem(item);
-		  tempItem->setText(0,msg);
-		  tempMap.remove(it);
-                  //if map is empty and if we must stop on first occurrence
-		  //then we exit
-                  if(tempMap.isEmpty())
-                    return;
-                  it = tempMap.begin();
-                  continue;
-                }
-
-            }
-          //This point of the code is reached when we must search for all
-	  //occurrences of all the strings
-	  kdDebug(23000)<<"1\n\n";
-          int pos = rxKey.search(line, 0);
-          while(pos != -1)
-	    {
-              QString msg = i18n(" captured text \"%1\" at line:%2, column:%3").arg(rxKey.cap(1)).arg(lineNumber).arg(pos+1);
-              if (!item)
-                 item = new QListViewItem(m_view->resultView());
-	      QListViewItem* tempItem = new QListViewItem(item);
-              tempItem->setText(0,msg);
-	      occur++;
-              pos = rxKey.search(line, pos+rxKey.matchedLength());
-            } kdDebug(23000)<<"3 "<<key<<"\n\n";
-	  //Advance in the map of the strings
-          ++it;
-         }
-      //Count line number
-      lineNumber++;
-     }
-
-   file.close();
-
-   if (item)
-   {
-      item->setText(0,fileName);
-      item->setText(1,currentDir);
-      item->setText(2,KFileReplaceLib::formatFileSize(fi.size()));
-      item->setText(4,QString::number(occur,10));
-      item->setText(5,i18n("%1[%2]").arg(fi.owner()).arg(fi.ownerId()));
-      item->setText(6,i18n("%1[%2]").arg(fi.group()).arg(fi.groupId()));
-   }
-
-}
-
-void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& fileName)
-{
- // kdDebug(23000)<< "searchLiteral" << endl;
+ // kdDebug(23000)<< "searchFile,  expressionSearch: " << expressionSearch << endl;
   QWidget* w = new QWidget();
 
   QFile file;
@@ -702,7 +600,7 @@ void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& f
 
   if(!file.open(IO_ReadOnly))
     {
-      KMessageBox::error(w,i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(fileName));
+      KMessageBox::error(w,i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(fileName));
       return ;
     }
   // Create a stream with the file
@@ -723,6 +621,8 @@ void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& f
   //This map contains search strings
   QMap<QString,QString> tempMap = m_replacementMap;
 
+  QString searchKey;
+  QRegExp rxKey("", caseSensitive, false);
   while ( !stream.atEnd() )
     {
       QString line = stream.readLine()+"\n";
@@ -733,20 +633,31 @@ void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& f
 	  QString key = it.key(),
 	          data = it.data();
           //QString tmp = line;
-          QString rxKey(key);
+          if (expressionSearch)
+            rxKey.setPattern("("+key+")");
+          else
+            searchKey = key;
 
+          int pos = -1;
           //If this option is true then for any string in
 	  //the map we search for the first occurrence of that string
           if(haltOnFirstOccur)
             {
-	      int pos = line.find(rxKey, 0, caseSensitive);
+              if (expressionSearch)
+                pos = line.find(rxKey);
+              else
+	         pos = line.find(searchKey, 0, caseSensitive);
               if(pos != -1)
                 {
                   if (!item)
                      item = new QListViewItem(m_view->resultView());
                   QListViewItem* tempItem = new QListViewItem(item);
-		  QString capturedText = line.mid(pos,rxKey.length()),
-		          msg = i18n(" first occurence of string \"%1\" found at line:%2, column:%3").arg(capturedText).arg(lineNumber).arg(pos+1);
+		  QString capturedText;
+                  if (expressionSearch)
+                    capturedText = rxKey.cap(1);
+                  else
+                    capturedText = line.mid(pos,searchKey.length());
+		  QString msg = i18n(" first occurence of string \"%1\" found at line:%2, column:%3").arg(capturedText).arg(lineNumber).arg(pos+1);
                   tempItem->setText(0,msg);
 		  tempMap.remove(it);
                   //if map is empty and if we must stop on first occurrence
@@ -759,18 +670,29 @@ void KFileReplacePart::searchLiteral(const QString& currentDir, const QString& f
             }
           //This point of the code is reached when we must search for all
 	  //the occurrences of all the strings
-          int pos = line.find(rxKey, 0, caseSensitive);
+          if (expressionSearch)
+            pos = rxKey.search(line, 0);
+          else
+            pos = line.find(searchKey, 0, caseSensitive);
 
-          while(pos != -1)
+          while (pos != -1)
 	    {
-              QString capturedText = line.mid(pos,rxKey.length()),
-	              msg = i18n(" string \"%1\" found at line:%2, column:%3 ").arg(capturedText).arg(lineNumber).arg(pos+1);
+              QString capturedText;
+              if (expressionSearch)
+                capturedText = rxKey.cap(1);
+              else
+                capturedText = line.mid(pos, searchKey.length());
+
+	      QString msg = i18n(" string \"%1\" found at line:%2, column:%3 ").arg(capturedText).arg(lineNumber).arg(pos+1);
               if (!item)
                   item = new QListViewItem(m_view->resultView());
 	      QListViewItem* tempItem = new QListViewItem(item);
               tempItem->setText(0,msg);
 	      occur++;
-              pos = line.find(rxKey,pos+rxKey.length()+1);
+              if (expressionSearch)
+                pos = rxKey.search(line, pos+rxKey.matchedLength());
+              else
+                pos = line.find(searchKey,pos+searchKey.length()+1);
             }
 	  //Advance in the map of the strings
 	  ++it;
