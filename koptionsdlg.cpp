@@ -204,8 +204,7 @@ void KOptionsDlg::initPage1()
                                                  "\"Linux is fast\" in a file, and there is a line feed beetween "
                                                  "\"Linux\" and \"is\", then the string won't be found. This options can solve the problem."));
   QWhatsThis::add(m_checkFollowSymLinks, i18n("If a directory symbolic link is found, it will be opened."));
-  QWhatsThis::add(m_checkAllStringsMustBeFound, i18n("The file will be found/replaced only is all strings of the list are found. "
-                                                     "In the other case, the file is shown is a string at less is found"));
+  QWhatsThis::add(m_checkAllStringsMustBeFound, i18n("The file will be found/replaced only if all strings from the list are found in the file."));
   QWhatsThis::add(m_checkIgnoreHidden, i18n("If this option is enabled, hidden files and directories (files whose names begin with a "
                                             "point as .kde) won't be found / replaced."));
 
