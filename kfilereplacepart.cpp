@@ -611,7 +611,7 @@ void KFileReplacePart::initGUI()
 
   actionCollection()->setHighlightingEnabled(true);
   // File
-  (void)new KAction(i18n("Customize search/replace session"), "projectopen", 0, this, SLOT(slotSetNewParameters()), actionCollection(), "new_project");
+  (void)new KAction(i18n("Customize Search/Replace Session"), "projectopen", 0, this, SLOT(slotSetNewParameters()), actionCollection(), "new_project");
   (void)new KAction(i18n("&Search"), "filesearch", 0, this, SLOT(slotSearchingOperation()), actionCollection(), "search");
   (void)new KAction(i18n("S&imulate"), "filesimulate", 0, this, SLOT(slotSimulatingOperation()), actionCollection(), "file_simulate");
   (void)new KAction(i18n("&Replace"),  "filereplace", 0, this, SLOT(slotReplacingOperation()), actionCollection(), "replace");
