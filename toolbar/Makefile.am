@@ -1,1 +1,2 @@
-KDE_ICON=AUTO
+appdir = $(kde_datadir)/kfilereplace/pics
+app_ICON=AUTO
