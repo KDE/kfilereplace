@@ -22,6 +22,7 @@
 #include <qwhatsthis.h>
 #include <qpushbutton.h>
 #include <qcheckbox.h>
+#include <qspinbox.h>
 //KDE
 #include <kseparator.h>
 #include <kmessagebox.h>
@@ -48,12 +49,19 @@ KNewProjectDlg::KNewProjectDlg(QWidget *parent, KConfig *config, const char *nam
  QPixmap pixMap = iconSet.pixmap( QIconSet::Small, QIconSet::Normal );
  pbLocation->setIconSet(iconSet);
  pbLocation->setFixedSize( pixMap.width()+8, pixMap.height()+8 );
+ 
+ spbSizeMin->setEnabled(chbSizeMin->isChecked());
+ 
+ spbSizeMax->setEnabled(chbSizeMax->isChecked());
+ 
  setWhatsThis();
  loadLocationsList();
  loadFiltersList();
  connect(pbLocation, SIGNAL(clicked()), this, SLOT(slotDir()));
  connect(pbOK, SIGNAL(clicked()), this, SLOT(slotOK()));
  connect(pbCancel, SIGNAL(clicked()), this, SLOT(reject()));
+ connect(chbSizeMin, SIGNAL(toggled(bool)), this, SLOT(slotEnableSpinboxSizeMin(bool)));
+ connect(chbSizeMax, SIGNAL(toggled(bool)), this, SLOT(slotEnableSpinboxSizeMax(bool)));
 }
 
 KNewProjectDlg::~KNewProjectDlg()
@@ -123,12 +131,10 @@ void KNewProjectDlg::slotOK()
    }
 
    // =========================================================
-
+   
    // Check all the fields are filled
-   if (   (maximumSize && edSizeMax->text().isEmpty())
-          || (minimumSize && edSizeMin->text().isEmpty())
-          || (minimumDate && edDateMin->text().isEmpty())
-          || (maximumDate && edDateMax->text().isEmpty()) )
+   if (   (minimumDate && edDateMin->text().isEmpty())
+       || (maximumDate && edDateMax->text().isEmpty()) )
    {
       KMessageBox::error(this, i18n("Some edit boxes are empty"));
       return ;
@@ -180,6 +186,16 @@ void KNewProjectDlg::slotOK()
    }
 
    accept();
+}
+
+void KNewProjectDlg::slotEnableSpinboxSizeMin(bool b)
+{
+ spbSizeMin->setEnabled(b);
+}
+
+void KNewProjectDlg::slotEnableSpinboxSizeMax(bool b)
+{
+ spbSizeMax->setEnabled(b);
 }
 
 void KNewProjectDlg::loadLocationsList()
@@ -250,8 +266,8 @@ void KNewProjectDlg::setWhatsThis()
    QWhatsThis::add(cbLocation, i18n(cbLocationWhatthis));
    QWhatsThis::add(cbFilter, i18n(cbFilterWhatthis));
 
-   QWhatsThis::add(edSizeMin, i18n(edSizeMinWhatthis));
-   QWhatsThis::add(edSizeMax, i18n(edSizeMaxWhatthis));
+   QWhatsThis::add(spbSizeMin, i18n(edSizeMinWhatthis));
+   QWhatsThis::add(spbSizeMax, i18n(edSizeMaxWhatthis));
    QWhatsThis::add(edDateMin, i18n(edDateMinWhatthis));
    QWhatsThis::add(edDateMax, i18n(edDateMaxWhatthis));
    QWhatsThis::add(cbDateValid, i18n(cbDateValidWhatthis));
@@ -262,7 +278,7 @@ void KNewProjectDlg::maxFilesSize(bool & bChecked, long unsigned int & nMaxSize)
   bChecked = chbSizeMax->isChecked();
 
   if (bChecked) // If option activated
-    nMaxSize = edSizeMax->text().toULong() * 1024; // KB --> Bytes
+    nMaxSize = spbSizeMax->value() * 1024; // KB --> Bytes
   else
     nMaxSize = 0;
 }
@@ -272,7 +288,7 @@ void KNewProjectDlg::minFilesSize(bool & bChecked, long unsigned int & nMinSize)
   bChecked = chbSizeMin->isChecked();
 
   if (bChecked) // If option activated
-    nMinSize = edSizeMin->text().toULong() * 1024; // KB --> Bytes
+    nMinSize = spbSizeMin->value() * 1024; // KB --> Bytes
   else
     nMinSize = 0;
 }

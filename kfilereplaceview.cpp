@@ -25,8 +25,8 @@
 #include <qtextstream.h>
 #include <qlistview.h>
 
+
 #include <kmessagebox.h>
-#include <kpropertiesdialog.h>
 #include <kstandarddirs.h>
 #include <kdebug.h>
 #include <kconfig.h>
@@ -34,6 +34,8 @@
 #include <kpopupmenu.h>
 #include <krun.h>
 #include <kurl.h>
+#include <kpropsdlg.h>
+#include <kiconloader.h>
 
 // application specific includes
 #include "kfilereplaceview.h"
@@ -56,13 +58,29 @@ using namespace whatthisNameSpace;
 KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplaceViewWdg(parent,name)
 {
   m_path = KGlobal::instance()->dirs()->saveLocation("data", "kfilereplace/");
+  
+  // Create popup menus
+  m_kpmResult = new KPopupMenu(this, "ResultPopup");
+ 
+  m_kpmResult->insertItem(QPixmap("resfileopen"),i18n("&Open"), this, SLOT(slotResultOpen()));
+  m_kpmResult->insertItem(i18n("Open &With..."), this, SLOT(slotResultOpenWith()));
+  m_kpmResult->insertItem(QPixmap("resfileedit"),i18n("&Edit with Kate"), this, SLOT(slotResultEdit()));
+  m_kpmResult->insertItem(QPixmap("resdiropen"),i18n("Open Parent &Folder"), this, SLOT(slotResultDirOpen()));
+  m_kpmResult->insertSeparator();
+  m_kpmResult->insertItem(QPixmap("resfiledel"),i18n("&Delete"), this, SLOT(slotResultDelete()));
+  m_kpmResult->insertSeparator();
+  m_kpmResult->insertItem(QPixmap("resfileinfo"),i18n("&Properties"), this, SLOT(slotResultProperties()));
+  
 
+  connect(lwResult, SIGNAL(mouseButtonClicked (int, QListViewItem *, const QPoint &, int)), this, SLOT(slotMouseButtonClicked (int, QListViewItem *, const QPoint &, int)));
+  
   // Load icons
   m_pmIconString.load( locate("data", "kfilereplace/pics/string.png"));
   m_pmIconSuccess.load( locate("data", "kfilereplace/pics/success.png"));
   m_pmIconError.load( locate("data", "kfilereplace/pics/error.png"));
   m_pmIconSubString.load( locate("data", "kfilereplace/pics/substring.png"));
-   // connect events
+  
+  // connect events
   connect(lwStrings, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(slotStringsEdit(QListViewItem *)));
 
   dlg = new KAddStringDlg(parentWidget());
@@ -73,6 +91,7 @@ KFileReplaceView::KFileReplaceView(QWidget *parent,const char *name):KFileReplac
 
 KFileReplaceView::~KFileReplaceView()
 {
+ //delete m_kpmResult;
  delete dlg;
 }
 
@@ -116,7 +135,7 @@ bool KFileReplaceView::addString( QListViewItem *lviCurrent)
         {
           if ((lviCurrent != lviCurItem) && (searchText == lviCurItem->text(0))) // Item is already in the TextList
             {
-              QString strMess = QString(i18n("The <b>%1</b> item is already present in the list.")).arg(searchText);
+              QString strMess = QString(i18n("<qt>The <b>%1</b> item is already present in the list.</qt>")).arg(searchText);
               KMessageBox::error(parentWidget(), strMess);
               return false;
             }
@@ -160,7 +179,7 @@ bool KFileReplaceView::editString(QListViewItem *lviCurrent)
         {
           if ((lviCurrent != lviCurItem) && (searchText == lviCurItem->text(0))) // Item is already in the TextList
             {
-              strMess = QString(i18n("The <b>%1</b> item is already present in the list.")).arg(searchText);
+              strMess = QString(i18n("<qt>The <b>%1</b> item is already present in the list.</qt>")).arg(searchText);
               KMessageBox::error(parentWidget(), strMess);
               return false;
             }
@@ -170,7 +189,7 @@ bool KFileReplaceView::editString(QListViewItem *lviCurrent)
     }
 
   // Check there is not too items to replace
-  if (lwStrings-> childCount() >= MaxStringToSearch)
+  if (lwStrings->childCount() >= MaxStringToSearch)
     {
       strMess = QString(i18n("Unable to have more than %1 items to search or replace.")).arg(MaxStringToSearch);
       KMessageBox::error(parentWidget(), strMess);
@@ -269,7 +288,6 @@ int KFileReplaceView::updateItem(QListViewItem *lvi, bool bSuccess, uint nNewSiz
   return 0;
 }
 
-
 bool KFileReplaceView::increaseStringCount(QListViewItem *lvi, QString strTextOld, QString strTextNew, QString strTextReplace,const char *szSearch, int nSearchLen, bool bShowDetails)
 {
   // Add item to list
@@ -360,6 +378,7 @@ bool KFileReplaceView::increaseStringCount(QListViewItem *lvi, QString strTextOl
   return true;
 }
 
+
 QString KFileReplaceView::currentItem()
 {
   QString strFilename;
@@ -379,7 +398,7 @@ QString KFileReplaceView::currentItem()
   
 }
 
-void KFileReplaceView::slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int /*column*/)
+void KFileReplaceView::slotMouseButtonClicked (int nButton, QListViewItem *lvi, const QPoint &pos, int column)
 {
   // Don't look at events while working
   if (g_bThreadRunning)
@@ -396,10 +415,6 @@ void KFileReplaceView::slotMouseButtonClicked (int nButton, QListViewItem *lvi, 
     }
 }
 
-
-
-
-
 void KFileReplaceView::slotResultProperties()
 {
   if (!currentItem().isEmpty())
@@ -408,8 +423,8 @@ void KFileReplaceView::slotResultProperties()
     (void) new KPropertiesDialog(url);
     m_lviCurrent = 0L;
   }
-}
 
+}
 
 void KFileReplaceView::slotResultOpen()
 {
@@ -419,7 +434,6 @@ void KFileReplaceView::slotResultOpen()
     m_lviCurrent = 0L;
   }
 }
-
 
 void KFileReplaceView::slotResultOpenWith()
 {
@@ -431,7 +445,6 @@ void KFileReplaceView::slotResultOpenWith()
     m_lviCurrent = 0L;
   }
 }
-
 
 void KFileReplaceView::slotResultDirOpen()
 {
@@ -448,7 +461,7 @@ void KFileReplaceView::slotResultEdit()
 {
   if (!currentItem().isEmpty())
   {
-    QString strCommand = QString("kate %1 &").arg(currentItem());
+    QString strCommand = QString("quanta_be %1 &").arg(currentItem());
     KRun::runCommand(strCommand);
     m_lviCurrent = 0L;
   }

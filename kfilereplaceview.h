@@ -47,6 +47,7 @@ public:
   QListView *stringView();
   QListView *resultView();
   QPixmap iconString();
+  
   QString currentItem();
   bool addString(QListViewItem *lviCurrent);
   bool editString(QListViewItem *lviCurrent);

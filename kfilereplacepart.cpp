@@ -44,6 +44,10 @@
 #include "kfilereplaceview.h"
 #include "koptionsdlg.h"
 
+#include "whatthis.h"
+
+using namespace whatthisNameSpace;
+
 // Global Thread data
 bool g_bThreadRunning = false;
 bool g_bThreadMustStop = false;
@@ -145,16 +149,17 @@ void KFileReplacePart::initGUI()
    (void)new KToggleAction(i18n("Case &Sensitive"), "casesensitive", 0, this, SLOT(slotOptionsCaseSensitive()), actionCollection(), "options_case");
    (void)new KToggleAction(i18n("Enable &Wildcards"), "optwildcards", 0, this, SLOT(slotOptionsWildcards()), actionCollection(), "options_wildcards");
    (void)new KToggleAction(i18n("Enable &Variables in Replace String: [$name:format$]"), "optvar", 0, this, SLOT(slotOptionsVariables()), actionCollection(), "options_var");
+
    (void) new KAction(i18n("Configure &KFileReplace..."), "configure", 0, this, SLOT(slotOptionsPreferences()), actionCollection(), "configure_kfilereplace");
 
    // Results
-   (void)new KAction(i18n("&Properties"), "resfileinfo", 0, m_view->resultView(), SLOT(slotResultProperties()), actionCollection(), "results_infos");
-   (void)new KAction(i18n("&Open"), "resfileopen", 0, m_view->resultView(), SLOT(slotResultOpen()), actionCollection(), "results_openfile");
-   (void)new KAction(i18n("&Edit with Kate"), "resfileedit", 0, m_view->resultView(), SLOT(slotResultEdit()), actionCollection(), "results_editfile");
-   (void)new KAction(i18n("Open Parent &Folder"), "resdiropen", 0, m_view->resultView(), SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
-   (void)new KAction(i18n("&Delete"), "resfiledel", 0, m_view->resultView(), SLOT(slotResultDelete()), actionCollection(), "results_delete");
-   (void)new KAction(i18n("E&xpand Tree"), 0, m_view->resultView(), SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
-   (void)new KAction(i18n("&Reduce Tree"), 0, m_view->resultView(), SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
+   (void)new KAction(i18n("&Properties"), "resfileinfo", 0, m_view, SLOT(slotResultProperties()), actionCollection(), "results_infos");
+   (void)new KAction(i18n("&Open"), "resfileopen", 0, m_view, SLOT(slotResultOpen()), actionCollection(), "results_openfile");
+   (void)new KAction(i18n("&Open in Quanta"), "resfileedit", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
+   (void)new KAction(i18n("Open Parent &Folder"), "resdiropen", 0, m_view, SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
+   (void)new KAction(i18n("&Delete"), "resfiledel", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");
+   (void)new KAction(i18n("E&xpand Tree"), 0, m_view, SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
+   (void)new KAction(i18n("&Reduce Tree"), 0, m_view, SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
 
    // Help menu
 //   setHelpMenuEnabled(false);
@@ -344,11 +349,6 @@ int KFileReplacePart::checkBeforeOperation(int nTypeOfOperation)
 
               lviCurItem = lviCurItem->nextSibling();
             } while(lviCurItem && lviCurItem != lviFirst);
-
-          /*if (bWildcardsArePresent == false) // Wildcards options is enabled, but there are no wildcards
-            {        bWildcards = false;
-            fprintf(stderr, "checkBeforeOperation(): Wildcards are not used then disabled\n");
-            }*/
         }
     }
 
@@ -513,7 +513,7 @@ void KFileReplacePart::slotFileSearch()
 
    //nRes = pthread_create(&g_threadReplace, NULL, searchThread, (void *) &g_argu);
    //startTimer(100);
-   Kernel::instance()->searchThread( (void* ) &g_argu );
+   Kernel::instance()->searchThread(&g_argu);
 
    // restore cursor
    QApplication::restoreOverrideCursor();
@@ -564,7 +564,7 @@ void KFileReplacePart::slotFileReplace()
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
 
-   Kernel::instance()->replaceThread((void* ) &g_argu);
+   Kernel::instance()->replaceThread(&g_argu);
 
    // restore cursor
    QApplication::restoreOverrideCursor();
@@ -617,7 +617,7 @@ void KFileReplacePart::slotFileSimulate()
    // show wait cursor
    QApplication::setOverrideCursor( Qt::waitCursor );
 
-   Kernel::instance()->replaceThread((void* ) &g_argu);
+   Kernel::instance()->replaceThread(&g_argu);
 
    // restore cursor
    QApplication::restoreOverrideCursor();
@@ -656,10 +656,10 @@ void KFileReplacePart::slotFileStop()
 void KFileReplacePart::slotFileSave()
 {
   QString fileName;
-  QListView* lvResult;
+  
   QWidget* w = widget();
 
-  lvResult = m_view->resultView();
+  QListView* lvResult = m_view->resultView();
 
   // Check there are results
   if (lvResult->childCount() == 0)
@@ -722,9 +722,12 @@ void KFileReplacePart::slotFileSave()
   QString strPath;
 
   lviCurItem = lviFirst = lvResult->firstChild();
+
   if (lviCurItem == 0)
     return ;
+
   unsigned int replacedFileNumber = 0;
+
   QString classValue="a";
   do
     {
@@ -860,7 +863,7 @@ void KFileReplacePart::loadStringFile(const QString& fileName)
   if ( !doc.setContent( &file ) )
     {
       file.close();
-      KMessageBox::information(widget(), i18n("<qt>File <b>%1</b> seems to be an old kfr format. Remember that this format will be soon abandoned!</qt>").arg(fileName),i18n("Warning"));
+      KMessageBox::information(widget(), i18n("<qt>File <b>%1</b> seems not to be written in new kfr format. Remember that old kfr format will be soon abandoned! You can convert your old rules files by simply saving them with kfilereplace.</qt>").arg(fileName),i18n("Warning"));
 
       convertOldToNewKFRFormat(fileName,m_view);
       return;
@@ -1033,24 +1036,12 @@ void KFileReplacePart::slotOptionsPreferences()
 
 void KFileReplacePart::setWhatsThis()
 {
-  actionCollection()->action("file_simulate")->setWhatsThis(i18n("The same operation as the replace one, but do not make any changes in files. "
-                                                                 "This is not a simple search, because you will see the exact changes that could "
-                                                                 "be done (with regexp or variables for example.)"));
-
-  actionCollection()->action("options_wildcards")->setWhatsThis(i18n("Enable use of the wildcards (* for expressions, and ? for single character if not modified "
-                                                                     "in the wildcards options). For example, you can search for <b>KMsgBox::message(*)</b> "
-                                                                     "and replace with <b>KMessageBox::error(*)</b>"));
-  actionCollection()->action("options_backup")->setWhatsThis(i18n("Create a copy of the original replaced files with the BAK extension before replacing"));
-  actionCollection()->action("options_case")->setWhatsThis(i18n("The lowers and uppers are different. For example, if you search for <b>Linux</b> and "
-                                                                "there is <b>linux</b>, then the string will not be found/replaced."));
-  actionCollection()->action("options_var")->setWhatsThis(i18n("Enable use of the variables, as the date & time or the name of the current file. "
-                                                               "The variable must be in the replace string, with the format [$Name:  $]. When doing the replace, "
-                                                               "the value of the variable "
-                                                               "is written instead of the variable. If disabled, the replace string will be copied without "
-                                                               "substitution. Please, read help for "
-                                                               "more details on the variables names and formats."));
-  actionCollection()->action("options_recursive")->setWhatsThis(i18n("Search/Replace files in the subfolders of the main folder selected "
-                                                                     "when creating a new project at startup."));
+  actionCollection()->action("file_simulate")->setWhatsThis(i18n(fileSimulateWhatthis));
+  actionCollection()->action("options_wildcards")->setWhatsThis(i18n(optionsWildcardsWhatthis));
+  actionCollection()->action("options_backup")->setWhatsThis(i18n(optionsBackupWhatthis));
+  actionCollection()->action("options_case")->setWhatsThis(i18n(optionsCaseWhatthis));
+  actionCollection()->action("options_var")->setWhatsThis(i18n(optionsVarWhatthis));
+  actionCollection()->action("options_recursive")->setWhatsThis(i18n(optionsRecursiveWhatthis));
 }
 
 void KFileReplacePart::reportBug()
@@ -1066,13 +1057,10 @@ void KFileReplacePart::appHelpActivated()
 
 void KFileReplacePart::showAboutApplication()
 {
-  /*if(m_dlgAbout == 0)
-    {*/
-      m_dlgAbout = new KAboutKFileReplace(widget(), 0, false);
-      if(m_dlgAbout == 0)
-        return;
-    //}
-
+  m_dlgAbout = new KAboutKFileReplace(widget(), 0, false);
+  if(m_dlgAbout == 0)
+    return;
+    
   if(!m_dlgAbout->isVisible())
     m_dlgAbout->show();
   else
@@ -1106,12 +1094,14 @@ void KFileReplacePart::convertOldToNewKFRFormat(const QString& fileName, KFileRe
   KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(fileName));
   return ;
  }
-
- if (strcmp(head.szPgm, "KFileReplace") != 0)
+ QString szPgm(head.szPgm);
+ if (szPgm != "KFileReplace")
  {
   KMessageBox::error(widget(), i18n("<qt>Cannot open the file <b>%1</b> and load the string list. This file seems not to be a valid old kfr file.</qt>").arg(fileName));
   return ;
  }
+
+  view->stringView()->clear();
 
   int nOldTextSize,
       nNewTextSize;
@@ -1152,7 +1142,7 @@ void KFileReplacePart::convertOldToNewKFRFormat(const QString& fileName, KFileRe
 
                       else
                         {
-                          view->stringView()->clear();
+                          //
                           QListViewItem* lvi = new QListViewItem(view->stringView());
                           lvi->setText(0,oldString);
                           lvi->setText(1,newString);
@@ -1171,4 +1161,5 @@ void KFileReplacePart::convertOldToNewKFRFormat(const QString& fileName, KFileRe
     fclose(f);
     return ;
  }
+
 #include "kfilereplacepart.moc"

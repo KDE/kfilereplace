@@ -1,3 +1,7 @@
+14-03-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
+- Replaced two QLineEdit with two QSpinbox in knewprojectdlg.ui
+- Fixed a bug in the new kfr (XML-based) file format.
+
 12-03-2004(Emiliano Gulmini <emi_barbarossa@yahoo.it>)
 - Removed KresultView(.h,.cpp). Now KFileReplaceView is a QWidget that contains results and strings view.
 - Added whatthis.h that contains the "what's this" strings.

@@ -79,6 +79,7 @@ public slots:
   void reportBug();
 
 
+
 protected:
   virtual bool openFile() {return false;}
   virtual bool openURL (const KURL &url);
@@ -102,7 +103,7 @@ private:
   Settings m_settings;
   QStringList m_recentStringFileList; // a list of recently accessed files
   KAboutKFileReplace* m_dlgAbout;
-
+  
 private:
   void convertOldToNewKFRFormat(const QString& strFilename,KFileReplaceView* view);
 };

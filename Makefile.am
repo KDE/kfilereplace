@@ -1,7 +1,7 @@
 ## Makefile.am for kfilereplace
 
 # set the include path for X, qt and KDE
-AM_CPPFLAGS  = -I$(top_builddir)/kfilereplace $(all_includes)
+INCLUDES  = $(all_includes)
 
 # this has all of the subdirectories that make will recurse into.  if
 # there are none, comment this out

@@ -20,29 +20,33 @@
 #ifndef KERNEL_H
 #define KERNEL_H
 
-class QListViewItem;
-
 const int replaceError = -1;
 const int replaceSuccess = 0;
 const int replaceSkipDir = 1;
 const int replaceCancel = 2;
 const int replaceFileSkipped = 3;
 
+#include "apistruct.h"
+
+class QListViewItem;
+
 class Kernel
 {
  private:
    Kernel(){}
    Kernel(const Kernel& k){}
+
  public:
    static Kernel* instance() { return (new Kernel); }
-   void *replaceThread(void *param);
-   void *searchThread(void *param);
+   void *replaceThread(RepDirArg* r);
+   void *searchThread(RepDirArg* r);
    int replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace);
    bool isFileGoodSizeProperties(const QString& szFileName, bool bMinSize, bool bMaxSize, uint nMinSize, uint nMaxSize);
    bool isFileGoodDateProperties(const QString& szFileName, int nTypeOfAccess, bool bMinDate, bool bMaxDate, QDate qdMinDate, QDate qdMaxDate);
-   int replaceFile(QListViewItem *lvi, const QString& szDir, const QString& szOldFile, const QString& szNewFile, int *nNbReplacements, RepDirArg* argu);
-   int diskFreeSpaceForFile(uint *nAvailDiskSpace, const QString &szFilename);
-   int searchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacements, bool *bAllStringsFound, RepDirArg* argu, bool bHaltOnFirstOccur);
+   int replaceFile(QListViewItem *lvi, const QString& szDir, const QString& szOldFile, const QString& szNewFile, int& nNbReplacements, RepDirArg* argu);
+   int replaceFile2(QListViewItem *lvi, const QString& folder, const QString& oldFile, const QString& newFile, int& replacementsNumber, RepDirArg* argu);
+   int diskFreeSpaceForFile(unsigned int& nAvailDiskSpace, const QString &szFilename);
+   int searchFile(QListViewItem *lvi, const QString &szOldFile, int& nNbReplacements, bool *bAllStringsFound, RepDirArg* argu, bool bHaltOnFirstOccur);
    bool hasFileGoodOwners(const QString &szFile, RepDirArg *argu);
 };
 

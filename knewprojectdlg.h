@@ -43,7 +43,8 @@ class KNewProjectDlg : public KNewProjectDlgS
  protected slots:
   void slotDir();
   void slotOK();
- 
+  void slotEnableSpinboxSizeMin(bool b);
+  void slotEnableSpinboxSizeMax(bool b);
  public: 
   QString location();
   QString filter();

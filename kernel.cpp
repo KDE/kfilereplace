@@ -56,60 +56,38 @@
 #endif
 #include <sys/stat.h>
 
-void *Kernel::replaceThread(void *param)
+void *Kernel::replaceThread(RepDirArg* r)
 {
   int nRes;
-  RepDirArg *argu;
-  argu = (RepDirArg *) param;
-
+  
   g_bThreadRunning = true;
 
   kdDebug(23000) << "Starting replaceDirectory..." << endl;
   // Call another function to make easier to verify Thread Variables
-  nRes = replaceDirectory(argu->szDir, argu, true); // true --> replace
+  nRes = replaceDirectory(r->szDir, r, true); // true --> replace
   kdDebug(23000) << "replaceDirectory exited..." << endl;
 
   // The thread always finished here: success or error
   g_nFilesRep = nRes; // Number of replaced files
   g_bThreadRunning = false;
 
-  /*if (nRes == -1) // Error
-    {        pthread_exit(-1);
-    return 0;
-    }
-    else // Success
-    {        pthread_exit(nRes);
-    return 0;
-    } */
-
   return 0;
 }
 
 
-void *Kernel::searchThread(void *param)
+void *Kernel::searchThread(RepDirArg* r)
 {
 
   int nRes;
-  RepDirArg *argu;
-  argu = (RepDirArg *) param;
-
+  
   g_bThreadRunning = true;
 
   // Call another function to make easier to verify Thread Variables
-  nRes = replaceDirectory(argu->szDir, argu, false); // false --> search
+  nRes = replaceDirectory(r->szDir, r, false); // false --> search
 
   // The thread always finished here: success or error
   g_nFilesRep = nRes; // Number of replaced files
   g_bThreadRunning = false;
-
-  /*if (nRes == -1) // Error
-    {        pthread_exit(-1);
-    return 0;
-    }
-    else // Success
-    {        pthread_exit(nRes);
-    return 0;
-    } */
 
   return 0;
 }
@@ -117,30 +95,23 @@ void *Kernel::searchThread(void *param)
 
 int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplace)
 {
-
-  QString strFileReadpath;
-  QString strFileWritepath;
   QString strDirpath;
   QString strBackup;
-  QDir dir;
-  QFileInfo fi, fiOld, fiNew;
+  QFileInfo fiNew;
   int nRes;
-  int i;
   int nNbRepFiles = 0;
   int nNeedReplace; // Not NULL if the file need to be replaced
   int nNbReplacements; // Nb Rep made in a call to replaceFile
   uint nDiskFreeSpace;
   int nConfirm = 0;
   QListViewItem *lvi;
-  QString strTemp;
-  QString strMess;
   bool bAllStringsFound;
-  int nFlags;
+  
 
   //KFileReplaceApp *appKFR;
   //appKFR = (KFileReplaceApp *) (argu->mainwnd);
-
-  nFlags = QDir::Files | QDir::Readable | QDir::NoSymLinks;
+  QDir dir;
+  int nFlags = QDir::Files | QDir::Readable | QDir::NoSymLinks;
   if (!argu->bIgnoreHidden)
     nFlags |= QDir::Hidden;
 
@@ -157,15 +128,8 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
     }
 
   // 1. -*-*-*-*-*-*-*-*-*- First, list all files -*-*-*-*-*-*-*-*-*-
-
-  // If directory doesn't exists
-  /*if (!dir.exists())
-    {
-      //sprintf (g_szErrMsg, i18n("Directory %s doesn't exists"), szDir);
-      return -1;
-    }*/
-
-  for (i=0; i < (int)dir.count(); i++)
+  unsigned int i;
+  for (i=0; i < dir.count(); i++)
     {
       // Process event to make the GUI updated
       kapp->processEvents();
@@ -177,22 +141,25 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
           return -1;
         }
 
-      strFileWritepath = KFileReplaceLib::instance()->formatFullPath(szDir, dir[i]) + "new";
-      strFileReadpath = KFileReplaceLib::instance()->formatFullPath(szDir, dir[i]);
+      QString strFileWritepath = KFileReplaceLib::instance()->formatFullPath(szDir, dir[i]) + "new";
+      QString strFileReadpath = KFileReplaceLib::instance()->formatFullPath(szDir, dir[i]);
+
+      QFileInfo fiOld;
       fiOld.setFile(strFileReadpath);
 
       // if the file dates & size are correct for options
-      if ((dir[i].right(4) != ".old") && hasFileGoodOwners(strFileReadpath, argu) && isFileGoodSizeProperties(strFileReadpath, argu->bMinSize, argu->bMaxSize, argu->nMinSize, argu->nMaxSize)
-          && ((!argu->bMinDate  && !argu->bMaxDate) || (isFileGoodDateProperties(strFileReadpath, argu->nTypeOfAccess, argu->bMinDate, argu->bMaxDate, argu->qdMinDate, argu->qdMaxDate))))
+      if ((dir[i].right(4) != ".old") && 
+           hasFileGoodOwners(strFileReadpath, argu) && 
+           isFileGoodSizeProperties(strFileReadpath, argu->bMinSize, argu->bMaxSize, argu->nMinSize, argu->nMaxSize) && 
+           ((!argu->bMinDate  && !argu->bMaxDate) || isFileGoodDateProperties(strFileReadpath, argu->nTypeOfAccess, argu->bMinDate, argu->bMaxDate, argu->qdMinDate, argu->qdMaxDate)))
         {
 
           // Test read access for file
           QFileInfo fi(strFileReadpath);
           if (!fi.exists() || !fi.isReadable()) // We don't have access to the file
-          {
             argu->view->addFullItem(false, dir[i], szDir, fiOld.size(), 0, 0, g_szErrMsg);
-          } else
-          {
+          else
+            {
                               // ***** IF SEARCHNIG *******
               if (!bReplace)
                 {
@@ -200,11 +167,11 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                   if (argu->qlvStrings->childCount() > 0)
                     {
                       // Add the item in the list, but without details
-                      strTemp = KFileReplaceLib::instance()->formatSize(fiOld.size());
+                      QString strTemp = KFileReplaceLib::instance()->formatSize(fiOld.size());
                       lvi = new QListViewItem(argu->qlvResult, dir[i], szDir, strTemp);
                       // Run the search operation
                       kdDebug(23000) << "begin CALL for searchFile()" << endl;
-                      nRes = searchFile(lvi, strFileReadpath, &nNbReplacements, &bAllStringsFound, argu, argu->bHaltOnFirstOccur);
+                      nRes = searchFile(lvi, strFileReadpath, nNbReplacements, &bAllStringsFound, argu, argu->bHaltOnFirstOccur);
                       kdDebug(23000) << "end CALL for searchFile(). nNbReplacements = " << nNbReplacements << endl;
                       if (nRes == 0)
                         {
@@ -255,7 +222,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                   } else
                   {
                     kdDebug(23000) << QString("In (searchFile) to check the file need replace (%1)").arg( strFileReadpath) << endl;
-                    nRes = searchFile(0, strFileReadpath, &nNeedReplace, &bAllStringsFound, argu, true);
+                    nRes = searchFile(0, strFileReadpath, nNeedReplace, &bAllStringsFound, argu, true);
                     kdDebug(23000) << QString("Out (searchFile) to check the file need replace (%1)").arg( strFileReadpath) << endl;
                     if (nRes == -1)
                       return -1;
@@ -264,7 +231,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                       {
                         if ((argu->bConfirmFiles ) && (!argu->bSimulation ))
                           {
-                            strMess = i18n("<qt>Directory: %1<br>Path: %2<br>Do you want to replace strings inside <b>%3</b> ?</qt>").arg(szDir).arg(dir[i]).arg(strFileReadpath);
+                            QString strMess = i18n("<qt>Directory: %1<br>Path: %2<br>Do you want to replace strings inside <b>%3</b> ?</qt>").arg(szDir).arg(dir[i]).arg(strFileReadpath);
                             nConfirm = KMessageBox::questionYesNo(argu->mainwnd, strMess, i18n("Replace file confirmation"));
                           }
 
@@ -273,7 +240,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                             // Check there is enough free disk space
                             if (!argu->bSimulation ) // if not a simulation
                               {
-                                nRes = diskFreeSpaceForFile(&nDiskFreeSpace, strFileReadpath);
+                                nRes = diskFreeSpaceForFile(nDiskFreeSpace, strFileReadpath);
                                 if (nRes != -1 && nDiskFreeSpace < fiOld.size())
                                   {
                                     g_szErrMsg = i18n("<qt>There is not enough disk free space to replace in the file <b>%1</b>.</qt>").arg(strFileReadpath);
@@ -282,14 +249,14 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                               }
 
                             // Add the item in the list, but without details
-                            strTemp = KFileReplaceLib::instance()->formatSize(fiOld.size());
+                            QString strTemp = KFileReplaceLib::instance()->formatSize(fiOld.size());
                             lvi = new QListViewItem(argu->qlvResult, dir[i], szDir, strTemp);
                             if (lvi == 0) // Not enough memory
                               return -1;
 
                             // Run the replace operation
                             kdDebug(23000) << "In replaceFile " << strFileReadpath << endl;
-                            nRes = replaceFile(lvi, szDir, strFileReadpath, strFileWritepath, &nNbReplacements, argu);
+                            nRes = replaceFile(lvi, szDir, strFileReadpath, strFileWritepath, nNbReplacements, argu);
                             kdDebug(23000) << "Out replaceFile " << strFileReadpath << endl;
 
                             if (nRes == replaceSuccess || nRes == replaceFileSkipped || nRes == replaceSkipDir) // If success
@@ -310,9 +277,7 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
                                         nRes = ::rename(strFileReadpath.local8Bit(), strBackup.local8Bit());
                                       }
                                     else // Delete the old file
-                                      {
-                                        nRes = ::unlink(strFileReadpath.local8Bit());
-                                      }
+                                      nRes = ::unlink(strFileReadpath.local8Bit());
                                     // Rename the new file into OldFileName
                                     nRes = ::rename(strFileWritepath.local8Bit(), strFileReadpath.local8Bit());
                                   }
@@ -360,13 +325,13 @@ int Kernel::replaceDirectory(const QString& szDir, RepDirArg* argu, bool bReplac
       dir.setNameFilter("*");
       dir.setFilter(nFlags);
 
-      for (i=0; i < (int)dir.count(); i++)
+      for (i=0; i < dir.count(); i++)
         {
-          if (strcmp(dir[i], ".") != 0 && strcmp(dir[i], "..") != 0)
+          if ((dir[i] != ".") && (dir[i] != ".."))
             {
               if (argu->bConfirmDirs && bReplace) // If doing a replace and dir confirm activated (do not confirm when searching)
                 {
-                  strMess = i18n("<qt>Directory: <b>%1</b><br>Full path: <b>%2/%3</b><br><br>Do you want to replace strings in files of this directory?</qt>").arg(dir[i]).arg(szDir).arg(dir[i]);
+                  QString strMess = i18n("<qt>Directory: <b>%1</b><br>Full path: <b>%2/%3</b><br><br>Do you want to replace strings in files of this directory?</qt>").arg(dir[i]).arg(szDir).arg(dir[i]);
                   nConfirm = KMessageBox::questionYesNo(argu->mainwnd, strMess, i18n("Replace directory confirmation"));
                 }
 
@@ -422,8 +387,12 @@ bool Kernel::isFileGoodDateProperties(const QString& szFileName, int nTypeOfAcce
   return true; // File is valid
 }
 
+int Kernel::replaceFile2(QListViewItem *lvi, const QString& folder, const QString& oldFile, const QString& newFile, int& replacementsNumber, RepDirArg* argu)
+{
+   
+}
 
-int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFile, const QString& szNewFile, int *nNbReplacements, RepDirArg* argu)
+int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString& szOldFile, const QString& szNewFile, int& nNbReplacements, RepDirArg* argu)
 {
 
   int nFdOldFile=0, nFdNewFile=0; // File descriptors
@@ -452,7 +421,7 @@ int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString&
   QString strNew[MaxStringToSearch];
 
   // 0. Init
-  *nNbReplacements = 0;
+  nNbReplacements = 0;
   QFileInfo fiOld(szOldFile);
   nOldFileSize = fiOld.size();
 
@@ -537,7 +506,7 @@ int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString&
           if (bRes ) // String matches
             {
                                 // Replace
-              (*nNbReplacements)++;
+              nNbReplacements++;
               (nReplaceCount[i])++; // Number of replacements for this string
               g_nStringsRep++;
 
@@ -548,12 +517,7 @@ int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString&
                   QStringList strList;
 
                   kjeSearch.extractWildcardsContentsFromFullString(cOldPt, nRecursiveLength, strOld[i].utf8(), strOld[i].length(), &strList);
-                  /*printf ("\n-->List=");
-                    for (int yy=0; yy<strList.count(); yy++)
-                    printf ("(%s)", strList[yy].ascii());
-                    printf ("\n");*/
-
-                  // Crete the replace string which contains the text the wildcards were coding for in the search expression
+                  // Create the replace string which contains the text the wildcards were coding for in the search expression
                   kdDebug(23000) << QString("INITIAL: ****(%1)****").arg(strNew[i]) << endl;
                   strReplace = kjeSearch.addWildcardsContentToString(strNew[i].utf8(), strNew[i].length(), &strList);
                   if ((strReplace == QString::null) && (strNew[i].length()))
@@ -660,7 +624,7 @@ int Kernel::replaceFile(QListViewItem *lvi, const QString &szDir, const QString&
 }
 
 
-int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbReplacements, bool *bAllStringsFound, RepDirArg* argu, bool bHaltOnFirstOccur)
+int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int& nNbReplacements, bool *bAllStringsFound, RepDirArg* argu, bool bHaltOnFirstOccur)
 {
 
   int nFdOldFile; // File descriptors
@@ -685,7 +649,7 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbRep
   QString strOld[MaxStringToSearch];
 
   // 0. Init
-  *nNbReplacements = 0;
+  nNbReplacements = 0;
   *bAllStringsFound = false;
   QFileInfo fiOld(szOldFile);
   nOldFileSize = fiOld.size();
@@ -763,7 +727,7 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbRep
               // If stop at first success (do not need to know how many found)
               if (bHaltOnFirstOccur && (*bAllStringsFound || !argu->bAllStringsMustBeFound) )
                 {
-                  *nNbReplacements = 1;
+                  nNbReplacements = 1;
 #if defined(USE_SOLARIS)
                   ::munmap(cBeginOldFile, nOldFileSize);
 #else
@@ -773,7 +737,7 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbRep
                   return 0; // Success
                 }
 
-              (*nNbReplacements)++;
+              nNbReplacements++;
               (nReplaceCount[i])++; // Number of replacements for this string
               if (!bHaltOnFirstOccur)
                 g_nStringsRep++;
@@ -806,18 +770,18 @@ int Kernel::searchFile(QListViewItem *lvi, const QString &szOldFile, int *nNbRep
 
 
 
-int Kernel::diskFreeSpaceForFile(uint *nAvailDiskSpace, const QString &szFilename)
+int Kernel::diskFreeSpaceForFile(unsigned int& nAvailDiskSpace, const QString &szFilename)
 {
   int nRes;
   struct STATFS fsInfo;
 
-  *nAvailDiskSpace = 0;
+  nAvailDiskSpace = 0;
 
   nRes = STATFS(szFilename.local8Bit(), &fsInfo); //FIXME: replace with a QT/KDE function
   if (nRes == -1)
     return -1;
 
-  *nAvailDiskSpace = fsInfo.f_bavail * fsInfo.f_bsize;
+  nAvailDiskSpace = fsInfo.f_bavail * fsInfo.f_bsize;
 
   return 0;
 }
