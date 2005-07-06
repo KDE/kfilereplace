@@ -517,11 +517,6 @@
                             <property name="name">
                                 <cstring>m_lcdFilesNumber</cstring>
                             </property>
-                            <property name="font">
-                                <font>
-                                    <family>Helvetica</family>
-                                </font>
-                            </property>
                             <property name="frameShape">
                                 <enum>LineEditPanel</enum>
                             </property>
