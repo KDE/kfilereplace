@@ -197,14 +197,14 @@ void Report::createStyleSheet()
 
   QTextStream oTStream( &styleSheet );
 
-  QString css = "title { display:block;font:40px bold Arial; }\n\n"
+  QString css = "title { display:block;font:40px bold sans-serif; }\n\n"
                 "createdby:before { content :\""+i18n("Created by")+": \"; }\n"
                 "createdby { display:inline; }\n\n"
                 "date:before { content :\"-"+i18n("date")+": \"; }\n"
                 "date { display:inline; }\n\n"
                 "totaloccurrences:before { content :\""+i18n("Total occurrences")+": \"; }\n"
                 "totaloccurrences { display:block;text-align:right; font-weight:bold;margin-top:5px;margin-right:5px;}\n"
-                "tablecaption {display:table-caption;font:20px bold Arial;}\n\n"
+                "tablecaption {display:table-caption;font:20px bold sans-serif;}\n\n"
                 "hr {display:block;background:black;height:1px;margin:5px 0px 5px;}\n"
                 "whiteline {display:block;height:16px;}\n\n"
                 "searchfor {\n"
