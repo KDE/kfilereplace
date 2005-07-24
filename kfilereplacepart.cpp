@@ -1190,8 +1190,8 @@ void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& 
 	      int answer = KMessageBox::questionYesNo(0,
 		                                      i18n("<qt>Do you want to replace the string <b>%1</b> with the string <b>%2</b>?</qt>").arg(it.key()).arg(it.data()),
                                                       i18n("Confirm Replace"),
-						      KStdGuiItem::yes(),
-						      KStdGuiItem::no(),
+						      i18n("Replace"),
+						      i18n("Do Not Replace"),
 						      rcDontAskAgain);
 	      if(answer == KMessageBox::Yes)
 	        {
@@ -1529,7 +1529,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 
   if(searchAttribute.isNull() || searchAttribute.isEmpty())
     {
-      int answer = KMessageBox::warningYesNo(m_w, i18n("<qt>The format of kfr files has been changed; attempting to load <b>%1</b>. Please see the KFilereplace manual for details. Do you want to load a search-and-replace list of strings?</qt>").arg(fileName),i18n("Warning"));
+      int answer = KMessageBox::warningYesNo(m_w, i18n("<qt>The format of kfr files has been changed; attempting to load <b>%1</b>. Please see the KFilereplace manual for details. Do you want to load a search-and-replace list of strings?</qt>").arg(fileName),i18n("Warning"),i18n("Load"),i18n("Do Not Load"));
 
       if(answer == KMessageBox::Yes)
         searchAttribute = "false";
