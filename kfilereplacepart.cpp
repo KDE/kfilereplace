@@ -30,6 +30,7 @@
 #include <kfiledialog.h>
 #include <kinstance.h>
 #include <kio/netaccess.h>
+#include <klocale.h>
 #include <kmessagebox.h>
 #include <kparts/genericfactory.h>
 #include <kstandarddirs.h>
@@ -62,7 +63,7 @@ K_EXPORT_COMPONENT_FACTORY( libkfilereplacepart, FileReplaceFactory )
 KFileReplacePart::KFileReplacePart(QWidget* parentWidget, const char* , QObject* parent, const char* name, const QStringList & ) : KParts::ReadOnlyPart(parent,name)
 {
   setInstance(FileReplaceFactory::instance());
-
+  KGlobal::locale()->insertCatalogue("kfilereplace");	
   m_parentWidget = parentWidget;
   m_config = new KConfig("kfilereplacerc");
   m_aboutDlg = 0;
