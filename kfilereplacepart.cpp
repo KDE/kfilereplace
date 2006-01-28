@@ -120,8 +120,8 @@ void KFileReplacePart::slotSearchingOperation()
 
   setOptionMask();
 
-  QString currentDirectory = QStringList::split(",",m_option->m_directories)[0],
-          currentFilter = QStringList::split(",",m_option->m_filters)[0];
+  QString currentDirectory = m_option->m_directories[0],
+          currentFilter = m_option->m_filters[0];
 
   //m_currentDir = currentDirectory;
 
@@ -189,7 +189,7 @@ void KFileReplacePart::slotReplacingOperation()
 
   m_view->showSemaphore("green");
 
-  QString currentDirectory = QStringList::split(",",m_option->m_directories)[0];
+  QString currentDirectory = m_option->m_directories[0];
 
   m_view->showSemaphore("red");
 
@@ -730,7 +730,7 @@ void KFileReplacePart::loadOwnerOptions()
 {
   m_config->setGroup("Owner options");
 
-  QStringList ownerList = QStringList::split(",",m_config->readEntry(rcOwnerUser, OwnerOption),true);
+  QStringList ownerList = QStringList::split(',',m_config->readEntry(rcOwnerUser, OwnerOption),true);
   if(ownerList[0] == "true")
     m_option->m_ownerUserIsChecked = true;
   else
@@ -740,7 +740,7 @@ void KFileReplacePart::loadOwnerOptions()
   m_option->m_ownerUserBool = ownerList[2];
   m_option->m_ownerUserValue = ownerList[3];
 
-  ownerList = QStringList::split(",",m_config->readEntry(rcOwnerGroup, OwnerOption),true);
+  ownerList = QStringList::split(',',m_config->readEntry(rcOwnerGroup, OwnerOption),true);
 
   if(ownerList[0] == "true")
     m_option->m_ownerGroupIsChecked = true;
@@ -755,29 +755,32 @@ void KFileReplacePart::loadOwnerOptions()
 void KFileReplacePart::loadLocationsList()
 {
   m_config->setGroup("Directories");
+  QStringList locationsEntryList;
   #if KDE_IS_VERSION(3,1,3)
-  QString locationsEntryList = m_config->readPathEntry(rcDirectoriesList);
+  locationsEntryList = m_config->readPathListEntry(rcDirectoriesList);
   #else
-  QString locationsEntryList = m_config->readEntry(rcDirectoriesList);
+  locationsEntryList = m_config->readListEntry(rcDirectoriesList);
   #endif
 
   if(locationsEntryList.isEmpty())
-    locationsEntryList = QDir::current().path();
+    locationsEntryList.append(QDir::current().path());
 
   m_option->m_directories = locationsEntryList;
 }
 
 void KFileReplacePart::loadFiltersList()
 {
+  QStringList filtersEntryList;
+
   m_config->setGroup("Filters");
   #if KDE_IS_VERSION(3,1,3)
-  QString filtersEntryList = m_config->readPathEntry(rcFiltersList);
+  filtersEntryList = m_config->readPathListEntry(rcFiltersList);
   #else
-  QString filtersEntryList = m_config->readEntry(rcFiltersList);
+  filtersEntryList = m_config->readListEntry(rcFiltersList);
   #endif
 
   if(filtersEntryList.isEmpty())
-    filtersEntryList = "*.htm;*.html;*.xml;*.xhtml;*.css;*.js;*.php";
+    filtersEntryList.append("*.htm;*.html;*.xml;*.xhtml;*.css;*.js;*.php");
 
   m_option->m_filters = filtersEntryList;
 }
@@ -785,7 +788,7 @@ void KFileReplacePart::loadFiltersList()
 void KFileReplacePart::loadBackupExtensionOptions()
 {
   m_config->setGroup("Options");
-  QStringList bkList = QStringList::split(",",
+  QStringList bkList = QStringList::split(',',
                                           m_config->readEntry(rcBackupExtension, BackupExtensionOption),
                                           true);
   if(bkList[0] == "true")
@@ -895,7 +898,11 @@ void KFileReplacePart::saveOwnerOptions()
 void KFileReplacePart::saveLocationsList()
 {
   m_config->setGroup("Directories");
+  #if KDE_IS_VERSION(3,1,3)
+  m_config->writePathEntry(rcDirectoriesList, m_option->m_directories);
+  #else
   m_config->writeEntry(rcDirectoriesList, m_option->m_directories);
+  #endif
   m_config->sync();
 }
 
@@ -921,12 +928,12 @@ void KFileReplacePart::saveBackupExtensionOptions()
 
 void KFileReplacePart::fileReplace()
 {
-  QString directoryName = QStringList::split(",",m_option->m_directories)[0];
+  QString directoryName = m_option->m_directories[0];
   QDir d(directoryName);
   d.setMatchAllDirs(true);
   d.setFilter(m_optionMask);
 
-  QString currentFilter = QStringList::split(",",m_option->m_filters)[0];
+  QString currentFilter = m_option->m_filters[0];
   QStringList filesList = d.entryList(currentFilter);
   QStringList::iterator filesIt;
   int filesNumber = 0;
@@ -967,7 +974,7 @@ void KFileReplacePart::recursiveFileReplace(const QString& directoryName, int& f
       d.setMatchAllDirs(true);
       d.setFilter(m_optionMask);
 
-      QString currentFilter = QStringList::split(",",m_option->m_filters)[0];
+      QString currentFilter = m_option->m_filters[0];
       QStringList filesList = d.entryList(currentFilter);
       QStringList::iterator filesIt;
 
@@ -1579,7 +1586,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 bool KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
 {
   if(!startURL.isEmpty())
-    m_option->m_directories = QString(startURL.path()+","+m_option->m_directories);
+    m_option->m_directories.prepend(startURL.path());
   
   /* This dlg reads options from m_option, then execs, finally returns options.*/
   KNewProjectDlg dlg(m_option);
@@ -1624,7 +1631,7 @@ bool KFileReplacePart::checkBeforeOperation()
     }
 
   // Checks if the main directory can be accessed
-  QString currentDirectory = QStringList::split(",",m_option->m_directories)[0];
+  QString currentDirectory = m_option->m_directories[0];
   QDir dir;
 
   dir.setPath(currentDirectory);

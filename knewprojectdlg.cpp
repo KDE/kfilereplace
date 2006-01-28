@@ -346,12 +346,12 @@ void KNewProjectDlg::loadOwnerOptions()
 
 void KNewProjectDlg::loadLocationsList()
 {
-  m_cbLocation->insertStringList(QStringList::split(",",m_option->m_directories));
+  m_cbLocation->insertStringList(m_option->m_directories);
 }
 
 void KNewProjectDlg::loadFiltersList()
 {
-  m_cbFilter->insertStringList(QStringList::split(",",m_option->m_filters));
+  m_cbFilter->insertStringList(m_option->m_filters);
 }
 
 void KNewProjectDlg::loadBackupExtensionOptions()
@@ -447,7 +447,8 @@ void KNewProjectDlg::saveOwnerOptions()
 
 void KNewProjectDlg::saveLocationsList()
 {
-  QString current = m_cbLocation->currentText(), list = current;
+  QString current = m_cbLocation->currentText();
+  QStringList list = current;
 
   int count = m_cbLocation->listBox()->count(),
       i;
@@ -455,14 +456,15 @@ void KNewProjectDlg::saveLocationsList()
     {
       QString text =  m_cbLocation->listBox()->item(i)->text();
       if(text != current)
-        list += ","+text;
+        list.append(text);
     }
   m_option->m_directories = list;
 }
 
 void KNewProjectDlg::saveFiltersList()
 {
-  QString current = m_cbFilter->currentText(), list = current;
+  QString current = m_cbFilter->currentText();
+  QStringList list = current;
 
   int count = m_cbFilter->listBox()->count(),
       i;
@@ -470,7 +472,7 @@ void KNewProjectDlg::saveFiltersList()
     {
       QString text =  m_cbFilter->listBox()->item(i)->text();
       if(text != current)
-        list += ","+text;
+        list.append(text);
     }
   m_option->m_filters = list;
 }

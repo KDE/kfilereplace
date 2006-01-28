@@ -82,9 +82,9 @@ class RCOptions
     bool m_askConfirmReplace,
          m_dontAskAgain;
 
-    QString m_directories,
-            m_filters,
-	    m_currentDirectory;
+    QStringList m_directories;
+    QStringList m_filters;
+    QString m_currentDirectory;
 
     int m_minSize,
         m_maxSize;
