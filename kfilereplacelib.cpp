@@ -96,25 +96,25 @@ QString KFileReplaceLib::formatFileSize(double size)
   if(size < kilo)
     {
       const int asInt = (int) size;
-      stringSize = i18n("1 byte", "%n bytes", asInt);
+      stringSize = i18np("1 byte", "%n bytes", asInt);
     }
   else
   if(size >= kilo && size < mega)
     {
       double d = size / kilo;
-      stringSize = i18n("%1 KB").arg(QString::number(d,'f',2));
+      stringSize = ki18n("%1 KB").subs(d,0,'f',2).toString();
     }
   else
   if(size >= mega && size < giga)
     {
       double d = size / mega;
-      stringSize = i18n("%1 MB").arg(QString::number(d,'f',2));
+      stringSize = ki18n("%1 MB").subs(d,0,'f',2).toString();
     }
   else
   if(size >= giga)
     {
       double d = size / giga;
-      stringSize =  i18n("%1 GB").arg(QString::number(d,'f',2));
+      stringSize =  ki18n("%1 GB").subs(d,0,'f',2).toString();
     }
   return stringSize;
 }
@@ -137,7 +137,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, KListVie
 
  if(!f || (err != 1) || (pgm != "KFileReplace"))
  {
-   KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b> and load the string list. This file seems not to be a valid old kfr file or it is broken.</qt>").arg(fileName));
+   KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b> and load the string list. This file seems not to be a valid old kfr file or it is broken.</qt>", fileName));
    return ;
  }
 

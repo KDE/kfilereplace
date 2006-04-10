@@ -38,7 +38,7 @@ void Report::createReportFile()
   QFile report(xmlFileName);
   if (!report.open( IO_WriteOnly ))
     {
-      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>").arg(xmlFileName));
+      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>", xmlFileName));
       return ;
     }
 
@@ -191,7 +191,7 @@ void Report::createStyleSheet()
   QFile styleSheet(cssFileName);
   if (!styleSheet.open( IO_WriteOnly ))
     {
-      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>").arg(cssFileName));
+      KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>", cssFileName));
       return ;
     }
 

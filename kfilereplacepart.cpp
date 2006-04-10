@@ -160,7 +160,7 @@ void KFileReplacePart::slotSearchingOperation()
 
 void KFileReplacePart::slotReplacingOperation()
 {
-  if (KMessageBox::warningContinueCancel(m_w, i18n("<qt>You have selected <b>%1</b> as the encoding of the files.<br>Selecting the correct encoding is very important as if you have files that have some other encoding than the selected one, after a replace you may damage those files.<br><br>In case you do not know the encoding of your files, select <i>utf8</i> and <b>enable</b> the creation of backup files. This setting will autodetect <i>utf8</i> and <i>utf16</i> files, but the changed files will be converted to <i>utf8</i>.</qt>").arg(m_option->m_encoding), i18n("File Encoding Warning"), KStdGuiItem::cont(), "ShowEncodingWarning") == KMessageBox::Cancel)
+  if (KMessageBox::warningContinueCancel(m_w, i18n("<qt>You have selected <b>%1</b> as the encoding of the files.<br>Selecting the correct encoding is very important as if you have files that have some other encoding than the selected one, after a replace you may damage those files.<br><br>In case you do not know the encoding of your files, select <i>utf8</i> and <b>enable</b> the creation of backup files. This setting will autodetect <i>utf8</i> and <i>utf16</i> files, but the changed files will be converted to <i>utf8</i>.</qt>", m_option->m_encoding), i18n("File Encoding Warning"), KStdGuiItem::cont(), "ShowEncodingWarning") == KMessageBox::Cancel)
     return;
   if(!checkBeforeOperation())
     return;
@@ -257,7 +257,7 @@ void KFileReplacePart::slotCreateReport()
   QFileInfo fileInfo(documentName);
   if(fileInfo.exists())
     {
-      KMessageBox::error(m_w, i18n("<qt>A folder or a file named <b>%1</b> already exists.</qt>").arg(documentName));
+      KMessageBox::error(m_w, i18n("<qt>A folder or a file named <b>%1</b> already exists.</qt>", documentName));
       return ;
     }
 
@@ -265,7 +265,7 @@ void KFileReplacePart::slotCreateReport()
 
   if(!directoryName.mkdir(documentName, true))
     {
-      KMessageBox::error(m_w, i18n("<qt>Cannot create the <b>%1</b> folder.</qt>").arg(documentName));
+      KMessageBox::error(m_w, i18n("<qt>Cannot create the <b>%1</b> folder.</qt>", documentName));
       return ;
     }
 
@@ -1014,7 +1014,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   QFile currentFile(oldPathString);
   if(!currentFile.open(IO_ReadOnly))
     {
-      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(oldFileName),QString::null, rcNotifyOnErrors);
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFileName),QString::null, rcNotifyOnErrors);
       return ;
     }
   QTextStream currentStream(&currentFile);
@@ -1053,7 +1053,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
           QFile newFile(oldPathString);
           if(!newFile.open(IO_WriteOnly))
             {
-              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(oldFileName),QString::null, rcNotifyOnErrors);
+              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", oldFileName),QString::null, rcNotifyOnErrors);
               return ;
             }
           QTextStream newStream(&newFile);
@@ -1102,7 +1102,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
 
   if (!oldFile.open(IO_ReadOnly))
     {
-      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(oldFile.name()),QString::null, rcNotifyOnErrors);
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFile.name()),QString::null, rcNotifyOnErrors);
       return ;
     }
 
@@ -1131,7 +1131,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
 	  QFile newFile(oldPathString);
           if(!newFile.open(IO_WriteOnly))
             {
-              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>").arg(newFile.name()),QString::null, rcNotifyOnErrors);
+              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", newFile.name()),QString::null, rcNotifyOnErrors);
               return ;
             }
           QTextStream newStream( &newFile );
@@ -1188,7 +1188,7 @@ void KFileReplacePart::replacingLoop(QString& line, KListViewItem** item, bool& 
 	  if(askConfirmReplace)
 	    {
 	      int answer = KMessageBox::questionYesNo(0,
-		                                      i18n("<qt>Do you want to replace the string <b>%1</b> with the string <b>%2</b>?</qt>").arg(it.key()).arg(it.data()),
+		                                      i18n("<qt>Do you want to replace the string <b>%1</b> with the string <b>%2</b>?</qt>", it.key(), it.data()),
                                                       i18n("Confirm Replace"),
 						      i18n("Replace"),
 						      i18n("Do Not Replace"),
@@ -1324,7 +1324,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 
   if(!file.open(IO_ReadOnly))
     {
-      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>").arg(fileName), QString::null, rcNotifyOnErrors);
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", fileName), QString::null, rcNotifyOnErrors);
       return ;
     }
   // Creates a stream with the file
@@ -1395,7 +1395,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               else
                 capturedText = line.mid(pos,strKey.length());
 
-	      msg = i18n(" Line:%2, Col:%3 - \"%1\"").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
+	      msg = i18n(" Line:%2, Col:%3 - \"%1\"", capturedText, lineNumber, columnNumber);
               tempItem->setMultiLinesEnabled(true);
               tempItem->setText(0,msg);
               occurrence = 1;
@@ -1435,7 +1435,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
                   pos = line.find(strKey,pos+strKey.length());
                 }
 
-              msg = i18n(" Line:%2, Col:%3 - \"%1\"").arg(capturedText).arg(QString::number(lineNumber,10)).arg(QString::number(columnNumber,10));
+              msg = i18n(" Line:%2, Col:%3 - \"%1\"", capturedText, lineNumber, columnNumber);
 
               if(!item)
                  item = new KListViewItem(rv);
@@ -1501,7 +1501,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 
   if(!file.open(IO_ReadOnly))
     {
-      KMessageBox::error(m_w, i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>").arg(fileName));
+      KMessageBox::error(m_w, i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>", fileName));
       return ;
     }
 
@@ -1509,7 +1509,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
     {
       file.close();
 
-      KMessageBox::information(m_w, i18n("<qt>File <b>%1</b> seems not to be written in new kfr format. Remember that the old kfr format will be soon abandoned. You can convert your old rules files by simply saving them with kfilereplace.</qt>").arg(fileName),i18n("Warning"));
+      KMessageBox::information(m_w, i18n("<qt>File <b>%1</b> seems not to be written in new kfr format. Remember that the old kfr format will be soon abandoned. You can convert your old rules files by simply saving them with kfilereplace.</qt>", fileName),i18n("Warning"));
 
       KFileReplaceLib::convertOldToNewKFRFormat(fileName, sv);
 
@@ -1529,7 +1529,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 
   if(searchAttribute.isNull() || searchAttribute.isEmpty())
     {
-      int answer = KMessageBox::warningYesNo(m_w, i18n("<qt>The format of kfr files has been changed; attempting to load <b>%1</b>. Please see the KFilereplace manual for details. Do you want to load a search-and-replace list of strings?</qt>").arg(fileName),i18n("Warning"),i18n("Load"),i18n("Do Not Load"));
+      int answer = KMessageBox::warningYesNo(m_w, i18n("<qt>The format of kfr files has been changed; attempting to load <b>%1</b>. Please see the KFilereplace manual for details. Do you want to load a search-and-replace list of strings?</qt>", fileName),i18n("Warning"),i18n("Load"),i18n("Do Not Load"));
 
       if(answer == KMessageBox::Yes)
         searchAttribute = "false";
@@ -1631,7 +1631,7 @@ bool KFileReplacePart::checkBeforeOperation()
 
   if(!dir.exists())
     {
-      KMessageBox::error(m_w, i18n("<qt>The main folder of the project <b>%1</b> does not exist.</qt>").arg(directory));
+      KMessageBox::error(m_w, i18n("<qt>The main folder of the project <b>%1</b> does not exist.</qt>", directory));
       return false;
     }
 
@@ -1639,7 +1639,7 @@ bool KFileReplacePart::checkBeforeOperation()
   if(!(dirInfo.isReadable() && dirInfo.isExecutable())
        || (!m_option->m_searchingOnlyMode && !m_option->m_simulation && !(dirInfo.isWritable())))
     {
-      KMessageBox::error(m_w, i18n("<qt>Access denied in the main folder of the project:<br><b>%1</b></qt>").arg(directory));
+      KMessageBox::error(m_w, i18n("<qt>Access denied in the main folder of the project:<br><b>%1</b></qt>", directory));
       return false;
     }
 

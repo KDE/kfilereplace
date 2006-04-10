@@ -117,7 +117,7 @@ void KFileReplaceView::stringsInvert(bool invertAll)
       // Cannot invert the string when search string is empty
     if (replaceText.isEmpty())
     {
-      KMessageBox::error(0, i18n("<qt>Cannot invert string <b>%1</b>, because the search string would be empty.</qt>").arg(searchText));
+      KMessageBox::error(0, i18n("<qt>Cannot invert string <b>%1</b>, because the search string would be empty.</qt>", searchText));
       return;
     }
 
@@ -256,7 +256,7 @@ void KFileReplaceView::slotResultEdit()
 
               if(!success)
                 {
-                  QString message = i18n("File %1 cannot be opened. Might be a DCOP problem.").arg(path);
+                  QString message = i18n("File %1 cannot be opened. Might be a DCOP problem.", path);
                   KMessageBox::error(parentWidget(), message);
                 }
             }
@@ -278,7 +278,7 @@ void KFileReplaceView::slotResultDelete()
   if (!currItem.isEmpty())
     {
       QFile fi;
-      int answer = KMessageBox::warningContinueCancel(this, i18n("Do you really want to delete %1?").arg(currItem),
+      int answer = KMessageBox::warningContinueCancel(this, i18n("Do you really want to delete %1?", currItem),
                                                       QString::null,KStdGuiItem::del());
 
       if(answer == KMessageBox::Continue)
@@ -434,7 +434,7 @@ void KFileReplaceView::slotStringsSave()
   QFile file( fileName );
   if(!file.open( IO_WriteOnly ))
   {
-    KMessageBox::error(0, i18n("File %1 cannot be saved.").arg(fileName));
+    KMessageBox::error(0, i18n("File %1 cannot be saved.", fileName));
     return ;
   }
   QTextStream oTStream( &file );

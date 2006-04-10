@@ -164,8 +164,8 @@ QString ResultViewEntry::capturedText(const QString& line)
 QString ResultViewEntry::message(const QString& capturedText, int x, int y) const
 {
   QString data = m_data;
-  //return i18n(" captured text \"%1\" replaced with \"%2\" at line: %3, column: %4 ").arg(capturedText).arg(data).arg(QString::number(x,10)).arg(QString::number(y,10));
-  return i18n(" Line:%3,Col:%4 - \"%1\" -> \"%2\"").arg(capturedText).arg(data).arg(QString::number(x,10)).arg(QString::number(y,10));
+  //return i18n(" captured text \"%1\" replaced with \"%2\" at line: %3, column: %4 ", capturedText, data, x, y);
+  return i18n(" Line:%3,Col:%4 - \"%1\" -> \"%2\"", capturedText, data, x, y);
 }
 
 int ResultViewEntry::keyLength() const
