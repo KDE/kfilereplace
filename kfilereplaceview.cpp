@@ -16,7 +16,7 @@
  *****************************************************************************/
 
 // Qt
-#include <q3whatsthis.h>
+
 #include <qmap.h>
 #include <qfileinfo.h>
 //Added by qt3to4:
@@ -483,11 +483,11 @@ void KFileReplaceView::initGUI()
   m_stackStrings->addWidget(m_lvStrings_2);
 
   DCOPClient *client = kapp->dcopClient();
-  QCStringList appList = client->registeredApplications();
+  DCOPCStringList appList = client->registeredApplications();
   bool quantaFound = false;
 
 
-  for(QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
+  for(DCOPCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
     {
       if((*it).left(6) == "quanta")
         {
@@ -668,7 +668,7 @@ void KFileReplaceView::loadMapIntoView(KeyValueMap map)
 
 void KFileReplaceView::whatsThis()
 {
-  Q3WhatsThis::add(getResultsView(), lvResultWhatthis);
-  Q3WhatsThis::add(getStringsView(), lvStringsWhatthis);
+  getResultsView()->setWhatsThis( lvResultWhatthis);
+  getStringsView()->setWhatsThis( lvStringsWhatthis);
 }
 #include "kfilereplaceview.moc"

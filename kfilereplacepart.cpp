@@ -558,9 +558,9 @@ void KFileReplacePart::initGUI()
   actionCollection()->setHighlightingEnabled(true);
 
   DCOPClient *client = kapp->dcopClient();
-  QCStringList appList = client->registeredApplications();
+  DCOPCStringList appList = client->registeredApplications();
   bool quantaFound = false;
-  for(QCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
+  for(DCOPCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
     {
       if((*it).left(6) == "quanta")
         {

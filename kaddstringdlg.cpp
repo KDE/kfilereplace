@@ -21,7 +21,7 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <q3listview.h>
-#include <q3whatsthis.h>
+
 #include <q3widgetstack.h>
 
 // KDE
@@ -159,10 +159,10 @@ void KAddStringDlg::loadMapIntoView()
 
 void KAddStringDlg::whatsThis()
 {
-  Q3WhatsThis::add(m_rbSearchOnly, rbSearchOnlyWhatthis);
-  Q3WhatsThis::add(m_rbSearchReplace, rbSearchReplaceWhatthis);
-  Q3WhatsThis::add(m_edSearch, edSearchWhatthis);
-  Q3WhatsThis::add(m_edReplace, edReplaceWhatthis);
+  m_rbSearchOnly->setWhatsThis( rbSearchOnlyWhatthis);
+  m_rbSearchReplace->setWhatsThis( rbSearchReplaceWhatthis);
+  m_edSearch->setWhatsThis( edSearchWhatthis);
+  m_edReplace->setWhatsThis( edReplaceWhatthis);
 }
 
 //PRIVATE SLOTS

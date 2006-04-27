@@ -18,7 +18,7 @@
 
 
 //QT
-#include <q3whatsthis.h>
+
 #include <qcheckbox.h>
 #include <qspinbox.h>
 #include <q3datetimeedit.h>
@@ -507,24 +507,24 @@ bool KNewProjectDlg::contains(Q3ListView* lv,const QString& s, int column)
 
 void KNewProjectDlg::whatsThis()
 {
-  Q3WhatsThis::add(m_cbLocation, cbLocationWhatthis);
-  Q3WhatsThis::add(m_cbFilter, cbFilterWhatthis);
+  m_cbLocation->setWhatsThis( cbLocationWhatthis);
+  m_cbFilter->setWhatsThis( cbFilterWhatthis);
 
-  Q3WhatsThis::add(m_spbSizeMin, edSizeMinWhatthis);
-  Q3WhatsThis::add(m_spbSizeMax, edSizeMaxWhatthis);
+  m_spbSizeMin->setWhatsThis( edSizeMinWhatthis);
+  m_spbSizeMax->setWhatsThis( edSizeMaxWhatthis);
 
-  Q3WhatsThis::add(m_cbDateValid, cbDateValidWhatthis);
-  Q3WhatsThis::add(m_chbDateMin, chbDateMinWhatthis);
-  Q3WhatsThis::add(m_chbDateMax, chbDateMaxWhatthis);
+  m_cbDateValid->setWhatsThis( cbDateValidWhatthis);
+  m_chbDateMin->setWhatsThis( chbDateMinWhatthis);
+  m_chbDateMax->setWhatsThis( chbDateMaxWhatthis);
 
-  Q3WhatsThis::add(m_chbIncludeSubfolders, chbRecursiveWhatthis);
-  Q3WhatsThis::add(m_chbRegularExpressions, chbRegularExpressionsWhatthis);
-  Q3WhatsThis::add(m_chbEnableVariables, chbVariablesWhatthis);
-  Q3WhatsThis::add(m_chbCaseSensitive, chbCaseSensitiveWhatthis);
-  Q3WhatsThis::add(m_chbBackup, chbBackupWhatthis);
-  Q3WhatsThis::add(m_leBackup, chbBackupWhatthis);
-  Q3WhatsThis::add(m_leSearch, leSearchWhatthis);
-  Q3WhatsThis::add(m_leReplace, leReplaceWhatthis);
+  m_chbIncludeSubfolders->setWhatsThis( chbRecursiveWhatthis);
+  m_chbRegularExpressions->setWhatsThis( chbRegularExpressionsWhatthis);
+  m_chbEnableVariables->setWhatsThis( chbVariablesWhatthis);
+  m_chbCaseSensitive->setWhatsThis( chbCaseSensitiveWhatthis);
+  m_chbBackup->setWhatsThis( chbBackupWhatthis);
+  m_leBackup->setWhatsThis( chbBackupWhatthis);
+  m_leSearch->setWhatsThis( leSearchWhatthis);
+  m_leReplace->setWhatsThis( leReplaceWhatthis);
 }
 
 #include "knewprojectdlg.moc"

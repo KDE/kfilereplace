@@ -19,7 +19,7 @@
 // QT
 #include <qcheckbox.h>
 #include <qspinbox.h>
-#include <q3whatsthis.h>
+
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
@@ -221,16 +221,16 @@ void KOptionsDlg::saveRCOptions()
 void KOptionsDlg::whatsThis()
 {
   // Create help QWhatsThis
-  Q3WhatsThis::add(m_chbCaseSensitive, chbCaseSensitiveWhatthis);
-  Q3WhatsThis::add(m_chbRecursive, chbRecursiveWhatthis);
-  Q3WhatsThis::add(m_chbHaltOnFirstOccurrence, chbHaltOnFirstOccurrenceWhatthis);
-  Q3WhatsThis::add(m_chbFollowSymLinks, chbFollowSymLinksWhatthis);
-  Q3WhatsThis::add(m_chbIgnoreHidden, chbIgnoreHiddenWhatthis);
-  Q3WhatsThis::add(m_chbIgnoreFiles, chbIgnoreFilesWhatthis);
-  Q3WhatsThis::add(m_chbRegularExpressions, chbRegularExpressionsWhatthis);
-  Q3WhatsThis::add(m_chbVariables, chbVariablesWhatthis);
-  Q3WhatsThis::add(m_chbBackup, chbBackupWhatthis);
-  Q3WhatsThis::add(m_chbConfirmStrings, chbConfirmStringsWhatthis);
+  m_chbCaseSensitive->setWhatsThis( chbCaseSensitiveWhatthis);
+  m_chbRecursive->setWhatsThis( chbRecursiveWhatthis);
+  m_chbHaltOnFirstOccurrence->setWhatsThis( chbHaltOnFirstOccurrenceWhatthis);
+  m_chbFollowSymLinks->setWhatsThis( chbFollowSymLinksWhatthis);
+  m_chbIgnoreHidden->setWhatsThis( chbIgnoreHiddenWhatthis);
+  m_chbIgnoreFiles->setWhatsThis( chbIgnoreFilesWhatthis);
+  m_chbRegularExpressions->setWhatsThis( chbRegularExpressionsWhatthis);
+  m_chbVariables->setWhatsThis( chbVariablesWhatthis);
+  m_chbBackup->setWhatsThis( chbBackupWhatthis);
+  m_chbConfirmStrings->setWhatsThis( chbConfirmStringsWhatthis);
 }
 
 #include "koptionsdlg.moc"
