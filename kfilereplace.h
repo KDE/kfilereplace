@@ -29,7 +29,7 @@ class KFileReplace : public KParts::MainWindow
 public:
     KFileReplace();
     ~KFileReplace();
-    void openURL(const KURL &url);
+    void openURL(const KUrl &url);
 
 private slots:
    void slotConfigureKeys();

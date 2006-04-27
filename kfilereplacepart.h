@@ -70,7 +70,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     void slotStringsLoad();
     void slotStringsInvertCur();
     void slotStringsInvertAll();
-    void slotOpenRecentStringFile(const KURL& urlFile);
+    void slotOpenRecentStringFile(const KUrl& urlFile);
     void slotOptionRecursive();
     void slotOptionBackup();
     void slotOptionCaseSensitive();
@@ -90,7 +90,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
 
   protected:
     virtual bool openFile() { return false; }
-    virtual bool openURL (const KURL &url);
+    virtual bool openURL (const KUrl &url);
 
   private:
     /**
@@ -149,7 +149,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
      */
     void loadViewContent();
     void loadRulesFile(const QString& fileName);
-    bool launchNewProjectDialog(const KURL& startURL);
+    bool launchNewProjectDialog(const KUrl& startURL);
     void setOptionMask();
     bool checkBeforeOperation();
     bool dontAskAgain();

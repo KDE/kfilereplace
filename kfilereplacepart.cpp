@@ -98,7 +98,7 @@ KFileReplacePart::~KFileReplacePart()
 //PRIVATE SLOTS
 void KFileReplacePart::slotSetNewParameters()
 {
-  launchNewProjectDialog(KURL());
+  launchNewProjectDialog(KUrl());
   m_view->changeView(m_option->m_searchingOnlyMode);
   emit setStatusBarText(i18n("Ready."));
 }
@@ -366,7 +366,7 @@ void KFileReplacePart::slotStringsInvertAll()
   resetActions();
 }
 
-void KFileReplacePart::slotOpenRecentStringFile(const KURL& urlFile)
+void KFileReplacePart::slotOpenRecentStringFile(const KUrl& urlFile)
 {
   QString fileName;
 
@@ -532,7 +532,7 @@ KAboutData* KFileReplacePart::createAboutData()
 }
 
 //PROTECTED METHODS
-bool KFileReplacePart::openURL(const KURL &url)
+bool KFileReplacePart::openURL(const KUrl &url)
 {
   if(!url.isEmpty() && (url.protocol() != "file"))
     {
@@ -583,7 +583,7 @@ void KFileReplacePart::initGUI()
   (void)new KAction(i18n("Edit Selected String..."), "edit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
   (void)new KAction(i18n("&Save Strings List to File..."), "filesaveas", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
   (void)new KAction(i18n("&Load Strings List From File..."), "unsortedList", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
-  (void)new KRecentFilesAction(i18n("&Load Recent Strings Files"), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KURL&)), actionCollection(),"strings_load_recent");
+  (void)new KRecentFilesAction(i18n("&Load Recent Strings Files"), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KUrl&)), actionCollection(),"strings_load_recent");
   (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
   (void)new KAction(i18n("&Invert All Strings (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertAll()), actionCollection(), "strings_invert_all");
 
@@ -1044,7 +1044,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
     {
       if(atLeastOneStringFound)
         {
-          KIO::NetAccess::file_copy(KURL::fromPathOrURL(oldPathString), KURL::fromPathOrURL(oldPathString + backupExtension), -1, true);
+          KIO::NetAccess::file_copy(KUrl::fromPathOrURL(oldPathString), KUrl::fromPathOrURL(oldPathString + backupExtension), -1, true);
       	}
     }
 
@@ -1577,7 +1577,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
   //resetActions();
 }
 
-bool KFileReplacePart::launchNewProjectDialog(const KURL & startURL)
+bool KFileReplacePart::launchNewProjectDialog(const KUrl & startURL)
 {
   if(!startURL.isEmpty())
     m_option->m_directories = QString(startURL.path()+","+m_option->m_directories);

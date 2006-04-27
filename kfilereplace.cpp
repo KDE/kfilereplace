@@ -59,7 +59,7 @@ KFileReplace::~KFileReplace()
 {
 }
 
-void KFileReplace::openURL(const KURL &url)
+void KFileReplace::openURL(const KUrl &url)
 {
   m_part->openURL(url);
 }

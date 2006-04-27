@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
         if (args->count() == 0)
         {
-            kfr->openURL(KURL());
+            kfr->openURL(KUrl());
         }
         else
         {
