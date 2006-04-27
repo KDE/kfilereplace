@@ -76,7 +76,7 @@ class KNewProjectDlg : public KNewProjectDlgS
     void saveFiltersList();
     void saveBackupExtensionOptions();
 
-    bool contains(QListView* lv,const QString& s, int column);
+    bool contains(Q3ListView* lv,const QString& s, int column);
     void setDatas(const QString& directoryString, const QString& filterString);
     void whatsThis();
 };

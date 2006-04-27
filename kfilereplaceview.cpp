@@ -16,9 +16,11 @@
  *****************************************************************************/
 
 // Qt
-#include <qwhatsthis.h>
+#include <q3whatsthis.h>
 #include <qmap.h>
 #include <qfileinfo.h>
+//Added by qt3to4:
+#include <QTextStream>
 
 // KDE
 #include <klistview.h>
@@ -50,20 +52,20 @@ KFileReplaceView::KFileReplaceView(RCOptions* info, QWidget *parent,const char *
   initGUI();
 
   // connect events
-  connect(m_lvResults, SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)), this, SLOT(slotMouseButtonClicked(int, QListViewItem *, const QPoint &)));
-  connect(m_lvResults_2, SIGNAL(mouseButtonClicked(int, QListViewItem *, const QPoint &, int)), this, SLOT(slotMouseButtonClicked(int, QListViewItem *, const QPoint &)));
-  connect(m_lvStrings, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(slotStringsEdit()));
-  connect(m_lvStrings_2, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(slotStringsEdit()));
+  connect(m_lvResults, SIGNAL(mouseButtonClicked(int, Q3ListViewItem *, const QPoint &, int)), this, SLOT(slotMouseButtonClicked(int, Q3ListViewItem *, const QPoint &)));
+  connect(m_lvResults_2, SIGNAL(mouseButtonClicked(int, Q3ListViewItem *, const QPoint &, int)), this, SLOT(slotMouseButtonClicked(int, Q3ListViewItem *, const QPoint &)));
+  connect(m_lvStrings, SIGNAL(doubleClicked(Q3ListViewItem *)), this, SLOT(slotStringsEdit()));
+  connect(m_lvStrings_2, SIGNAL(doubleClicked(Q3ListViewItem *)), this, SLOT(slotStringsEdit()));
 
   whatsThis();
 }
 
 QString KFileReplaceView::currentPath()
 {
-  QListViewItem *lvi;
+  Q3ListViewItem *lvi;
 
   if(! m_lviCurrent) lvi = m_rv->currentItem();
-  else lvi = (QListViewItem*) m_lviCurrent;
+  else lvi = (Q3ListViewItem*) m_lviCurrent;
 
   while (lvi->parent())
     lvi = lvi->parent();
@@ -97,7 +99,7 @@ void KFileReplaceView::showSemaphore(QString s)
 
 void KFileReplaceView::stringsInvert(bool invertAll)
 {
-  QListViewItem* lviCurItem,
+  Q3ListViewItem* lviCurItem,
   * lviFirst;
   KListView* sv = getStringsView();
 
@@ -169,13 +171,13 @@ KListView* KFileReplaceView::getStringsView()
 }
 
 //PUBLIC SLOTS
-void KFileReplaceView::slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos)
+void KFileReplaceView::slotMouseButtonClicked (int button, Q3ListViewItem *lvi, const QPoint &pos)
 {
   if (lvi == 0) // No item selected
     return;
 
   // RIGHT BUTTON
-  if (button == QMouseEvent::RightButton)
+  if (button == Qt::RightButton)
     {
       m_lviCurrent = static_cast<KListViewItem*>(lvi);
       m_menuResult->popup(pos);
@@ -229,14 +231,14 @@ void KFileReplaceView::slotResultDirOpen()
 
 void KFileReplaceView::slotResultEdit()
 {
-  QListViewItem *lvi = m_rv->firstChild();
+  Q3ListViewItem *lvi = m_rv->firstChild();
 
   while (lvi)
     {
       DCOPClient *client = kapp->dcopClient();
       DCOPRef quanta(client->appId(),"WindowManagerIf");
       QString path = QString(lvi->text(1)+"/"+lvi->text(0));
-      QListViewItem *lviChild = lvi;
+      Q3ListViewItem *lviChild = lvi;
 
       while(lviChild)
         {
@@ -294,7 +296,7 @@ void KFileReplaceView::slotResultDelete()
 
 void KFileReplaceView::slotResultTreeExpand()
 {
-  QListViewItem *lviRoot = getResultsView()->firstChild();
+  Q3ListViewItem *lviRoot = getResultsView()->firstChild();
 
   if(lviRoot)
     expand(lviRoot, true);
@@ -302,7 +304,7 @@ void KFileReplaceView::slotResultTreeExpand()
 
 void KFileReplaceView::slotResultTreeReduce()
 {
-  QListViewItem *lviRoot = getResultsView()->firstChild();
+  Q3ListViewItem *lviRoot = getResultsView()->firstChild();
 
   if(lviRoot)
     expand(lviRoot, false);
@@ -410,7 +412,7 @@ void KFileReplaceView::slotStringsSave()
   else
     header += "\n\t<mode search=\"false\"/>";
 
-  QListViewItem*  lvi = sv->firstChild();
+  Q3ListViewItem*  lvi = sv->firstChild();
 
   while( lvi )
   {
@@ -432,7 +434,7 @@ void KFileReplaceView::slotStringsSave()
   fileName = KFileReplaceLib::addExtension(fileName, "kfr");
 
   QFile file( fileName );
-  if(!file.open( IO_WriteOnly ))
+  if(!file.open( QIODevice::WriteOnly ))
   {
     KMessageBox::error(0, i18n("File %1 cannot be saved.", fileName));
     return ;
@@ -447,7 +449,7 @@ void KFileReplaceView::slotStringsSave()
 
 void KFileReplaceView::slotStringsDeleteItem()
 {
-  QListViewItem* item = m_sv->currentItem();
+  Q3ListViewItem* item = m_sv->currentItem();
   if(item != 0)
   {
     KeyValueMap m = m_option->m_mapStringsView;
@@ -459,10 +461,10 @@ void KFileReplaceView::slotStringsDeleteItem()
 
 void KFileReplaceView::slotStringsEmpty()
 {
-  QListViewItem * myChild = m_sv->firstChild();
+  Q3ListViewItem * myChild = m_sv->firstChild();
   while( myChild )
   {
-    QListViewItem* item = myChild;
+    Q3ListViewItem* item = myChild;
     myChild = myChild->nextSibling();
     delete item;
   }
@@ -554,7 +556,7 @@ void KFileReplaceView::raiseResultsView()
   m_stackResults->raiseWidget(m_rv);
 }
 
-coord KFileReplaceView::extractWordCoordinates(QListViewItem* lvi)
+coord KFileReplaceView::extractWordCoordinates(Q3ListViewItem* lvi)
 {
   //get coordinates of the first string of the current selected file
   coord c;
@@ -618,7 +620,7 @@ coord KFileReplaceView::extractWordCoordinates(QListViewItem* lvi)
   return c;
 }
 
-void KFileReplaceView::expand(QListViewItem *lviCurrent, bool b)
+void KFileReplaceView::expand(Q3ListViewItem *lviCurrent, bool b)
 {
   // current item
   lviCurrent->setOpen(b);
@@ -636,7 +638,7 @@ void KFileReplaceView::expand(QListViewItem *lviCurrent, bool b)
 void KFileReplaceView::setMap()
 {
   KeyValueMap map;
-  QListViewItem* i = m_sv->firstChild();
+  Q3ListViewItem* i = m_sv->firstChild();
   while(i != 0)
   {
     if(m_option->m_searchingOnlyMode)
@@ -655,7 +657,7 @@ void KFileReplaceView::loadMapIntoView(KeyValueMap map)
 
   for(itMap = map.begin(); itMap != map.end(); ++itMap)
     {
-      QListViewItem* lvi = new QListViewItem(m_sv);
+      Q3ListViewItem* lvi = new Q3ListViewItem(m_sv);
       lvi->setMultiLinesEnabled(true);
       lvi->setText(0,itMap.key());
       if(!m_option->m_searchingOnlyMode)
@@ -666,7 +668,7 @@ void KFileReplaceView::loadMapIntoView(KeyValueMap map)
 
 void KFileReplaceView::whatsThis()
 {
-  QWhatsThis::add(getResultsView(), lvResultWhatthis);
-  QWhatsThis::add(getStringsView(), lvStringsWhatthis);
+  Q3WhatsThis::add(getResultsView(), lvResultWhatthis);
+  Q3WhatsThis::add(getStringsView(), lvStringsWhatthis);
 }
 #include "kfilereplaceview.moc"

@@ -23,6 +23,8 @@
 
 //app includes
 #include "kfilereplace.h"
+//Added by qt3to4:
+#include <Q3PtrList>
 
 KFileReplace::KFileReplace()
  : KParts::MainWindow(0L, "KFileReplace")
@@ -65,8 +67,8 @@ void KFileReplace::openURL(const KURL &url)
 void KFileReplace::slotConfigureKeys()
 {
     KKeyDialog dlg( false, this );
-    QPtrList<KXMLGUIClient> clients = guiFactory()->clients();
-    for( QPtrListIterator<KXMLGUIClient> it( clients );
+    Q3PtrList<KXMLGUIClient> clients = guiFactory()->clients();
+    for( Q3PtrListIterator<KXMLGUIClient> it( clients );
             it.current(); ++it )
     {
         dlg.insert( (*it)->actionCollection() );

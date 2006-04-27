@@ -18,6 +18,8 @@
 #include <qregexp.h>
 #include <qimage.h>
 #include <qtextcodec.h>
+//Added by qt3to4:
+#include <QTextStream>
 
 // KDE
 #include <dcopclient.h>
@@ -1012,7 +1014,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   QString oldPathString = currentDir+"/"+oldFileName;
 
   QFile currentFile(oldPathString);
-  if(!currentFile.open(IO_ReadOnly))
+  if(!currentFile.open(QIODevice::ReadOnly))
     {
       KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFileName),QString::null, rcNotifyOnErrors);
       return ;
@@ -1051,7 +1053,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
       if(atLeastOneStringFound)
         {
           QFile newFile(oldPathString);
-          if(!newFile.open(IO_WriteOnly))
+          if(!newFile.open(QIODevice::WriteOnly))
             {
               KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", oldFileName),QString::null, rcNotifyOnErrors);
               return ;
@@ -1100,7 +1102,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   QFile oldFile(oldPathString);
   QFileInfo oldFileInfo(oldPathString);
 
-  if (!oldFile.open(IO_ReadOnly))
+  if (!oldFile.open(QIODevice::ReadOnly))
     {
       KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFile.name()),QString::null, rcNotifyOnErrors);
       return ;
@@ -1129,7 +1131,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
       if(atLeastOneStringFound)
         {
 	  QFile newFile(oldPathString);
-          if(!newFile.open(IO_WriteOnly))
+          if(!newFile.open(QIODevice::WriteOnly))
             {
               KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", newFile.name()),QString::null, rcNotifyOnErrors);
               return ;
@@ -1322,7 +1324,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 {
   QFile file(currentDir+"/"+fileName);
 
-  if(!file.open(IO_ReadOnly))
+  if(!file.open(QIODevice::ReadOnly))
     {
       KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", fileName), QString::null, rcNotifyOnErrors);
       return ;
@@ -1478,10 +1480,10 @@ void KFileReplacePart::loadViewContent()
   KeyValueMap tempMap;
   CommandEngine command;
 
-  QListViewItemIterator itlv(m_view->getStringsView());
+  Q3ListViewItemIterator itlv(m_view->getStringsView());
   while(itlv.current())
     {
-      QListViewItem *item = itlv.current();
+      Q3ListViewItem *item = itlv.current();
       if(m_option->m_variables)
         tempMap[item->text(0)] = command.variableValue(item->text(1));
       else
@@ -1499,7 +1501,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
   QFile file(fileName);
   KListView* sv = m_view->getStringsView();
 
-  if(!file.open(IO_ReadOnly))
+  if(!file.open(QIODevice::ReadOnly))
     {
       KMessageBox::error(m_w, i18n("<qt>Cannot open the file <b>%1</b> and load the string list.</qt>", fileName));
       return ;

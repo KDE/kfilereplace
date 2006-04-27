@@ -69,7 +69,7 @@
                         <cstring>spacer7</cstring>
                     </property>
                     <property name="orientation">
-                        <enum>Horizontal</enum>
+                        <enum>Qt::Horizontal</enum>
                     </property>
                     <property name="sizeType">
                         <enum>Expanding</enum>
@@ -175,7 +175,7 @@
                                     <string>Location:</string>
                                 </property>
                                 <property name="textFormat">
-                                    <enum>AutoText</enum>
+                                    <enum>Qt::AutoText</enum>
                                 </property>
                                 <property name="buddy" stdset="0">
                                     <cstring>cbLocation</cstring>
@@ -713,7 +713,7 @@
                                             <cstring>spacer3</cstring>
                                         </property>
                                         <property name="orientation">
-                                            <enum>Horizontal</enum>
+                                            <enum>Qt::Horizontal</enum>
                                         </property>
                                         <property name="sizeType">
                                             <enum>Expanding</enum>
@@ -837,7 +837,7 @@
                                             <cstring>spacer2</cstring>
                                         </property>
                                         <property name="orientation">
-                                            <enum>Horizontal</enum>
+                                            <enum>Qt::Horizontal</enum>
                                         </property>
                                         <property name="sizeType">
                                             <enum>Expanding</enum>

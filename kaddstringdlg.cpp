@@ -16,13 +16,13 @@
  *                                                                         *
  ***************************************************************************/
 // QT
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
-#include <qlistview.h>
-#include <qwhatsthis.h>
-#include <qwidgetstack.h>
+#include <q3listview.h>
+#include <q3whatsthis.h>
+#include <q3widgetstack.h>
 
 // KDE
 #include <kmessagebox.h>
@@ -94,14 +94,14 @@ void KAddStringDlg::initGUI()
 
 void KAddStringDlg::eraseViewItems()
 {
-  QListViewItem* item = m_sv->firstChild();
+  Q3ListViewItem* item = m_sv->firstChild();
   if(item == 0)
     return;
   else
   {
     while(item)
     {
-      QListViewItem* tempItem = item;
+      Q3ListViewItem* tempItem = item;
       item = item->nextSibling();
       delete tempItem;
     }
@@ -118,9 +118,9 @@ void KAddStringDlg::raiseView()
   m_stack->raiseWidget(m_sv);
 }
 
-bool KAddStringDlg::columnContains(QListView* lv,const QString& s, int column)
+bool KAddStringDlg::columnContains(Q3ListView* lv,const QString& s, int column)
 {
-  QListViewItem* i = lv->firstChild();
+  Q3ListViewItem* i = lv->firstChild();
   while (i != 0)
     {
       if(i->text(column) == s)
@@ -132,7 +132,7 @@ bool KAddStringDlg::columnContains(QListView* lv,const QString& s, int column)
 
 void KAddStringDlg::saveViewContentIntoMap()
 {
-  QListViewItem* i = m_sv->firstChild();
+  Q3ListViewItem* i = m_sv->firstChild();
   while(i != 0)
     {
       if(m_option->m_searchingOnlyMode)
@@ -149,7 +149,7 @@ void KAddStringDlg::loadMapIntoView()
 
   for (itMap = m_currentMap.begin(); itMap != m_currentMap.end(); ++itMap)
     {
-      QListViewItem* temp = new QListViewItem(m_sv);
+      Q3ListViewItem* temp = new Q3ListViewItem(m_sv);
       temp->setText(0,itMap.key());
       if(!m_option->m_searchingOnlyMode)
         temp->setText(1,itMap.data());
@@ -158,10 +158,10 @@ void KAddStringDlg::loadMapIntoView()
 
 void KAddStringDlg::whatsThis()
 {
-  QWhatsThis::add(m_rbSearchOnly, rbSearchOnlyWhatthis);
-  QWhatsThis::add(m_rbSearchReplace, rbSearchReplaceWhatthis);
-  QWhatsThis::add(m_edSearch, edSearchWhatthis);
-  QWhatsThis::add(m_edReplace, edReplaceWhatthis);
+  Q3WhatsThis::add(m_rbSearchOnly, rbSearchOnlyWhatthis);
+  Q3WhatsThis::add(m_rbSearchReplace, rbSearchReplaceWhatthis);
+  Q3WhatsThis::add(m_edSearch, edSearchWhatthis);
+  Q3WhatsThis::add(m_edReplace, edReplaceWhatthis);
 }
 
 //PRIVATE SLOTS
@@ -211,7 +211,7 @@ void KAddStringDlg::slotAddStringToView()
       QString text = m_edSearch->text();
       if(!(text.isEmpty() || columnContains(m_sv, text, 0)))
         {
-          QListViewItem* lvi = new QListViewItem(m_sv);
+          Q3ListViewItem* lvi = new Q3ListViewItem(m_sv);
           lvi->setMultiLinesEnabled(true);
           lvi->setText(0,text);
           m_currentMap[text] = QString::null;
@@ -225,7 +225,7 @@ void KAddStringDlg::slotAddStringToView()
 
       if(!(searchText.isEmpty() || replaceText.isEmpty() || columnContains(m_sv,searchText,0) || columnContains(m_sv,replaceText,1)))
         {
-          QListViewItem* lvi = new QListViewItem(m_sv);
+          Q3ListViewItem* lvi = new Q3ListViewItem(m_sv);
           lvi->setMultiLinesEnabled(true);
           lvi->setText(0,searchText);
           m_edSearch->clear();
@@ -239,7 +239,7 @@ void KAddStringDlg::slotAddStringToView()
 void KAddStringDlg::slotDeleteStringFromView()
 {
   // Choose current item or selected item
-  QListViewItem* currentItem = m_sv->currentItem();
+  Q3ListViewItem* currentItem = m_sv->currentItem();
 
   // Do nothing if list is empty
   if(currentItem == 0)

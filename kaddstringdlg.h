@@ -30,7 +30,7 @@ class KAddStringDlg : public KAddStringDlgS
   Q_OBJECT
   private:
     RCOptions* m_option;
-    QListView* m_sv;
+    Q3ListView* m_sv;
     KeyValueMap m_currentMap;
     bool m_wantEdit;
 
@@ -65,7 +65,7 @@ class KAddStringDlg : public KAddStringDlgS
     /**
      * Verifies whether 'lv' contains 's'
      */
-    bool columnContains(QListView* lv,const QString& s, int column);
+    bool columnContains(Q3ListView* lv,const QString& s, int column);
     void saveViewContentIntoMap();
     void loadMapIntoView();
     void whatsThis();

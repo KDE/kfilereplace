@@ -22,7 +22,7 @@
 //QT
 #include <qstringlist.h>
 #include <qwidget.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qfileinfo.h>
 
 //KDE
@@ -177,7 +177,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, KListVie
                         KMessageBox::error(0, i18n("Cannot read data."));
                       else
                         {
-                          QListViewItem* lvi = new QListViewItem(stringView);
+                          Q3ListViewItem* lvi = new Q3ListViewItem(stringView);
                           lvi->setText(0,oldString);
                           lvi->setText(1,newString);
 
@@ -296,7 +296,7 @@ bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString&
   return true;
 }
 
-void KFileReplaceLib::setIconForFileEntry(QListViewItem* item, QString path)
+void KFileReplaceLib::setIconForFileEntry(Q3ListViewItem* item, QString path)
 {
   QFileInfo fi(path);
   QString extension = fi.extension(),

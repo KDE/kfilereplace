@@ -18,14 +18,16 @@
 
 
 //QT
-#include <qwhatsthis.h>
+#include <q3whatsthis.h>
 #include <qcheckbox.h>
 #include <qspinbox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qradiobutton.h>
-#include <qtextedit.h>
-#include <qlistview.h>
+#include <q3textedit.h>
+#include <q3listview.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 //KDE
 #include <kseparator.h>
@@ -205,8 +207,8 @@ void KNewProjectDlg::slotEnableChbBackup(bool b)
 //PRIVATE
 void KNewProjectDlg::initGUI()
 {
-  QIconSet iconSet = SmallIconSet("fileopen");
-  QPixmap pixMap = iconSet.pixmap( QIconSet::Small, QIconSet::Normal );
+  QIcon iconSet = SmallIconSet("fileopen");
+  QPixmap pixMap = iconSet.pixmap( QIcon::Small, QIcon::Normal );
 
   m_pbLocation->setIconSet(iconSet);
   m_pbLocation->setFixedSize(pixMap.width() + 8, pixMap.height() + 8);
@@ -491,9 +493,9 @@ void KNewProjectDlg::setDatas(const QString& directoryString, const QString& fil
     m_cbFilter->setEditText(filterString);
 }
 
-bool KNewProjectDlg::contains(QListView* lv,const QString& s, int column)
+bool KNewProjectDlg::contains(Q3ListView* lv,const QString& s, int column)
 {
-  QListViewItem* i = lv->firstChild();
+  Q3ListViewItem* i = lv->firstChild();
   while (i != 0)
     {
       if(i->text(column) == s)
@@ -505,24 +507,24 @@ bool KNewProjectDlg::contains(QListView* lv,const QString& s, int column)
 
 void KNewProjectDlg::whatsThis()
 {
-  QWhatsThis::add(m_cbLocation, cbLocationWhatthis);
-  QWhatsThis::add(m_cbFilter, cbFilterWhatthis);
+  Q3WhatsThis::add(m_cbLocation, cbLocationWhatthis);
+  Q3WhatsThis::add(m_cbFilter, cbFilterWhatthis);
 
-  QWhatsThis::add(m_spbSizeMin, edSizeMinWhatthis);
-  QWhatsThis::add(m_spbSizeMax, edSizeMaxWhatthis);
+  Q3WhatsThis::add(m_spbSizeMin, edSizeMinWhatthis);
+  Q3WhatsThis::add(m_spbSizeMax, edSizeMaxWhatthis);
 
-  QWhatsThis::add(m_cbDateValid, cbDateValidWhatthis);
-  QWhatsThis::add(m_chbDateMin, chbDateMinWhatthis);
-  QWhatsThis::add(m_chbDateMax, chbDateMaxWhatthis);
+  Q3WhatsThis::add(m_cbDateValid, cbDateValidWhatthis);
+  Q3WhatsThis::add(m_chbDateMin, chbDateMinWhatthis);
+  Q3WhatsThis::add(m_chbDateMax, chbDateMaxWhatthis);
 
-  QWhatsThis::add(m_chbIncludeSubfolders, chbRecursiveWhatthis);
-  QWhatsThis::add(m_chbRegularExpressions, chbRegularExpressionsWhatthis);
-  QWhatsThis::add(m_chbEnableVariables, chbVariablesWhatthis);
-  QWhatsThis::add(m_chbCaseSensitive, chbCaseSensitiveWhatthis);
-  QWhatsThis::add(m_chbBackup, chbBackupWhatthis);
-  QWhatsThis::add(m_leBackup, chbBackupWhatthis);
-  QWhatsThis::add(m_leSearch, leSearchWhatthis);
-  QWhatsThis::add(m_leReplace, leReplaceWhatthis);
+  Q3WhatsThis::add(m_chbIncludeSubfolders, chbRecursiveWhatthis);
+  Q3WhatsThis::add(m_chbRegularExpressions, chbRegularExpressionsWhatthis);
+  Q3WhatsThis::add(m_chbEnableVariables, chbVariablesWhatthis);
+  Q3WhatsThis::add(m_chbCaseSensitive, chbCaseSensitiveWhatthis);
+  Q3WhatsThis::add(m_chbBackup, chbBackupWhatthis);
+  Q3WhatsThis::add(m_leBackup, chbBackupWhatthis);
+  Q3WhatsThis::add(m_leSearch, leSearchWhatthis);
+  Q3WhatsThis::add(m_leReplace, leReplaceWhatthis);
 }
 
 #include "knewprojectdlg.moc"

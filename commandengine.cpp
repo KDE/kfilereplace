@@ -21,6 +21,8 @@
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qdom.h>
+//Added by qt3to4:
+#include <Q3CString>
 
 // KDE
 #include <kuser.h>
@@ -64,7 +66,7 @@ QString CommandEngine::loadfile(const QString& opt, const QString& arg)
   Q_UNUSED(arg);
 
   QFile f(opt);
-  if(!f.open(IO_ReadOnly)) return QString::null;
+  if(!f.open(QIODevice::ReadOnly)) return QString::null;
 
   QTextStream t(&f);
 
@@ -191,14 +193,14 @@ void CommandEngine::slotGetScriptError(KProcess* proc, char* s, int i)
 {
   Q_UNUSED(proc);
   Q_UNUSED(proc);
-  QCString temp(s,i+1);
+  Q3CString temp(s,i+1);
   if(temp.isEmpty() || temp == "\n") return;
 }
 
 void CommandEngine::slotGetScriptOutput(KProcess* proc, char* s, int i)
 {
   Q_UNUSED(proc);
-  QCString temp(s,i+1);
+  Q3CString temp(s,i+1);
 
   if(temp.isEmpty() || temp == "\n") return;
 

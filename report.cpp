@@ -18,6 +18,8 @@
 // QT
 #include <qstring.h>
 #include <qfile.h>
+//Added by qt3to4:
+#include <QTextStream>
 
 // KDE
 #include <klistview.h>
@@ -36,7 +38,7 @@ void Report::createReportFile()
   // Generates a report file
   // a) Open the file
   QFile report(xmlFileName);
-  if (!report.open( IO_WriteOnly ))
+  if (!report.open( QIODevice::WriteOnly ))
     {
       KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>", xmlFileName));
       return ;
@@ -81,7 +83,7 @@ void Report::createReportFile()
               oTStream<< "  </row>\n"
               " </header>\n";
   // c) Write the strings list
-  QListViewItem *lviCurItem,
+  Q3ListViewItem *lviCurItem,
                 *lviFirst;
 
   lviCurItem = lviFirst = m_stringsView->firstChild();
@@ -189,7 +191,7 @@ void Report::createStyleSheet()
 {
   QString cssFileName = m_docPath +".css";
   QFile styleSheet(cssFileName);
-  if (!styleSheet.open( IO_WriteOnly ))
+  if (!styleSheet.open( QIODevice::WriteOnly ))
     {
       KMessageBox::error(0, i18n("<qt>Cannot open the file <b>%1</b>.</qt>", cssFileName));
       return ;

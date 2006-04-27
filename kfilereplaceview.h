@@ -24,7 +24,7 @@
 
 //QT
 #include <qlcdnumber.h>
-#include <qwidgetstack.h>
+#include <q3widgetstack.h>
 class QPixMap;
 
 //KDE
@@ -82,7 +82,7 @@ class KFileReplaceView : public KFileReplaceViewWdg
     //void emitSearchingOnlyMode(bool b) { emit searchingOnlyMode(b); }
 
   public slots:
-    void slotMouseButtonClicked (int button, QListViewItem *lvi, const QPoint &pos);
+    void slotMouseButtonClicked (int button, Q3ListViewItem *lvi, const QPoint &pos);
     void slotResultProperties();
     void slotResultOpen();
     void slotResultOpenWith();
@@ -102,8 +102,8 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void initGUI();
     void raiseStringsView();
     void raiseResultsView();
-    coord extractWordCoordinates(QListViewItem* lvi);
-    void expand(QListViewItem *lviCurrent, bool b);
+    coord extractWordCoordinates(Q3ListViewItem* lvi);
+    void expand(Q3ListViewItem *lviCurrent, bool b);
     void setMap();
     void loadMapIntoView(KeyValueMap map);
     void whatsThis();
