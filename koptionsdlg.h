@@ -47,7 +47,7 @@ class KOptionsDlg : public KOptionsDlgS
     void slotChbBackup(bool b);
     void slotChbConfirmStrings(bool b);
     void slotChbShowConfirmDialog(bool b);
-    void slotHelp(){ kapp->invokeHelp(QString::null, "kfilereplace"); }
+    void slotHelp(){ KToolInvocation::invokeHelp(QString::null, "kfilereplace"); }
 
   private:
     void initGUI();

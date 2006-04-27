@@ -55,7 +55,7 @@ class KNewProjectDlg : public KNewProjectDlgS
     void slotEnableChbUser(bool b);
     void slotEnableChbGroup(bool b);
     void slotEnableChbBackup(bool b);
-    void slotHelp(){ kapp->invokeHelp(QString::null, "kfilereplace"); }
+    void slotHelp(){ KToolInvocation::invokeHelp(QString::null, "kfilereplace"); }
 
   private:
     void initGUI();

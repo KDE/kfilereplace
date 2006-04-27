@@ -30,6 +30,7 @@
 #include <kdebug.h>
 #include <kconfig.h>
 #include <kapplication.h>
+#include <ktoolinvocation.h>
 
 // local
 #include "kaddstringdlg.h"
@@ -266,7 +267,7 @@ void KAddStringDlg::slotDeleteStringFromView()
 
 void KAddStringDlg::slotHelp()
 {
-  kapp->invokeHelp(QString::null, "kfilereplace");
+  KToolInvocation::invokeHelp(QString::null, "kfilereplace");
 }
 
 #include "kaddstringdlg.moc"

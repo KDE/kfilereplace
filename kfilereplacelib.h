@@ -53,7 +53,7 @@ class KFileReplaceLib
     /**
     converts the old kfr format file in the new xml-based format.
     */
-    static void convertOldToNewKFRFormat(const QString& fileName, KListView* stringView);
+    static void convertOldToNewKFRFormat(const QString& fileName, K3ListView* stringView);
     /**
     Verifies that files, which we are scanning, respect some
     conditions

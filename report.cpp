@@ -22,7 +22,7 @@
 #include <QTextStream>
 
 // KDE
-#include <klistview.h>
+#include <k3listview.h>
 #include <kmessagebox.h>
 #include <kuser.h>
 

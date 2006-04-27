@@ -23,10 +23,10 @@
 #include <QTextStream>
 
 // KDE
-#include <klistview.h>
+#include <k3listview.h>
 #include <kmessagebox.h>
 #include <klocale.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <krun.h>
 #include <kpropertiesdialog.h>
 #include <kapplication.h>
@@ -101,7 +101,7 @@ void KFileReplaceView::stringsInvert(bool invertAll)
 {
   Q3ListViewItem* lviCurItem,
   * lviFirst;
-  KListView* sv = getStringsView();
+  K3ListView* sv = getStringsView();
 
   if(invertAll)
     lviCurItem = lviFirst = sv->firstChild();
@@ -151,7 +151,7 @@ void KFileReplaceView::changeView(bool searchingOnlyMode)
     }
 }
 
-KListView* KFileReplaceView::getResultsView()
+K3ListView* KFileReplaceView::getResultsView()
 {
   if(m_option->m_searchingOnlyMode)
     m_rv = m_lvResults_2;
@@ -161,7 +161,7 @@ KListView* KFileReplaceView::getResultsView()
   return m_rv;
 }
 
-KListView* KFileReplaceView::getStringsView()
+K3ListView* KFileReplaceView::getStringsView()
 {
   if(m_option->m_searchingOnlyMode)
     m_sv = m_lvStrings_2;
@@ -179,7 +179,7 @@ void KFileReplaceView::slotMouseButtonClicked (int button, Q3ListViewItem *lvi, 
   // RIGHT BUTTON
   if (button == Qt::RightButton)
     {
-      m_lviCurrent = static_cast<KListViewItem*>(lvi);
+      m_lviCurrent = static_cast<K3ListViewItem*>(lvi);
       m_menuResult->popup(pos);
     }
 }
@@ -396,7 +396,7 @@ void KFileReplaceView::slotStringsEdit()
 void KFileReplaceView::slotStringsSave()
 {
   // Check there are strings in the list
-  KListView* sv = getStringsView();
+  K3ListView* sv = getStringsView();
 
   if (sv->firstChild() == 0)
   {
@@ -496,7 +496,7 @@ void KFileReplaceView::initGUI()
         }
     }
 
-  m_menuResult = new KPopupMenu(this, "ResultPopup");
+  m_menuResult = new KMenu(this, "ResultPopup");
 
 
 

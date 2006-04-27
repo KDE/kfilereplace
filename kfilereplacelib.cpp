@@ -28,7 +28,7 @@
 //KDE
 #include <kdebug.h>
 #include <kmessagebox.h>
-#include <klistview.h>
+#include <k3listview.h>
 #include <kiconloader.h>
 
 //needed for malloc/free
@@ -119,7 +119,7 @@ QString KFileReplaceLib::formatFileSize(double size)
   return stringSize;
 }
 
-void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, KListView* stringView)
+void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, K3ListView* stringView)
 {
  //this method convert old format in new XML-based format
  typedef struct

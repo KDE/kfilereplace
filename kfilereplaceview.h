@@ -28,8 +28,8 @@
 class QPixMap;
 
 //KDE
-class KPopupMenu;
-class KListView;
+class KMenu;
+class K3ListView;
 
 //local
 #include "kfilereplaceviewwdg.h"
@@ -58,10 +58,10 @@ class KFileReplaceView : public KFileReplaceViewWdg
 {
   Q_OBJECT
   private:
-    KPopupMenu* m_menuResult;
+    KMenu* m_menuResult;
     RCOptions* m_option;
-    KListViewItem* m_lviCurrent;
-    KListView* m_rv,
+    K3ListViewItem* m_lviCurrent;
+    K3ListView* m_rv,
              * m_sv;
 
   public://Constructors
@@ -73,8 +73,8 @@ class KFileReplaceView : public KFileReplaceViewWdg
     void displayScannedFiles(int filesNumber) { m_lcdFilesNumber->display(QString::number(filesNumber,10)); }
     void stringsInvert(bool invertAll);
     void changeView(bool searchingOnlyMode);
-    KListView* getResultsView();
-    KListView* getStringsView();
+    K3ListView* getResultsView();
+    K3ListView* getStringsView();
     void updateOptions(RCOptions* info) { m_option = info; }
     void loadMap(KeyValueMap extMap){ loadMapIntoView(extMap); }
     KeyValueMap getStringsViewMap()const { return m_option->m_mapStringsView;}
