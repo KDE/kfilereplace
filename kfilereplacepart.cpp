@@ -680,7 +680,7 @@ void KFileReplacePart::loadOptions()
 {
   m_config->setGroup("General Options");
 
-  m_option->m_recentStringFileList = m_config->readListEntry(rcRecentFiles);
+  m_option->m_recentStringFileList = m_config->readEntry(rcRecentFiles, QStringList() );
 
   m_option->m_searchingOnlyMode = m_config->readBoolEntry(rcSearchMode,SearchModeOption);
 
