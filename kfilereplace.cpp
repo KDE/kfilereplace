@@ -20,7 +20,7 @@
 #include <klocale.h>
 #include <kkeydialog.h>
 #include <kmessagebox.h>
-
+#include <kxmlguifactory.h>
 //app includes
 #include "kfilereplace.h"
 //Added by qt3to4:
@@ -66,8 +66,8 @@ void KFileReplace::openURL(const KUrl &url)
 
 void KFileReplace::slotConfigureKeys()
 {
-    KKeyDialog dlg( false, this );
-    Q3PtrList<KXMLGUIClient> clients = guiFactory()->clients();
+	KKeyDialog( KKeyChooser::AllActions, KKeyChooser::LetterShortcutsAllowed, this );
+    QList<KXMLGUIClient*> clients = guiFactory()->clients();
     for( Q3PtrListIterator<KXMLGUIClient> it( clients );
             it.current(); ++it )
     {
