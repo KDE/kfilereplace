@@ -21,7 +21,7 @@ set(kfilereplacepart_PART_SRCS
 
 kde4_automoc(${kfilereplacepart_PART_SRCS})
 
-kde4_add_ui_files(kfilereplacepart_PART_SRCS 
+kde4_add_ui3_files(kfilereplacepart_PART_SRCS 
    kfilereplaceviewwdg.ui 
    kaddstringdlgs.ui 
    knewprojectdlgs.ui 
