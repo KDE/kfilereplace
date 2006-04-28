@@ -66,14 +66,11 @@ void KFileReplace::openURL(const KUrl &url)
 
 void KFileReplace::slotConfigureKeys()
 {
-	KKeyDialog( KKeyChooser::AllActions, KKeyChooser::LetterShortcutsAllowed, this );
+	KKeyDialog dlg( KKeyChooser::AllActions, KKeyChooser::LetterShortcutsAllowed, this );
     QList<KXMLGUIClient*> clients = guiFactory()->clients();
-    for( Q3PtrListIterator<KXMLGUIClient> it( clients );
-            it.current(); ++it )
-    {
-        dlg.insert( (*it)->actionCollection() );
-    }
-    dlg.configure();
+  	foreach(KXMLGUIClient *client, clients)
+    	dlg.insert ( client->actionCollection());
+	dlg.configure();
 }
 
 void KFileReplace::slotConfigureToolbars()
