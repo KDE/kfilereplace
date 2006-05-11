@@ -436,7 +436,7 @@ void KFileReplacePart::slotOptionPreferences()
 
 void KFileReplacePart::showAboutApplication()
 {
-  m_aboutDlg = new KAboutApplication(createAboutData(), (QWidget *)0, (const char *)0, false);
+  m_aboutDlg = new KAboutApplication(createAboutData(), (QWidget *)0, false);
   if(m_aboutDlg == 0)
     return;
 
@@ -1386,7 +1386,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
           if(pos != -1)
             {
               atLeastOneStringFound = true;
-              int lineNumber = line.mid(0,pos).contains('\n')+1;
+              int lineNumber = line.mid(0,pos).count('\n')+1;
               int columnNumber = pos - line.findRev('\n',pos);
 
               if (!item)
@@ -1427,7 +1427,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               atLeastOneStringFound = true;
               QString msg,
                       capturedText;
-              int lineNumber = line.mid(0,pos).contains('\n')+1;
+              int lineNumber = line.mid(0,pos).count('\n')+1;
               int columnNumber = pos - line.findRev('\n',pos);
 
               if(m_option->m_regularExpressions)
