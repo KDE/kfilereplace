@@ -25,6 +25,8 @@
 #include "kfilereplace.h"
 //Added by qt3to4:
 #include <Q3PtrList>
+#include <kactioncollection.h>
+#include <kstdaction.h>
 
 KFileReplace::KFileReplace()
  : KParts::MainWindow(0L, "KFileReplace")
@@ -33,7 +35,7 @@ KFileReplace::KFileReplace()
     if (factory)
     {
         m_part = static_cast<KParts::ReadOnlyPart *>(factory->create(this,
-                "kfilereplace_part", "KParts::ReadOnlyPart" ));
+                "kfilereplace_part" ));
 
         if (m_part)
         {

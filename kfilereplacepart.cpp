@@ -43,6 +43,9 @@
 #include <kcombobox.h>
 #include <kguiitem.h>
 #include <ktoolinvocation.h>
+#include <kactioncollection.h>
+#include <ktoggleaction.h>
+#include <krecentfilesaction.h>
 
 // local
 #include "kfilereplacelib.h"
@@ -62,7 +65,7 @@ typedef KParts::GenericFactory<KFileReplacePart> FileReplaceFactory;
 
 K_EXPORT_COMPONENT_FACTORY( libkfilereplacepart, FileReplaceFactory )
 
-KFileReplacePart::KFileReplacePart(QWidget* parentWidget, const char* , QObject* parent, const char* name, const QStringList & ) : KParts::ReadOnlyPart(parent,name)
+KFileReplacePart::KFileReplacePart(QWidget* parentWidget, QObject* parent, const QStringList & ) : KParts::ReadOnlyPart(parent)
 {
   setInstance(FileReplaceFactory::instance());
 
@@ -705,7 +708,7 @@ void KFileReplacePart::loadOptions()
 
   m_option->m_askConfirmReplace = m_config->readBoolEntry(rcAskConfirmReplace, AskConfirmReplaceOption);
 
-  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, "no");
+  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, QString("no"));
 
   if(dontAskAgain == "yes")
     m_option->m_askConfirmReplace = false;
@@ -832,7 +835,7 @@ void KFileReplacePart::saveOptions()
 
   m_config->setGroup("Notification Messages");
   m_config->writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
-  if(m_config->readEntry(rcDontAskAgain,"no") == "yes")
+  if(m_config->readEntry(rcDontAskAgain,QString("no")) == "yes")
     m_config->writeEntry(rcAskConfirmReplace, false);
   else
     m_config->writeEntry(rcAskConfirmReplace, m_option->m_askConfirmReplace);
@@ -1655,7 +1658,7 @@ bool KFileReplacePart::checkBeforeOperation()
 bool KFileReplacePart::dontAskAgain()
 {
   m_config->setGroup("Notification Messages");
-  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, "no");
+  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, QString("no"));
   if(dontAskAgain == "yes")
     return true;
   else

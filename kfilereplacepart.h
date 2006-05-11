@@ -47,9 +47,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
 
   public://Constructors
     KFileReplacePart(QWidget *parentWidget,
-                     const char *widgetName,
                      QObject *parent,
-                     const char *name,
                      const QStringList &args);
     ~KFileReplacePart();
 
