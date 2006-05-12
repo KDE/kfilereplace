@@ -1,11 +1,9 @@
-kde4_header()
 
 
 ########### install files ###############
 
 install_files( ${DATA_INSTALL_DIR}/kfilereplacepart/icons FILES  )
 
-kde4_footer()
 
 
 
