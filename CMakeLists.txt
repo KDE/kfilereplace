@@ -1,4 +1,3 @@
-kde4_header()
 
 
 add_subdirectory( toolbar )
@@ -55,7 +54,6 @@ install_files( ${SERVICES_INSTALL_DIR} FILES  kfilereplacepart.desktop )
 
 kde4_install_icons( ${ICON_INSTALL_DIR}  hicolor )
 
-kde4_footer()
 
 
 
