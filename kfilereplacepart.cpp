@@ -1048,7 +1048,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
     {
       if(atLeastOneStringFound)
         {
-          KIO::NetAccess::file_copy(KUrl::fromPathOrURL(oldPathString), KUrl::fromPathOrURL(oldPathString + backupExtension), -1, true);
+          KIO::NetAccess::file_copy(KUrl::fromPathOrUrl(oldPathString), KUrl::fromPathOrUrl(oldPathString + backupExtension), -1, true);
       	}
     }
 
