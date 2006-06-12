@@ -4,7 +4,7 @@ add_subdirectory( toolbar )
 
 ########### next target ###############
 
-set(kfilereplacepart_PART_SRCS 
+set(kfilereplacepart_PART_SRCS kfilereplaceadaptor.cpp 
    kfilereplacepart.cpp 
    kfilereplaceview.cpp 
    kaddstringdlg.cpp 
