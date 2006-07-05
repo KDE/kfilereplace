@@ -29,7 +29,7 @@ kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kfilereplacepart )
 
 target_link_libraries(kfilereplacepart  ${KDE4_KDECORE_LIBS} ${KDE4_KPARTS_LIBS} ${KDE4_KHTML_LIBS} )
 
-install_targets(${PLUGIN_INSTALL_DIR} kfilereplacepart )
+install(TARGETS kfilereplacepart  DESTINATION ${PLUGIN_INSTALL_DIR})
 
 
 ########### next target ###############
@@ -42,15 +42,15 @@ kde4_add_executable(kfilereplace ${kfilereplace_SRCS})
 
 target_link_libraries(kfilereplace  ${KDE4_KDECORE_LIBS} ${KDE4_KPARTS_LIBS} )
 
-install_targets(/bin kfilereplace )
+install(TARGETS kfilereplace  DESTINATION ${BIN_INSTALL_DIR} )
 
 
 ########### install files ###############
 
-install_files( ${XDG_APPS_DIR} FILES  kfilereplace.desktop )
-install_files( ${DATA_INSTALL_DIR}/kfilereplacepart FILES  kfilereplacepartui.rc )
-install_files( ${DATA_INSTALL_DIR}/kfilereplace FILES  kfilereplaceui.rc )
-install_files( ${SERVICES_INSTALL_DIR} FILES  kfilereplacepart.desktop )
+install( FILES  kfilereplace.desktop  DESTINATION ${XDG_APPS_DIR})
+install( FILES  kfilereplacepartui.rc  DESTINATION ${DATA_INSTALL_DIR}/kfilereplacepart)
+install( FILES  kfilereplaceui.rc  DESTINATION ${DATA_INSTALL_DIR}/kfilereplace)
+install( FILES  kfilereplacepart.desktop  DESTINATION ${SERVICES_INSTALL_DIR})
 
 kde4_install_icons( ${ICON_INSTALL_DIR}  hicolor )
 
