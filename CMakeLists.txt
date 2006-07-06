@@ -4,7 +4,7 @@ add_subdirectory( toolbar )
 
 ########### next target ###############
 
-set(kfilereplacepart_PART_SRCS kfilereplaceadaptor.cpp 
+set(kfilereplacepart_PART_SRCS 
    kfilereplacepart.cpp 
    kfilereplaceview.cpp 
    kaddstringdlg.cpp 
@@ -14,6 +14,8 @@ set(kfilereplacepart_PART_SRCS kfilereplaceadaptor.cpp
    report.cpp 
    commandengine.cpp 
    configurationclasses.cpp )
+
+qt4_add_dbus_adaptor( kfilereplacepart_PART_SRCS org.kde.kfilereplace.xml kfilereplace.h KFileReplace )
 
 kde4_automoc(${kfilereplacepart_PART_SRCS})
 
