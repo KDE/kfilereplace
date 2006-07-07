@@ -22,8 +22,6 @@
 #include <QTextStream>
 
 // KDE
-#include <dcopclient.h>
-#include <dcopref.h>
 #include <kaboutapplication.h>
 #include <kapplication.h>
 #include <kaction.h>
