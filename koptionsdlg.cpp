@@ -139,7 +139,7 @@ void KOptionsDlg::initGUI()
 {
   m_config->sync();
   m_config->setGroup("Notification Messages");
-  m_option->m_notifyOnErrors = m_config->readBoolEntry(rcNotifyOnErrors, true);
+  m_option->m_notifyOnErrors = m_config->readEntry(rcNotifyOnErrors, true);
 
   QString dontAskAgain = m_config->readEntry(rcDontAskAgain,"no");
 
@@ -152,7 +152,7 @@ void KOptionsDlg::initGUI()
     else
       m_chbShowConfirmDialog->setChecked(true);
   }
-  
+
   QStringList availableEncodingNames(KGlobal::charsets()->availableEncodingNames());
   m_cbEncoding->insertStringList( availableEncodingNames );
   int idx = -1;
@@ -171,7 +171,7 @@ void KOptionsDlg::initGUI()
   }
   if (idx != -1)
     m_cbEncoding->setCurrentItem(idx);
-  else 
+  else
     m_cbEncoding->setCurrentItem(utf8Idx);
 
   m_chbCaseSensitive->setChecked(m_option->m_caseSensitive);

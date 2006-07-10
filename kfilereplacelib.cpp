@@ -24,6 +24,7 @@
 #include <qwidget.h>
 #include <q3listview.h>
 #include <qfileinfo.h>
+#include <qpixmap.h>
 
 //KDE
 #include <kdebug.h>
