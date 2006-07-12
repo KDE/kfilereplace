@@ -164,7 +164,7 @@ void KFileReplacePart::slotSearchingOperation()
 
 void KFileReplacePart::slotReplacingOperation()
 {
-  if (KMessageBox::warningContinueCancel(m_w, i18n("<qt>You have selected <b>%1</b> as the encoding of the files.<br>Selecting the correct encoding is very important as if you have files that have some other encoding than the selected one, after a replace you may damage those files.<br><br>In case you do not know the encoding of your files, select <i>utf8</i> and <b>enable</b> the creation of backup files. This setting will autodetect <i>utf8</i> and <i>utf16</i> files, but the changed files will be converted to <i>utf8</i>.</qt>", m_option->m_encoding), i18n("File Encoding Warning"), KStdGuiItem::cont(), "ShowEncodingWarning") == KMessageBox::Cancel)
+  if (KMessageBox::warningContinueCancel(m_w, i18n("<qt>You have selected <b>%1</b> as the encoding of the files.<br>Selecting the correct encoding is very important as if you have files that have some other encoding than the selected one, after a replace you may damage those files.<br><br>In case you do not know the encoding of your files, select <i>utf8</i> and <b>enable</b> the creation of backup files. This setting will autodetect <i>utf8</i> and <i>utf16</i> files, but the changed files will be converted to <i>utf8</i>.</qt>", QString::fromLatin1(m_option->m_encoding)), i18n("File Encoding Warning"), KStdGuiItem::cont(), "ShowEncodingWarning") == KMessageBox::Cancel)
     return;
   if(!checkBeforeOperation())
     return;
@@ -251,7 +251,7 @@ void KFileReplacePart::slotCreateReport()
       return ;
     }
   // Select the file where results will be saved
-  QString documentName = KFileDialog::getSaveFileName(QString::null, "*.xml|XML " + i18n("Files") + " (*.xml)", m_w, i18n("Save Report"));
+  QString documentName = KFileDialog::getSaveFileName(KUrl(), "*.xml|XML " + i18n("Files") + " (*.xml)", m_w, i18n("Save Report"));
   if (documentName.isEmpty())
     return ;
 
@@ -348,7 +348,7 @@ void KFileReplacePart::slotStringsLoad()
 {
   // Selects the file to load from
   QString menu = "*.kfr|" + i18n("KFileReplace strings") + " (*.kfr)\n*|"+i18n("All Files") + " (*)";
-  QString fileName = KFileDialog::getOpenFileName(QString::null, menu, m_w, i18n("Load Strings From File"));
+  QString fileName = KFileDialog::getOpenFileName(KUrl(), menu, m_w, i18n("Load Strings From File"));
 
   if(!fileName.isEmpty())
     loadRulesFile(fileName);
@@ -687,7 +687,7 @@ void KFileReplacePart::loadOptions()
 
   m_config->setGroup("Options");
 
-  m_option->m_encoding = m_config->readEntry(rcEncoding, EncodingOption);
+  m_option->m_encoding = m_config->readEntry(rcEncoding, QString(EncodingOption)).latin1();
   m_option->m_recursive = m_config->readBoolEntry(rcRecursive, RecursiveOption);
 
   m_option->m_caseSensitive = m_config->readBoolEntry(rcCaseSensitive, CaseSensitiveOption);

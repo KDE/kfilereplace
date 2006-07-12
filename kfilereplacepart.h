@@ -43,7 +43,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     RCOptions* m_option;
     bool m_stop,
          m_searchingOperation;
-    int m_optionMask;
+    QFlags<QDir::Filter> m_optionMask;
 
   public://Constructors
     KFileReplacePart(QWidget *parentWidget,

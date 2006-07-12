@@ -30,7 +30,7 @@ const QString rcDirectoriesList = "Directories list";
 const QString rcFiltersList = "Filters list";
 const QString rcRecentFiles = "Recent files";
 const QString rcAllStringsMustBeFound = "All strings must be found";
-const QString rcEncoding = "Encoding";
+const QByteArray rcEncoding = "Encoding";
 const QString rcCaseSensitive = "Case sensitive";
 const QString rcConfirmStrings = "Confirm strings";
 const QString rcConfirmFiles = "Confirm files";
@@ -93,7 +93,7 @@ class RCOptions
             m_minDate,
             m_maxDate;
             
-    QString m_encoding;
+    QByteArray m_encoding;
 
     bool m_caseSensitive,
          m_recursive,
