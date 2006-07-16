@@ -15,7 +15,7 @@ set(kfilereplacepart_PART_SRCS
    commandengine.cpp 
    configurationclasses.cpp )
 
-qt4_add_dbus_adaptor( kfilereplacepart_PART_SRCS org.kde.kfilereplace.xml kfilereplace.h KFileReplace )
+qt4_add_dbus_adaptor( kfilereplacepart_PART_SRCS org.kde.kfilereplace.xml kfilereplacepart.h KFileReplacePart )
 
 kde4_automoc(${kfilereplacepart_PART_SRCS})
 
