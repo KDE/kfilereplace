@@ -605,11 +605,16 @@ void KFileReplacePart::initGUI()
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsInvertAll()));
 
   // Options
-  action = new KToggleAction(i18n("&Include Sub-Folders"), "recursive_option", 0, this, SLOT(slotOptionRecursive()), actionCollection(), "options_recursive");
-  action = new KToggleAction(i18n("Create &Backup Files"), "backup_option", 0, this, SLOT(slotOptionBackup()), actionCollection(), "options_backup");
-  action = new KToggleAction(i18n("Case &Sensitive"), "casesensitive_option", 0, this, SLOT(slotOptionCaseSensitive()), actionCollection(), "options_case");
-  action = new KToggleAction(i18n("Enable Commands &in Replace String: [$command:option$]"), "command_option", 0, this, SLOT(slotOptionVariables()), actionCollection(), "options_var");
-  action = new KToggleAction(i18n("Enable &Regular Expressions"), "regularexpression_option", 0, this, SLOT(slotOptionRegularExpressions()), actionCollection(), "options_regularexpressions");
+  action = new KToggleAction(KIcon("recursive_option"), i18n("&Include Sub-Folders"), actionCollection(), "options_recursive");
+  connect(action, SIGNAL(triggered(bool)), SLOT(slotOptionRecursive()));
+  action = new KToggleAction(KIcon("backup_option"), i18n("Create &Backup Files"), actionCollection(), "options_backup");
+  connect(action, SIGNAL(triggered(bool)), SLOT(slotOptionBackup()));
+  action = new KToggleAction(KIcon("casesensitive_option"), i18n("Case &Sensitive"), actionCollection(), "options_case");
+  connect(action, SIGNAL(triggered(bool)), SLOT(slotOptionCaseSensitive()));
+  action = new KToggleAction(KIcon("command_option"), i18n("Enable Commands &in Replace String: [$command:option$]"), actionCollection(), "options_var");
+  connect(action, SIGNAL(triggered(bool)), SLOT(slotOptionVariables()));
+  action = new KToggleAction(KIcon("regularexpression_option"), i18n("Enable &Regular Expressions"), actionCollection(), "options_regularexpressions");
+  connect(action, SIGNAL(triggered(bool)), SLOT(slotOptionRegularExpressions()));
   action = new KAction(KIcon("configure"), i18n("Configure &KFileReplace..."), actionCollection(), "configure_kfilereplace");
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotOptionPreferences()));
 
