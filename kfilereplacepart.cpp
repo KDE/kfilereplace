@@ -628,8 +628,10 @@ void KFileReplacePart::initGUI()
   connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultDirOpen()));
   action = new KAction(KIcon("editdelete"), i18n("&Delete"), actionCollection(), "results_delete");
   connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultDelete()));
-  action = new KAction(i18n("E&xpand Tree"), 0, m_view, SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
-  action = new KAction(i18n("&Reduce Tree"), 0, m_view, SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
+  action = new KAction(i18n("E&xpand Tree"), actionCollection(), "results_treeexpand");
+  connect(action, SIGNAL(triggered(bool)), m_view, SLOT(slotResultTreeExpand()));
+  action = new KAction(i18n("&Reduce Tree"), actionCollection(), "results_treereduce");
+  connect(action, SIGNAL(triggered(bool)), m_view, SLOT(slotResultTreeReduce()));
   action = new KAction(KIcon("kfilereplace"), i18n("&About KFileReplace"), actionCollection(), "help_about_kfilereplace");
   connect(action, SIGNAL(triggered(bool) ), SLOT(showAboutApplication()));
   action = new KAction(KIcon("help"), i18n("KFileReplace &Handbook"), actionCollection(), "help_kfilereplace");
