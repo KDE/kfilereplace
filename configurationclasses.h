@@ -93,7 +93,7 @@ class RCOptions
             m_minDate,
             m_maxDate;
             
-    QByteArray m_encoding;
+    QString m_encoding;
 
     bool m_caseSensitive,
          m_recursive,

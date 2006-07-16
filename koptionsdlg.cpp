@@ -141,7 +141,7 @@ void KOptionsDlg::initGUI()
   m_config->setGroup("Notification Messages");
   m_option->m_notifyOnErrors = m_config->readEntry(rcNotifyOnErrors, true);
 
-  QString dontAskAgain = m_config->readEntry(rcDontAskAgain,"no");
+  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, QString("no"));
 
   m_chbConfirmStrings->setChecked(m_option->m_askConfirmReplace);
 

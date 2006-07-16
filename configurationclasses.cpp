@@ -104,7 +104,7 @@ ResultViewEntry::ResultViewEntry(QString nkey, QString ndata, bool regexp, bool 
 
 int ResultViewEntry::lineNumber(const QString& line) const
 {
-  return line.mid(0,m_pos).contains('\n')+1;
+  return line.mid(0,m_pos).count('\n')+1;
 }
 
 int ResultViewEntry::columnNumber(const QString& line) const

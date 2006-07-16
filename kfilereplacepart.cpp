@@ -164,7 +164,7 @@ void KFileReplacePart::slotSearchingOperation()
 
 void KFileReplacePart::slotReplacingOperation()
 {
-  if (KMessageBox::warningContinueCancel(m_w, i18n("<qt>You have selected <b>%1</b> as the encoding of the files.<br>Selecting the correct encoding is very important as if you have files that have some other encoding than the selected one, after a replace you may damage those files.<br><br>In case you do not know the encoding of your files, select <i>utf8</i> and <b>enable</b> the creation of backup files. This setting will autodetect <i>utf8</i> and <i>utf16</i> files, but the changed files will be converted to <i>utf8</i>.</qt>", QString::fromLatin1(m_option->m_encoding)), i18n("File Encoding Warning"), KStdGuiItem::cont(), "ShowEncodingWarning") == KMessageBox::Cancel)
+  if (KMessageBox::warningContinueCancel(m_w, i18n("<qt>You have selected <b>%1</b> as the encoding of the files.<br>Selecting the correct encoding is very important as if you have files that have some other encoding than the selected one, after a replace you may damage those files.<br><br>In case you do not know the encoding of your files, select <i>utf8</i> and <b>enable</b> the creation of backup files. This setting will autodetect <i>utf8</i> and <i>utf16</i> files, but the changed files will be converted to <i>utf8</i>.</qt>", m_option->m_encoding), i18n("File Encoding Warning"), KStdGuiItem::cont(), "ShowEncodingWarning") == KMessageBox::Cancel)
     return;
   if(!checkBeforeOperation())
     return;
@@ -1058,7 +1058,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   if (m_option->m_encoding == "utf8")
     currentStream.setEncoding(QTextStream::UnicodeUTF8);
   else
-    currentStream.setCodec(QTextCodec::codecForName(m_option->m_encoding));
+    currentStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
   QString line = currentStream.read(),
           backupLine = line;
 
@@ -1097,7 +1097,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
           if (m_option->m_encoding == "utf8")
             newStream.setEncoding(QTextStream::UnicodeUTF8);
           else
-            newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding));
+            newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
           newStream << line;
           newFile.close();
         }
@@ -1150,7 +1150,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   if (m_option->m_encoding == "utf8")
     oldStream.setEncoding(QTextStream::UnicodeUTF8);
   else
-    oldStream.setCodec(QTextCodec::codecForName(m_option->m_encoding));
+    oldStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
   QString line = oldStream.read();
 
   oldFile.close();
@@ -1175,7 +1175,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
           if (m_option->m_encoding == "utf8")
             newStream.setEncoding(QTextStream::UnicodeUTF8);
           else
-            newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding));
+            newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
           newStream << line;
           newFile.close();
 	}
@@ -1369,7 +1369,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
   if (m_option->m_encoding == "utf8")
     stream.setEncoding(QTextStream::UnicodeUTF8);
   else
-    stream.setCodec(QTextCodec::codecForName(m_option->m_encoding));
+    stream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
   QString line = stream.read();
   file.close();
 

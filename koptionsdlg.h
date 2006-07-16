@@ -25,6 +25,7 @@ class KConfig;
 //local
 #include "configurationclasses.h"
 #include "koptionsdlgs.h"
+#include <ktoolinvocation.h>
 
 /**
   *@author François Dupoux
