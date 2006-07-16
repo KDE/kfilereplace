@@ -570,48 +570,72 @@ void KFileReplacePart::initGUI()
         }
     }
   // File
-  (void)new KAction(i18n("Customize Search/Replace Session..."), "projectopen", 0, this, SLOT(slotSetNewParameters()), actionCollection(), "new_project");
-  (void)new KAction(i18n("&Search"), "filesearch", 0, this, SLOT(slotSearchingOperation()), actionCollection(), "search");
-  (void)new KAction(i18n("S&imulate"), "filesimulate", 0, this, SLOT(slotSimulatingOperation()), actionCollection(), "file_simulate");
-  (void)new KAction(i18n("&Replace"),  "filereplace", 0, this, SLOT(slotReplacingOperation()), actionCollection(), "replace");
-  (void)new KAction(i18n("Sto&p"), "stop", 0, this, SLOT(slotStop()), actionCollection(), "stop");
-  (void)new KAction(i18n("Cre&ate Report File..."), "filesaveas", 0, this, SLOT(slotCreateReport()), actionCollection(), "save_results");
+  KAction *action;
+  action = new KAction(KIcon("projectopen"), i18n("Customize Search/Replace Session..."), actionCollection(), "new_project");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotSetNewParameters()));
+  action = new KAction(KIcon("filesearch"), i18n("&Search"), actionCollection(), "search");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotSearchingOperation()));
+  action = new KAction(KIcon("filesimulate"), i18n("S&imulate"), actionCollection(), "file_simulate");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotSimulatingOperation()));
+  action = new KAction(KIcon("filereplace"), i18n("&Replace"), actionCollection(), "replace");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotReplacingOperation()));
+  action = new KAction(KIcon("stop"), i18n("Sto&p"), actionCollection(), "stop");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotStop()));
+  action = new KAction(KIcon("filesaveas"), i18n("Cre&ate Report File..."), actionCollection(), "save_results");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotCreateReport()));
 
   // Strings
-  (void)new KAction(i18n("&Add String..."), "editadd", 0, this, SLOT(slotStringsAdd()), actionCollection(), "strings_add");
+  action = new KAction(KIcon("editadd"), i18n("&Add String..."), actionCollection(), "strings_add");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsAdd()));
 
-  (void)new KAction(i18n("&Delete String"), "editremove", 0, this, SLOT(slotStringsDeleteItem()), actionCollection(), "strings_del");
-  (void)new KAction(i18n("&Empty Strings List"), "editdelete", 0, this, SLOT(slotStringsEmpty()), actionCollection(), "strings_empty");
-  (void)new KAction(i18n("Edit Selected String..."), "edit", 0, this, SLOT(slotStringsEdit()), actionCollection(), "strings_edit");
-  (void)new KAction(i18n("&Save Strings List to File..."), "filesaveas", 0, this, SLOT(slotStringsSave()), actionCollection(), "strings_save");
-  (void)new KAction(i18n("&Load Strings List From File..."), "unsortedList", 0, this, SLOT(slotStringsLoad()), actionCollection(), "strings_load");
+  action = new KAction(KIcon("editremove"), i18n("&Delete String"), actionCollection(), "strings_del");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsDeleteItem()));
+  action = new KAction(KIcon("editdelete"), i18n("&Empty Strings List"), actionCollection(), "strings_empty");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsEmpty()));
+  action = new KAction(KIcon("edit"), i18n("Edit Selected String..."), actionCollection(), "strings_edit");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsEdit()));
+  action = new KAction(KIcon("filesaveas"), i18n("&Save Strings List to File..."), actionCollection(), "strings_save");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsSave()));
+  action = new KAction(KIcon("unsortedList"), i18n("&Load Strings List From File..."), actionCollection(), "strings_load");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsLoad()));
   (void)new KRecentFilesAction(i18n("&Load Recent Strings Files"), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KUrl&)), actionCollection(),"strings_load_recent");
-  (void)new KAction(i18n("&Invert Current String (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertCur()), actionCollection(), "strings_invert");
-  (void)new KAction(i18n("&Invert All Strings (search <--> replace)"), "invert", 0, this, SLOT(slotStringsInvertAll()), actionCollection(), "strings_invert_all");
+  action = new KAction(KIcon("invert"), i18n("&Invert Current String (search <--> replace)"), actionCollection(), "strings_invert");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsInvertCur()));
+  action = new KAction(KIcon("invert"), i18n("&Invert All Strings (search <--> replace)"), actionCollection(), "strings_invert_all");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsInvertAll()));
 
   // Options
-  (void)new KToggleAction(i18n("&Include Sub-Folders"), "recursive_option", 0, this, SLOT(slotOptionRecursive()), actionCollection(), "options_recursive");
-  (void)new KToggleAction(i18n("Create &Backup Files"), "backup_option", 0, this, SLOT(slotOptionBackup()), actionCollection(), "options_backup");
-  (void)new KToggleAction(i18n("Case &Sensitive"), "casesensitive_option", 0, this, SLOT(slotOptionCaseSensitive()), actionCollection(), "options_case");
-  (void)new KToggleAction(i18n("Enable Commands &in Replace String: [$command:option$]"), "command_option", 0, this, SLOT(slotOptionVariables()), actionCollection(), "options_var");
-  (void)new KToggleAction(i18n("Enable &Regular Expressions"), "regularexpression_option", 0, this, SLOT(slotOptionRegularExpressions()), actionCollection(), "options_regularexpressions");
-  (void)new KAction(i18n("Configure &KFileReplace..."), "configure", 0, this, SLOT(slotOptionPreferences()), actionCollection(), "configure_kfilereplace");
+  action = new KToggleAction(i18n("&Include Sub-Folders"), "recursive_option", 0, this, SLOT(slotOptionRecursive()), actionCollection(), "options_recursive");
+  action = new KToggleAction(i18n("Create &Backup Files"), "backup_option", 0, this, SLOT(slotOptionBackup()), actionCollection(), "options_backup");
+  action = new KToggleAction(i18n("Case &Sensitive"), "casesensitive_option", 0, this, SLOT(slotOptionCaseSensitive()), actionCollection(), "options_case");
+  action = new KToggleAction(i18n("Enable Commands &in Replace String: [$command:option$]"), "command_option", 0, this, SLOT(slotOptionVariables()), actionCollection(), "options_var");
+  action = new KToggleAction(i18n("Enable &Regular Expressions"), "regularexpression_option", 0, this, SLOT(slotOptionRegularExpressions()), actionCollection(), "options_regularexpressions");
+  action = new KAction(KIcon("configure"), i18n("Configure &KFileReplace..."), actionCollection(), "configure_kfilereplace");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(slotOptionPreferences()));
 
   // Results
-  (void)new KAction(i18n("&Properties"), "informations", 0, m_view, SLOT(slotResultProperties()), actionCollection(), "results_infos");
-  (void)new KAction(i18n("&Open"), "filenew", 0, m_view, SLOT(slotResultOpen()), actionCollection(), "results_openfile");
+  action = new KAction(KIcon("informations"), i18n("&Properties"), actionCollection(), "results_infos");
+  connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultProperties()));
+  action = new KAction(KIcon("filenew"), i18n("&Open"), actionCollection(), "results_openfile");
+  connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultOpen()));
 
   if(quantaFound)
     {
-      (void)new KAction(i18n("&Edit in Quanta"), "quanta", 0, m_view, SLOT(slotResultEdit()), actionCollection(), "results_editfile");
+      KAction *action = new KAction(KIcon("quanta"), i18n("&Edit in Quanta"), actionCollection(), "results_editfile");
+      connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultEdit()));
     }
-  (void)new KAction(i18n("Open Parent &Folder"), "fileopen", 0, m_view, SLOT(slotResultDirOpen()), actionCollection(), "results_opendir");
-  (void)new KAction(i18n("&Delete"), "editdelete", 0, m_view, SLOT(slotResultDelete()), actionCollection(), "results_delete");
-  (void)new KAction(i18n("E&xpand Tree"), 0, m_view, SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
-  (void)new KAction(i18n("&Reduce Tree"), 0, m_view, SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
-  (void)new KAction(i18n("&About KFileReplace"), "kfilereplace", 0, this, SLOT(showAboutApplication()), actionCollection(), "help_about_kfilereplace");
-  (void)new KAction(i18n("KFileReplace &Handbook"), "help", 0, this, SLOT(appHelpActivated()), actionCollection(), "help_kfilereplace");
-  (void)new KAction(i18n("&Report Bug"), 0, 0, this, SLOT(reportBug()), actionCollection(), "report_bug");
+  action = new KAction(KIcon("fileopen"), i18n("Open Parent &Folder"), actionCollection(), "results_opendir");
+  connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultDirOpen()));
+  action = new KAction(KIcon("editdelete"), i18n("&Delete"), actionCollection(), "results_delete");
+  connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultDelete()));
+  action = new KAction(i18n("E&xpand Tree"), 0, m_view, SLOT(slotResultTreeExpand()), actionCollection(), "results_treeexpand");
+  action = new KAction(i18n("&Reduce Tree"), 0, m_view, SLOT(slotResultTreeReduce()), actionCollection(), "results_treereduce");
+  action = new KAction(KIcon("kfilereplace"), i18n("&About KFileReplace"), actionCollection(), "help_about_kfilereplace");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(showAboutApplication()));
+  action = new KAction(KIcon("help"), i18n("KFileReplace &Handbook"), actionCollection(), "help_kfilereplace");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(appHelpActivated()));
+  action = new KAction(i18n("&Report Bug"), actionCollection(), "report_bug");
+  connect(action, SIGNAL(triggered(bool) ), SLOT(reportBug()));
 
 }
 
