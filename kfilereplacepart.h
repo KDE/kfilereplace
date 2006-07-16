@@ -16,9 +16,12 @@
 #define KFILEREPLACEPART_H
 
 // QT
+#include <QDir>
 
 // KDE
 #include <kparts/part.h>
+#include <k3listview.h>
+
 class KAboutApplication;
 class KAboutData;
 class KConfig;
@@ -85,10 +88,10 @@ class KFileReplacePart: public KParts::ReadOnlyPart
   public:
     static KAboutData* createAboutData();
     KConfig *config(){ return m_config; }
+    virtual bool openURL (const KUrl &url);
 
   protected:
     virtual bool openFile() { return false; }
-    virtual bool openURL (const KUrl &url);
 
   private:
     /**
