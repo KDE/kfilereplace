@@ -556,11 +556,12 @@ void KFileReplacePart::initGUI()
 {
   setXMLFile("kfilereplacepartui.rc");
 
-  actionCollection()->setHighlightingEnabled(true);
-
+  bool quantaFound = false;
+#warning "Port to DBUS"
+  //FIXME: Find a running Quanta instace with DBUS
+  /*
   DCOPClient *client = kapp->dcopClient();
   DCOPCStringList appList = client->registeredApplications();
-  bool quantaFound = false;
   for(DCOPCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
     {
       if((*it).left(6) == "quanta")
@@ -569,6 +570,7 @@ void KFileReplacePart::initGUI()
           break;
         }
     }
+  */
   // File
   KAction *action;
   action = new KAction(KIcon("projectopen"), i18n("Customize Search/Replace Session..."), actionCollection(), "new_project");

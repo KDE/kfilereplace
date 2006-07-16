@@ -30,8 +30,8 @@
 #include <krun.h>
 #include <kpropertiesdialog.h>
 #include <kapplication.h>
-#include <dcopclient.h>
-#include <dcopref.h>
+//#include <dcopclient.h>
+//#include <dcopref.h>
 //#include <kdebug.h>
 #include <kiconloader.h>
 #include <kled.h>
@@ -212,7 +212,7 @@ void KFileReplaceView::slotResultOpenWith()
     {
       KUrl::List kurls;
       kurls.append(KUrl(currItem));
-      KRun::displayOpenWithDialog(kurls);
+      KRun::displayOpenWithDialog(kurls, this);
       m_lviCurrent = 0;
     }
 }
@@ -231,6 +231,9 @@ void KFileReplaceView::slotResultDirOpen()
 
 void KFileReplaceView::slotResultEdit()
 {
+#warning "Port to DBUS"
+  //FIXME: Port to DBUS
+#if 0
   Q3ListViewItem *lvi = m_rv->firstChild();
 
   while (lvi)
@@ -272,6 +275,7 @@ void KFileReplaceView::slotResultEdit()
     }
 
   m_lviCurrent = 0;
+#endif
 }
 
 void KFileReplaceView::slotResultDelete()
@@ -425,7 +429,7 @@ void KFileReplaceView::slotStringsSave()
 
    // Selects the file where strings will be saved
   QString menu = "*.kfr|" + i18n("KFileReplace Strings") + " (*.kfr)\n*|" + i18n("All Files") + " (*)";
-  QString fileName = KFileDialog::getSaveFileName(QString::null, menu, 0, i18n("Save Strings to File"));
+  QString fileName = KFileDialog::getSaveFileName(KUrl(), menu, 0, i18n("Save Strings to File"));
   if (fileName.isEmpty())
     return;
 
@@ -482,9 +486,12 @@ void KFileReplaceView::initGUI()
   m_stackStrings->addWidget(m_lvStrings);
   m_stackStrings->addWidget(m_lvStrings_2);
 
+  bool quantaFound = false;
+#warning "Port to DBUS"
+  //FIXME: Find a running Quanta instace with DBUS
+/*
   DCOPClient *client = kapp->dcopClient();
   DCOPCStringList appList = client->registeredApplications();
-  bool quantaFound = false;
 
 
   for(DCOPCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
@@ -495,8 +502,8 @@ void KFileReplaceView::initGUI()
           break;
         }
     }
-
-  m_menuResult = new KMenu(this, "ResultPopup");
+*/
+  m_menuResult = new KMenu(this);
 
 
 

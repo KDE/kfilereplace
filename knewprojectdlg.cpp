@@ -96,7 +96,7 @@ void KNewProjectDlg::saveRCOptions()
 
 void KNewProjectDlg::slotDir()
 {
-  QString directoryString = KFileDialog::getExistingDirectory(QString::null, this, i18n("Project Directory"));
+  QString directoryString = KFileDialog::getExistingDirectory(KUrl(), this, i18n("Project Directory"));
   if(!directoryString.isEmpty())
     m_cbLocation->setEditText(directoryString);
 }
@@ -451,11 +451,11 @@ void KNewProjectDlg::saveLocationsList()
 {
   QString current = m_cbLocation->currentText(), list = current;
 
-  int count = m_cbLocation->listBox()->count(),
+  int count = m_cbLocation->count(),
       i;
   for(i = 0; i < count; i++)
     {
-      QString text =  m_cbLocation->listBox()->item(i)->text();
+      QString text =  m_cbLocation->itemText(i);
       if(text != current)
         list += ","+text;
     }
@@ -466,11 +466,11 @@ void KNewProjectDlg::saveFiltersList()
 {
   QString current = m_cbFilter->currentText(), list = current;
 
-  int count = m_cbFilter->listBox()->count(),
+  int count = m_cbFilter->count(),
       i;
   for(i = 0; i < count; i++)
     {
-      QString text =  m_cbFilter->listBox()->item(i)->text();
+      QString text =  m_cbFilter->itemText(i);
       if(text != current)
         list += ","+text;
     }

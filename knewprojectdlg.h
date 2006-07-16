@@ -25,6 +25,7 @@ class KConfig;
 //local
 #include "knewprojectdlgs.h"
 #include "configurationclasses.h"
+#include "ktoolinvocation.h"
 
 class KNewProjectDlg : public KNewProjectDlgS
 {
