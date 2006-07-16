@@ -196,9 +196,6 @@
                                 <property name="editable">
                                     <bool>true</bool>
                                 </property>
-                                <property name="sizeLimit">
-                                    <number>20</number>
-                                </property>
                                 <property name="maxCount">
                                     <number>10</number>
                                 </property>
@@ -237,9 +234,6 @@
                                 </property>
                                 <property name="editable">
                                     <bool>true</bool>
-                                </property>
-                                <property name="sizeLimit">
-                                    <number>20</number>
                                 </property>
                                 <property name="maxCount">
                                     <number>10</number>
@@ -440,9 +434,6 @@
                                 <property name="enabled">
                                     <bool>false</bool>
                                 </property>
-                                <property name="sizeLimit">
-                                    <number>2</number>
-                                </property>
                                 <property name="maxCount">
                                     <number>2</number>
                                 </property>
@@ -466,9 +457,6 @@
                                 </property>
                                 <property name="enabled">
                                     <bool>false</bool>
-                                </property>
-                                <property name="sizeLimit">
-                                    <number>2</number>
                                 </property>
                                 <property name="maxCount">
                                     <number>2</number>
@@ -494,9 +482,6 @@
                                 <property name="enabled">
                                     <bool>false</bool>
                                 </property>
-                                <property name="sizeLimit">
-                                    <number>2</number>
-                                </property>
                                 <property name="maxCount">
                                     <number>2</number>
                                 </property>
@@ -520,9 +505,6 @@
                                 </property>
                                 <property name="enabled">
                                     <bool>false</bool>
-                                </property>
-                                <property name="sizeLimit">
-                                    <number>2</number>
                                 </property>
                                 <property name="maxCount">
                                     <number>2</number>
@@ -631,9 +613,6 @@
                                                 </item>
                                                 <property name="name">
                                                     <cstring>m_cbDateValid</cstring>
-                                                </property>
-                                                <property name="sizeLimit">
-                                                    <number>2</number>
                                                 </property>
                                                 <property name="maxCount">
                                                     <number>2</number>

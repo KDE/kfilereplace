@@ -146,7 +146,7 @@
                                                 <enum>Qt::PlainText</enum>
                                             </property>
                                             <property name="autoFormatting">
-                                                <set>AutoAll</set>
+                                                <set>Q3TextEdit::AutoAll</set>
                                             </property>
                                         </widget>
                                     </vbox>
