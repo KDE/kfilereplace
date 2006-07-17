@@ -154,7 +154,7 @@ void KOptionsDlg::initGUI()
   }
 
   QStringList availableEncodingNames(KGlobal::charsets()->availableEncodingNames());
-  m_cbEncoding->insertStringList( availableEncodingNames );
+  m_cbEncoding->addItems( availableEncodingNames );
   int idx = -1;
   int utf8Idx = -1;
   for (uint i = 0; i < availableEncodingNames.count(); i++)
