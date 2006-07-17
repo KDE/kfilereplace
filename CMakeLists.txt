@@ -1,4 +1,4 @@
-
+project(kfilereplace)
 
 add_subdirectory( toolbar )
 
