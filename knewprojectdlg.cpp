@@ -243,9 +243,9 @@ void KNewProjectDlg::loadOptions()
     }
   }
   if (idx != -1)
-    m_cbEncoding->setCurrentItem(idx);
+    m_cbEncoding->setCurrentIndex(idx);
   else 
-    m_cbEncoding->setCurrentItem(utf8Idx);
+    m_cbEncoding->setCurrentIndex(utf8Idx);
     
   m_chbIncludeSubfolders->setChecked(m_option->m_recursive);
   m_chbCaseSensitive->setChecked(m_option->m_caseSensitive);
