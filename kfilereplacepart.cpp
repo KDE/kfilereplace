@@ -123,8 +123,8 @@ void KFileReplacePart::slotSearchingOperation()
 
   setOptionMask();
 
-  QString currentDirectory = QStringList::split(",",m_option->m_directories)[0],
-          currentFilter = QStringList::split(",",m_option->m_filters)[0];
+  QString currentDirectory = m_option->m_directories.split(",", QString::SkipEmptyParts)[0],
+  currentFilter = m_option->m_filters.split(",", QString::SkipEmptyParts)[0];
 
   //m_currentDir = currentDirectory;
 
@@ -192,7 +192,7 @@ void KFileReplacePart::slotReplacingOperation()
 
   m_view->showSemaphore("green");
 
-  QString currentDirectory = QStringList::split(",",m_option->m_directories)[0];
+  QString currentDirectory = m_option->m_directories.split(",", QString::SkipEmptyParts)[0];
 
   m_view->showSemaphore("red");
 
@@ -267,7 +267,7 @@ void KFileReplacePart::slotCreateReport()
 
   QDir directoryName;
 
-  if(!directoryName.mkdir(documentName, true))
+  if(!directoryName.mkdir(documentName))
     {
       KMessageBox::error(m_w, i18n("<qt>Cannot create the <b>%1</b> folder.</qt>", documentName));
       return ;
@@ -716,28 +716,28 @@ void KFileReplacePart::loadOptions()
 
   m_option->m_recentStringFileList = m_config->readEntry(rcRecentFiles, QStringList() );
 
-  m_option->m_searchingOnlyMode = m_config->readBoolEntry(rcSearchMode,SearchModeOption);
+  m_option->m_searchingOnlyMode = m_config->readEntry(rcSearchMode,SearchModeOption);
 
   m_config->setGroup("Options");
 
-  m_option->m_encoding = m_config->readEntry(rcEncoding, QString(EncodingOption)).latin1();
-  m_option->m_recursive = m_config->readBoolEntry(rcRecursive, RecursiveOption);
+  m_option->m_encoding = m_config->readEntry(rcEncoding, QString(EncodingOption)).toLatin1();
+  m_option->m_recursive = m_config->readEntry(rcRecursive, RecursiveOption);
 
-  m_option->m_caseSensitive = m_config->readBoolEntry(rcCaseSensitive, CaseSensitiveOption);
-  m_option->m_variables = m_config->readBoolEntry(rcVariables, VariablesOption);
-  m_option->m_regularExpressions = m_config->readBoolEntry(rcRegularExpressions, RegularExpressionsOption);
-  m_option->m_followSymLinks = m_config->readBoolEntry(rcFollowSymLinks, FollowSymbolicLinksOption);
+  m_option->m_caseSensitive = m_config->readEntry(rcCaseSensitive, CaseSensitiveOption);
+  m_option->m_variables = m_config->readEntry(rcVariables, VariablesOption);
+  m_option->m_regularExpressions = m_config->readEntry(rcRegularExpressions, RegularExpressionsOption);
+  m_option->m_followSymLinks = m_config->readEntry(rcFollowSymLinks, FollowSymbolicLinksOption);
 
-  m_option->m_haltOnFirstOccur = m_config->readBoolEntry(rcHaltOnFirstOccur, StopWhenFirstOccurenceOption);
+  m_option->m_haltOnFirstOccur = m_config->readEntry(rcHaltOnFirstOccur, StopWhenFirstOccurenceOption);
 
-  m_option->m_ignoreHidden = m_config->readBoolEntry(rcIgnoreHidden, IgnoreHiddenOption);
-  m_option->m_ignoreFiles = m_config->readBoolEntry(rcIgnoreFiles, IgnoreFilesOption);
+  m_option->m_ignoreHidden = m_config->readEntry(rcIgnoreHidden, IgnoreHiddenOption);
+  m_option->m_ignoreFiles = m_config->readEntry(rcIgnoreFiles, IgnoreFilesOption);
 
   m_config->setGroup("Notification Messages");
 
-  m_option->m_notifyOnErrors  = m_config->readBoolEntry(rcNotifyOnErrors, true);
+  m_option->m_notifyOnErrors  = m_config->readEntry(rcNotifyOnErrors, true);
 
-  m_option->m_askConfirmReplace = m_config->readBoolEntry(rcAskConfirmReplace, AskConfirmReplaceOption);
+  m_option->m_askConfirmReplace = m_config->readEntry(rcAskConfirmReplace, AskConfirmReplaceOption);
 
   QString dontAskAgain = m_config->readEntry(rcDontAskAgain, QString("no"));
 
@@ -749,8 +749,8 @@ void KFileReplacePart::loadFileSizeOptions()
 {
   m_config->setGroup("Size options");
 
-  m_option->m_minSize = m_config->readNumEntry(rcMinFileSize, FileSizeOption);
-  m_option->m_maxSize = m_config->readNumEntry(rcMaxFileSize, FileSizeOption);
+  m_option->m_minSize = m_config->readEntry(rcMinFileSize, FileSizeOption);
+  m_option->m_maxSize = m_config->readEntry(rcMaxFileSize, FileSizeOption);
 }
 
 void KFileReplacePart::loadDateAccessOptions()
@@ -766,7 +766,7 @@ void KFileReplacePart::loadOwnerOptions()
 {
   m_config->setGroup("Owner options");
 
-  QStringList ownerList = QStringList::split(",",m_config->readEntry(rcOwnerUser, OwnerOption),true);
+  QStringList ownerList = m_config->readEntry(rcOwnerUser, OwnerOption).split(",");
   if(ownerList[0] == "true")
     m_option->m_ownerUserIsChecked = true;
   else
@@ -776,7 +776,7 @@ void KFileReplacePart::loadOwnerOptions()
   m_option->m_ownerUserBool = ownerList[2];
   m_option->m_ownerUserValue = ownerList[3];
 
-  ownerList = QStringList::split(",",m_config->readEntry(rcOwnerGroup, OwnerOption),true);
+  ownerList = m_config->readEntry(rcOwnerGroup, OwnerOption).split(",");
 
   if(ownerList[0] == "true")
     m_option->m_ownerGroupIsChecked = true;
@@ -821,9 +821,7 @@ void KFileReplacePart::loadFiltersList()
 void KFileReplacePart::loadBackupExtensionOptions()
 {
   m_config->setGroup("Options");
-  QStringList bkList = QStringList::split(",",
-                                          m_config->readEntry(rcBackupExtension, BackupExtensionOption),
-                                          true);
+  QStringList bkList = m_config->readEntry(rcBackupExtension, BackupExtensionOption).split(",");
   if(bkList[0] == "true")
     m_option->m_backup = true;
   else
@@ -959,10 +957,9 @@ void KFileReplacePart::fileReplace()
 {
   QString directoryName = QStringList::split(",",m_option->m_directories)[0];
   QDir d(directoryName);
-  d.setMatchAllDirs(true);
-  d.setFilter(m_optionMask);
+  d.setFilter(m_optionMask | QDir::AllDirs);
 
-  QString currentFilter = QStringList::split(",",m_option->m_filters)[0];
+  QString currentFilter = m_option->m_filters.split(",", QString::SkipEmptyParts)[0];
   QStringList filesList = d.entryList(currentFilter);
   QStringList::iterator filesIt;
   int filesNumber = 0;
@@ -1000,10 +997,9 @@ void KFileReplacePart::recursiveFileReplace(const QString& directoryName, int& f
     {
       QDir d(directoryName);
 
-      d.setMatchAllDirs(true);
-      d.setFilter(m_optionMask);
+      d.setFilter(m_optionMask | QDir::AllDirs);
 
-      QString currentFilter = QStringList::split(",",m_option->m_filters)[0];
+      QString currentFilter = m_option->m_filters.split(",", QString::SkipEmptyParts)[0];
       QStringList filesList = d.entryList(currentFilter);
       QStringList::iterator filesIt;
 
@@ -1058,7 +1054,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   if (m_option->m_encoding == "utf8")
     currentStream.setEncoding(QTextStream::UnicodeUTF8);
   else
-    currentStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
+    currentStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
   QString line = currentStream.read(),
           backupLine = line;
 
@@ -1079,7 +1075,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
     {
       if(atLeastOneStringFound)
         {
-          KIO::NetAccess::file_copy(KUrl::fromPathOrUrl(oldPathString), KUrl::fromPathOrUrl(oldPathString + backupExtension), -1, true);
+          KIO::NetAccess::file_copy(KUrl(oldPathString), KUrl(oldPathString + backupExtension), -1, true);
       	}
     }
 
@@ -1097,7 +1093,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
           if (m_option->m_encoding == "utf8")
             newStream.setEncoding(QTextStream::UnicodeUTF8);
           else
-            newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
+            newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
           newStream << line;
           newFile.close();
         }
@@ -1150,7 +1146,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
   if (m_option->m_encoding == "utf8")
     oldStream.setEncoding(QTextStream::UnicodeUTF8);
   else
-    oldStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
+    oldStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
   QString line = oldStream.read();
 
   oldFile.close();
@@ -1175,7 +1171,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
           if (m_option->m_encoding == "utf8")
             newStream.setEncoding(QTextStream::UnicodeUTF8);
           else
-            newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
+            newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
           newStream << line;
           newFile.close();
 	}
@@ -1216,7 +1212,7 @@ void KFileReplacePart::replacingLoop(QString& line, K3ListViewItem** item, bool&
       if(m_stop)
         break;
 
-      ResultViewEntry entry(it.key(), it.data(), regularExpression, m_option->m_caseSensitive);
+      ResultViewEntry entry(it.key(), it.value(), regularExpression, m_option->m_caseSensitive);
       while(entry.pos(line) != -1)
         {
           if(m_stop)
@@ -1225,7 +1221,7 @@ void KFileReplacePart::replacingLoop(QString& line, K3ListViewItem** item, bool&
 	  if(askConfirmReplace)
 	    {
 	      int answer = KMessageBox::questionYesNo(0,
-		                                      i18n("<qt>Do you want to replace the string <b>%1</b> with the string <b>%2</b>?</qt>", it.key(), it.data()),
+            i18n("<qt>Do you want to replace the string <b>%1</b> with the string <b>%2</b>?</qt>", it.key(), it.value()),
                                                       i18n("Confirm Replace"),
 						      i18n("Replace"),
 						      i18n("Do Not Replace"),
@@ -1277,8 +1273,7 @@ void KFileReplacePart::fileSearch(const QString& directoryName, const QString& f
 {
   QDir d(directoryName);
 
-  d.setMatchAllDirs(true);
-  d.setFilter(m_optionMask);
+  d.setFilter(m_optionMask | QDir::AllDirs);
 
   QStringList filesList = d.entryList(filters);
   QString filePath = d.canonicalPath();
@@ -1318,8 +1313,7 @@ void KFileReplacePart::recursiveFileSearch(const QString& directoryName, const Q
     {
       QDir d(directoryName);
 
-      d.setMatchAllDirs(true);
-      d.setFilter(m_optionMask);
+      d.setFilter(m_optionMask | QDir::AllDirs);
 
       QStringList filesList = d.entryList(filters);
       QString filePath = d.canonicalPath();
@@ -1369,7 +1363,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
   if (m_option->m_encoding == "utf8")
     stream.setEncoding(QTextStream::UnicodeUTF8);
   else
-    stream.setCodec(QTextCodec::codecForName(m_option->m_encoding.utf8()));
+    stream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
   QString line = stream.read();
   file.close();
 
@@ -1560,7 +1554,7 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 
   QDomElement docElem = doc.documentElement();
   QDomNode n = docElem.firstChild();
-  QString searchAttribute = n.toElement().attribute("search").latin1();
+  QString searchAttribute = n.toElement().attribute("search").toLatin1();
 
   KeyValueMap docMap;
 
@@ -1660,11 +1654,11 @@ bool KFileReplacePart::checkBeforeOperation()
     }
 
   // Checks if the main directory can be accessed
-  QString currentDirectory = QStringList::split(",",m_option->m_directories)[0];
+    QString currentDirectory = m_option->m_directories.split(",", QString::SkipEmptyParts)[0];
   QDir dir;
 
   dir.setPath(currentDirectory);
-  QString directory = dir.absPath();
+  QString directory = dir.absolutePath();
 
   if(!dir.exists())
     {
