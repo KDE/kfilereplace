@@ -31,12 +31,11 @@
 KFileReplace::KFileReplace()
   : KParts::MainWindow(0L, KDE_DEFAULT_WINDOWFLAGS)
 {
-  setObjectName("KFileReplace");
+    setObjectName("KFileReplace");
     KLibFactory *factory = KLibLoader::self()->factory("libkfilereplacepart");
     if (factory)
     {
-        m_part = static_cast<KParts::ReadOnlyPart *>(factory->create(this,
-                "kfilereplace_part" ));
+        m_part = static_cast<KParts::ReadOnlyPart *>(factory->create(this));
 
         if (m_part)
         {
@@ -47,6 +46,11 @@ KFileReplace::KFileReplace()
             setStandardToolBarMenuEnabled(true);
             createGUI(m_part);
             removeDuplicatedActions();
+        } else
+        {
+          KMessageBox::error(this, i18n("Could not load the KFileReplace part."));
+          close();
+          return;
         }
     }
     else

@@ -767,25 +767,25 @@ void KFileReplacePart::loadOwnerOptions()
   m_config->setGroup("Owner options");
 
   QStringList ownerList = m_config->readEntry(rcOwnerUser, OwnerOption).split(",");
-  if(ownerList[0] == "true")
+  if(ownerList.value(0) == "true")
     m_option->m_ownerUserIsChecked = true;
   else
     m_option->m_ownerUserIsChecked = false;
 
-  m_option->m_ownerUserType = ownerList[1];
-  m_option->m_ownerUserBool = ownerList[2];
-  m_option->m_ownerUserValue = ownerList[3];
+  m_option->m_ownerUserType = ownerList.value(1);
+  m_option->m_ownerUserBool = ownerList.value(2);
+  m_option->m_ownerUserValue = ownerList.value(3);
 
   ownerList = m_config->readEntry(rcOwnerGroup, OwnerOption).split(",");
 
-  if(ownerList[0] == "true")
+  if(ownerList.value(0) == "true")
     m_option->m_ownerGroupIsChecked = true;
   else
     m_option->m_ownerGroupIsChecked = false;
 
-  m_option->m_ownerGroupType = ownerList[1];
-  m_option->m_ownerGroupBool = ownerList[2];
-  m_option->m_ownerGroupValue = ownerList[3];
+  m_option->m_ownerGroupType = ownerList.value(1);
+  m_option->m_ownerGroupBool = ownerList.value(2);
+  m_option->m_ownerGroupValue = ownerList.value(3);
 }
 
 void KFileReplacePart::loadLocationsList()
