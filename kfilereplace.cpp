@@ -35,10 +35,11 @@ KFileReplace::KFileReplace()
     KLibFactory *factory = KLibLoader::self()->factory("libkfilereplacepart");
     if (factory)
     {
-        m_part = static_cast<KParts::ReadOnlyPart *>(factory->create(this));
+        m_part = static_cast<KParts::ReadOnlyPart *>(factory->create(this, "KParts::ReadOnlyPart"));
 
         if (m_part)
         {
+            m_part->setObjectName("kfilereplace_part");
             setCentralWidget(m_part->widget());
             KStdAction::quit(this, SLOT(close()), actionCollection());
             KStdAction::keyBindings(this, SLOT(slotConfigureKeys()), actionCollection());
