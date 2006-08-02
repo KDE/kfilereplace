@@ -43,4 +43,5 @@ GenericName[sv]=Sök- och ersättningsverktyg
 GenericName[uk]=Засіб пошуку та заміни
 GenericName[zh_CN]=搜索替换工具
 GenericName[zh_HK]=搜尋及取代工具
+GenericName[zh_TW]=搜尋及取代工具
 Categories=Qt;KDE;Utility;X-KDE-Utilities-File;
