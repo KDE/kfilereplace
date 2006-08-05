@@ -20,6 +20,7 @@
 #include <qtextcodec.h>
 //Added by qt3to4:
 #include <QTextStream>
+#include <kicon.h>
 
 // KDE
 #include <kaboutapplication.h>
