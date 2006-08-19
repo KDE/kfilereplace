@@ -132,7 +132,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, K3ListVi
 
  KFRHeader head;
 
- FILE* f = fopen(fileName.ascii(),"rb");
+ FILE* f = fopen(QFile::encodeName(fileName),"rb");
  int err = fread(&head, sizeof(KFRHeader), 1, f);
  QString pgm(head.pgm);
 
