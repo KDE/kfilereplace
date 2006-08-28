@@ -69,7 +69,7 @@ KFileReplace::~KFileReplace()
 
 void KFileReplace::openURL(const KUrl &url)
 {
-  m_part->openURL(url);
+  m_part->openUrl(url);
 }
 
 void KFileReplace::slotConfigureKeys()
