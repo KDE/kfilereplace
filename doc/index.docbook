@@ -1,12 +1,11 @@
 <?xml version="1.0" ?>
-<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
   <!ENTITY kfilereplace "<application>KFileReplace</application>">
-  <!ENTITY kappname "&kfilereplace;"><!-- Do *not* replace kappname-->
-  <!ENTITY package "kdewebdev"><!-- kdebase, kdeadmin, etc -->
+  <!ENTITY kappname "&kfilereplace;">
+  <!ENTITY package "kdewebdev">
   <!ENTITY % addindex "IGNORE">
-  <!ENTITY % English "INCLUDE"><!-- change language only here -->
-  <!ENTITY qt "<application>Qt</application>">
-  <!ENTITY kdewebdev "<application>Kdewebdev</application>">
+  <!ENTITY % English "INCLUDE">
+  <!ENTITY kdewebdev "<application>kdewebdev</application>">
   <!ENTITY bc "<application>bc</application>">
 ]>
 
@@ -18,15 +17,15 @@
 <authorgroup>
 <author>
 <firstname>Emiliano</firstname>
-<othername></othername>
 <surname>Gulmini</surname>
 <affiliation>
 <address><email>emi_barbarossa&#64;yahoo&#46;it</email></address>
 </affiliation>
 </author>
-</authorgroup>
 
 <!-- TRANS:ROLES_OF_TRANSLATORS -->
+
+</authorgroup>
 
 <copyright>
 <year>2004</year>
@@ -453,7 +452,7 @@
  <para>This chapter provides informations about some useful capabilities of &kfilereplace;.</para>
  <sect1 id="kfilereplace-the-kfr-file">
   <title>How to save your string list</title>
-  <para>When you want to reuse a list of strings you can save it in a <literal role="extension">xml</literal> file. To do this select from the menu bar <menuchoice><guimenu>Search/Replace</guimenu><guisubmenu>Strings</guisubmenu><guimenuitem>Save Strings List to File</guimenuitem></menuchoice>. When you save a list, a simple <literal role="extension">xml</literal> file with extension <literal role="extension">kfr</literal> is created. To load a <literal role="extension">kfr</literal> file select from menu bar <menuchoice><guimenu>Search/Replace</guimenu><guisubmenu>Strings</guisubmenu><guimenuitem>Load Strings List from File</guimenuitem></menuchoice>. The actual file looks like this:</para>
+  <para>When you want to reuse a list of strings you can save it in a <literal role="extension">xml</literal> file. To do this select from the menubar <menuchoice><guimenu>Search/Replace</guimenu><guisubmenu>Strings</guisubmenu><guimenuitem>Save Strings List to File</guimenuitem></menuchoice>. When you save a list, a simple <literal role="extension">xml</literal> file with extension <literal role="extension">kfr</literal> is created. To load a <literal role="extension">kfr</literal> file select from menubar <menuchoice><guimenu>Search/Replace</guimenu><guisubmenu>Strings</guisubmenu><guimenuitem>Load Strings List from File</guimenuitem></menuchoice>. The actual file looks like this:</para>
   <screen>
 &lt;?xml version="1.0" ?>
 &lt;kfr>
@@ -544,13 +543,12 @@
 </variablelist>
 
 <para>
-Documentation copyright 2004 Emiliano Gulmini <email>emi_barbarossa&#64;yahoo&#46;it</email>
+Documentation Copyright &copy; 2004 Emiliano Gulmini <email>emi_barbarossa&#64;yahoo&#46;it</email>
 </para>
 
 <!-- TRANS:CREDIT_FOR_TRANSLATORS -->
 
 &underFDL;               <!-- FDL: do not remove -->
-
 &underGPL;               <!-- GPL License -->
 
 </chapter>
