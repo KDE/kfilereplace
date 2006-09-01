@@ -57,7 +57,7 @@
 
 <chapter id="introduction">
  <title>Introduction</title>
-  <para>&kfilereplace; is an application used to search and replace a list of strings in a file tree. The strings may be literal or &qt;-like regular expressions. There are also other options to tune your search.
+  <para>&kfilereplace; is an application used to search and replace a list of strings in a file tree. The strings may be literal or Qt-like regular expressions. There are also other options to tune your search.
   </para>
 </chapter>
 
@@ -291,7 +291,7 @@
        </imageobject>
       </inlinemediaobject><guiicon>Regular expressions</guiicon></term>
      <listitem>
-       <para>This button enables <link linkend="kfilereplace-QT-regexp">&qt;-like regular expressions</link>.</para>
+       <para>This button enables <link linkend="kfilereplace-QT-regexp">Qt-like regular expressions</link>.</para>
      </listitem>
    </varlistentry>
 
@@ -345,7 +345,7 @@
  <title>The <guilabel>New Session</guilabel> Dialog</title>
  <para>The <guilabel>New Session</guilabel> dialog is used to setup the basic parameters needed by &kfilereplace; to work. It consists of two tabs, <guilabel>General</guilabel> and <guilabel>Advanced</guilabel>.
  </para>
- 
+
  <sect2 id="kfilereplace-the-project-dialog-general-page">
    <title>The <guilabel>General</guilabel> Tab</title>
     <screenshot>
@@ -465,15 +465,15 @@
 		&lt;oldstring>&lt;![CDATA[SEARCH_STRING_2]&#93;>&lt;/oldstring>
 		&lt;newstring>&lt;![CDATA[REPLACE_STRING_2]&#93;>&lt;/newstring>
 	&lt;/replacement>
-	
-	
+
+
 	&lt;replacement>
 		&lt;oldstring>&lt;![CDATA[SEARCH_STRING_N]&#93;>&lt;/oldstring>
 		&lt;newstring>&lt;![CDATA[REPLACE_STRING_N]&#93;>&lt;/newstring>
 	&lt;/replacement>
-	
+
 &lt;/kfr></screen>
-  
+
   <para>If you are using a previous format, you can update by hand your file by simply modifying it according to the above scheme. Alternatively, you can load the file written in the old format and save it again with &kfilereplace; in the way explained before.</para>
 </sect1>
 
@@ -590,7 +590,7 @@ Documentation Copyright &copy; 2004 Emiliano Gulmini <email>emi_barbarossa&#64;y
      <segtitle>[$random:$]</segtitle>
      <segtitle>[$mathexp:<replaceable>bc-expression</replaceable>$]</segtitle>
      <seglistitem>
-       <seg>this command return the current date and time in &qt; ISO format.</seg>
+       <seg>this command return the current date and time in Qt ISO format.</seg>
        <seg>like above but in local format.</seg>
        <seg>return the UID of the current user.</seg>
        <seg>return the GID of the current user.</seg>
