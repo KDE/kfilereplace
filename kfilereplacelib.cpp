@@ -162,12 +162,13 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, K3ListVi
           stringSize = ((oldTextSize > newTextSize) ? oldTextSize : newTextSize) + 2;
           char* oldString = (char*) malloc(stringSize+10),
               * newString = (char*) malloc(stringSize+10);
-          memset(oldString, 0, stringSize);
-          memset(newString,0, stringSize);
-          if (oldString == 0 || newString == 0)
+         if (oldString == 0 || newString == 0)
             KMessageBox::error(0, i18n("Out of memory."));
           else
             {
+              memset(oldString, 0, stringSize);
+              memset(newString,0, stringSize);
+
               if (fread(oldString, oldTextSize, 1, f) != 1)
                 KMessageBox::error(0, i18n("Cannot read data."));
               else
