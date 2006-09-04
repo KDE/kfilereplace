@@ -119,8 +119,7 @@ QString CommandEngine::mathexp(const QString& opt, const QString& arg)
      {
        proc->wait();
      }
-   if(proc)
-     delete proc;
+   delete proc;
 
    QString tempbuf = m_processOutput;
    m_processOutput = QString::null;
