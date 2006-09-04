@@ -183,13 +183,13 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, K3ListVi
                           lvi->setText(0,oldString);
                           lvi->setText(1,newString);
 
-                          if(newString)
-                            free(newString);
-                          if(oldString)
-                            free(oldString);
-                        }
+                       }
                     }
                 }
+              if(newString)
+                  free(newString);
+              if(oldString)
+                  free(oldString);
             }
         }
     }
