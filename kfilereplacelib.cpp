@@ -162,7 +162,7 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, K3ListVi
           stringSize = ((oldTextSize > newTextSize) ? oldTextSize : newTextSize) + 2;
           char* oldString = (char*) malloc(stringSize+10),
               * newString = (char*) malloc(stringSize+10);
-         if (oldString == 0 || newString == 0)
+          if (oldString == 0 || newString == 0)
             KMessageBox::error(0, i18n("Out of memory."));
           else
             {
@@ -186,11 +186,11 @@ void KFileReplaceLib::convertOldToNewKFRFormat(const QString& fileName, K3ListVi
                        }
                     }
                 }
-              if(newString)
-                  free(newString);
-              if(oldString)
-                  free(oldString);
-            }
+              }
+          if(newString)
+            free(newString);
+          if(oldString)
+            free(oldString);
         }
     }
     fclose(f);
