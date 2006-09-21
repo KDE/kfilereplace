@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=KFileReplace
 Name[x-test]=xxKFileReplacexx
-Exec=kfilereplace %i %m -caption "%c"
+Exec=kfilereplace %i -caption "%c"
 Icon=kfilereplace
 Type=Application
 DocPath=kfilereplace/index.html
