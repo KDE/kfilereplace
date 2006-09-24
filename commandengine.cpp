@@ -39,7 +39,7 @@ QString CommandEngine::datetime(const QString& opt, const QString& arg)
     return QDateTime::currentDateTime(Qt::LocalTime).toString(Qt::ISODate);
   if(opt == "local")
     return QDateTime::currentDateTime(Qt::LocalTime).toString(Qt::LocalDate);
-  return QString::null;
+  return QString();
 }
 
 QString CommandEngine::user(const QString& opt, const QString& arg)
@@ -58,7 +58,7 @@ QString CommandEngine::user(const QString& opt, const QString& arg)
     return u.homeDir();
   if(opt == "shell")
     return u.shell();
-  return QString::null;
+  return QString();
 }
 
 QString CommandEngine::loadfile(const QString& opt, const QString& arg)
@@ -66,7 +66,7 @@ QString CommandEngine::loadfile(const QString& opt, const QString& arg)
   Q_UNUSED(arg);
 
   QFile f(opt);
-  if(!f.open(QIODevice::ReadOnly)) return QString::null;
+  if(!f.open(QIODevice::ReadOnly)) return QString();
 
   QTextStream t(&f);
 
@@ -113,7 +113,7 @@ QString CommandEngine::mathexp(const QString& opt, const QString& arg)
   //Through slotGetScriptOutput, m_processOutput contains the result of the KProcess call
    if(!proc->start(KProcess::Block, KProcess::All))
      {
-       return QString::null;
+       return QString();
      }
    else
      {
@@ -122,7 +122,7 @@ QString CommandEngine::mathexp(const QString& opt, const QString& arg)
    delete proc;
 
    QString tempbuf = m_processOutput;
-   m_processOutput = QString::null;
+   m_processOutput = QString();
 
    return tempbuf;
 

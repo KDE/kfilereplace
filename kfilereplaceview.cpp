@@ -600,7 +600,7 @@ coord KFileReplaceView::extractWordCoordinates(Q3ListViewItem* lvi)
 	break;
     }
   c.line = temp.toInt();
-  temp = QString::null;
+  temp.clear();
 
   while(true)
     {
