@@ -622,7 +622,7 @@ void KFileReplacePart::initGUI()
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotOptionPreferences()));
 
   // Results
-  action = new KAction(KIcon("informations"), i18n("&Properties"), actionCollection(), "results_infos");
+  action = new KAction(KIcon("information"), i18n("&Properties"), actionCollection(), "results_infos");
   connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultProperties()));
   action = new KAction(KIcon("filenew"), i18n("&Open"), actionCollection(), "results_openfile");
   connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultOpen()));
