@@ -60,7 +60,7 @@ QString KFileReplaceLib::formatFullPath(const QString& basePath, const QString &
   if (fullPath.endsWith("/"))
     fullPath.append(fname);
   else
-    fullPath.append("/"+fname);
+    fullPath.append('/'+fname);
 
   return fullPath;
 }
@@ -207,7 +207,7 @@ bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString&
   if(filePath.isEmpty())
     fi.setFile(fileName);
   else
-    fi.setFile(filePath+"/"+fileName);
+    fi.setFile(filePath+'/'+fileName);
 
   if(fi.isDir())
     return true;

@@ -91,7 +91,7 @@ ResultViewEntry::ResultViewEntry(QString nkey, QString ndata, bool regexp, bool 
 
   if(regexp)
     {
-      m_rxKey = QRegExp("("+nkey+")", caseSensitive, false);
+      m_rxKey = QRegExp('('+nkey+')', caseSensitive, false);
     }
   else
     {

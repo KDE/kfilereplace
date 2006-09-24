@@ -457,7 +457,7 @@ void KNewProjectDlg::saveLocationsList()
     {
       QString text =  m_cbLocation->itemText(i);
       if(text != current)
-        list += ","+text;
+        list += ','+text;
     }
   m_option->m_directories = list;
 }
@@ -472,7 +472,7 @@ void KNewProjectDlg::saveFiltersList()
     {
       QString text =  m_cbFilter->itemText(i);
       if(text != current)
-        list += ","+text;
+        list += ','+text;
     }
   m_option->m_filters = list;
 }

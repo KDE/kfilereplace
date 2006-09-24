@@ -70,7 +70,7 @@ QString KFileReplaceView::currentPath()
   while (lvi->parent())
     lvi = lvi->parent();
 
-  return QString(lvi->text(1)+"/"+lvi->text(0));
+  return QString(lvi->text(1)+'/'+lvi->text(0));
 }
 
 void KFileReplaceView::showSemaphore(QString s)
@@ -240,7 +240,7 @@ void KFileReplaceView::slotResultEdit()
     {
       DCOPClient *client = kapp->dcopClient();
       DCOPRef quanta(client->appId(),"WindowManagerIf");
-      QString path = QString(lvi->text(1)+"/"+lvi->text(0));
+      QString path = QString(lvi->text(1)+'/'+lvi->text(0));
       Q3ListViewItem *lviChild = lvi;
 
       while(lviChild)

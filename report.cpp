@@ -68,7 +68,7 @@ void Report::createReportFile()
               "<?xml-stylesheet href=\""+css+"\" type=\"text/css\"?>"
               "<report>\n"
               " <title> "+i18n("KFileReplace Report")+" </title>\n"
-              " <createdby>"+user.fullName()+"("+user.loginName()+")"+"</createdby>\n"
+              " <createdby>"+user.fullName()+'('+user.loginName()+")</createdby>\n"
               " <date>"+dateString+"</date>\n"
               "<hr/>\n"
               " <table>\n"

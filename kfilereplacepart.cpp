@@ -276,7 +276,7 @@ void KFileReplacePart::slotCreateReport()
 
   directoryName.cd(documentName);
 
-  QString documentPath = documentName+"/"+directoryName.dirName();
+  QString documentPath = documentName+'/'+directoryName.dirName();
 
   Report report(m_option, rv, sv);
          report.createDocument(documentPath);
@@ -426,7 +426,7 @@ void KFileReplacePart::slotOptionPreferences()
 
   if(!dlg.exec())
     return;
-  
+
   //updating m_view
   m_view->updateOptions(m_option);
 
@@ -905,10 +905,10 @@ void KFileReplacePart::saveOwnerOptions()
     list = "false,";
 
   list += m_option->m_ownerUserType +
-          "," +
+          ',' +
           m_option->m_ownerUserBool;
   if(!m_option->m_ownerUserValue.isEmpty())
-    list += "," + m_option->m_ownerUserValue;
+    list += ',' + m_option->m_ownerUserValue;
 
   m_config->writeEntry(rcOwnerUser,list);
 
@@ -918,10 +918,10 @@ void KFileReplacePart::saveOwnerOptions()
     list = "false,";
 
   list += m_option->m_ownerGroupType +
-          "," +
+          ',' +
           m_option->m_ownerGroupBool;
   if(!m_option->m_ownerGroupValue.isEmpty())
-    list += "," + m_option->m_ownerGroupValue;
+    list += ',' + m_option->m_ownerGroupValue;
 
   m_config->writeEntry(rcOwnerGroup,list);
   m_config->sync();
@@ -1016,7 +1016,7 @@ void KFileReplacePart::recursiveFileReplace(const QString& directoryName, int& f
           if(!KFileReplaceLib::isAnAccessibleFile(d.canonicalPath(),fileName, m_option))
             continue;
 
-          QString filePath = d.canonicalPath()+"/"+fileName;
+          QString filePath = d.canonicalPath()+'/'+fileName;
 
           QFileInfo qi(filePath);
 
@@ -1043,7 +1043,7 @@ void KFileReplacePart::recursiveFileReplace(const QString& directoryName, int& f
 void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString& oldFileName)
 {
    //Creates a path string
-  QString oldPathString = currentDir+"/"+oldFileName;
+  QString oldPathString = currentDir+'/'+oldFileName;
 
   QFile currentFile(oldPathString);
   if(!currentFile.open(QIODevice::ReadOnly))
@@ -1107,7 +1107,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
 
    if(atLeastOneStringFound && item/* && atLeastOneStringConfirmed*/)
      {
-       KFileReplaceLib::setIconForFileEntry(item,currentDir+"/"+oldFileName);
+       KFileReplaceLib::setIconForFileEntry(item,currentDir+'/'+oldFileName);
        item->setText(0,oldFileName);
        item->setText(1,currentDir);
        QString newSize = KFileReplaceLib::formatFileSize(oldFileInfo.size());
@@ -1130,7 +1130,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
 
 void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QString& oldFileName)
 {
-  QString oldPathString = currentDir+"/"+oldFileName;
+  QString oldPathString = currentDir+'/'+oldFileName;
   QFile oldFile(oldPathString);
   QFileInfo oldFileInfo(oldPathString);
 
@@ -1187,7 +1187,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
 
   if(atLeastOneStringFound  && item/*&& atLeastOneStringConfirmed*/)
     {
-      KFileReplaceLib::setIconForFileEntry(item,currentDir+"/"+oldFileName);
+      KFileReplaceLib::setIconForFileEntry(item,currentDir+'/'+oldFileName);
       item->setText(0,oldFileName);
       item->setText(1,currentDir);
       item->setText(2,fileSizeBeforeReplacing);
@@ -1295,7 +1295,7 @@ void KFileReplacePart::fileSearch(const QString& directoryName, const QString& f
       if(!KFileReplaceLib::isAnAccessibleFile(filePath, fileName, m_option))
         continue;
 
-      QFileInfo fileInfo(filePath+"/"+fileName);
+      QFileInfo fileInfo(filePath+'/'+fileName);
       if(fileInfo.isDir())
         continue;
       kapp->processEvents();
@@ -1332,13 +1332,13 @@ void KFileReplacePart::recursiveFileSearch(const QString& directoryName, const Q
             continue;
 
           // Composes file path string
-          QFileInfo fileInfo(filePath+"/"+fileName);
+          QFileInfo fileInfo(filePath+'/'+fileName);
 
           m_view->displayScannedFiles(filesNumber);
 
           // Searchs recursively if "filePath" is a directory
           if(fileInfo.isDir())
-            recursiveFileSearch(filePath+"/"+fileName, filters, filesNumber);
+            recursiveFileSearch(filePath+'/'+fileName, filters, filesNumber);
           else
             {
               kapp->processEvents();
@@ -1352,7 +1352,7 @@ void KFileReplacePart::recursiveFileSearch(const QString& directoryName, const Q
 
 void KFileReplacePart::search(const QString& currentDir, const QString& fileName)
 {
-  QFile file(currentDir+"/"+fileName);
+  QFile file(currentDir+'/'+fileName);
 
   if(!file.open(QIODevice::ReadOnly))
     {
@@ -1368,10 +1368,10 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
   QString line = stream.read();
   file.close();
 
-  QFileInfo fileInfo(currentDir+"/"+fileName);
+  QFileInfo fileInfo(currentDir+'/'+fileName);
 
   K3ListViewItem *item = 0;
- 
+
   //Counts occurrences
   int occurrence = 0;
 
@@ -1395,7 +1395,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
       QRegExp rxKey;
 
       if(m_option->m_regularExpressions)
-        rxKey = QRegExp("("+key+")", m_option->m_caseSensitive, false);
+        rxKey = QRegExp('('+key+')', m_option->m_caseSensitive, false);
       else
         strKey = key;
       /* If this option is true then for any string in
@@ -1494,7 +1494,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 
    if(atLeastOneStringFound && item)
      {
-       KFileReplaceLib::setIconForFileEntry(item,currentDir+"/"+fileName);
+       KFileReplaceLib::setIconForFileEntry(item,currentDir+'/'+fileName);
        item->setText(0,fileName);
        item->setText(1,currentDir);
        item->setText(2,KFileReplaceLib::formatFileSize(fileInfo.size()));
@@ -1610,14 +1610,14 @@ void KFileReplacePart::loadRulesFile(const QString& fileName)
 bool KFileReplacePart::launchNewProjectDialog(const KUrl & startURL)
 {
   if(!startURL.isEmpty())
-    m_option->m_directories = QString(startURL.path()+","+m_option->m_directories);
-  
+    m_option->m_directories = QString(startURL.path()+','+m_option->m_directories);
+
   /* This dlg reads options from m_option, then execs, finally returns options.*/
   KNewProjectDlg dlg(m_option);
 
   if(!dlg.exec())
     return false;
-  
+
   dlg.saveRCOptions();
 
   m_config->sync();
