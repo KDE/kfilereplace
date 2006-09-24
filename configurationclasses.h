@@ -73,7 +73,7 @@ const bool IgnoreFilesOption = true;
 const bool NotifyOnErrorsOption = false;
 const bool AskConfirmReplaceOption = false;
 
-// This class store configuration informations
+// This class stores configuration information
 class RCOptions
 {
   public:
