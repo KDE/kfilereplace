@@ -153,9 +153,9 @@
                             </property>
                             <property name="alternateBackground">
                                 <color>
-                                    <Qt::red>238</Qt::red>
-                                    <Qt::green>246</Qt::green>
-                                    <Qt::blue>255</Qt::blue>
+                                    <red>238</red>
+                                    <green>246</green>
+                                    <blue>255</blue>
                                 </color>
                             </property>
                         </widget>
@@ -265,9 +265,9 @@
                             </property>
                             <property name="alternateBackground">
                                 <color>
-                                    <Qt::red>238</Qt::red>
-                                    <Qt::green>246</Qt::green>
-                                    <Qt::blue>255</Qt::blue>
+                                    <red>238</red>
+                                    <green>246</green>
+                                    <blue>255</blue>
                                 </color>
                             </property>
                         </widget>
@@ -418,9 +418,9 @@
                             </property>
                             <property name="color">
                                 <color>
-                                    <Qt::red>170</Qt::red>
-                                    <Qt::green>255</Qt::green>
-                                    <Qt::blue>0</Qt::blue>
+                                    <red>170</red>
+                                    <green>255</green>
+                                    <blue>0</blue>
                                 </color>
                             </property>
                             <property name="toolTip" stdset="0">
@@ -445,9 +445,9 @@
                             </property>
                             <property name="color">
                                 <color>
-                                    <Qt::red>255</Qt::red>
-                                    <Qt::green>255</Qt::green>
-                                    <Qt::blue>0</Qt::blue>
+                                    <red>255</red>
+                                    <green>255</green>
+                                    <blue>0</blue>
                                 </color>
                             </property>
                             <property name="toolTip" stdset="0">
@@ -469,9 +469,9 @@
                             </property>
                             <property name="color">
                                 <color>
-                                    <Qt::red>255</Qt::red>
-                                    <Qt::green>0</Qt::green>
-                                    <Qt::blue>0</Qt::blue>
+                                    <red>255</red>
+                                    <green>0</green>
+                                    <blue>0</blue>
                                 </color>
                             </property>
                             <property name="toolTip" stdset="0">
