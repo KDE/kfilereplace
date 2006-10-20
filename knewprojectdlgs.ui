@@ -765,10 +765,10 @@
                                                 <property name="name">
                                                     <cstring>m_spbSizeMin</cstring>
                                                 </property>
-                                                <property name="maxValue">
+                                                <property name="maximum">
                                                     <number>4000000</number>
                                                 </property>
-                                                <property name="minValue">
+                                                <property name="minimum">
                                                     <number>0</number>
                                                 </property>
                                             </widget>
@@ -776,10 +776,10 @@
                                                 <property name="name">
                                                     <cstring>m_spbSizeMax</cstring>
                                                 </property>
-                                                <property name="maxValue">
+                                                <property name="maximum">
                                                     <number>4000000</number>
                                                 </property>
-                                                <property name="minValue">
+                                                <property name="minimum">
                                                     <number>0</number>
                                                 </property>
                                             </widget>
