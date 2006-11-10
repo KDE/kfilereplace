@@ -27,7 +27,7 @@ kde4_add_ui3_files(kfilereplacepart_PART_SRCS
 
 kde4_add_plugin(kfilereplacepart WITH_PREFIX ${kfilereplacepart_PART_SRCS})
 
-kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kfilereplacepart )
+
 
 target_link_libraries(kfilereplacepart  ${KDE4_KPARTS_LIBS} ${KDE4_KHTML_LIBS} )
 
