@@ -602,7 +602,7 @@ void KFileReplacePart::initGUI()
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsSave()));
   action = new KAction(KIcon("unsortedList"), i18n("&Load Strings List From File..."), actionCollection(), "strings_load");
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsLoad()));
-  (void)new KRecentFilesAction(i18n("&Load Recent Strings Files"), "fileopen", 0, this, SLOT(slotOpenRecentStringFile(const KUrl&)), actionCollection(),"strings_load_recent");
+  (void)new KRecentFilesAction(i18n("&Load Recent Strings Files"), "fileopen", KShortcut(), this, SLOT(slotOpenRecentStringFile(const KUrl&)), actionCollection(),"strings_load_recent");
   action = new KAction(KIcon("invert"), i18n("&Invert Current String (search <--> replace)"), actionCollection(), "strings_invert");
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsInvertCur()));
   action = new KAction(KIcon("invert"), i18n("&Invert All Strings (search <--> replace)"), actionCollection(), "strings_invert_all");
