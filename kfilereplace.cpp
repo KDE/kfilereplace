@@ -98,17 +98,17 @@ void KFileReplace::applyNewToolbarConfig()
 void KFileReplace::removeDuplicatedActions()
 {
     KActionCollection* part_action_collection = m_part->actionCollection();
-    KAction* part_about_action = part_action_collection->action("help_about_kfilereplace");
-    KAction* part_report_action = part_action_collection->action("report_bug");
-    KAction* part_help_action= part_action_collection->action("help_kfilereplace");
+    QAction* part_about_action = part_action_collection->action("help_about_kfilereplace");
+    QAction* part_report_action = part_action_collection->action("report_bug");
+    QAction* part_help_action= part_action_collection->action("help_kfilereplace");
 
-    if (!part_about_action || !part_report_action || !part_help_action || !part_action_collection) 
+    if (!part_about_action || !part_report_action || !part_help_action || !part_action_collection)
       return;
 
-    QWidget* container = part_about_action->container(0);
-    part_about_action->unplug(container);
-    part_report_action->unplug(container);
-    part_help_action->unplug(container);
+    QWidget* container = part_about_action->associatedWidgets().value(0);
+    container->removeAction(part_about_action);
+    container->removeAction(part_report_action);
+    container->removeAction(part_help_action);
     part_action_collection->remove(part_about_action);
     part_action_collection->remove(part_report_action);
     part_action_collection->remove(part_help_action);
