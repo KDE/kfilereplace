@@ -25,7 +25,7 @@
 #include "kfilereplace.h"
 //Added by qt3to4:
 #include <kactioncollection.h>
-#include <kstdaction.h>
+#include <kstandardaction.h>
 
 KFileReplace::KFileReplace()
   : KParts::MainWindow(0L, KDE_DEFAULT_WINDOWFLAGS)
@@ -40,9 +40,9 @@ KFileReplace::KFileReplace()
         {
             m_part->setObjectName("kfilereplace_part");
             setCentralWidget(m_part->widget());
-            KStdAction::quit(this, SLOT(close()), actionCollection());
-            KStdAction::keyBindings(this, SLOT(slotConfigureKeys()), actionCollection());
-            KStdAction::configureToolbars(this, SLOT(slotConfigureToolbars()), actionCollection());
+            KStandardAction::quit(this, SLOT(close()), actionCollection());
+            KStandardAction::keyBindings(this, SLOT(slotConfigureKeys()), actionCollection());
+            KStandardAction::configureToolbars(this, SLOT(slotConfigureToolbars()), actionCollection());
             setStandardToolBarMenuEnabled(true);
             createGUI(m_part);
             removeDuplicatedActions();
