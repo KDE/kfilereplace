@@ -53,6 +53,7 @@ install( FILES  kfilereplace.desktop  DESTINATION ${XDG_APPS_DIR})
 install( FILES  kfilereplacepartui.rc  DESTINATION ${DATA_INSTALL_DIR}/kfilereplacepart)
 install( FILES  kfilereplaceui.rc  DESTINATION ${DATA_INSTALL_DIR}/kfilereplace)
 install( FILES  kfilereplacepart.desktop  DESTINATION ${SERVICES_INSTALL_DIR})
+install( FILES org.kde.kfilereplace.xml DESTINATION ${DBUS_INTERFACES_DIR} )
 
 kde4_install_icons( ${ICON_INSTALL_DIR}   )
 
