@@ -285,7 +285,7 @@ void KFileReplaceView::slotResultDelete()
     {
       QFile fi;
       int answer = KMessageBox::warningContinueCancel(this, i18n("Do you really want to delete %1?", currItem),
-                                                      QString::null,KStdGuiItem::del());
+                                                      QString::null,KStandardGuiItem::del());
 
       if(answer == KMessageBox::Continue)
         {
