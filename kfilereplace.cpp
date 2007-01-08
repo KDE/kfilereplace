@@ -109,9 +109,9 @@ void KFileReplace::removeDuplicatedActions()
     container->removeAction(part_about_action);
     container->removeAction(part_report_action);
     container->removeAction(part_help_action);
-    part_action_collection->remove(part_about_action);
-    part_action_collection->remove(part_report_action);
-    part_action_collection->remove(part_help_action);
+    part_action_collection->removeAction(part_about_action);
+    part_action_collection->removeAction(part_report_action);
+    part_action_collection->removeAction(part_help_action);
 }
 
 #include "kfilereplace.moc"
