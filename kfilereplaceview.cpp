@@ -30,8 +30,9 @@
 #include <krun.h>
 #include <kpropertiesdialog.h>
 #include <kapplication.h>
-//#include <dcopclient.h>
-//#include <dcopref.h>
+#include <QDBusConnection>
+#include <QDBusReply>
+#include <QDBusConnectionInterface>
 //#include <kdebug.h>
 #include <kiconloader.h>
 #include <kled.h>
@@ -487,22 +488,20 @@ void KFileReplaceView::initGUI()
   m_stackStrings->addWidget(m_lvStrings_2);
 
   bool quantaFound = false;
-#warning "Port to DBUS"
-  //FIXME: Find a running Quanta instace with DBUS
-/*
-  DCOPClient *client = kapp->dcopClient();
-  DCOPCStringList appList = client->registeredApplications();
+   QDBusConnection dbus = QDBusConnection::sessionBus();
+   QDBusReply<QStringList> reply = dbus.interface()->registeredServiceNames();
+   if ( !reply.isValid() )
+      return;
 
-
-  for(DCOPCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
-    {
-      if((*it).left(6) == "quanta")
-        {
-          quantaFound = true;
-          break;
+   const QStringList allServices = reply;
+   for ( QStringList::const_iterator it = allServices.begin(), end = allServices.end() ; it != end ; ++it ) {
+        const QString service = *it;
+        if ( service.startsWith( "org.kde.quanta" ) ) {
+		quantaFound = true;
+		break;
         }
-    }
-*/
+   }
+  
   m_menuResult = new KMenu(this);
 
 

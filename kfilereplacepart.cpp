@@ -20,6 +20,9 @@
 #include <qtextcodec.h>
 //Added by qt3to4:
 #include <QTextStream>
+#include <QDBusConnection>
+#include <QDBusReply>
+#include <QDBusConnectionInterface>
 #include <kicon.h>
 
 // KDE
@@ -559,20 +562,19 @@ void KFileReplacePart::initGUI()
   setXMLFile("kfilereplacepartui.rc");
 
   bool quantaFound = false;
-#warning "Port to DBUS"
-  //FIXME: Find a running Quanta instace with DBUS
-  /*
-  DCOPClient *client = kapp->dcopClient();
-  DCOPCStringList appList = client->registeredApplications();
-  for(DCOPCStringList::Iterator it = appList.begin(); it != appList.end(); ++it)
-    {
-      if((*it).left(6) == "quanta")
-        {
-          quantaFound = true;
-          break;
+   QDBusConnection dbus = QDBusConnection::sessionBus();
+   QDBusReply<QStringList> reply = dbus.interface()->registeredServiceNames();
+   if ( !reply.isValid() )
+      return;
+
+   const QStringList allServices = reply;
+   for ( QStringList::const_iterator it = allServices.begin(), end = allServices.end() ; it != end ; ++it ) {
+        const QString service = *it;
+        if ( service.startsWith( "org.kde.quanta" ) ) {
+                quantaFound = true;
+                break;
         }
-    }
-  */
+   }  
   // File
   QAction *action;
     action  = new KAction(KIcon("projectopen"), i18n("Customize Search/Replace Session..."), this);
