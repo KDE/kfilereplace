@@ -232,7 +232,9 @@ void KFileReplaceView::slotResultDirOpen()
 
 void KFileReplaceView::slotResultEdit()
 {
+#ifdef __GNUC__
 #warning "Port to DBUS"
+#endif
   //FIXME: Port to DBUS
 #if 0
   Q3ListViewItem *lvi = m_rv->firstChild();
