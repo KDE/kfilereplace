@@ -8,6 +8,7 @@ Type=Application
 DocPath=kfilereplace/index.html
 Terminal=false
 GenericName=Search & Replace Tool
+GenericName[el]=Εργαλείο αναζήτησης & αντικατάστασης
 GenericName[fr]=Outil de recherche et de remplacement
 GenericName[x-test]=xxSearch & Replace Toolxx
 Categories=Qt;KDE;Utility;X-KDE-Utilities-File;
