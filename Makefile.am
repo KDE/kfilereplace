@@ -25,7 +25,7 @@ libkfilereplacepart_la_LDFLAGS = -module $(KDE_PLUGIN) $(all_libraries)
 libkfilereplacepart_la_LIBADD = $(LIB_KFILE) $(LIB_KPARTS) $(LIB_KHTML)
 
 messages: rc.cpp
-	$(XGETTEXT) *.cpp -o $(podir)/kfilereplace.pot
+	$(XGETTEXT) *.cpp *.h -o $(podir)/kfilereplace.pot
 
 KDE_ICON = AUTO
 kde_services_DATA = kfilereplacepart.desktop
