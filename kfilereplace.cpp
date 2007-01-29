@@ -82,7 +82,7 @@ void KFileReplace::slotConfigureKeys()
 
 void KFileReplace::slotConfigureToolbars()
 {
-    saveMainWindowSettings(KGlobal::config(), autoSaveGroup());
+    saveMainWindowSettings(KGlobal::config().data(), autoSaveGroup());
     KEditToolbar dlg(factory());
     connect(&dlg, SIGNAL(newToolbarConfig()),
             this, SLOT(applyNewToolbarConfig()));
@@ -91,7 +91,7 @@ void KFileReplace::slotConfigureToolbars()
 
 void KFileReplace::applyNewToolbarConfig()
 {
-    applyMainWindowSettings(KGlobal::config(), autoSaveGroup());
+    applyMainWindowSettings(KGlobal::config().data(), autoSaveGroup());
 }
 
 

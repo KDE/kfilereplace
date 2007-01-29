@@ -32,7 +32,7 @@
 #include <kbugreport.h>
 #include <kconfig.h>
 #include <kfiledialog.h>
-#include <kinstance.h>
+#include <kcomponentdata.h>
 #include <kio/netaccess.h>
 #include <kmessagebox.h>
 #include <kparts/genericfactory.h>
@@ -69,7 +69,7 @@ K_EXPORT_COMPONENT_FACTORY( libkfilereplacepart, FileReplaceFactory )
 
 KFileReplacePart::KFileReplacePart(QWidget* parentWidget, QObject* parent, const QStringList & ) : KParts::ReadOnlyPart(parent)
 {
-  setInstance(FileReplaceFactory::instance());
+  setComponentData(FileReplaceFactory::componentData());
 
   m_parentWidget = parentWidget;
   m_config = new KConfig("kfilereplacerc");
