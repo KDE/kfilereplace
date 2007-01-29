@@ -22,7 +22,7 @@
 #include <kparts/part.h>
 #include <k3listview.h>
 
-class KAboutApplication;
+class KAboutApplicationDialog;
 class KAboutData;
 class KConfig;
 
@@ -41,7 +41,7 @@ class KFileReplacePart: public KParts::ReadOnlyPart
     QWidget* m_parentWidget,
            * m_w;
     KConfig* m_config;
-    KAboutApplication* m_aboutDlg;
+    KAboutApplicationDialog* m_aboutDlg;
     KeyValueMap m_replacementMap;
     RCOptions* m_option;
     bool m_stop,

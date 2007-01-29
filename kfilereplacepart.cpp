@@ -26,7 +26,7 @@
 #include <kicon.h>
 
 // KDE
-#include <kaboutapplication.h>
+#include <kaboutapplicationdialog.h>
 #include <kapplication.h>
 #include <kaction.h>
 #include <kbugreport.h>
@@ -439,7 +439,7 @@ void KFileReplacePart::slotOptionPreferences()
 void KFileReplacePart::showAboutApplication()
 {
   if (m_aboutDlg == 0)
-    m_aboutDlg = new KAboutApplication(createAboutData(), (QWidget *)0, false);
+    m_aboutDlg = new KAboutApplicationDialog(createAboutData());
   if(m_aboutDlg == 0)
     return;
 
