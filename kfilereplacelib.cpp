@@ -97,7 +97,7 @@ QString KFileReplaceLib::formatFileSize(double size)
   if(size < kilo)
     {
       const int asInt = (int) size;
-      stringSize = i18np("1 byte", "%n bytes", asInt);
+      stringSize = i18np("1 byte", "%1 bytes", asInt);
     }
   else
   if(size >= kilo && size < mega)
