@@ -574,7 +574,7 @@ void KFileReplacePart::initGUI()
                 quantaFound = true;
                 break;
         }
-   }  
+   }
   // File
   QAction *action;
     action  = new KAction(KIcon("projectopen"), i18n("Customize Search/Replace Session..."), this);
@@ -750,34 +750,34 @@ void KFileReplacePart::loadOptionsFromRC()
 
 void KFileReplacePart::loadOptions()
 {
-  m_config->setGroup("General Options");
+    KConfigGroup cg( m_config, "General Options");
 
-  m_option->m_recentStringFileList = m_config->readEntry(rcRecentFiles, QStringList() );
+  m_option->m_recentStringFileList = cg.readEntry(rcRecentFiles, QStringList() );
 
-  m_option->m_searchingOnlyMode = m_config->readEntry(rcSearchMode,SearchModeOption);
+  m_option->m_searchingOnlyMode = cg.readEntry(rcSearchMode,SearchModeOption);
 
-  m_config->setGroup("Options");
+  cg.setGroup("Options");
 
-  m_option->m_encoding = m_config->readEntry(rcEncoding, QString(EncodingOption)).toLatin1();
-  m_option->m_recursive = m_config->readEntry(rcRecursive, RecursiveOption);
+  m_option->m_encoding = cg.readEntry(rcEncoding, QString(EncodingOption)).toLatin1();
+  m_option->m_recursive = cg.readEntry(rcRecursive, RecursiveOption);
 
-  m_option->m_caseSensitive = m_config->readEntry(rcCaseSensitive, CaseSensitiveOption);
-  m_option->m_variables = m_config->readEntry(rcVariables, VariablesOption);
-  m_option->m_regularExpressions = m_config->readEntry(rcRegularExpressions, RegularExpressionsOption);
-  m_option->m_followSymLinks = m_config->readEntry(rcFollowSymLinks, FollowSymbolicLinksOption);
+  m_option->m_caseSensitive = cg.readEntry(rcCaseSensitive, CaseSensitiveOption);
+  m_option->m_variables = cg.readEntry(rcVariables, VariablesOption);
+  m_option->m_regularExpressions = cg.readEntry(rcRegularExpressions, RegularExpressionsOption);
+  m_option->m_followSymLinks = cg.readEntry(rcFollowSymLinks, FollowSymbolicLinksOption);
 
-  m_option->m_haltOnFirstOccur = m_config->readEntry(rcHaltOnFirstOccur, StopWhenFirstOccurenceOption);
+  m_option->m_haltOnFirstOccur = cg.readEntry(rcHaltOnFirstOccur, StopWhenFirstOccurenceOption);
 
-  m_option->m_ignoreHidden = m_config->readEntry(rcIgnoreHidden, IgnoreHiddenOption);
-  m_option->m_ignoreFiles = m_config->readEntry(rcIgnoreFiles, IgnoreFilesOption);
+  m_option->m_ignoreHidden = cg.readEntry(rcIgnoreHidden, IgnoreHiddenOption);
+  m_option->m_ignoreFiles = cg.readEntry(rcIgnoreFiles, IgnoreFilesOption);
 
-  m_config->setGroup("Notification Messages");
+  cg.setGroup("Notification Messages");
 
-  m_option->m_notifyOnErrors  = m_config->readEntry(rcNotifyOnErrors, true);
+  m_option->m_notifyOnErrors  = cg.readEntry(rcNotifyOnErrors, true);
 
-  m_option->m_askConfirmReplace = m_config->readEntry(rcAskConfirmReplace, AskConfirmReplaceOption);
+  m_option->m_askConfirmReplace = cg.readEntry(rcAskConfirmReplace, AskConfirmReplaceOption);
 
-  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, QString("no"));
+  QString dontAskAgain = cg.readEntry(rcDontAskAgain, QString("no"));
 
   if(dontAskAgain == "yes")
     m_option->m_askConfirmReplace = false;
@@ -785,26 +785,26 @@ void KFileReplacePart::loadOptions()
 
 void KFileReplacePart::loadFileSizeOptions()
 {
-  m_config->setGroup("Size options");
+  cg.setGroup("Size options");
 
-  m_option->m_minSize = m_config->readEntry(rcMinFileSize, FileSizeOption);
-  m_option->m_maxSize = m_config->readEntry(rcMaxFileSize, FileSizeOption);
+  m_option->m_minSize = cg.readEntry(rcMinFileSize, FileSizeOption);
+  m_option->m_maxSize = cg.readEntry(rcMaxFileSize, FileSizeOption);
 }
 
 void KFileReplacePart::loadDateAccessOptions()
 {
-  m_config->setGroup("Access options");
+  cg.setGroup("Access options");
 
-  m_option->m_dateAccess = m_config->readEntry(rcValidAccessDate, ValidAccessDateOption);
-  m_option->m_minDate = m_config->readEntry(rcMinDate, AccessDateOption);
-  m_option->m_maxDate = m_config->readEntry(rcMaxDate, AccessDateOption);
+  m_option->m_dateAccess = cg.readEntry(rcValidAccessDate, ValidAccessDateOption);
+  m_option->m_minDate = cg.readEntry(rcMinDate, AccessDateOption);
+  m_option->m_maxDate = cg.readEntry(rcMaxDate, AccessDateOption);
 }
 
 void KFileReplacePart::loadOwnerOptions()
 {
-  m_config->setGroup("Owner options");
+  cg.setGroup("Owner options");
 
-  QStringList ownerList = m_config->readEntry(rcOwnerUser, OwnerOption).split(",");
+  QStringList ownerList = cg.readEntry(rcOwnerUser, OwnerOption).split(",");
   if(ownerList.value(0) == "true")
     m_option->m_ownerUserIsChecked = true;
   else
@@ -814,7 +814,7 @@ void KFileReplacePart::loadOwnerOptions()
   m_option->m_ownerUserBool = ownerList.value(2);
   m_option->m_ownerUserValue = ownerList.value(3);
 
-  ownerList = m_config->readEntry(rcOwnerGroup, OwnerOption).split(",");
+  ownerList = cg.readEntry(rcOwnerGroup, OwnerOption).split(",");
 
   if(ownerList.value(0) == "true")
     m_option->m_ownerGroupIsChecked = true;
@@ -828,11 +828,11 @@ void KFileReplacePart::loadOwnerOptions()
 
 void KFileReplacePart::loadLocationsList()
 {
-  m_config->setGroup("Directories");
+  cg.setGroup("Directories");
   #if KDE_IS_VERSION(3,1,3)
-  QString locationsEntryList = m_config->readPathEntry(rcDirectoriesList);
+  QString locationsEntryList = cg.readPathEntry(rcDirectoriesList);
   #else
-  QString locationsEntryList = m_config->readEntry(rcDirectoriesList);
+  QString locationsEntryList = cg.readEntry(rcDirectoriesList);
   #endif
 
   if(locationsEntryList.isEmpty())
@@ -843,11 +843,11 @@ void KFileReplacePart::loadLocationsList()
 
 void KFileReplacePart::loadFiltersList()
 {
-  m_config->setGroup("Filters");
+  cg.setGroup("Filters");
   #if KDE_IS_VERSION(3,1,3)
-  QString filtersEntryList = m_config->readPathEntry(rcFiltersList);
+  QString filtersEntryList = cg.readPathEntry(rcFiltersList);
   #else
-  QString filtersEntryList = m_config->readEntry(rcFiltersList);
+  QString filtersEntryList = cg.readEntry(rcFiltersList);
   #endif
 
   if(filtersEntryList.isEmpty())
@@ -858,8 +858,8 @@ void KFileReplacePart::loadFiltersList()
 
 void KFileReplacePart::loadBackupExtensionOptions()
 {
-  m_config->setGroup("Options");
-  QStringList bkList = m_config->readEntry(rcBackupExtension, BackupExtensionOption).split(",");
+  cg.setGroup("Options");
+  QStringList bkList = cg.readEntry(rcBackupExtension, BackupExtensionOption).split(",");
   if(bkList[0] == "true")
     m_option->m_backup = true;
   else
@@ -881,59 +881,59 @@ void KFileReplacePart::saveOptionsToRC()
 
 void KFileReplacePart::saveOptions()
 {
-  m_config->setGroup("General Options");
+  cg.setGroup("General Options");
 
-  m_config->writeEntry(rcRecentFiles, m_option->m_recentStringFileList);
-  m_config->writeEntry(rcSearchMode,m_option->m_searchingOnlyMode);
+  cg.writeEntry(rcRecentFiles, m_option->m_recentStringFileList);
+  cg.writeEntry(rcSearchMode,m_option->m_searchingOnlyMode);
 
-  m_config->setGroup("Options");
+  cg.setGroup("Options");
 
-  m_config->writeEntry(rcEncoding, m_option->m_encoding);
-  m_config->writeEntry(rcRecursive, m_option->m_recursive);
-  m_config->writeEntry(rcCaseSensitive, m_option->m_caseSensitive);
-  m_config->writeEntry(rcVariables, m_option->m_variables);
-  m_config->writeEntry(rcRegularExpressions, m_option->m_regularExpressions);
+  cg.writeEntry(rcEncoding, m_option->m_encoding);
+  cg.writeEntry(rcRecursive, m_option->m_recursive);
+  cg.writeEntry(rcCaseSensitive, m_option->m_caseSensitive);
+  cg.writeEntry(rcVariables, m_option->m_variables);
+  cg.writeEntry(rcRegularExpressions, m_option->m_regularExpressions);
 
-  m_config->writeEntry(rcFollowSymLinks, m_option->m_followSymLinks);
-  m_config->writeEntry(rcHaltOnFirstOccur, m_option->m_haltOnFirstOccur);
+  cg.writeEntry(rcFollowSymLinks, m_option->m_followSymLinks);
+  cg.writeEntry(rcHaltOnFirstOccur, m_option->m_haltOnFirstOccur);
 
-  m_config->writeEntry(rcIgnoreHidden, m_option->m_ignoreHidden);
-  m_config->writeEntry(rcIgnoreFiles, m_option->m_ignoreFiles);
+  cg.writeEntry(rcIgnoreHidden, m_option->m_ignoreHidden);
+  cg.writeEntry(rcIgnoreFiles, m_option->m_ignoreFiles);
 
-  m_config->setGroup("Notification Messages");
-  m_config->writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
-  if(m_config->readEntry(rcDontAskAgain,QString("no")) == "yes")
-    m_config->writeEntry(rcAskConfirmReplace, false);
+  cg.setGroup("Notification Messages");
+  cg.writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
+  if(cg.readEntry(rcDontAskAgain,QString("no")) == "yes")
+    cg.writeEntry(rcAskConfirmReplace, false);
   else
-    m_config->writeEntry(rcAskConfirmReplace, m_option->m_askConfirmReplace);
+    cg.writeEntry(rcAskConfirmReplace, m_option->m_askConfirmReplace);
 
-  m_config->sync();
+  cg.sync();
 }
 
 void KFileReplacePart::saveFileSizeOptions()
 {
-  m_config->setGroup("Size options");
+  cg.setGroup("Size options");
 
-  m_config->writeEntry(rcMaxFileSize, m_option->m_maxSize);
-  m_config->writeEntry(rcMinFileSize, m_option->m_minSize);
+  cg.writeEntry(rcMaxFileSize, m_option->m_maxSize);
+  cg.writeEntry(rcMinFileSize, m_option->m_minSize);
 
-  m_config->sync();
+  cg.sync();
 }
 
 void KFileReplacePart::saveDateAccessOptions()
 {
-  m_config->setGroup("Access options");
+  cg.setGroup("Access options");
 
-  m_config->writeEntry(rcValidAccessDate, m_option->m_dateAccess);
-  m_config->writeEntry(rcMinDate, m_option->m_minDate);
-  m_config->writeEntry(rcMaxDate, m_option->m_maxDate);
+  cg.writeEntry(rcValidAccessDate, m_option->m_dateAccess);
+  cg.writeEntry(rcMinDate, m_option->m_minDate);
+  cg.writeEntry(rcMaxDate, m_option->m_maxDate);
 
-  m_config->sync();
+  cg.sync();
 }
 
 void KFileReplacePart::saveOwnerOptions()
 {
-  m_config->setGroup("Owner options");
+  cg.setGroup("Owner options");
 
   QString list;
   if(m_option->m_ownerUserIsChecked)
@@ -947,7 +947,7 @@ void KFileReplacePart::saveOwnerOptions()
   if(!m_option->m_ownerUserValue.isEmpty())
     list += ',' + m_option->m_ownerUserValue;
 
-  m_config->writeEntry(rcOwnerUser,list);
+  cg.writeEntry(rcOwnerUser,list);
 
   if(m_option->m_ownerGroupIsChecked)
     list = "true,";
@@ -960,35 +960,35 @@ void KFileReplacePart::saveOwnerOptions()
   if(!m_option->m_ownerGroupValue.isEmpty())
     list += ',' + m_option->m_ownerGroupValue;
 
-  m_config->writeEntry(rcOwnerGroup,list);
-  m_config->sync();
+  cg.writeEntry(rcOwnerGroup,list);
+  cg.sync();
 }
 
 void KFileReplacePart::saveLocationsList()
 {
-  m_config->setGroup("Directories");
-  m_config->writeEntry(rcDirectoriesList, m_option->m_directories);
-  m_config->sync();
+  cg.setGroup("Directories");
+  cg.writeEntry(rcDirectoriesList, m_option->m_directories);
+  cg.sync();
 }
 
 void KFileReplacePart::saveFiltersList()
 {
-  m_config->setGroup("Filters");
-  m_config->writeEntry(rcFiltersList, m_option->m_filters);
-  m_config->sync();
+  cg.setGroup("Filters");
+  cg.writeEntry(rcFiltersList, m_option->m_filters);
+  cg.sync();
 }
 
 void KFileReplacePart::saveBackupExtensionOptions()
 {
-  m_config->setGroup("Options");
+  cg.setGroup("Options");
   QString bkOptions;
   if(m_option->m_backup)
     bkOptions = "true," + m_option->m_backupExtension;
   else
     bkOptions = "false," + m_option->m_backupExtension;
 
-  m_config->writeEntry(rcBackupExtension, bkOptions);
-  m_config->sync();
+  cg.writeEntry(rcBackupExtension, bkOptions);
+  cg.sync();
 }
 
 void KFileReplacePart::fileReplace()
@@ -1255,7 +1255,7 @@ void KFileReplacePart::replacingLoop(QString& line, K3ListViewItem** item, bool&
         {
           if(m_stop)
            break;
-	  
+
 	  if(askConfirmReplace)
 	    {
 	      int answer = KMessageBox::questionYesNo(0,
@@ -1657,7 +1657,7 @@ bool KFileReplacePart::launchNewProjectDialog(const KUrl & startURL)
 
   dlg.saveRCOptions();
 
-  m_config->sync();
+  cg.sync();
 
   slotQuickStringsAdd();
 
@@ -1720,8 +1720,8 @@ bool KFileReplacePart::checkBeforeOperation()
 
 bool KFileReplacePart::dontAskAgain()
 {
-  m_config->setGroup("Notification Messages");
-  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, QString("no"));
+  cg.setGroup("Notification Messages");
+  QString dontAskAgain = cg.readEntry(rcDontAskAgain, QString("no"));
   if(dontAskAgain == "yes")
     return true;
   else
