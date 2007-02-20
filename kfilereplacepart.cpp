@@ -750,13 +750,13 @@ void KFileReplacePart::loadOptionsFromRC()
 
 void KFileReplacePart::loadOptions()
 {
-    KConfigGroup cg( m_config, "General Options");
+  KConfigGroup cg( m_config, "General Options");
 
   m_option->m_recentStringFileList = cg.readEntry(rcRecentFiles, QStringList() );
 
   m_option->m_searchingOnlyMode = cg.readEntry(rcSearchMode,SearchModeOption);
 
-  cg.setGroup("Options");
+  cg.changeGroup( "Options" );
 
   m_option->m_encoding = cg.readEntry(rcEncoding, QString(EncodingOption)).toLatin1();
   m_option->m_recursive = cg.readEntry(rcRecursive, RecursiveOption);
@@ -771,7 +771,7 @@ void KFileReplacePart::loadOptions()
   m_option->m_ignoreHidden = cg.readEntry(rcIgnoreHidden, IgnoreHiddenOption);
   m_option->m_ignoreFiles = cg.readEntry(rcIgnoreFiles, IgnoreFilesOption);
 
-  cg.setGroup("Notification Messages");
+  cg.changeGroup("Notification Messages");
 
   m_option->m_notifyOnErrors  = cg.readEntry(rcNotifyOnErrors, true);
 
@@ -785,7 +785,7 @@ void KFileReplacePart::loadOptions()
 
 void KFileReplacePart::loadFileSizeOptions()
 {
-  cg.setGroup("Size options");
+  KConfigGroup cg( m_config,"Size options");
 
   m_option->m_minSize = cg.readEntry(rcMinFileSize, FileSizeOption);
   m_option->m_maxSize = cg.readEntry(rcMaxFileSize, FileSizeOption);
@@ -793,7 +793,7 @@ void KFileReplacePart::loadFileSizeOptions()
 
 void KFileReplacePart::loadDateAccessOptions()
 {
-  cg.setGroup("Access options");
+  KConfigGroup cg( m_config,"Access options");
 
   m_option->m_dateAccess = cg.readEntry(rcValidAccessDate, ValidAccessDateOption);
   m_option->m_minDate = cg.readEntry(rcMinDate, AccessDateOption);
@@ -802,7 +802,7 @@ void KFileReplacePart::loadDateAccessOptions()
 
 void KFileReplacePart::loadOwnerOptions()
 {
-  cg.setGroup("Owner options");
+  KConfigGroup cg( m_config,"Owner options");
 
   QStringList ownerList = cg.readEntry(rcOwnerUser, OwnerOption).split(",");
   if(ownerList.value(0) == "true")
@@ -828,7 +828,7 @@ void KFileReplacePart::loadOwnerOptions()
 
 void KFileReplacePart::loadLocationsList()
 {
-  cg.setGroup("Directories");
+  KConfigGroup cg( m_config,"Directories");
   #if KDE_IS_VERSION(3,1,3)
   QString locationsEntryList = cg.readPathEntry(rcDirectoriesList);
   #else
@@ -843,7 +843,7 @@ void KFileReplacePart::loadLocationsList()
 
 void KFileReplacePart::loadFiltersList()
 {
-  cg.setGroup("Filters");
+  KConfigGroup cg( m_config,"Filters");
   #if KDE_IS_VERSION(3,1,3)
   QString filtersEntryList = cg.readPathEntry(rcFiltersList);
   #else
@@ -858,7 +858,7 @@ void KFileReplacePart::loadFiltersList()
 
 void KFileReplacePart::loadBackupExtensionOptions()
 {
-  cg.setGroup("Options");
+  KConfigGroup cg( m_config,"Options");
   QStringList bkList = cg.readEntry(rcBackupExtension, BackupExtensionOption).split(",");
   if(bkList[0] == "true")
     m_option->m_backup = true;
@@ -881,12 +881,12 @@ void KFileReplacePart::saveOptionsToRC()
 
 void KFileReplacePart::saveOptions()
 {
-  cg.setGroup("General Options");
+  KConfigGroup cg( m_config,"General Options");
 
   cg.writeEntry(rcRecentFiles, m_option->m_recentStringFileList);
   cg.writeEntry(rcSearchMode,m_option->m_searchingOnlyMode);
 
-  cg.setGroup("Options");
+  cg.changeGroup("Options");
 
   cg.writeEntry(rcEncoding, m_option->m_encoding);
   cg.writeEntry(rcRecursive, m_option->m_recursive);
@@ -900,7 +900,7 @@ void KFileReplacePart::saveOptions()
   cg.writeEntry(rcIgnoreHidden, m_option->m_ignoreHidden);
   cg.writeEntry(rcIgnoreFiles, m_option->m_ignoreFiles);
 
-  cg.setGroup("Notification Messages");
+  cg.changeGroup("Notification Messages");
   cg.writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
   if(cg.readEntry(rcDontAskAgain,QString("no")) == "yes")
     cg.writeEntry(rcAskConfirmReplace, false);
@@ -912,7 +912,7 @@ void KFileReplacePart::saveOptions()
 
 void KFileReplacePart::saveFileSizeOptions()
 {
-  cg.setGroup("Size options");
+  KConfigGroup cg( m_config,"Size options");
 
   cg.writeEntry(rcMaxFileSize, m_option->m_maxSize);
   cg.writeEntry(rcMinFileSize, m_option->m_minSize);
@@ -922,7 +922,7 @@ void KFileReplacePart::saveFileSizeOptions()
 
 void KFileReplacePart::saveDateAccessOptions()
 {
-  cg.setGroup("Access options");
+  KConfigGroup cg( m_config,"Access options");
 
   cg.writeEntry(rcValidAccessDate, m_option->m_dateAccess);
   cg.writeEntry(rcMinDate, m_option->m_minDate);
@@ -933,7 +933,7 @@ void KFileReplacePart::saveDateAccessOptions()
 
 void KFileReplacePart::saveOwnerOptions()
 {
-  cg.setGroup("Owner options");
+  KConfigGroup cg( m_config,"Owner options");
 
   QString list;
   if(m_option->m_ownerUserIsChecked)
@@ -966,21 +966,21 @@ void KFileReplacePart::saveOwnerOptions()
 
 void KFileReplacePart::saveLocationsList()
 {
-  cg.setGroup("Directories");
+  KConfigGroup cg( m_config,"Directories");
   cg.writeEntry(rcDirectoriesList, m_option->m_directories);
   cg.sync();
 }
 
 void KFileReplacePart::saveFiltersList()
 {
-  cg.setGroup("Filters");
+  KConfigGroup cg( m_config,"Filters");
   cg.writeEntry(rcFiltersList, m_option->m_filters);
   cg.sync();
 }
 
 void KFileReplacePart::saveBackupExtensionOptions()
 {
-  cg.setGroup("Options");
+  KConfigGroup cg( m_config,"Options");
   QString bkOptions;
   if(m_option->m_backup)
     bkOptions = "true," + m_option->m_backupExtension;
@@ -1657,7 +1657,7 @@ bool KFileReplacePart::launchNewProjectDialog(const KUrl & startURL)
 
   dlg.saveRCOptions();
 
-  cg.sync();
+  m_config->sync();
 
   slotQuickStringsAdd();
 
@@ -1720,7 +1720,7 @@ bool KFileReplacePart::checkBeforeOperation()
 
 bool KFileReplacePart::dontAskAgain()
 {
-  cg.setGroup("Notification Messages");
+  KConfigGroup cg( m_config, "Notification Messages");
   QString dontAskAgain = cg.readEntry(rcDontAskAgain, QString("no"));
   if(dontAskAgain == "yes")
     return true;
