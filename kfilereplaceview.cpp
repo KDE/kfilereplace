@@ -508,7 +508,7 @@ void KFileReplaceView::initGUI()
 
 
 
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("fileopen")),
+  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("document-open")),
                            i18n("&Open"),
                            this,
                            SLOT(slotResultOpen()));
@@ -527,16 +527,16 @@ void KFileReplaceView::initGUI()
                                SLOT(slotResultEdit()));
     }
 
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("up")),
+  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("go-up")),
                            i18n("Open Parent &Folder"),
                            this,
                            SLOT(slotResultDirOpen()));
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("editdelete")),
+  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("edit-delete")),
                            i18n("&Delete"),
                            this,
                            SLOT(slotResultDelete()));
   m_menuResult->insertSeparator();
-  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("info")),
+  m_menuResult->insertItem(SmallIconSet(QString::fromLatin1("document-properties")),
                            i18n("&Properties"),
                            this,
                            SLOT(slotResultProperties()));

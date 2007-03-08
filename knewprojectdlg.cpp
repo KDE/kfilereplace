@@ -207,7 +207,7 @@ void KNewProjectDlg::slotEnableChbBackup(bool b)
 //PRIVATE
 void KNewProjectDlg::initGUI()
 {
-  QIcon iconSet = SmallIconSet("fileopen");
+  QIcon iconSet = SmallIconSet("document-open");
   QPixmap pixMap = iconSet.pixmap( QIcon::Small, QIcon::Normal );
 
   m_pbLocation->setIconSet(iconSet);

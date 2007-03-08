@@ -59,8 +59,8 @@ KAddStringDlg::KAddStringDlg(RCOptions* info, bool wantEdit, QWidget *parent, co
 //PRIVATE
 void KAddStringDlg::initGUI()
 {
-  m_pbAdd->setIconSet(SmallIconSet(QString::fromLatin1("forward")));
-  m_pbDel->setIconSet(SmallIconSet(QString::fromLatin1("back")));
+  m_pbAdd->setIconSet(SmallIconSet(QString::fromLatin1("go-next")));
+  m_pbDel->setIconSet(SmallIconSet(QString::fromLatin1("go-previous")));
 
   m_stack->addWidget(m_stringView);
   m_stack->addWidget(m_stringView_2);

@@ -589,10 +589,10 @@ void KFileReplacePart::initGUI()
     action  = new KAction(KIcon("filereplace"), i18n("&Replace"), this);
     actionCollection()->addAction("replace", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotReplacingOperation()));
-    action  = new KAction(KIcon("stop"), i18n("Sto&p"), this);
+    action  = new KAction(KIcon("process-stop"), i18n("Sto&p"), this);
     actionCollection()->addAction("stop", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStop()));
-    action  = new KAction(KIcon("filesaveas"), i18n("Cre&ate Report File..."), this);
+    action  = new KAction(KIcon("document-save-as"), i18n("Cre&ate Report File..."), this);
     actionCollection()->addAction("save_results", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotCreateReport()));
 
@@ -604,13 +604,13 @@ void KFileReplacePart::initGUI()
     action  = new KAction(KIcon("editremove"), i18n("&Delete String"), this);
     actionCollection()->addAction("strings_del", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsDeleteItem()));
-    action  = new KAction(KIcon("editdelete"), i18n("&Empty Strings List"), this);
+    action  = new KAction(KIcon("edit-delete"), i18n("&Empty Strings List"), this);
     actionCollection()->addAction("strings_empty", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsEmpty()));
     action  = new KAction(KIcon("edit"), i18n("Edit Selected String..."), this);
     actionCollection()->addAction("strings_edit", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsEdit()));
-    action  = new KAction(KIcon("filesaveas"), i18n("&Save Strings List to File..."), this);
+    action  = new KAction(KIcon("document-save-as"), i18n("&Save Strings List to File..."), this);
     actionCollection()->addAction("strings_save", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsSave()));
     action  = new KAction(KIcon("unsortedList"), i18n("&Load Strings List From File..."), this);
@@ -618,7 +618,7 @@ void KFileReplacePart::initGUI()
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsLoad()));
   KRecentFilesAction *recent = actionCollection()->add<KRecentFilesAction>("strings_load_recent");
   recent->setText(i18n("&Load Recent Strings Files"));
-  recent->setIcon(KIcon("fileopen"));
+  recent->setIcon(KIcon("document-open"));
   connect(recent, SIGNAL(urlSelected(const KUrl&)),SLOT(slotOpenRecentStringFile(const KUrl&)));
 
     action  = new KAction(KIcon("invert"), i18n("&Invert Current String (search <--> replace)"), this);
@@ -652,7 +652,7 @@ void KFileReplacePart::initGUI()
     action  = new KAction(KIcon("information"), i18n("&Properties"), this);
     actionCollection()->addAction("results_infos", action );
   connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultProperties()));
-    action  = new KAction(KIcon("filenew"), i18n("&Open"), this);
+    action  = new KAction(KIcon("document-new"), i18n("&Open"), this);
     actionCollection()->addAction("results_openfile", action );
   connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultOpen()));
 
@@ -662,10 +662,10 @@ void KFileReplacePart::initGUI()
     actionCollection()->addAction("results_editfile", action );
       connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultEdit()));
     }
-    action  = new KAction(KIcon("fileopen"), i18n("Open Parent &Folder"), this);
+    action  = new KAction(KIcon("document-open"), i18n("Open Parent &Folder"), this);
     actionCollection()->addAction("results_opendir", action );
   connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultDirOpen()));
-    action  = new KAction(KIcon("editdelete"), i18n("&Delete"), this);
+    action  = new KAction(KIcon("edit-delete"), i18n("&Delete"), this);
     actionCollection()->addAction("results_delete", action );
   connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultDelete()));
     action  = new KAction(i18n("E&xpand Tree"), this);
@@ -677,7 +677,7 @@ void KFileReplacePart::initGUI()
     action  = new KAction(KIcon("kfilereplace"), i18n("&About KFileReplace"), this);
     actionCollection()->addAction("help_about_kfilereplace", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(showAboutApplication()));
-    action  = new KAction(KIcon("help"), i18n("KFileReplace &Handbook"), this);
+    action  = new KAction(KIcon("help-contents"), i18n("KFileReplace &Handbook"), this);
     actionCollection()->addAction("help_kfilereplace", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(appHelpActivated()));
     action  = new KAction(i18n("&Report Bug"), this);
