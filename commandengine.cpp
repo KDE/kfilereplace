@@ -27,7 +27,7 @@
 // KDE
 #include <kuser.h>
 #include <krandomsequence.h>
-#include <kprocess.h>
+#include <k3process.h>
 
 // local
 #include "commandengine.h"
@@ -100,18 +100,18 @@ QString CommandEngine::mathexp(const QString& opt, const QString& arg)
   QString program = "var=("+tempOpt+");print var";
   QString script = "echo '"+program+"' | bc -l;";
 
-  KProcess* proc = new KProcess();
+  K3Process* proc = new K3Process();
 
   proc->setUseShell(true);
 
   *(proc) << script;
 
-   connect(proc, SIGNAL(receivedStdout(KProcess*,char*,int)), this, SLOT(slotGetScriptOutput(KProcess*,char*,int)));
-   connect(proc, SIGNAL(receivedStderr(KProcess*,char*,int)), this, SLOT(slotGetScriptError(KProcess*,char*,int)));
-   connect(proc, SIGNAL(processExited(KProcess*)), this, SLOT(slotProcessExited(KProcess*)));
+   connect(proc, SIGNAL(receivedStdout(K3Process*,char*,int)), this, SLOT(slotGetScriptOutput(K3Process*,char*,int)));
+   connect(proc, SIGNAL(receivedStderr(K3Process*,char*,int)), this, SLOT(slotGetScriptError(K3Process*,char*,int)));
+   connect(proc, SIGNAL(processExited(K3Process*)), this, SLOT(slotProcessExited(K3Process*)));
 
-  //Through slotGetScriptOutput, m_processOutput contains the result of the KProcess call
-   if(!proc->start(KProcess::Block, KProcess::All))
+  //Through slotGetScriptOutput, m_processOutput contains the result of the K3Process call
+   if(!proc->start(K3Process::Block, K3Process::All))
      {
        return QString();
      }
@@ -188,7 +188,7 @@ QString CommandEngine::variableValue(const QString &variable)
 }
 
 //SLOTS
-void CommandEngine::slotGetScriptError(KProcess* proc, char* s, int i)
+void CommandEngine::slotGetScriptError(K3Process* proc, char* s, int i)
 {
   Q_UNUSED(proc);
   Q_UNUSED(proc);
@@ -196,7 +196,7 @@ void CommandEngine::slotGetScriptError(KProcess* proc, char* s, int i)
   if(temp.isEmpty() || temp == "\n") return;
 }
 
-void CommandEngine::slotGetScriptOutput(KProcess* proc, char* s, int i)
+void CommandEngine::slotGetScriptOutput(K3Process* proc, char* s, int i)
 {
   Q_UNUSED(proc);
   Q3CString temp(s,i+1);
@@ -206,7 +206,7 @@ void CommandEngine::slotGetScriptOutput(KProcess* proc, char* s, int i)
   m_processOutput += QString::fromLocal8Bit(temp);
 }
 
-void CommandEngine::slotProcessExited(KProcess* proc)
+void CommandEngine::slotProcessExited(K3Process* proc)
 {
   Q_UNUSED(proc);
 }

@@ -24,7 +24,7 @@ class QString;
 #include <qobject.h>
 
 //KDE
-class KProcess;
+class K3Process;
 
 class CommandEngine : public QObject
 {
@@ -49,9 +49,9 @@ class CommandEngine : public QObject
     QString variableValue(const QString &variable);
 
   private slots:
-    void slotGetScriptOutput(KProcess*,char*,int);
-    void slotGetScriptError(KProcess*,char*,int);
-    void slotProcessExited(KProcess*);
+    void slotGetScriptOutput(K3Process*,char*,int);
+    void slotGetScriptError(K3Process*,char*,int);
+    void slotProcessExited(K3Process*);
 };
 
 #endif // COMMANDENGINE_H
