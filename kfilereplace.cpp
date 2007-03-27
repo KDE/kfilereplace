@@ -76,7 +76,7 @@ void KFileReplace::slotConfigureKeys()
 	KKeyDialog dlg( KKeyChooser::AllActions, KKeyChooser::LetterShortcutsAllowed, this );
     QList<KXMLGUIClient*> clients = guiFactory()->clients();
   	foreach(KXMLGUIClient *client, clients)
-    	dlg.insert ( client->actionCollection());
+    	dlg.addCollection(client->actionCollection());
 	dlg.configure();
 }
 
