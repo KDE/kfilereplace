@@ -18,7 +18,7 @@
 #include <kedittoolbar.h>
 #include <klibloader.h>
 #include <klocale.h>
-#include <kkeydialog.h>
+#include <kshortcutsdialog.h>
 #include <kmessagebox.h>
 #include <kxmlguifactory.h>
 //app includes
@@ -73,7 +73,7 @@ void KFileReplace::openURL(const KUrl &url)
 
 void KFileReplace::slotConfigureKeys()
 {
-	KKeyDialog dlg( KKeyChooser::AllActions, KKeyChooser::LetterShortcutsAllowed, this );
+	KShortcutsDialog dlg( KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsAllowed, this );
     QList<KXMLGUIClient*> clients = guiFactory()->clients();
   	foreach(KXMLGUIClient *client, clients)
     	dlg.addCollection(client->actionCollection());
