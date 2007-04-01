@@ -168,7 +168,7 @@ void KFileReplacePart::slotSearchingOperation()
 
 void KFileReplacePart::slotReplacingOperation()
 {
-  if (KMessageBox::warningContinueCancel(m_w, i18n("<qt>You have selected <b>%1</b> as the encoding of the files.<br>Selecting the correct encoding is very important as if you have files that have some other encoding than the selected one, after a replace you may damage those files.<br><br>In case you do not know the encoding of your files, select <i>utf8</i> and <b>enable</b> the creation of backup files. This setting will autodetect <i>utf8</i> and <i>utf16</i> files, but the changed files will be converted to <i>utf8</i>.</qt>", m_option->m_encoding), i18n("File Encoding Warning"), KStandardGuiItem::cont(), "ShowEncodingWarning") == KMessageBox::Cancel)
+  if (KMessageBox::warningContinueCancel(m_w, i18n("<qt>You have selected <b>%1</b> as the encoding of the files.<br>Selecting the correct encoding is very important as if you have files that have some other encoding than the selected one, after a replace you may damage those files.<br><br>In case you do not know the encoding of your files, select <i>utf8</i> and <b>enable</b> the creation of backup files. This setting will autodetect <i>utf8</i> and <i>utf16</i> files, but the changed files will be converted to <i>utf8</i>.</qt>", m_option->m_encoding), i18n("File Encoding Warning"), KStandardGuiItem::cont(), KStandardGuiItem::cancel(), "ShowEncodingWarning") == KMessageBox::Cancel)
     return;
   if(!checkBeforeOperation())
     return;
