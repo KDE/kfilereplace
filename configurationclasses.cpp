@@ -84,7 +84,7 @@ RCOptions& RCOptions::operator=(const RCOptions& ci)
 }
 
 //ResultViewEntry Class
-ResultViewEntry::ResultViewEntry(QString nkey, QString ndata, bool regexp, bool caseSensitive)
+ResultViewEntry::ResultViewEntry(const QString &nkey, const QString &ndata, bool regexp, bool caseSensitive)
 {
   m_caseSensitive = caseSensitive;
   m_regexp = regexp;

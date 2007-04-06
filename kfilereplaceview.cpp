@@ -74,7 +74,7 @@ QString KFileReplaceView::currentPath()
   return QString(lvi->text(1)+'/'+lvi->text(0));
 }
 
-void KFileReplaceView::showSemaphore(QString s)
+void KFileReplaceView::showSemaphore(const QString &s)
 {
   if(s == "green")
   {

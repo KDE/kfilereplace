@@ -69,7 +69,7 @@ class KFileReplaceView : public KFileReplaceViewWdg
 
   public:
     QString currentPath();
-    void showSemaphore(QString s);
+    void showSemaphore(const QString &s);
     void displayScannedFiles(int filesNumber) { m_lcdFilesNumber->display(QString::number(filesNumber,10)); }
     void stringsInvert(bool invertAll);
     void changeView(bool searchingOnlyMode);

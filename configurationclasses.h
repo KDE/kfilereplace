@@ -148,7 +148,7 @@ class ResultViewEntry
     int m_matchedStringsOccurrence;
 
   public:
-    ResultViewEntry(QString nkey, QString ndata, bool regexp, bool caseSensitive);
+    ResultViewEntry(const QString &nkey, const QString &ndata, bool regexp, bool caseSensitive);
     int lineNumber(const QString& line) const ;
     int columnNumber(const QString& line) const ;
     void incOccurrences();

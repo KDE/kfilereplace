@@ -298,7 +298,7 @@ bool KFileReplaceLib::isAnAccessibleFile(const QString& filePath, const QString&
   return true;
 }
 
-void KFileReplaceLib::setIconForFileEntry(Q3ListViewItem* item, QString path)
+void KFileReplaceLib::setIconForFileEntry(Q3ListViewItem* item, const QString &path)
 {
   QFileInfo fi(path);
   QString extension = fi.extension(),

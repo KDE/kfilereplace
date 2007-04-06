@@ -60,6 +60,6 @@ class KFileReplaceLib
     */
     static bool isAnAccessibleFile(const QString& filePath, const QString& fileName, RCOptions* info);
 
-    static void setIconForFileEntry(Q3ListViewItem* item, QString path);
+    static void setIconForFileEntry(Q3ListViewItem* item, const QString &path);
 };
 #endif // KFILEREPLACEFILELIB_H
