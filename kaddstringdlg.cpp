@@ -16,13 +16,11 @@
  *                                                                         *
  ***************************************************************************/
 // QT
-#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <q3listview.h>
 
-#include <q3widgetstack.h>
 
 // KDE
 #include <kmessagebox.h>

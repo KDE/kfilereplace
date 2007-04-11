@@ -21,10 +21,8 @@
 
 #include <qcheckbox.h>
 #include <qspinbox.h>
-#include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qradiobutton.h>
-#include <q3textedit.h>
 #include <q3listview.h>
 //Added by qt3to4:
 #include <QPixmap>
