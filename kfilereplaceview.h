@@ -18,13 +18,8 @@
 #ifndef KFILEREPLACEVIEW_H
 #define KFILEREPLACEVIEW_H
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 //QT
 #include <qlcdnumber.h>
-#include <q3widgetstack.h>
 class QPixMap;
 
 //KDE
