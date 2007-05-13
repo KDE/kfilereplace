@@ -12,7 +12,6 @@ Type=Application
 DocPath=kfilereplace/index.html
 Terminal=false
 GenericName=Search & Replace Tool
-GenericName[bg]=Търсене и замяна
 GenericName[br]=Ostilh klask hag erlec'hiañ
 GenericName[ca]=Eina cerca i substitueix
 GenericName[cs]=Nástroj pro vyhledání a nahrazení
