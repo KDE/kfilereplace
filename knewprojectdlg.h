@@ -20,7 +20,6 @@
 #define KNEWPROJECTDLG_H
 
 //KDE
-class KConfig;
 
 //local
 #include "knewprojectdlgs.h"

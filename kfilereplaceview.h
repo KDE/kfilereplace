@@ -20,7 +20,6 @@
 
 //QT
 #include <qlcdnumber.h>
-class QPixMap;
 
 //KDE
 class KMenu;

@@ -23,7 +23,6 @@
 
 // KDE
 #include <klocale.h>
-class KlistView;
 
 // local
 #include "configurationclasses.h"
