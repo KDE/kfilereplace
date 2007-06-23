@@ -1,2 +1,2 @@
 #! /usr/bin/env bash
-$XGETTEXT *.cpp -o $podir/kfilereplace.pot
+$XGETTEXT *.cpp *.h -o $podir/kfilereplace.pot
