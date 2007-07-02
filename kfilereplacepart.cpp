@@ -517,23 +517,23 @@ void KFileReplacePart::resetActions()
 //PUBLIC METHODS
 KAboutData* KFileReplacePart::createAboutData()
 {
-  KAboutData * aboutData = new KAboutData("kfilereplacepart",
-                                          I18N_NOOP("KFileReplacePart"),
+  KAboutData * aboutData = new KAboutData("kfilereplacepart", 0,
+                                          ki18n("KFileReplacePart"),
                                           KFR_VERSION,
-                                          I18N_NOOP( "Batch search and replace tool."),
+                                          ki18n( "Batch search and replace tool."),
                                           KAboutData::License_GPL_V2,
-                                          "(C) 1999-2002 Fran�is Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini", I18N_NOOP("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
-  aboutData->addAuthor("Fran�is Dupoux",
-                       I18N_NOOP("Original author of the KFileReplace tool"),
+                                          ki18n("(C) 1999-2002 Fran�is Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini"), ki18n("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
+  aboutData->addAuthor(ki18n("Fran�is Dupoux"),
+                       ki18n("Original author of the KFileReplace tool"),
                        "dupoux@dupoux.com");
-  aboutData->addAuthor("Emiliano Gulmini",
-                       I18N_NOOP("Current maintainer, code cleaner and rewriter"),
+  aboutData->addAuthor(ki18n("Emiliano Gulmini"),
+                       ki18n("Current maintainer, code cleaner and rewriter"),
                        "emi_barbarossa@yahoo.it");
-  aboutData->addAuthor("Andras Mantia",
-                       I18N_NOOP("Co-maintainer, KPart creator"),
+  aboutData->addAuthor(ki18n("Andras Mantia"),
+                       ki18n("Co-maintainer, KPart creator"),
                        "amantia@kde.org");
-  aboutData->addCredit("Heiko Goller",
-                       I18N_NOOP("Original german translator"),
+  aboutData->addCredit(ki18n("Heiko Goller"),
+                       ki18n("Original german translator"),
                        "heiko.goller@tuebingen.mpg.de");
   return aboutData;
 }
