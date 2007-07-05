@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Name=KFileReplace
 Name[hi]=के-फ़ाइल-रिप्लेस
+Name[ne]=बदल्ने केडीई फाइल
 Name[pa]=ਕੇ-ਫਾਇਲ-ਬਦਲੋ
 Name[sk]=KFile zameniť
 Name[sv]=Kfilereplace
@@ -35,6 +36,7 @@ GenericName[ja]=検索および置換ツール
 GenericName[lt]=Paieškos ir keitimo įrankis
 GenericName[ms]=Alatan Cari & Ganti
 GenericName[nds]=Söök- un Utwesselwarktüüch
+GenericName[ne]=खोजी गर्ने र बदल्ने उपरकरण
 GenericName[nl]=Gereedschap voor zoeken en vervangen
 GenericName[pa]=ਖੋਜ ਅਤੇ ਤਬਦੀਲ ਸੰਦ
 GenericName[pl]=Narzędzie do wyszukiwania i zamiany
