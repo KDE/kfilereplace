@@ -17,7 +17,6 @@ set(kfilereplacepart_PART_SRCS
 
 qt4_add_dbus_adaptor( kfilereplacepart_PART_SRCS org.kde.kfilereplace.xml kfilereplacepart.h KFileReplacePart )
 
-kde4_automoc(${kfilereplacepart_PART_SRCS})
 
 kde4_add_ui3_files(kfilereplacepart_PART_SRCS 
    kfilereplaceviewwdg.ui 
@@ -38,7 +37,6 @@ install(TARGETS kfilereplacepart  DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(kfilereplace_SRCS kfilereplace.cpp main.cpp )
 
-kde4_automoc(${kfilereplace_SRCS})
 
 kde4_add_executable(kfilereplace ${kfilereplace_SRCS})
 
