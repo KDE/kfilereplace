@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=KFileReplace
+Name[ne]=बदल्ने केडीई फाइल
 Name[sv]=Kfilereplace
 Name[ta]=Kகோப்பு இடமாற்று
 Name[tg]=KФайлро ҷойгузор кардан
@@ -31,6 +32,7 @@ GenericName[it]=Strumento di ricerca e sostituzione
 GenericName[ja]=検索および置換ツール
 GenericName[lt]=Paieškos ir keitimo įrankis
 GenericName[nds]=Söök- un Utwesselwarktüüch
+GenericName[ne]=खोजी गर्ने र बदल्ने उपरकरण
 GenericName[nl]=Gereedschap voor zoeken en vervangen
 GenericName[pa]=ਖੋਜ ਅਤੇ ਤਬਦੀਲ ਟੂਲ
 GenericName[pl]=Narzędzie do wyszukiwania i zamiany
