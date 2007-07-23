@@ -40,18 +40,18 @@ set(kfilereplace_SRCS kfilereplace.cpp main.cpp )
 
 kde4_add_executable(kfilereplace ${kfilereplace_SRCS})
 
-target_link_libraries(kfilereplace  ${KDE4_KDECORE_LIBS} ${KDE4_KPARTS_LIBS} )
+target_link_libraries(kfilereplace  ${KDE4_KPARTS_LIBS} )
 
 install(TARGETS kfilereplace  DESTINATION ${BIN_INSTALL_DIR} )
 
 
 ########### install files ###############
 
-install( FILES  kfilereplace.desktop  DESTINATION ${XDG_APPS_DIR})
+install( FILES  kfilereplace.desktop  DESTINATION ${XDG_APPS_INSTALL_DIR})
 install( FILES  kfilereplacepartui.rc  DESTINATION ${DATA_INSTALL_DIR}/kfilereplacepart)
 install( FILES  kfilereplaceui.rc  DESTINATION ${DATA_INSTALL_DIR}/kfilereplace)
 install( FILES  kfilereplacepart.desktop  DESTINATION ${SERVICES_INSTALL_DIR})
-install( FILES org.kde.kfilereplace.xml DESTINATION ${DBUS_INTERFACES_DIR} )
+install( FILES org.kde.kfilereplace.xml DESTINATION ${DBUS_INTERFACES_INSTALL_DIR} )
 
 kde4_install_icons( ${ICON_INSTALL_DIR}   )
 
