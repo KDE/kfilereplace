@@ -288,7 +288,7 @@ void KFileReplaceView::slotResultDelete()
     {
       QFile fi;
       int answer = KMessageBox::warningContinueCancel(this, i18n("Do you really want to delete %1?", currItem),
-                                                      QString::null,KStandardGuiItem::del());
+                                                      QString::null,KStandardGuiItem::del());	//krazy:exclude=nullstrassign for old broken gcc
 
       if(answer == KMessageBox::Continue)
         {
@@ -347,7 +347,7 @@ void KFileReplaceView::slotQuickStringsAdd(const QString& quickSearch, const QSt
     KeyValueMap map;
     if(quickReplace.isEmpty())
     {
-      map[quickSearch] = QString::null;
+      map[quickSearch] = QString::null;	//krazy:exclude=nullstrassign for old broken gcc
       m_option->m_searchingOnlyMode = true;
     }
     else
@@ -650,7 +650,7 @@ void KFileReplaceView::setMap()
   while(i != 0)
   {
     if(m_option->m_searchingOnlyMode)
-      map[i->text(0)] = QString::null;
+      map[i->text(0)] = QString::null;	//krazy:exclude=nullstrassign for old broken gcc
     else
       map[i->text(0)] = i->text(1);
     i = i->nextSibling();

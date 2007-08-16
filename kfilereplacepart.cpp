@@ -451,7 +451,7 @@ void KFileReplacePart::showAboutApplication()
 
 void KFileReplacePart::appHelpActivated()
 {
-  KToolInvocation::invokeHelp(QString::null, "kfilereplace");
+  KToolInvocation::invokeHelp(QString::null, "kfilereplace");	//krazy:exclude=nullstrassign for old broken gcc
 }
 
 void KFileReplacePart::reportBug()
@@ -1085,7 +1085,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
   QFile currentFile(oldPathString);
   if(!currentFile.open(QIODevice::ReadOnly))
     {
-      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFileName),QString::null, rcNotifyOnErrors);
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFileName),QString::null, rcNotifyOnErrors);	//krazy:exclude=nullstrassign for old broken gcc
       return ;
     }
   QTextStream currentStream(&currentFile);
@@ -1124,7 +1124,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
           QFile newFile(oldPathString);
           if(!newFile.open(QIODevice::WriteOnly))
             {
-              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", oldFileName),QString::null, rcNotifyOnErrors);
+              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", oldFileName),QString::null, rcNotifyOnErrors);	//krazy:exclude=nullstrassign for old broken gcc
               return ;
             }
           QTextStream newStream(&newFile);
@@ -1173,7 +1173,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
 
   if (!oldFile.open(QIODevice::ReadOnly))
     {
-      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFile.name()),QString::null, rcNotifyOnErrors);
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFile.name()),QString::null, rcNotifyOnErrors);	//krazy:exclude=nullstrassign for old broken gcc
       return ;
     }
 
@@ -1202,7 +1202,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
 	  QFile newFile(oldPathString);
           if(!newFile.open(QIODevice::WriteOnly))
             {
-              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", newFile.name()),QString::null, rcNotifyOnErrors);
+              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", newFile.name()),QString::null, rcNotifyOnErrors);	//krazy:exclude=nullstrassign for old broken gcc
               return ;
             }
           QTextStream newStream( &newFile );
@@ -1393,7 +1393,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
 
   if(!file.open(QIODevice::ReadOnly))
     {
-      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", fileName), QString::null, rcNotifyOnErrors);
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", fileName), QString::null, rcNotifyOnErrors);	//krazy:exclude=nullstrassign for old broken gcc
       return ;
     }
   // Creates a stream with the file

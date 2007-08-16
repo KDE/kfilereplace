@@ -135,7 +135,7 @@ void KAddStringDlg::saveViewContentIntoMap()
   while(i != 0)
     {
       if(m_option->m_searchingOnlyMode)
-        m_currentMap[i->text(0)] = QString::null;
+        m_currentMap[i->text(0)] = QString::null;	//krazy:exclude=nullstrassign for old broken gcc
       else
         m_currentMap[i->text(0)] = i->text(1);
       i = i->nextSibling();
@@ -213,7 +213,7 @@ void KAddStringDlg::slotAddStringToView()
           Q3ListViewItem* lvi = new Q3ListViewItem(m_sv);
           lvi->setMultiLinesEnabled(true);
           lvi->setText(0,text);
-          m_currentMap[text] = QString::null;
+          m_currentMap[text] = QString::null;	//krazy:exclude=nullstrassign for old broken gcc
           m_edSearch->clear();
         }
     }
@@ -265,7 +265,7 @@ void KAddStringDlg::slotDeleteStringFromView()
 
 void KAddStringDlg::slotHelp()
 {
-  KToolInvocation::invokeHelp(QString::null, "kfilereplace");
+  KToolInvocation::invokeHelp(QString::null, "kfilereplace");	//krazy:exclude=nullstrassign for old broken gcc
 }
 
 #include "kaddstringdlg.moc"

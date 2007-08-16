@@ -55,7 +55,7 @@ class KNewProjectDlg : public KNewProjectDlgS
     void slotEnableChbUser(bool b);
     void slotEnableChbGroup(bool b);
     void slotEnableChbBackup(bool b);
-    void slotHelp(){ KToolInvocation::invokeHelp(QString::null, "kfilereplace"); }
+    void slotHelp(){ KToolInvocation::invokeHelp(QString::null, "kfilereplace"); }	//krazy:exclude=nullstrassign for old broken gcc
 
   private:
     void initGUI();
