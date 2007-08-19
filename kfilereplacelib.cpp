@@ -54,10 +54,10 @@ QString KFileReplaceLib::formatFullPath(const QString& basePath, const QString &
   QString fullPath = basePath;
   QString fname = fileName;
 
-  if (fname.startsWith("/")) // skip beginning '/'
+  if (fname.startsWith('/')) // skip beginning '/'
     fname = fname.remove(0,1);
 
-  if (fullPath.endsWith("/"))
+  if (fullPath.endsWith('/'))
     fullPath.append(fname);
   else
     fullPath.append('/'+fname);

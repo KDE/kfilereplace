@@ -35,7 +35,7 @@ class KNewProjectDlg : public KNewProjectDlgS
     RCOptions* m_option;
 
   public:
-    KNewProjectDlg(RCOptions* info, QWidget *parent=0, const char *name=0);
+    explicit KNewProjectDlg(RCOptions* info, QWidget *parent=0, const char *name=0);
     ~KNewProjectDlg();
 
   public:
