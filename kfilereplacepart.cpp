@@ -48,6 +48,7 @@
 #include <kactioncollection.h>
 #include <ktoggleaction.h>
 #include <krecentfilesaction.h>
+#include <kio/job.h>
 
 // local
 #include "kfilereplacelib.h"
@@ -1113,7 +1114,8 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
     {
       if(atLeastOneStringFound)
         {
-          KIO::NetAccess::file_copy(KUrl(oldPathString), KUrl(oldPathString + backupExtension), -1, true);
+          KIO::FileCopyJob * job = KIO::file_copy(KUrl(oldPathString), KUrl(oldPathString + backupExtension), -1, KIO::Overwrite);
+	  job->exec();
       	}
     }
 
