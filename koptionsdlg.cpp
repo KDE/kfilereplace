@@ -2,7 +2,7 @@
                           koptionsdlg.cpp  -  description
                              -------------------
     begin                : Tue Dec 28 1999
-    copyright            : (C) 1999 by Fran�is Dupoux
+    copyright            : (C) 1999 by Franï¿½is Dupoux
                            (C) 2004 Emiliano Gulmini <emi_barbarossa@yahoo.it>
     email                : dupoux@dupoux.com
  ***************************************************************************/
@@ -105,32 +105,34 @@ void KOptionsDlg::slotChbBackup(bool b)
 
 void KOptionsDlg::slotChbConfirmStrings(bool b)
 {
+  KConfigGroup grp(m_config, m_config->group());
   if(b)
   {
     m_chbShowConfirmDialog->setEnabled(true);
     m_chbShowConfirmDialog->setChecked(true);
     m_config->setGroup("Notification Messages");
-    m_config->writeEntry(rcDontAskAgain,"no");
+    grp.writeEntry(rcDontAskAgain,"no");
   }
   else
   {
     m_chbShowConfirmDialog->setEnabled(false);
     m_chbShowConfirmDialog->setChecked(false);
     m_config->setGroup("Notification Messages");
-    m_config->writeEntry(rcDontAskAgain,"yes");
+    grp.writeEntry(rcDontAskAgain,"yes");
   }
 }
 
 void KOptionsDlg::slotChbShowConfirmDialog(bool b)
 {
+  KConfigGroup grp(m_config, "Notification Messages");
   m_config->setGroup("Notification Messages");
   if(b)
   {
-    m_config->writeEntry(rcDontAskAgain,"no");
+    grp.writeEntry(rcDontAskAgain,"no");
   }
   else
   {
-    m_config->writeEntry(rcDontAskAgain,"yes");
+    grp.writeEntry(rcDontAskAgain,"yes");
   }
 }
 
@@ -138,10 +140,11 @@ void KOptionsDlg::slotChbShowConfirmDialog(bool b)
 void KOptionsDlg::initGUI()
 {
   m_config->sync();
+  KConfigGroup grp(m_config, "Notification Messages");
   m_config->setGroup("Notification Messages");
-  m_option->m_notifyOnErrors = m_config->readEntry(rcNotifyOnErrors, true);
+  m_option->m_notifyOnErrors = grp.readEntry(rcNotifyOnErrors, true);
 
-  QString dontAskAgain = m_config->readEntry(rcDontAskAgain, QString("no"));
+  QString dontAskAgain = grp.readEntry(rcDontAskAgain, QString("no"));
 
   m_chbConfirmStrings->setChecked(m_option->m_askConfirmReplace);
 
@@ -212,8 +215,9 @@ void KOptionsDlg::saveRCOptions()
   m_option->m_askConfirmReplace = m_chbConfirmStrings->isChecked();
   m_option->m_notifyOnErrors = m_chbNotifyOnErrors->isChecked();
 
+  KConfigGroup grp(m_config, "Notification Messages");
   m_config->setGroup("Notification Messages");
-  m_config->writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
+  grp.writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
 
   m_config->sync();
 }
