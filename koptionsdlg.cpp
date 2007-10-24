@@ -105,19 +105,17 @@ void KOptionsDlg::slotChbBackup(bool b)
 
 void KOptionsDlg::slotChbConfirmStrings(bool b)
 {
-  KConfigGroup grp(m_config, m_config->group());
+  KConfigGroup grp(m_config, "Notification Messages");
   if(b)
   {
     m_chbShowConfirmDialog->setEnabled(true);
     m_chbShowConfirmDialog->setChecked(true);
-    m_config->setGroup("Notification Messages");
     grp.writeEntry(rcDontAskAgain,"no");
   }
   else
   {
     m_chbShowConfirmDialog->setEnabled(false);
     m_chbShowConfirmDialog->setChecked(false);
-    m_config->setGroup("Notification Messages");
     grp.writeEntry(rcDontAskAgain,"yes");
   }
 }
@@ -125,7 +123,6 @@ void KOptionsDlg::slotChbConfirmStrings(bool b)
 void KOptionsDlg::slotChbShowConfirmDialog(bool b)
 {
   KConfigGroup grp(m_config, "Notification Messages");
-  m_config->setGroup("Notification Messages");
   if(b)
   {
     grp.writeEntry(rcDontAskAgain,"no");
@@ -141,7 +138,6 @@ void KOptionsDlg::initGUI()
 {
   m_config->sync();
   KConfigGroup grp(m_config, "Notification Messages");
-  m_config->setGroup("Notification Messages");
   m_option->m_notifyOnErrors = grp.readEntry(rcNotifyOnErrors, true);
 
   QString dontAskAgain = grp.readEntry(rcDontAskAgain, QString("no"));
@@ -216,7 +212,6 @@ void KOptionsDlg::saveRCOptions()
   m_option->m_notifyOnErrors = m_chbNotifyOnErrors->isChecked();
 
   KConfigGroup grp(m_config, "Notification Messages");
-  m_config->setGroup("Notification Messages");
   grp.writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
 
   m_config->sync();
