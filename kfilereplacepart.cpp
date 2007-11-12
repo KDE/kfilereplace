@@ -759,7 +759,7 @@ void KFileReplacePart::loadOptions()
 
   cg.changeGroup( "Options" );
 
-  m_option->m_encoding = cg.readEntry(rcEncoding, QString(EncodingOption)).toLatin1();
+  m_option->m_encoding = cg.readEntry(rcEncoding, EncodingOption).toLatin1();
   m_option->m_recursive = cg.readEntry(rcRecursive, RecursiveOption);
 
   m_option->m_caseSensitive = cg.readEntry(rcCaseSensitive, CaseSensitiveOption);
