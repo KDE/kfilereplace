@@ -598,11 +598,11 @@ void KFileReplacePart::initGUI()
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotCreateReport()));
 
   // Strings
-    action  = new KAction(KIcon("editadd"), i18n("&Add String..."), this);
+    action  = new KAction(KIcon("edit-add"), i18n("&Add String..."), this);
     actionCollection()->addAction("strings_add", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsAdd()));
 
-    action  = new KAction(KIcon("editremove"), i18n("&Delete String"), this);
+    action  = new KAction(KIcon("edit-delete"), i18n("&Delete String"), this);
     actionCollection()->addAction("strings_del", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsDeleteItem()));
     action  = new KAction(KIcon("edit-delete"), i18n("&Empty Strings List"), this);
