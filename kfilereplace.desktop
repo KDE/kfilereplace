@@ -1,5 +1,4 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=KFileReplace
 Name[ne]=केडीई फाइल प्रतिस्थापन
 Name[sv]=Kfilereplace
@@ -10,7 +9,7 @@ Name[x-test]=xxKFileReplacexx
 Exec=kfilereplace %i -caption "%c"
 Icon=kfilereplace
 Type=Application
-DocPath=kfilereplace/index.html
+X-DocPath=kfilereplace/index.html
 Terminal=false
 GenericName=Search & Replace Tool
 GenericName[br]=Ostilh klask hag erlec'hiañ

@@ -1,9 +1,8 @@
 [Desktop Entry]
 Type=Service
-Encoding=UTF-8
 MimeType=inode/directory;
 Icon=kfilereplace.png
-ServiceTypes=KParts/ReadOnlyPart
+X-KDE-ServiceTypes=KParts/ReadOnlyPart
 X-KDE-Library=libkfilereplacepart
 Comment=A batch search and replace tool
 Comment[ca]=Una eina per a la cerca i substitució per lots
