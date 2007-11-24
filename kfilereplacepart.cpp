@@ -578,7 +578,7 @@ void KFileReplacePart::initGUI()
    }
   // File
   QAction *action;
-    action  = new KAction(KIcon("projectopen"), i18n("Customize Search/Replace Session..."), this);
+    action  = new KAction(KIcon("project-open"), i18n("Customize Search/Replace Session..."), this);
     actionCollection()->addAction("new_project", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotSetNewParameters()));
     action  = new KAction(KIcon("filesearch"), i18n("&Search"), this);
@@ -614,7 +614,7 @@ void KFileReplacePart::initGUI()
     action  = new KAction(KIcon("document-save-as"), i18n("&Save Strings List to File..."), this);
     actionCollection()->addAction("strings_save", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsSave()));
-    action  = new KAction(KIcon("unsortedList"), i18n("&Load Strings List From File..."), this);
+    action  = new KAction(KIcon("format-list-unordered"), i18n("&Load Strings List From File..."), this);
     actionCollection()->addAction("strings_load", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsLoad()));
   KRecentFilesAction *recent = actionCollection()->add<KRecentFilesAction>("strings_load_recent");
@@ -650,7 +650,7 @@ void KFileReplacePart::initGUI()
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotOptionPreferences()));
 
   // Results
-    action  = new KAction(KIcon("information"), i18n("&Properties"), this);
+    action  = new KAction(KIcon("document-properties"), i18n("&Properties"), this);
     actionCollection()->addAction("results_infos", action );
   connect(action, SIGNAL(triggered(bool) ), m_view, SLOT(slotResultProperties()));
     action  = new KAction(KIcon("document-new"), i18n("&Open"), this);
