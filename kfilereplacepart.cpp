@@ -608,7 +608,7 @@ void KFileReplacePart::initGUI()
     action  = new KAction(KIcon("edit-delete"), i18n("&Empty Strings List"), this);
     actionCollection()->addAction("strings_empty", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsEmpty()));
-    action  = new KAction(KIcon("edit"), i18n("Edit Selected String..."), this);
+    action  = new KAction(KIcon("object-edit"), i18n("Edit Selected String..."), this);
     actionCollection()->addAction("strings_edit", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsEdit()));
     action  = new KAction(KIcon("document-save-as"), i18n("&Save Strings List to File..."), this);
