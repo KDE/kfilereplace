@@ -581,13 +581,13 @@ void KFileReplacePart::initGUI()
     action  = new KAction(KIcon("project-open"), i18n("Customize Search/Replace Session..."), this);
     actionCollection()->addAction("new_project", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotSetNewParameters()));
-    action  = new KAction(KIcon("filesearch"), i18n("&Search"), this);
+    action  = new KAction(KIcon("edit-find"), i18n("&Search"), this);
     actionCollection()->addAction("search", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotSearchingOperation()));
     action  = new KAction(KIcon("filesimulate"), i18n("S&imulate"), this);
     actionCollection()->addAction("file_simulate", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotSimulatingOperation()));
-    action  = new KAction(KIcon("filereplace"), i18n("&Replace"), this);
+    action  = new KAction(KIcon("edit-find-replace"), i18n("&Replace"), this);
     actionCollection()->addAction("replace", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotReplacingOperation()));
     action  = new KAction(KIcon("process-stop"), i18n("Sto&p"), this);
@@ -598,34 +598,34 @@ void KFileReplacePart::initGUI()
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotCreateReport()));
 
   // Strings
-    action  = new KAction(KIcon("edit-add"), i18n("&Add String..."), this);
+    action  = new KAction(KIcon("list-add"), i18n("&Add String..."), this);
     actionCollection()->addAction("strings_add", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsAdd()));
 
-    action  = new KAction(KIcon("edit-delete"), i18n("&Delete String"), this);
+    action  = new KAction(KIcon("list-remove"), i18n("&Delete String"), this);
     actionCollection()->addAction("strings_del", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsDeleteItem()));
-    action  = new KAction(KIcon("edit-delete"), i18n("&Empty Strings List"), this);
+    action  = new KAction(KIcon("edit-clear"), i18n("&Empty Strings List"), this);
     actionCollection()->addAction("strings_empty", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsEmpty()));
-    action  = new KAction(KIcon("object-edit"), i18n("Edit Selected String..."), this);
+    action  = new KAction(KIcon("document-properties"), i18n("Edit Selected String..."), this);
     actionCollection()->addAction("strings_edit", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsEdit()));
     action  = new KAction(KIcon("document-save-as"), i18n("&Save Strings List to File..."), this);
     actionCollection()->addAction("strings_save", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsSave()));
-    action  = new KAction(KIcon("format-list-unordered"), i18n("&Load Strings List From File..."), this);
+    action  = new KAction(KIcon("document-import"), i18n("&Load Strings List From File..."), this);
     actionCollection()->addAction("strings_load", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsLoad()));
   KRecentFilesAction *recent = actionCollection()->add<KRecentFilesAction>("strings_load_recent");
   recent->setText(i18n("&Load Recent Strings Files"));
-  recent->setIcon(KIcon("document-open"));
+  recent->setIcon(KIcon("document-open-recent"));
   connect(recent, SIGNAL(urlSelected(const KUrl&)),SLOT(slotOpenRecentStringFile(const KUrl&)));
 
-    action  = new KAction(KIcon("invert"), i18n("&Invert Current String (search <--> replace)"), this);
+    action  = new KAction(KIcon("object-flip-horizontal"), i18n("&Invert Current String (search <--> replace)"), this);
     actionCollection()->addAction("strings_invert", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsInvertCur()));
-    action  = new KAction(KIcon("invert"), i18n("&Invert All Strings (search <--> replace)"), this);
+    action  = new KAction(KIcon("object-flip-horizontal"), i18n("&Invert All Strings (search <--> replace)"), this);
     actionCollection()->addAction("strings_invert_all", action );
   connect(action, SIGNAL(triggered(bool) ), SLOT(slotStringsInvertAll()));
 
