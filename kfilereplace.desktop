@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=KFileReplace
 Name[ne]=केडीई फाइल प्रतिस्थापन
+Name[sk]=KFile zameniť
 Name[sv]=Kfilereplace
 Name[ta]=Kகோப்பு இடமாற்று
 Name[tg]=KФайлро ҷойгузор кардан
@@ -39,6 +40,7 @@ GenericName[pl]=Narzędzie do wyszukiwania i zamiany
 GenericName[pt]=Ferramenta de Procura e Substituição
 GenericName[pt_BR]=Ferramenta de Procura & Substituição
 GenericName[ru]=Поиск и замена
+GenericName[sk]=Nájsť a zameniť
 GenericName[sl]=Orodje za iskanje in zamenjavo
 GenericName[sr]=Алат за претрагу и замену
 GenericName[sr@latin]=Alat za pretragu i zamenu
