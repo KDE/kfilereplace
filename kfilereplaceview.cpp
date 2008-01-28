@@ -190,7 +190,8 @@ void KFileReplaceView::slotResultProperties()
   QString currItem = currentPath();
   if(! currItem.isEmpty())
     {
-      KPropertiesDialog dlg(KUrl(currItem),this);
+      KUrl item_url(currItem);
+      KPropertiesDialog dlg(item_url, this);
       dlg.exec();
       m_lviCurrent = 0;
     }
