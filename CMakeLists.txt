@@ -42,7 +42,7 @@ kde4_add_executable(kfilereplace ${kfilereplace_SRCS})
 
 target_link_libraries(kfilereplace  ${KDE4_KPARTS_LIBS} )
 
-install(TARGETS kfilereplace  DESTINATION ${BIN_INSTALL_DIR} )
+install(TARGETS kfilereplace  ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
 ########### install files ###############
