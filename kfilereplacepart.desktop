@@ -1,6 +1,5 @@
 [Desktop Entry]
 Type=Service
-Encoding=UTF-8
 MimeType=inode/directory
 Icon=kfilereplace.png
 ServiceTypes=KParts/ReadOnlyPart
