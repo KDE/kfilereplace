@@ -43,7 +43,7 @@ namespace whatthisNameSpace
 
   const QString edDateMaxWhatthis = i18n("Insert the maximum value for file access date that you want to search, or leave it unchecked if you don't a maximum limit.");
 
-  const QString cbDateValidWhatthis = i18n("Select  \"writing\" if you want to use the date of the last modification, or  \"reading\" to use the the date of the last access.");
+  const QString cbDateValidWhatthis = i18n("Select  \"writing\" if you want to use the date of the last modification, or  \"reading\" to use the date of the last access.");
 
   const QString chbDateMinWhatthis = i18n("Minimum value for access date.");
 
