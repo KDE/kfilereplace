@@ -53,7 +53,7 @@ const QString rcBackupExtension = "Backup file extension";
 const QString rcIgnoreFiles = "Ignore files if there is no match";
 const QString rcNotifyOnErrors = "NotifyOnErrors";
 const QString rcAskConfirmReplace = "Ask confirmation on replace";
-const QString rcDontAskAgain = "Dont ask again";
+const QString rcDontAskAgain = "Don't ask again";
 // Default configuration options
 const QString EncodingOption = "utf8";
 const bool RecursiveOption = true;
