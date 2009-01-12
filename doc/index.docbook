@@ -450,7 +450,7 @@
 
 <chapter id="kfilereplace-features">
  <title>&kfilereplace; features</title>
- <para>This chapter provides informations about some useful capabilities of &kfilereplace;.</para>
+ <para>This chapter provides information about some useful capabilities of &kfilereplace;.</para>
  <sect1 id="kfilereplace-the-kfr-file">
   <title>How to save your string list</title>
   <para>When you want to reuse a list of strings you can save it in a <literal role="extension">xml</literal> file. To do this select from the menubar <menuchoice><guimenu>Search/Replace</guimenu><guisubmenu>Strings</guisubmenu><guimenuitem>Save Strings List to File</guimenuitem></menuchoice>. When you save a list, a simple <literal role="extension">xml</literal> file with extension <literal role="extension">kfr</literal> is created. To load a <literal role="extension">kfr</literal> file select from menubar <menuchoice><guimenu>Search/Replace</guimenu><guisubmenu>Strings</guisubmenu><guimenuitem>Load Strings List from File</guimenuitem></menuchoice>. The actual file looks like this:</para>
