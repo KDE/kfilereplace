@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=KFileReplace
+Name[hne]=के-फाइल-रिप्लेस
 Name[ne]=केडीई फाइल प्रतिस्थापन
 Name[sk]=KFile zameniť
 Name[sv]=Kfilereplace
@@ -27,6 +28,7 @@ GenericName[fi]=Etsi & korvaa työkalu
 GenericName[fr]=Outil de recherche et de remplacement
 GenericName[ga]=Uirlis Chuardaigh/Ionadaithe
 GenericName[gl]=Ferramenta de busca e subtitución
+GenericName[hne]=खोजें अउ बदलव औजार
 GenericName[hu]=Fájlkereső
 GenericName[is]=Tól til að leita að texta og skipta út
 GenericName[it]=Strumento di ricerca e sostituzione
