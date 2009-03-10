@@ -35,13 +35,13 @@ namespace whatthisNameSpace
 
   const QString cbFilterWhatthis = i18n("Shell-like wildcards. Example: \"*.html;*.txt;*.xml\".");
 
-  const QString edSizeMinWhatthis = i18n("Insert the minimum file size you want to search, or leave it unchecked if you don't want minimum size limit.");
+  const QString edSizeMinWhatthis = i18n("Insert the minimum file size you want to search, or leave it unchecked if you do not want a minimum size limit.");
 
-  const QString edSizeMaxWhatthis = i18n("Insert the maximum file size you want to search, or leave it unchecked if you don't want maximum size limit.");
+  const QString edSizeMaxWhatthis = i18n("Insert the maximum file size you want to search, or leave it unchecked if you do not want a maximum size limit.");
 
-  const QString edDateMinWhatthis = i18n("Insert the minimum value for file access date that you want to search, or leave it unchecked if you don't a minimum limit.");
+  const QString edDateMinWhatthis = i18n("Insert the minimum value for file access date that you want to search, or leave it unchecked if you do not want a minimum limit.");
 
-  const QString edDateMaxWhatthis = i18n("Insert the maximum value for file access date that you want to search, or leave it unchecked if you don't a maximum limit.");
+  const QString edDateMaxWhatthis = i18n("Insert the maximum value for file access date that you want to search, or leave it unchecked if you do not want a maximum limit.");
 
   const QString cbDateValidWhatthis = i18n("Select  \"writing\" if you want to use the date of the last modification, or  \"reading\" to use the date of the last access.");
 
@@ -62,13 +62,13 @@ namespace whatthisNameSpace
 
   const QString chbIgnoreWhitespacesWhatthis ="";
 
-  const QString chbFollowSymLinksWhatthis = i18n("If kfilereplace encounters a symbolic link treats it like a normal folder or file.");
+  const QString chbFollowSymLinksWhatthis = i18n("If set, then if kfilereplace encounters a symbolic link it treats it like a normal folder or file.");
 
   const QString chbIgnoreHiddenWhatthis = i18n("Enable this option to ignore hidden files or folders.");
 
   const QString chbIgnoreFilesWhatthis = i18n("If this option is enabled, KFR will show even the names of the files in which no string has been found or replaced.");
 
-  const QString chbRegularExpressionsWhatthis = i18n("Allows you to apply QT-like regular expressions on the search string. Note that a complex regular expression could affect speed performance");
+  const QString chbRegularExpressionsWhatthis = i18n("Allows you to apply QT-like regular expressions on the search string. Note that a complex regular expression could affect speed performance.");
 
   const QString chbVariablesWhatthis = i18n("Enable \"commands\". For example: if search string is \"user\" and replace string is the command \"[$user:uid$]\", KFR will substitute \"user\" with the uid of the user.");
 
@@ -77,7 +77,7 @@ namespace whatthisNameSpace
   const QString chbConfirmStringsWhatthis = i18n("Enable this option if you want to be asked for single string replacement confirmation.");
 
   //KFileReplacePart
-  const QString fileSimulateWhatthis = i18n("Enable this option to perform replacing as a simulation, i.e. without make any changes in files.");
+  const QString fileSimulateWhatthis = i18n("Enable this option to perform replacing as a simulation, i.e. without making any changes to files.");
 
   const QString optionsRegularExpressionsWhatthis = chbRegularExpressionsWhatthis;
 
