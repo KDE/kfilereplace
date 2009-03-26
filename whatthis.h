@@ -68,7 +68,7 @@ namespace whatthisNameSpace
 
   const QString chbIgnoreFilesWhatthis = i18n("If this option is enabled, KFR will show even the names of the files in which no string has been found or replaced.");
 
-  const QString chbRegularExpressionsWhatthis = i18n("Allows you to apply QT-like regular expressions on the search string. Note that a complex regular expression could affect speed performance.");
+  const QString chbRegularExpressionsWhatthis = i18n("Allows you to apply Qt-like regular expressions on the search string. Note that a complex regular expression could affect speed performance.");
 
   const QString chbVariablesWhatthis = i18n("Enable \"commands\". For example: if search string is \"user\" and replace string is the command \"[$user:uid$]\", KFR will substitute \"user\" with the uid of the user.");
 
