@@ -542,7 +542,6 @@
         </widget>
     </grid>
 </widget>
-<layoutdefaults spacing="6" margin="11"/>
 <includehints>
     <includehint>k3listview.h</includehint>
     <includehint>kled.h</includehint>

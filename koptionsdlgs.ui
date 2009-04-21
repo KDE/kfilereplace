@@ -343,5 +343,4 @@
     <tabstop>m_chbFollowSymLinks</tabstop>
     <tabstop>m_chbIgnoreHidden</tabstop>
 </tabstops>
-<layoutdefaults spacing="6" margin="11"/>
 </UI>
