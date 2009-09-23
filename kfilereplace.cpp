@@ -28,7 +28,7 @@
 #include <kstandardaction.h>
 
 KFileReplace::KFileReplace()
-  : KParts::MainWindow(0L, KDE_DEFAULT_WINDOWFLAGS)
+  : KParts::MainWindow()
 {
     setObjectName("KFileReplace");
     KLibFactory *factory = KLibLoader::self()->factory("libkfilereplacepart");
