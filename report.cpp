@@ -62,7 +62,7 @@ void Report::createReportFile()
       columnReplaceWith = i18n("-");
     }
 
-  QString css =  cssFileName.mid(cssFileName.findRev("/")+1,cssFileName.length()-(cssFileName.findRev("/")+1));
+  QString css =  cssFileName.mid(cssFileName.lastIndexOf("/")+1,cssFileName.length()-(cssFileName.lastIndexOf("/")+1));
   QTextStream oTStream( &report );
   oTStream << "<?xml version=\"1.0\"?>\n"
               "<?xml-stylesheet href=\""+css+"\" type=\"text/css\"?>"

@@ -109,7 +109,7 @@ int ResultViewEntry::lineNumber(const QString& line) const
 
 int ResultViewEntry::columnNumber(const QString& line) const
 {
-  return(m_pos - line.findRev('\n',m_pos));
+  return(m_pos - line.lastIndexOf('\n',m_pos));
 }
 
 void ResultViewEntry::incOccurrences()

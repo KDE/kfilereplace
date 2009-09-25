@@ -226,7 +226,7 @@ void KFileReplaceView::slotResultDirOpen()
     {
       QFileInfo fi;
       fi.setFile(currItem);
-      (void) new KRun (KUrl::fromPathOrUrl(fi.dirPath()), 0, true, true);
+      (void) new KRun (KUrl::fromPathOrUrl(fi.path()), 0, true, true);
       m_lviCurrent = 0;
     }
 }
@@ -293,7 +293,7 @@ void KFileReplaceView::slotResultDelete()
 
       if(answer == KMessageBox::Continue)
         {
-          fi.setName(currItem);
+          fi.setFileName(currItem);
           fi.remove();
 
           delete m_lviCurrent;
@@ -448,7 +448,7 @@ void KFileReplaceView::slotStringsSave()
     return ;
   }
   QTextStream oTStream( &file );
-  oTStream.setEncoding(QTextStream::UnicodeUTF8);
+  oTStream.setCodec(QTextCodec::codecForName("UTF-8"));
   oTStream << header
       << body
       << footer;

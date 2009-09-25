@@ -36,9 +36,9 @@ QString CommandEngine::datetime(const QString& opt, const QString& arg)
 {
   Q_UNUSED(arg);
   if(opt == "iso")
-    return QDateTime::currentDateTime(Qt::LocalTime).toString(Qt::ISODate);
+    return QDateTime::currentDateTime().toString(Qt::ISODate);
   if(opt == "local")
-    return QDateTime::currentDateTime(Qt::LocalTime).toString(Qt::LocalDate);
+    return QDateTime::currentDateTime().toString(Qt::LocalDate);
   return QString();
 }
 
@@ -70,7 +70,7 @@ QString CommandEngine::loadfile(const QString& opt, const QString& arg)
 
   QTextStream t(&f);
 
-  QString s = t.read();
+  QString s = t.readAll();
 
   f.close();
 

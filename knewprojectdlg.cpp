@@ -228,7 +228,7 @@ void KNewProjectDlg::loadOptions()
   m_cbEncoding->addItems(availableEncodingNames);
   int idx = -1;
   int utf8Idx = -1;
-  for (uint i = 0; i < availableEncodingNames.count(); i++)
+  for (int i = 0; i < availableEncodingNames.count(); i++)
   {
     if (availableEncodingNames[i] == m_option->m_encoding)
     {
@@ -346,12 +346,12 @@ void KNewProjectDlg::loadOwnerOptions()
 
 void KNewProjectDlg::loadLocationsList()
 {
-  m_cbLocation->addItems(QStringList::split(",",m_option->m_directories));
+  m_cbLocation->addItems(m_option->m_directories.split(","));
 }
 
 void KNewProjectDlg::loadFiltersList()
 {
-  m_cbFilter->addItems(QStringList::split(",",m_option->m_filters));
+  m_cbFilter->addItems(m_option->m_filters.split(","));
 }
 
 void KNewProjectDlg::loadBackupExtensionOptions()

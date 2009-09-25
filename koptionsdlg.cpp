@@ -82,7 +82,7 @@ void KOptionsDlg::slotDefaults()
   m_chbIgnoreFiles->setChecked(IgnoreFilesOption);
   m_chbConfirmStrings->setChecked(AskConfirmReplaceOption);
 
-  QStringList bkList = QStringList::split(",",BackupExtensionOption,true);
+  QStringList bkList = BackupExtensionOption.split(",",QString::KeepEmptyParts);
 
   bool enableBackup = (bkList[0] == "true" ? true : false);
 
@@ -156,7 +156,7 @@ void KOptionsDlg::initGUI()
   m_cbEncoding->addItems( availableEncodingNames );
   int idx = -1;
   int utf8Idx = -1;
-  for (uint i = 0; i < availableEncodingNames.count(); i++)
+  for (int i = 0; i < availableEncodingNames.count(); i++)
   {
     if (availableEncodingNames[i] == m_option->m_encoding)
     {

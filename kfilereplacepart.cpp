@@ -1176,7 +1176,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
 
   if (!oldFile.open(QIODevice::ReadOnly))
     {
-      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFile.name()), QString(), rcNotifyOnErrors);
+      KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for reading.</qt>", oldFile.fileName()), QString(), rcNotifyOnErrors);
       return ;
     }
 
@@ -1205,7 +1205,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
 	  QFile newFile(oldPathString);
           if(!newFile.open(QIODevice::WriteOnly))
             {
-              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", newFile.name()), QString(), rcNotifyOnErrors);
+              KMessageBox::information(m_w, i18n("<qt>Cannot open file <b>%1</b> for writing.</qt>", newFile.fileName()), QString(), rcNotifyOnErrors);
               return ;
             }
           QTextStream newStream( &newFile );
@@ -1445,7 +1445,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
           int pos;
 
           if(m_option->m_regularExpressions)
-            pos = line.find(rxKey);
+            pos = line.indexOf(rxKey);
           else
             pos = line.find(strKey, 0 ,m_option->m_caseSensitive);
 
@@ -1453,7 +1453,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
             {
               atLeastOneStringFound = true;
               int lineNumber = line.mid(0,pos).count('\n')+1;
-              int columnNumber = pos - line.findRev('\n',pos);
+              int columnNumber = pos - line.lastIndexOf('\n',pos);
 
               if (!item)
                 item = new K3ListViewItem(rv);
@@ -1494,7 +1494,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               QString msg,
                       capturedText;
               int lineNumber = line.mid(0,pos).count('\n')+1;
-              int columnNumber = pos - line.findRev('\n',pos);
+              int columnNumber = pos - line.lastIndexOf('\n',pos);
 
               if(m_option->m_regularExpressions)
                 {
@@ -1504,7 +1504,7 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
               else
                 {
                   capturedText = line.mid(pos,strKey.length());
-                  pos = line.find(strKey,pos+strKey.length());
+                  pos = line.indexOf(strKey,pos+strKey.length());
                 }
 
               msg = i18n(" Line:%2, Col:%3 - \"%1\"", capturedText, lineNumber, columnNumber);
