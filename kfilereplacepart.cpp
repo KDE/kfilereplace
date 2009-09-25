@@ -319,11 +319,12 @@ void KFileReplacePart::slotQuickStringsAdd()
 
   //if search-only mode == true and search-now mode == true then
   //search string
-  if(map[0] == "N")
+  if(map[0] == "N") {
     if(m_option->m_searchingOnlyMode)
       slotSearchingOperation();
     else
       slotReplacingOperation();
+  }
 }
 
 void KFileReplacePart::slotStringsDeleteItem()
@@ -757,7 +758,7 @@ void KFileReplacePart::loadOptions()
 
   m_option->m_searchingOnlyMode = cg.readEntry(rcSearchMode,SearchModeOption);
 
-  cg.changeGroup( "Options" );
+  cg = m_config->group( "Options" );
 
   m_option->m_encoding = cg.readEntry(rcEncoding, EncodingOption).toLatin1();
   m_option->m_recursive = cg.readEntry(rcRecursive, RecursiveOption);
@@ -772,7 +773,7 @@ void KFileReplacePart::loadOptions()
   m_option->m_ignoreHidden = cg.readEntry(rcIgnoreHidden, IgnoreHiddenOption);
   m_option->m_ignoreFiles = cg.readEntry(rcIgnoreFiles, IgnoreFilesOption);
 
-  cg.changeGroup("Notification Messages");
+  cg = m_config->group("Notification Messages");
 
   m_option->m_notifyOnErrors  = cg.readEntry(rcNotifyOnErrors, true);
 
@@ -887,7 +888,7 @@ void KFileReplacePart::saveOptions()
   cg.writeEntry(rcRecentFiles, m_option->m_recentStringFileList);
   cg.writeEntry(rcSearchMode,m_option->m_searchingOnlyMode);
 
-  cg.changeGroup("Options");
+  cg = m_config->group("Options");
 
   cg.writeEntry(rcEncoding, m_option->m_encoding);
   cg.writeEntry(rcRecursive, m_option->m_recursive);
@@ -901,7 +902,7 @@ void KFileReplacePart::saveOptions()
   cg.writeEntry(rcIgnoreHidden, m_option->m_ignoreHidden);
   cg.writeEntry(rcIgnoreFiles, m_option->m_ignoreFiles);
 
-  cg.changeGroup("Notification Messages");
+  cg = m_config->group("Notification Messages");
   cg.writeEntry(rcNotifyOnErrors, m_option->m_notifyOnErrors);
   if(cg.readEntry(rcDontAskAgain,QString("no")) == "yes")
     cg.writeEntry(rcAskConfirmReplace, false);
@@ -994,12 +995,12 @@ void KFileReplacePart::saveBackupExtensionOptions()
 
 void KFileReplacePart::fileReplace()
 {
-  QString directoryName = QStringList::split(",",m_option->m_directories)[0];
+  QString directoryName = m_option->m_directories.split(QChar(','))[0];
   QDir d(directoryName);
   d.setFilter(m_optionMask | QDir::AllDirs);
 
   QString currentFilter = m_option->m_filters.split(",", QString::SkipEmptyParts)[0];
-  QStringList filesList = d.entryList(currentFilter);
+  QStringList filesList = d.entryList(QStringList(currentFilter));
   QStringList::iterator filesIt;
   int filesNumber = 0;
 
@@ -1039,7 +1040,7 @@ void KFileReplacePart::recursiveFileReplace(const QString& directoryName, int& f
       d.setFilter(m_optionMask | QDir::AllDirs);
 
       QString currentFilter = m_option->m_filters.split(",", QString::SkipEmptyParts)[0];
-      QStringList filesList = d.entryList(currentFilter);
+      QStringList filesList = d.entryList(QStringList(currentFilter));
       QStringList::iterator filesIt;
 
       for(filesIt = filesList.begin(); filesIt != filesList.end(); ++filesIt)
@@ -1091,10 +1092,10 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
     }
   QTextStream currentStream(&currentFile);
   if (m_option->m_encoding == "utf8")
-    currentStream.setEncoding(QTextStream::UnicodeUTF8);
+    currentStream.setCodec(QTextCodec::codecForName("UTF-8"));
   else
     currentStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
-  QString line = currentStream.read(),
+  QString line = currentStream.readAll(),
           backupLine = line;
 
   QString backupSize = KFileReplaceLib::formatFileSize(currentFile.size());
@@ -1131,7 +1132,7 @@ void KFileReplacePart::replaceAndBackup(const QString& currentDir, const QString
             }
           QTextStream newStream(&newFile);
           if (m_option->m_encoding == "utf8")
-            newStream.setEncoding(QTextStream::UnicodeUTF8);
+            newStream.setCodec(QTextCodec::codecForName("UTF-8"));
           else
             newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
           newStream << line;
@@ -1184,10 +1185,10 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
 
   QTextStream oldStream( &oldFile );
   if (m_option->m_encoding == "utf8")
-    oldStream.setEncoding(QTextStream::UnicodeUTF8);
+    oldStream.setCodec(QTextCodec::codecForName("UTF-8"));
   else
     oldStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
-  QString line = oldStream.read();
+  QString line = oldStream.readAll();
 
   oldFile.close();
 
@@ -1209,7 +1210,7 @@ void KFileReplacePart::replaceAndOverwrite(const QString& currentDir, const QStr
             }
           QTextStream newStream( &newFile );
           if (m_option->m_encoding == "utf8")
-            newStream.setEncoding(QTextStream::UnicodeUTF8);
+            newStream.setCodec(QTextCodec::codecForName("UTF-8"));
           else
             newStream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
           newStream << line;
@@ -1315,7 +1316,7 @@ void KFileReplacePart::fileSearch(const QString& directoryName, const QString& f
 
   d.setFilter(m_optionMask | QDir::AllDirs);
 
-  QStringList filesList = d.entryList(filters);
+  QStringList filesList = d.entryList(QStringList(filters));
   QString filePath = d.canonicalPath();
   QStringList::iterator filesIt;
   uint filesNumber = 0;
@@ -1355,7 +1356,7 @@ void KFileReplacePart::recursiveFileSearch(const QString& directoryName, const Q
 
       d.setFilter(m_optionMask | QDir::AllDirs);
 
-      QStringList filesList = d.entryList(filters);
+      QStringList filesList = d.entryList(QStringList(filters));
       QString filePath = d.canonicalPath();
       QStringList::iterator filesIt;
 
@@ -1401,10 +1402,10 @@ void KFileReplacePart::search(const QString& currentDir, const QString& fileName
   // Creates a stream with the file
   QTextStream stream( &file );
   if (m_option->m_encoding == "utf8")
-    stream.setEncoding(QTextStream::UnicodeUTF8);
+    stream.setCodec(QTextCodec::codecForName("UTF-8"));
   else
     stream.setCodec(QTextCodec::codecForName(m_option->m_encoding.toUtf8()));
-  QString line = stream.read();
+  QString line = stream.readAll();
   file.close();
 
   QFileInfo fileInfo(currentDir+'/'+fileName);
