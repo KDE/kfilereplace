@@ -237,7 +237,7 @@ void KFileReplaceView::slotResultEdit()
 #warning "Port to DBUS"
 #endif
   //FIXME: Port to DBUS
-#if 0
+/*
   Q3ListViewItem *lvi = m_rv->firstChild();
 
   while (lvi)
@@ -279,7 +279,7 @@ void KFileReplaceView::slotResultEdit()
     }
 
   m_lviCurrent = 0;
-#endif
+*/
 }
 
 void KFileReplaceView::slotResultDelete()
