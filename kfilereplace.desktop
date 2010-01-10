@@ -2,6 +2,7 @@
 Name=KFileReplace
 Name[br]=KFileReplace
 Name[ca]=KFileReplace
+Name[ca@valencia]=KFileReplace
 Name[cs]=KFileReplace
 Name[cy]=KFileReplace
 Name[da]=KFileReplace
@@ -56,6 +57,7 @@ Terminal=false
 GenericName=Search & Replace Tool
 GenericName[br]=Ostilh klask hag erlec'hiañ
 GenericName[ca]=Eina cerca i substitueix
+GenericName[ca@valencia]=Eina cerca i substitueix
 GenericName[cs]=Nástroj pro vyhledání a nahrazení
 GenericName[da]=Søg og erstat-værktøj
 GenericName[de]=Werkzeug zum Suchen & Ersetzen
