@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=KFileReplace
+Name[bg]=KFileReplace
 Name[br]=KFileReplace
 Name[ca]=KFileReplace
 Name[ca@valencia]=KFileReplace
@@ -56,6 +57,7 @@ Type=Application
 X-DocPath=kfilereplace/index.html
 Terminal=false
 GenericName=Search & Replace Tool
+GenericName[bg]=Търсене и замяна
 GenericName[br]=Ostilh klask hag erlec'hiañ
 GenericName[ca]=Eina cerca i substitueix
 GenericName[ca@valencia]=Eina cerca i substitueix
