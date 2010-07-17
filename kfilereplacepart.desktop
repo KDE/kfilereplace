@@ -106,6 +106,7 @@ Name[zh_CN]=KFileReplace
 Name[zh_HK]=KFileReplace
 Name[zh_TW]=KFileReplace
 GenericName=File Replace View
+GenericName[bg]=Изглед с файлове за замяна
 GenericName[ca]=Vista per a substituir fitxers
 GenericName[ca@valencia]=Vista per a substituir fitxers
 GenericName[cs]=Nahrazení souborů
