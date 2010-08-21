@@ -524,8 +524,8 @@ KAboutData* KFileReplacePart::createAboutData()
                                           KFR_VERSION,
                                           ki18n( "Batch search and replace tool."),
                                           KAboutData::License_GPL_V2,
-                                          ki18n("(C) 1999-2002 Fran�is Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini"), ki18n("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
-  aboutData->addAuthor(ki18n("Fran�is Dupoux"),
+                                          ki18n("(C) 1999-2002 François Dupoux\n(C) 2003-2004 Andras Mantia\n(C) 2004 Emiliano Gulmini"), ki18n("Part of the KDEWebDev module."), "http://www.kdewebdev.org");
+  aboutData->addAuthor(ki18n("François Dupoux"),
                        ki18n("Original author of the KFileReplace tool"),
                        "dupoux@dupoux.com");
   aboutData->addAuthor(ki18n("Emiliano Gulmini"),
