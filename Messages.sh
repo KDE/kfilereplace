@@ -1,2 +1,3 @@
 #! /usr/bin/env bash
-$XGETTEXT *.cpp *.h -o $podir/kfilereplace.pot
+$EXTRACTRC *.rc *.ui >> rc.cpp
+$XGETTET *.cpp *.h -o $podir/kfilereplace.pot
