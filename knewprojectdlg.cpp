@@ -235,7 +235,7 @@ void KNewProjectDlg::loadOptions()
       idx = i;
       break;
     }
-    if (availableEncodingNames[i] == "UTF8")
+    if (availableEncodingNames[i] == "UTF-8")
     {
       utf8Idx = i;
     }

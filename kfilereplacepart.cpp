@@ -1000,7 +1000,7 @@ void KFileReplacePart::fileReplace()
   d.setFilter(m_optionMask | QDir::AllDirs);
 
   QString currentFilter = m_option->m_filters.split(",", QString::SkipEmptyParts)[0];
-  QStringList filesList = d.entryList(QStringList(currentFilter));
+  QStringList filesList = d.entryList(currentFilter.split(';'));
   QStringList::iterator filesIt;
   int filesNumber = 0;
 
@@ -1040,7 +1040,7 @@ void KFileReplacePart::recursiveFileReplace(const QString& directoryName, int& f
       d.setFilter(m_optionMask | QDir::AllDirs);
 
       QString currentFilter = m_option->m_filters.split(",", QString::SkipEmptyParts)[0];
-      QStringList filesList = d.entryList(QStringList(currentFilter));
+      QStringList filesList = d.entryList(currentFilter.split(';'));
       QStringList::iterator filesIt;
 
       for(filesIt = filesList.begin(); filesIt != filesList.end(); ++filesIt)
@@ -1316,7 +1316,7 @@ void KFileReplacePart::fileSearch(const QString& directoryName, const QString& f
 
   d.setFilter(m_optionMask | QDir::AllDirs);
 
-  QStringList filesList = d.entryList(QStringList(filters));
+  QStringList filesList = d.entryList(filters.split(';'));
   QString filePath = d.canonicalPath();
   QStringList::iterator filesIt;
   uint filesNumber = 0;
@@ -1356,7 +1356,7 @@ void KFileReplacePart::recursiveFileSearch(const QString& directoryName, const Q
 
       d.setFilter(m_optionMask | QDir::AllDirs);
 
-      QStringList filesList = d.entryList(QStringList(filters));
+      QStringList filesList = d.entryList(filters.split(';'));
       QString filePath = d.canonicalPath();
       QStringList::iterator filesIt;
 
