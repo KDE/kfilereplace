@@ -38,11 +38,6 @@
 // local
 #include "kfilereplacelib.h"
 
-const double kilo = 1024.0;
-const double mega = 1048576.0;//1024^2
-const double giga = 1073741824.0;//1024^3
-const double tera = 1099511627776.0;//1024^4
-
 /**
  Format a path, from a path and a filename, or another sub-path (avoid double '/' risks)
  Parameters::.....* basePath: fist path (can be "/" if root, or "/usr/bin/" or "/usr/bin" for example)
@@ -94,28 +89,14 @@ QString KFileReplaceLib::formatFileSize(double size)
 {
   QString stringSize;
 
-  if(size < kilo)
+  if(size < 10000)
     {
       const int asInt = (int) size;
       stringSize = i18np("1 byte", "%1 bytes", asInt);
     }
   else
-  if(size >= kilo && size < mega)
     {
-      double d = size / kilo;
-      stringSize = ki18n("%1 KB").subs(d,0,'f',2).toString();
-    }
-  else
-  if(size >= mega && size < giga)
-    {
-      double d = size / mega;
-      stringSize = ki18n("%1 MB").subs(d,0,'f',2).toString();
-    }
-  else
-  if(size >= giga)
-    {
-      double d = size / giga;
-      stringSize =  ki18n("%1 GB").subs(d,0,'f',2).toString();
+      stringSize = KGlobal::locale()->formatByteSize(size, 2);
     }
   return stringSize;
 }
