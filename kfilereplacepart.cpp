@@ -519,7 +519,7 @@ void KFileReplacePart::resetActions()
 //PUBLIC METHODS
 KAboutData* KFileReplacePart::createAboutData()
 {
-  KAboutData * aboutData = new KAboutData("kfilereplacepart", 0,
+  KAboutData * aboutData = new KAboutData("kfilereplacepart", "kfilereplace",
                                           ki18n("KFileReplacePart"),
                                           KFR_VERSION,
                                           ki18n( "Batch search and replace tool."),
