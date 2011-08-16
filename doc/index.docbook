@@ -5,8 +5,6 @@
   <!ENTITY package "kdewebdev"><!-- kdebase, kdeadmin, etc -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % English "INCLUDE"><!-- change language only here -->
-  <!ENTITY qt "<application>Qt</application>">
-  <!ENTITY kdewebdev "<application>Kdewebdev</application>">
   <!ENTITY bc "<application>bc</application>">
 ]>
 
@@ -58,7 +56,7 @@
 
 <chapter id="introduction">
  <title>Introduction</title>
-  <para>&kfilereplace; is an application used to search and replace a list of strings in a file tree. The strings may be literal or &qt;-like regular expressions. There are also other options to tune your search.
+  <para>&kfilereplace; is an application used to search and replace a list of strings in a file tree. The strings may be literal or &Qt;-like regular expressions. There are also other options to tune your search.
   </para>
 </chapter>
 
@@ -289,7 +287,7 @@
        </imageobject>
       </inlinemediaobject><guiicon>Enable Regular Expressions</guiicon></term>
      <listitem>
-       <para>This button enables <link linkend="kfilereplace-QT-regexp">&qt;-like regular expressions</link>.</para>
+       <para>This button enables <link linkend="kfilereplace-QT-regexp">&Qt;-like regular expressions</link>.</para>
      </listitem>
    </varlistentry>
 
@@ -345,7 +343,7 @@
  </para>
  
  <sect2 id="kfilereplace-the-project-dialog-general-page">
-   <title>The <guilabel>General</guilabel> Tab</title>
+   <title>The General Tab</title>
     <screenshot>
      <screeninfo>&kfilereplace; General tab</screeninfo>
      <mediaobject>
@@ -363,7 +361,7 @@
  </sect2>
 
  <sect2 id="kfilereplace-the-project-dialog-advanced-page">
-   <title>The <guilabel>Advanced</guilabel> Tab</title>
+   <title>The Advanced Tab</title>
      <screenshot>
        <screeninfo>&kfilereplace; Advanced tab</screeninfo>
        <mediaobject>
@@ -553,7 +551,7 @@ Documentation copyright 2004 Emiliano Gulmini <email>emi_barbarossa&#64;yahoo&#4
 </chapter>
 
 <appendix id="installation">
-<title>Installation</title>
+<title>Installation and Compilation</title>
 
 &install.intro.documentation;
 
@@ -584,7 +582,7 @@ Documentation copyright 2004 Emiliano Gulmini <email>emi_barbarossa&#64;yahoo&#4
      <segtitle>[$random:$]</segtitle>
      <segtitle>[$mathexp:<replaceable>bc-expression</replaceable>$]</segtitle>
      <seglistitem>
-       <seg>this command return the current date and time in &qt; ISO format.</seg>
+       <seg>this command return the current date and time in &Qt; ISO format.</seg>
        <seg>like above but in local format.</seg>
        <seg>return the UID of the current user.</seg>
        <seg>return the GID of the current user.</seg>
