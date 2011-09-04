@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 {
     KAboutData about("kfilereplace", 0, ki18n("KFileReplace"), version, ki18n(description),
                      KAboutData::License_GPL_V2, ki18n("(C) 2004-2005 Andras Mantia\n(C) 2004-2005 Emiliano Gulmini\n(C) 1999-2002 François Dupoux"), ki18n("Part of the KDEWebDev module."),
-                     "http://www.kdewebdev.org");
+                     "http://kde.org/applications/utilities/kfilereplace/");
 
     about.addAuthor(ki18n("Andras Mantia"), ki18n("Shell author, KPart creator, co-maintainer"), "amantia@kde.org");
     about.addAuthor(ki18n("Emiliano Gulmini"), ki18n("Current maintainer, code cleaner and rewriter"),"emi_barbarossa@yahoo.it");
