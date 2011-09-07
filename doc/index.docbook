@@ -5,8 +5,6 @@
   <!ENTITY package "kdewebdev"><!-- kdebase, kdeadmin, etc -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % English "INCLUDE"><!-- change language only here -->
-  <!ENTITY qt "<application>Qt</application>">
-  <!ENTITY kdewebdev "<application>Kdewebdev</application>">
   <!ENTITY bc "<application>bc</application>">
 ]>
 
@@ -35,8 +33,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2004-08-09</date>
-<releaseinfo>1&#46;0&#46;0</releaseinfo>
+<date>2011-08-16</date>
+<releaseinfo>0.1 (&kde; 4.7)</releaseinfo>
 
 <!-- Abstract about this handbook -->
 
@@ -58,7 +56,7 @@
 
 <chapter id="introduction">
  <title>Introduction</title>
-  <para>&kfilereplace; is an application used to search and replace a list of strings in a file tree. The strings may be literal or &qt;-like regular expressions. There are also other options to tune your search.
+  <para>&kfilereplace; is an application used to search and replace a list of strings in a file tree. The strings may be literal or &Qt;-like regular expressions. There are also other options to tune your search.
   </para>
 </chapter>
 
@@ -90,9 +88,6 @@
     <imageobject>
      <imagedata fileref="toolbar.png" format="PNG"/>
     </imageobject>
-    <imageobject>
-     <imagedata fileref="toolbar.eps" format="EPS"/>
-    </imageobject>
     <textobject>
      <phrase>&kfilereplace;'s toolbar</phrase>
     </textobject>
@@ -110,7 +105,7 @@
         <imageobject>
          <imagedata fileref="project.png" format="PNG"/>
         </imageobject>
-       </inlinemediaobject><guiicon>New session</guiicon></term>
+      </inlinemediaobject><guiicon>Customize Search/Replace Session</guiicon></term>
     <listitem>
      <para>This button shows a <link linkend="kfilereplace-the-project-dialog">session dialog</link> in which you can set several basic options; if &kfilereplace; run as standalone application you should click this button as first step.</para>
     </listitem>
@@ -122,10 +117,22 @@
        <imageobject>
         <imagedata fileref="filesearch.png" format="PNG"/>
        </imageobject>
-     </inlinemediaobject><guiicon>Search only</guiicon></term>
+     </inlinemediaobject><guiicon>Search</guiicon></term>
     <listitem>
       <para>This button starts a search loop.</para>
     </listitem>
+   </varlistentry>
+
+   <varlistentry>
+     <term>
+      <inlinemediaobject>
+       <imageobject>
+        <imagedata fileref="filesimulate.png" format="PNG"/>
+       </imageobject>
+      </inlinemediaobject><guiicon>Simulate</guiicon></term>
+     <listitem>
+       <para>This button starts a simulated search&amp;replace loop. Nothing really happens when you click this button.</para>
+     </listitem>
    </varlistentry>
 
    <varlistentry>
@@ -138,18 +145,6 @@
     <listitem>
      <para>This button starts a search&amp;replace loop. When a string has been found, &kfilereplace; replaces it with another string.</para>
     </listitem>
-   </varlistentry>
-
-   <varlistentry>
-     <term>
-      <inlinemediaobject>
-       <imageobject>
-        <imagedata fileref="filesimulate.png" format="PNG"/>
-       </imageobject>
-      </inlinemediaobject><guiicon>Simulated Replace</guiicon></term>
-     <listitem>
-       <para>This button starts a simulated search&amp;replace loop. Nothing really happens when you click this button.</para>
-     </listitem>
    </varlistentry>
 
    <varlistentry>
@@ -170,7 +165,7 @@
        <imageobject>
         <imagedata fileref="edit_add.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Add Strings</guiicon></term>
+      </inlinemediaobject><guiicon>Add String</guiicon></term>
      <listitem>
        <para>This button opens the <link linkend="kfilereplace-the-add-dialog">Add Strings</link> dialog in which you can edit your string list.</para>
      </listitem>
@@ -182,7 +177,7 @@
        <imageobject>
         <imagedata fileref="edit_remove.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Delete Strings</guiicon></term>
+      </inlinemediaobject><guiicon>Delete String</guiicon></term>
      <listitem>
        <para>This button deletes the selected (or the current if there is no selection) string from the list.</para>
      </listitem>
@@ -194,7 +189,7 @@
              <imageobject>
                <imagedata fileref="edit.png" format="PNG"/>
              </imageobject>
-           </inlinemediaobject><guiicon>Edit Strings</guiicon></term>
+           </inlinemediaobject><guiicon>Edit Selected String</guiicon></term>
      <listitem>
        <para>This button edits a selected string.</para>
      </listitem>
@@ -206,7 +201,7 @@
        <imageobject>
         <imagedata fileref="eraser.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Delete List</guiicon></term>
+      </inlinemediaobject><guiicon>Empty Strings List</guiicon></term>
      <listitem>
        <para>This button deletes all the strings in the list.</para>
      </listitem>
@@ -218,7 +213,7 @@
        <imageobject>
         <imagedata fileref="invert.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Invert Strings</guiicon></term>
+      </inlinemediaobject><guiicon>Invert Current String</guiicon></term>
      <listitem>
        <para>This button swaps the search string with the replace string, so you can revert a search/replace operation.</para>
      </listitem>
@@ -230,7 +225,7 @@
        <imageobject>
         <imagedata fileref="unsortedList.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Load String List</guiicon></term>
+      </inlinemediaobject><guiicon>Load Strings List From File</guiicon></term>
      <listitem>
        <para>This button loads a <link linkend="kfilereplace-the-kfr-file">string list</link> saved in a xml file with a <literal role="extension">kfr</literal> extension.</para>
      </listitem>
@@ -242,7 +237,7 @@
        <imageobject>
         <imagedata fileref="recursive_option.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Search in Subfolders</guiicon></term>
+      </inlinemediaobject><guiicon>Include Sub-Folders</guiicon></term>
      <listitem>
        <para>This button allows you to search/replace recursively in the subfolders of your base directory.</para>
      </listitem>
@@ -254,7 +249,7 @@
        <imageobject>
         <imagedata fileref="backup_option.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Make Backup Files</guiicon></term>
+      </inlinemediaobject><guiicon>Create Backup Files</guiicon></term>
      <listitem>
        <para>This button enables generation of <link linkend="kfilereplace-backup-file">backup</link> files.</para>
      </listitem>
@@ -266,7 +261,7 @@
        <imageobject>
         <imagedata fileref="casesensitive_option.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Case-sensitive Search</guiicon></term>
+      </inlinemediaobject><guiicon>Case Sensitive</guiicon></term>
      <listitem>
        <para>This button enables case-sensitive searching.</para>
      </listitem>
@@ -278,7 +273,7 @@
        <imageobject>
         <imagedata fileref="command_option.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Commands</guiicon></term>
+      </inlinemediaobject><guiicon>Enable Commands in Replace String</guiicon></term>
      <listitem>
        <para>This button enables commands capability. Commands are special strings. See <xref linkend="kfilereplace-commands"/>.</para>
      </listitem>
@@ -290,9 +285,9 @@
        <imageobject>
         <imagedata fileref="regularexpression_option.png" format="PNG"/>
        </imageobject>
-      </inlinemediaobject><guiicon>Regular expressions</guiicon></term>
+      </inlinemediaobject><guiicon>Enable Regular Expressions</guiicon></term>
      <listitem>
-       <para>This button enables <link linkend="kfilereplace-QT-regexp">&qt;-like regular expressions</link>.</para>
+       <para>This button enables <link linkend="kfilereplace-QT-regexp">&Qt;-like regular expressions</link>.</para>
      </listitem>
    </varlistentry>
 
@@ -317,14 +312,14 @@
         </textobject>
       </mediaobject>
     </screenshot>
-  <para>The <guilabel>Results</guilabel> view shows the name of the files that contain the strings you have to retrieve (and replace), their path, their size, the number of strings found and the user id of the files. This view also provides the exact position of each match. You can also open a file by clicking with the &RMB; on an list entry that contains line and column position.</para>
+  <para>The Results view shows the name of the files that contain the strings you have to retrieve (and replace), their path, their size, the number of strings found and the user id of the files. This view also provides the exact position of each match. You can also open a file by clicking with the &RMB; on an list entry that contains line and column position.</para>
 
 </sect1>
 
 <sect1 id="kfilereplace-the-strings-view">
   <title>The String List</title>
 
-  <para>This is the <guilabel>Strings</guilabel> view:
+  <para>This is the Strings view:
     <screenshot>
       <screeninfo>&kfilereplace;'s Strings view</screeninfo>
       <mediaobject>
@@ -338,17 +333,17 @@
     </screenshot>
   </para>
 
-  <para>The <guilabel>Strings</guilabel> view visualizes the list of strings you want search/replace. Please note that in search mode the <guilabel>Results</guilabel> view and the <guilabel>Strings</guilabel> view have a different layout.</para>
+  <para>The Strings view visualizes the list of strings you want search/replace. Please note that in search mode the Results view and the Strings view have a different layout.</para>
 
 </sect1>
 
 <sect1 id="kfilereplace-the-project-dialog">
- <title>The <guilabel>New Session</guilabel> Dialog</title>
- <para>The <guilabel>New Session</guilabel> dialog is used to setup the basic parameters needed by &kfilereplace; to work. It consists of two tabs, <guilabel>General</guilabel> and <guilabel>Advanced</guilabel>.
+ <title>The Search &amp; Replace in Files Dialog</title>
+ <para>The <guilabel>Search &amp; Replace in Files</guilabel> dialog is used to setup the basic parameters needed by &kfilereplace; to work. It consists of two tabs, <guilabel>General</guilabel> and <guilabel>Advanced</guilabel>.
  </para>
  
  <sect2 id="kfilereplace-the-project-dialog-general-page">
-   <title>The <guilabel>General</guilabel> Tab</title>
+   <title>The General Tab</title>
     <screenshot>
      <screeninfo>&kfilereplace; General tab</screeninfo>
      <mediaobject>
@@ -360,13 +355,13 @@
       </textobject>
      </mediaobject>
     </screenshot>
-   <para>When you want to begin a new session the first step is to click on the <link linkend="kfilereplace-the-toolbar"><guiicon>New Session</guiicon> button</link>. Then you must enter the base path and a sequence of shell-like wildcards to use as filter.</para>
+   <para>When you want to begin a new session the first step is to click on the <link linkend="kfilereplace-the-toolbar"><guiicon>Customize  Search/Replace Session</guiicon> button</link>. Then you must enter the base path and a sequence of shell-like wildcards to use as filter.</para>
    <para>Then you could set some useful options, like searching in all the subfolders, doing a case-sensitive search, enabling commands and/or regular expressions<footnote id="performancewarning"><para>Please note that regular expressions and commands could slow down the speed performances.</para></footnote>, doing a backup copy of each file before replacing.</para>
    <para>If you want to start searching, you can put a string in the search box and press <guibutton>Search Now</guibutton>, otherwise leave the search box empty and press <guibutton>Search Later</guibutton>.</para>
  </sect2>
 
  <sect2 id="kfilereplace-the-project-dialog-advanced-page">
-   <title>The <guilabel>Advanced</guilabel> Tab</title>
+   <title>The Advanced Tab</title>
      <screenshot>
        <screeninfo>&kfilereplace; Advanced tab</screeninfo>
        <mediaobject>
@@ -383,7 +378,7 @@
 </sect1>
 
 <sect1 id="kfilereplace-the-options-dialog">
- <title>The <guilabel>Options</guilabel> Dialog</title>
+ <title>The Options Dialog</title>
  <para>This dialog contains options that are in the toolbar and extra options that may come in handy in some situations. You can invoke it selecting <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure KFileReplace...</guimenuitem></menuchoice> in the main menu.
  </para>
  <sect2 id="kfilereplace-the-options-dialog-general-page">
@@ -432,15 +427,15 @@
  </sect2>
 </sect1>
 <sect1 id="kfilereplace-the-add-dialog">
- <title>The <guilabel>Add Strings</guilabel> Dialog</title>
+ <title>The Insert Searching/Replacing Strings Dialog</title>
     <screenshot>
-      <screeninfo>&kfilereplace;'s Add Strings dialog</screeninfo>
+      <screeninfo>&kfilereplace;'s Insert Searching/Replacing Strings dialog</screeninfo>
       <mediaobject>
 	<imageobject>
 	  <imagedata fileref="addstringsdialog_window.png" format="PNG"/>
 	</imageobject>
 	<textobject>
-	  <phrase>&kfilereplace;'s Add Strings dialog</phrase>
+	  <phrase>&kfilereplace;'s Insert Searching/Replacing Strings dialog</phrase>
 	</textobject>
       </mediaobject>
      </screenshot>
@@ -512,7 +507,7 @@
 
 <sect1 id="kfilereplace-open-file">
   <title>How to Open a File</title>
-  <para>If you want to open a file that matches some of your strings, you have to select a line in the result view and click on it with the &RMB;. A context menu will appear from which you can open the file. If you use &kfilereplace; embedded in &quantaplus;, you can open the file directly in it at the specified line and column.</para>
+  <para>If you want to open a file that matches some of your strings, you have to select a line in the result view and click on it with the &RMB;. A context menu will appear from which you can open the file.</para>
 </sect1>
 
 <sect1 id="kfilereplace-commands">
@@ -556,16 +551,11 @@ Documentation copyright 2004 Emiliano Gulmini <email>emi_barbarossa&#64;yahoo&#4
 </chapter>
 
 <appendix id="installation">
-<title>Installation</title>
+<title>Installation and Compilation</title>
 
-<sect1 id="getting-kfilereplace">
-<title>How to install &kfilereplace;</title>
-<para>
-&kfilereplace; is currently part of &kdewebdev; package, so, in order to install it, you have to get a copy of &kdewebdev;. Note that if you are using a &kde; installation provided by your OS vendor, probably you already have &kdewebdev; installed; in this case, you can use &kfilereplace; either by opening &quantaplus; Web editor, or by calling it directly (unless you have an old &kde; version). Else you can download the &kdewebdev; package from the Internet: please refer to <ulink url="http://kdewebdev.org">&kdewebdev; home site</ulink> for more information.
-<!--&install.intro.documentation;-->
-</para>
+&install.intro.documentation;
 
-</sect1>
+&install.compile.documentation;
 
 <sect1 id="requirements">
  <title>Requirements</title>
@@ -592,7 +582,7 @@ Documentation copyright 2004 Emiliano Gulmini <email>emi_barbarossa&#64;yahoo&#4
      <segtitle>[$random:$]</segtitle>
      <segtitle>[$mathexp:<replaceable>bc-expression</replaceable>$]</segtitle>
      <seglistitem>
-       <seg>this command return the current date and time in &qt; ISO format.</seg>
+       <seg>this command return the current date and time in &Qt; ISO format.</seg>
        <seg>like above but in local format.</seg>
        <seg>return the UID of the current user.</seg>
        <seg>return the GID of the current user.</seg>
