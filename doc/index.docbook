@@ -8,7 +8,7 @@
   <!ENTITY bc "<application>bc</application>">
 ]>
 
-<book lang="&language;">
+<book id="kfilereplace" lang="&language;">
 
 <bookinfo>
 <title>The &kfilereplace; Handbook</title>
