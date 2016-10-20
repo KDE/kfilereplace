@@ -1,8 +1,16 @@
 project(kfilereplace)
 
+find_package(KDE4 REQUIRED)
+include (KDE4Defaults)
+include (MacroLibrary)
+
+add_definitions( ${QT_QTDBUS_DEFINITIONS} ${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
+include_directories (${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
+
 add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
 add_subdirectory( toolbar )
+macro_optional_add_subdirectory(doc)
 
 ########### next target ###############
 
